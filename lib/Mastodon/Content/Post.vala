@@ -46,5 +46,11 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
    * @param json A Json.Object retrieved from the API.
    */
   public Post.from_json (Json.Object json) {
+    // Get basic data
+    _id   = json.get_string_member ("id");
+    _date = new DateTime.from_iso8601 (
+      json.get_string_member ("created_at"),
+      new TimeZone.utc ()
+    );
   }
 }

@@ -46,5 +46,12 @@ public class Backend.Twitter.Post : Object, Backend.Post {
    * @param json A Json.Object retrieved from the API.
    */
   public Post.from_json (Json.Object json) {
+    Json.Object data = json.get_object_member ("data");
+    // Get basic data
+    _id = data.get_string_member ("id");
+    _date = new DateTime.from_iso8601 (
+      data.get_string_member ("created_at"),
+      new TimeZone.utc ()
+    );
   }
 }
