@@ -1,0 +1,13 @@
+{
+  "data": {
+    "created_at": "2021-09-06T09:08:03.000Z",
+    "text": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don't expect an interesting text.",
+    "public_metrics": {
+      "retweet_count": 0,
+      "reply_count": 0,
+      "like_count": 0,
+      "quote_count": 0
+    },
+    "id": "1434805586529505284"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "created_at": "Mon Sep 06 09:08:03 +0000 2021",
+  "id": 1434805586529505284,
+  "id_str": "1434805586529505284",
+  "full_text": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don't expect an interesting text.",
+  "truncated": false,
+  "display_text_range": [
+    0,
+    151
+  ],
+  "entities": {
+    "hashtags": [],
+    "symbols": [],
+    "user_mentions": [],
+    "urls": []
+  },
+  "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+    "id": 1303637097803382786,
+    "id_str": "1303637097803382786"
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "is_quote_status": false,
+  "retweet_count": 0,
+  "favorite_count": 0,
+  "favorited": false,
+  "retweeted": false,
+  "lang": "en"
+}

@@ -1,4 +1,9 @@
 libtests = {
+  'Parsing': {
+    'PostParsing': [
+      'Parsing/PostParsing.vala'
+    ]
+  }
 }
 
 testdepends = declare_dependency(
