@@ -1,0 +1,20 @@
+option(
+  'support_mastodon',
+  type:         'boolean',
+  value:         true,
+  description:  'Builds the Mastodon backend'
+)
+
+option(
+  'support_twitter',
+  type:         'boolean',
+  value:         false,
+  description:  'Builds the Twitter backend'
+)
+
+option(
+  'support_twitter_legacy',
+  type:         'boolean',
+  value:         true,
+  description:  'Builds the TwitterLegacy backend'
+)
