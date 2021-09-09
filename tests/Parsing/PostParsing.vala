@@ -55,6 +55,12 @@ void check_basic_fields (Backend.Post post, Json.Object check) {
         new TimeZone.utc ()
     )));
 
+    // Check public metrics
+    assert_true (post.liked_count    == check.get_int_member ("liked_count"));
+    assert_true (post.replied_count  == check.get_int_member ("replied_count"));
+    assert_true (post.reposted_count == check.get_int_member ("reposted_count"));
+}
+
 /**
  * Test BasicPost.json
  */

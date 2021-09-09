@@ -41,6 +41,21 @@ public class Backend.Twitter.Post : Object, Backend.Post {
   public string text { get; }
 
   /**
+   * How often the post was liked.
+   */
+  public int64 liked_count { get; }
+
+  /**
+   * How often the post was replied to.
+   */
+  public int64 replied_count { get; }
+
+  /**
+   * How often this post was reposted or quoted.
+   */
+  public int64 reposted_count { get; }
+
+  /**
    * Parses an given Json.Object and creates an Post object.
    *
    * @param json A Json.Object retrieved from the API.
@@ -52,6 +67,14 @@ public class Backend.Twitter.Post : Object, Backend.Post {
     _date = new DateTime.from_iso8601 (
       data.get_string_member ("created_at"),
       new TimeZone.utc ()
+    );
+
+    // Get metrics
+    Json.Object metrics = data.get_object_member ("public_metrics");
+    _replied_count      = metrics.get_int_member ("reply_count");
+    _reposted_count     = (
+      metrics.get_int_member ("retweet_count") +
+      metrics.get_int_member ("quote_count")
     );
   }
 }

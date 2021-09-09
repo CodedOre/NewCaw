@@ -41,6 +41,21 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
   public string text { get; }
 
   /**
+   * How often the post was liked.
+   */
+  public int64 liked_count { get; }
+
+  /**
+   * How often the post was replied to.
+   */
+  public int64 replied_count { get; }
+
+  /**
+   * How often this post was reposted or quoted.
+   */
+  public int64 reposted_count { get; }
+
+  /**
    * Parses an given Json.Object and creates an Post object.
    *
    * @param json A Json.Object retrieved from the API.
@@ -52,5 +67,10 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
       json.get_string_member ("created_at"),
       new TimeZone.utc ()
     );
+
+    // Get metrics
+    _liked_count    = json.get_int_member ("favourites_count");
+    _replied_count  = json.get_int_member ("replies_count");
+    _reposted_count = json.get_int_member ("reblogs_count");
   }
 }

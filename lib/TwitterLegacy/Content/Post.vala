@@ -41,6 +41,21 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
   public string text { get; }
 
   /**
+   * How often the post was liked.
+   */
+  public int64 liked_count { get; }
+
+  /**
+   * How often the post was replied to.
+   */
+  public int64 replied_count { get; }
+
+  /**
+   * How often this post was reposted or quoted.
+   */
+  public int64 reposted_count { get; }
+
+  /**
    * Parses an given Json.Object and creates an Post object.
    *
    * @param json A Json.Object retrieved from the API.
@@ -49,6 +64,11 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
     // Get basic data
     _id   = json.get_string_member ("id_str");
     _date = parse_time (json.get_string_member ("created_at"));
+
+    // Get metrics
+    _liked_count    = json.get_int_member ("favorite_count");
+    // TODO: Add `replied_count` by counting actual replies
+    _reposted_count = json.get_int_member ("retweet_count");
   }
 
   /**

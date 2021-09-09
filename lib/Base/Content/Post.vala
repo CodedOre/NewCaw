@@ -40,4 +40,19 @@ public interface Backend.Post : Object {
    */
   public abstract string text { get; }
 
+  /**
+   * How often the post was liked.
+   */
+  public abstract int64 liked_count { get; }
+
+  /**
+   * How often the post was replied to.
+   */
+  public abstract int64 replied_count { get; }
+
+  /**
+   * How often this post was reposted or quoted.
+   */
+  public abstract int64 reposted_count { get; }
+
 }
