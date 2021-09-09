@@ -9,6 +9,7 @@ libdepends = [
 # Base files
 libfiles = [
   'Base/Content/Post.vala',
+  'Base/Content/TextModule.vala'
 ]
 
 # Add files for active backends

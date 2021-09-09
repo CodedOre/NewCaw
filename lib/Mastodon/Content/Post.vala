@@ -73,4 +73,16 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
     _replied_count  = json.get_int_member ("replies_count");
     _reposted_count = json.get_int_member ("reblogs_count");
   }
+
+  /**
+   * Formats the raw-text for the use in the UI.
+   */
+  private void format_text () {
+  }
+
+  /**
+   * The text split into modules for formatting.
+   */
+  private TextModule[] text_modules;
+
 }

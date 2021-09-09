@@ -69,6 +69,11 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
     _liked_count    = json.get_int_member ("favorite_count");
     // TODO: Add `replied_count` by counting actual replies
     _reposted_count = json.get_int_member ("retweet_count");
+
+  /**
+   * Formats the raw-text for the use in the UI.
+   */
+  private void format_text () {
   }
 
   /**
@@ -149,4 +154,10 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
     }
     return result;
   }
+
+  /**
+   * The text split into modules for formatting.
+   */
+  private TextModule[] text_modules;
+
 }
