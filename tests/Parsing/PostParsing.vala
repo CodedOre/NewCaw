@@ -31,10 +31,10 @@ Json.Object? load_json (string file) {
   var parser = new Json.Parser();
 
   try {
-		parser.load_from_file (file);
-	} catch (Error e) {
-	  error (@"Unable to parse '$file': $(e.message)");
-	}
+    parser.load_from_file (file);
+  } catch (Error e) {
+    error (@"Unable to parse '$file': $(e.message)");
+  }
 
   Json.Node root = parser.get_root ();
   return root.get_object ();
@@ -47,50 +47,76 @@ Json.Object? load_json (string file) {
  * @param check A Json.Object containing fields to check against.
  */
 void check_basic_fields (Backend.Post post, Json.Object check) {
-    // Check id and date
-    assert_true (post.id   == check.get_string_member ("id"));
-    assert_true (post.date.equal (
-      new DateTime.from_iso8601 (
-        check.get_string_member ("date"),
-        new TimeZone.utc ()
-    )));
+  // Check id and date
+  assert_true (post.id   == check.get_string_member ("id"));
+  assert_true (post.date.equal (
+    new DateTime.from_iso8601 (
+      check.get_string_member ("date"),
+      new TimeZone.utc ()
+  )));
 
-    // Check public metrics
-    assert_true (post.liked_count    == check.get_int_member ("liked_count"));
-    assert_true (post.replied_count  == check.get_int_member ("replied_count"));
-    assert_true (post.reposted_count == check.get_int_member ("reposted_count"));
+  // Check public metrics
+  assert_true (post.liked_count    == check.get_int_member ("liked_count"));
+  assert_true (post.replied_count  == check.get_int_member ("replied_count"));
+  assert_true (post.reposted_count == check.get_int_member ("reposted_count"));
 }
 
 /**
- * Test BasicPost.json
+ * Test text and text_modules
+ *
+ * @param post The Post to be checked.
+ * @param check A Json.Object containing fields to check against.
  */
-void test_basic_post () {
+void check_text_parsing (Backend.Post post, Json.Object check) {
+  if (check.has_member ("text")) {
+    assert_true (post.text == check.get_string_member ("text"));
+  }
+  if (check.has_member ("text_modules")) {
+    Json.Array modules = check.get_array_member ("text_modules");
+    assert_true (modules.get_length () == post.text_modules.length);
+    modules.foreach_element ((array, index, element) => {
+      Json.Object obj         = element.get_object ();
+      Backend.TextModule  mod = post.text_modules [index];
+      assert_true ((int) mod.type == obj.get_int_member        ("type"));
+      assert_true (mod.display    == obj.get_string_member     ("display"));
+      assert_true (mod.target     == obj.get_string_member     ("target"));
+      assert_true (mod.text_start == (uint) obj.get_int_member ("text_start"));
+      assert_true (mod.text_end   == (uint) obj.get_int_member ("text_end"));
+    });
+  }
+}
+
+/**
+ * Tests a specific post using two json files.
+ */
+void run_post_test (string post_json, string check_json) {
   Json.Object[]  check_objects = {};
   Backend.Post[] checked_posts = {};
 
-  // Test run the parser and create a Post object.
-#if SUPPORT_MASTODON
-  check_objects += load_json ("PostData/Mastodon/BasicChecks.json");
+  // Creates a Post object from the post_json
+  #if SUPPORT_MASTODON
+  check_objects += load_json (@"PostData/Mastodon/$(check_json)");
   checked_posts += new Backend.Mastodon.Post.from_json (
-    load_json ("PostData/Mastodon/BasicPost.json")
+    load_json (@"PostData/Mastodon/$(post_json)")
   );
 #endif
 #if SUPPORT_TWITTER
-  check_objects += load_json ("PostData/Twitter/BasicChecks.json");
+  check_objects += load_json (@"PostData/Twitter/$(check_json)");
   checked_posts += new Backend.Twitter.Post.from_json (
-    load_json ("PostData/Twitter/BasicPost.json")
+    load_json (@"PostData/Twitter/$(post_json)")
   );
 #endif
 #if SUPPORT_TWITTER_LEGACY
-  check_objects += load_json ("PostData/TwitterLegacy/BasicChecks.json");
+  check_objects += load_json (@"PostData/TwitterLegacy/$(check_json)");
   checked_posts += new Backend.TwitterLegacy.Post.from_json (
-    load_json ("PostData/TwitterLegacy/BasicPost.json")
+    load_json (@"PostData/TwitterLegacy/$(post_json)")
   );
 #endif
 
-  // Check if parsed values are equal to check values.
+  // Check parsed posts against check objects.
   for (int i = 0; i < check_objects.length; i++) {
     check_basic_fields (checked_posts[i], check_objects[i]);
+    check_text_parsing (checked_posts[i], check_objects[i]);
   }
 }
 
@@ -100,7 +126,9 @@ void test_basic_post () {
 int main (string[] args) {
   GLib.Test.init (ref args);
 
-  GLib.Test.add_func ("/PostParsing/BasicPost",    test_basic_post);
+  GLib.Test.add_func ("/PostParsing/BasicPost", () => {
+    run_post_test ("BasicPost.json", "BasicChecks.json");
+  });
 
   return GLib.Test.run ();
 }
