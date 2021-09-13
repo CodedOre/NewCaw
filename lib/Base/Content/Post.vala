@@ -60,4 +60,35 @@ public interface Backend.Post : Object {
    */
   public abstract int64 reposted_count { get; }
 
+  /**
+   * Formats the text property using the text_modules.
+   *
+   * This function creates a usable string for the UI and
+   * also accounts for format setting done in the client.
+   */
+  protected string format_text () {
+    var builder = new StringBuilder ();
+
+    // Iterates through all TextModules
+    foreach (TextModule module in text_modules) {
+      switch (module.type) {
+        case TAG:
+          builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"hashtag\">$(module.display)</a>");
+          break;
+        case MENTION:
+          builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"mention\">$(module.display)</a>");
+          break;
+        case LINK:
+          builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"weblink\">$(module.display)</a>");
+          break;
+        default:
+          builder.append (module.display);
+          break;
+      }
+    }
+
+    // Returns the text to be used in the UI
+    return builder.str;
+  }
+
 }

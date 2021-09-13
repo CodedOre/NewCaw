@@ -96,6 +96,7 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
     }
 
     parse_text (raw_text, entities);
+    _text = format_text ();
   }
 
   /**
