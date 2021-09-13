@@ -41,6 +41,11 @@ public class Backend.Twitter.Post : Object, Backend.Post {
   public string text { get; }
 
   /**
+   * The text split into modules for formatting.
+   */
+  public TextModule[] text_modules { get; }
+
+  /**
    * How often the post was liked.
    */
   public int64 liked_count { get; }
@@ -77,16 +82,5 @@ public class Backend.Twitter.Post : Object, Backend.Post {
       metrics.get_int_member ("quote_count")
     );
   }
-
-  /**
-   * Formats the raw-text for the use in the UI.
-   */
-  private void format_text () {
-  }
-
-  /**
-   * The text split into modules for formatting.
-   */
-  private TextModule[] text_modules;
 
 }

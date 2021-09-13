@@ -41,6 +41,11 @@ public interface Backend.Post : Object {
   public abstract string text { get; }
 
   /**
+   * The text split into modules for formatting.
+   */
+  public abstract TextModule[] text_modules { get; }
+
+  /**
    * How often the post was liked.
    */
   public abstract int64 liked_count { get; }

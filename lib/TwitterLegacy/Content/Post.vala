@@ -41,6 +41,11 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
   public string text { get; }
 
   /**
+   * The text split into modules for formatting.
+   */
+  public TextModule[] text_modules { get; }
+
+  /**
    * How often the post was liked.
    */
   public int64 liked_count { get; }
@@ -156,12 +161,7 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
       uint y = b.text_start;
       return (int) (x > y) - (int) (x < y);
     });
-  }
 
-  /**
-   * Formats the raw-text for the use in the UI.
-   */
-  private void format_text () {
   }
 
   /**
@@ -242,10 +242,5 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
     }
     return result;
   }
-
-  /**
-   * The text split into modules for formatting.
-   */
-  private TextModule[] text_modules;
 
 }
