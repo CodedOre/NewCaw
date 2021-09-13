@@ -155,6 +155,18 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
       }
     });
 
+    // Convert text to one TextModule when no entities are present
+    if (main_entities.length == 0) {
+      var only_text        = TextModule ();
+      only_text.type       = TEXT;
+      only_text.display    = raw_text;
+      only_text.target     = null;
+      only_text.text_start = 0;
+      only_text.text_end   = raw_text.length - 1;
+      _text_modules       += only_text;
+      return;
+    }
+
     // Sort entities
     qsort_with_data<TextModule?> (main_entities, sizeof(TextModule?), (a, b) => {
       uint x = a.text_start;
@@ -162,6 +174,48 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
       return (int) (x > y) - (int) (x < y);
     });
 
+    // Split the text into TextModules
+    TextModule first_entity = main_entities [0];
+    if (first_entity.text_start != 0) {
+      var first_text        = TextModule ();
+      first_text.type       = TEXT;
+      first_text.target     = null;
+      first_text.text_start = 0;
+      first_text.text_end   = first_entity.text_start - 1;
+      first_text.display    = raw_text [first_text.text_start:first_text.text_end];
+      _text_modules        += first_text;
+      _text_modules        += first_entity;
+    }
+
+    if (main_entities.length > 1) {
+      for (int i = 1; i < main_entities.length; i++) {
+        TextModule? last_entity    = main_entities [i-1];
+        TextModule? current_entity = main_entities [i];
+        if (last_entity != null && current_entity != null) {
+          var text_module        = TextModule ();
+          text_module.type       = TEXT;
+          text_module.target     = null;
+          text_module.text_start = last_entity.text_end      + 1;
+          text_module.text_end   = current_entity.text_start - 1;
+          text_module.display    = raw_text [text_module.text_start:text_module.text_end];
+          _text_modules         += text_module;
+          _text_modules         += current_entity;
+        }
+      }
+    }
+
+    TextModule? last_entity = main_entities [main_entities.length - 1];
+    if (last_entity != null) {
+      if (last_entity.text_end < raw_text.length - 1) {
+        var last_text        = TextModule ();
+        last_text.type       = TEXT;
+        last_text.target     = null;
+        last_text.text_start = 0;
+        last_text.text_end   = raw_text.length - 1;
+        last_text.display    = raw_text [last_text.text_start:last_text.text_end];
+        _text_modules       += last_text;
+      }
+    }
   }
 
   /**
