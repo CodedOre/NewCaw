@@ -52,7 +52,13 @@
     {
       "name":         "Cawbird",
       "buildsystem":  "meson",
-      "builddir":      true
+      "builddir":      true,
+      "sources": [
+        {
+          "type":"dir",
+          "path":"."
+        }
+      ]
     }
   ]
 }
