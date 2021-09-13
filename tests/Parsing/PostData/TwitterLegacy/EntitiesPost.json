@@ -1,0 +1,75 @@
+{
+  "created_at": "Tue Sep 07 13:57:11 +0000 2021",
+  "id": 1435240733682896900,
+  "id_str": "1435240733682896900",
+  "full_text": "So, what about a post with some entities with in?\n\nHow about a mention to @CodedOre, an #hashtag for #cawbird, and how about a web link for last:\n\nhttps://t.co/pVhgJ8gEf4",
+  "truncated": false,
+  "display_text_range": [
+    0,
+    170
+  ],
+  "entities": {
+    "hashtags": [
+      {
+        "text": "hashtag",
+        "indices": [
+          88,
+          96
+        ]
+      },
+      {
+        "text": "cawbird",
+        "indices": [
+          101,
+          109
+        ]
+      }
+    ],
+    "symbols": [],
+    "user_mentions": [
+      {
+        "screen_name": "CodedOre",
+        "name": "CodedOre",
+        "id": 1289885321325404162,
+        "id_str": "1289885321325404162",
+        "indices": [
+          74,
+          83
+        ]
+      }
+    ],
+    "urls": [
+      {
+        "url": "https://t.co/pVhgJ8gEf4",
+        "expanded_url": "https://ibboard.co.uk/cawbird/",
+        "display_url": "ibboard.co.uk/cawbird/",
+        "indices": [
+          147,
+          170
+        ]
+      }
+    ]
+  },
+  "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+    "id": 1303637097803382786,
+    "id_str": "1303637097803382786"
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "is_quote_status": false,
+  "retweet_count": 0,
+  "favorite_count": 0,
+  "favorited": false,
+  "retweeted": false,
+  "possibly_sensitive": false,
+  "possibly_sensitive_appealable": false,
+  "lang": "en"
+}
