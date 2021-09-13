@@ -182,7 +182,7 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
       first_text.type       = TEXT;
       first_text.target     = null;
       first_text.text_start = 0;
-      first_text.text_end   = first_entity.text_start - 1;
+      first_text.text_end   = first_entity.text_start;
       first_text.display    = raw_text [first_text.text_start:first_text.text_end];
       _text_modules        += first_text;
       _text_modules        += first_entity;
@@ -196,8 +196,8 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
           var text_module        = TextModule ();
           text_module.type       = TEXT;
           text_module.target     = null;
-          text_module.text_start = last_entity.text_end      + 1;
-          text_module.text_end   = current_entity.text_start - 1;
+          text_module.text_start = last_entity.text_end;
+          text_module.text_end   = current_entity.text_start;
           text_module.display    = raw_text [text_module.text_start:text_module.text_end];
           _text_modules         += text_module;
           _text_modules         += current_entity;
@@ -211,8 +211,8 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
         var last_text        = TextModule ();
         last_text.type       = TEXT;
         last_text.target     = null;
-        last_text.text_start = 0;
-        last_text.text_end   = raw_text.length - 1;
+        last_text.text_start = last_entity.text_end;
+        last_text.text_end   = raw_text.length;
         last_text.display    = raw_text [last_text.text_start:last_text.text_end];
         _text_modules       += last_text;
       }
