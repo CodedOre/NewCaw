@@ -1,6 +1,16 @@
 {
   "id":              "106883926076492274",
   "date":            "2021-09-06T09:08:02.188Z",
+  "text":            "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text.",
+  "text_modules": [
+    {
+      "type":       0,
+      "display":    "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text.",
+      "target":     null,
+      "text_start": 0,
+      "text_end":   156
+    }
+  ],
   "liked_count":      0,
   "replied_count":    0,
   "reposted_count":   0

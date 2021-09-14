@@ -77,6 +77,42 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
     _liked_count    = json.get_int_member ("favourites_count");
     _replied_count  = json.get_int_member ("replies_count");
     _reposted_count = json.get_int_member ("reblogs_count");
+
+    // Parse the text into modules
+    parse_text (json.get_string_member ("content"));
+    _text = format_text ();
+  }
+
+  /**
+   * Parses the text into a list of TextEntities.
+   *
+   * @param raw_text The text as given by the API.
+   * @param entities A Json.Object containing API-provided entities.
+   */
+  private void parse_text (string raw_text) {
+    string text = raw_text;
+
+    // Strip first paragraph symbol
+    if (text [:3] == "<p>") {
+      text = text [3:];
+    }
+
+    // Set line breaks
+    text = text.replace ("<p>",    "\n\n");
+    text = text.replace ("</p>",   "");
+    text = text.replace ("<br />", "\n");
+
+    // Create one TextModule in absent of entities
+    if (! text.contains ("<span") || ! text.contains ("<a")) {
+      var text_module        = TextModule ();
+      text_module.type       = TEXT;
+      text_module.display    = text;
+      text_module.target     = null;
+      text_module.text_start = 0;
+      text_module.text_end   = text.length;
+      _text_modules         += text_module;
+      return;
+    }
   }
 
 }
