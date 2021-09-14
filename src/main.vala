@@ -19,7 +19,7 @@
  */
 
 int main (string[] args) {
-  var app = new Adw.Application ("uk.co.ibboard.cawbird", ApplicationFlags.FLAGS_NONE);
+  var app = new Adw.Application ("uk.co.ibboard.Cawbird.Devel", ApplicationFlags.FLAGS_NONE);
 
   app.activate.connect (() => {
   });
