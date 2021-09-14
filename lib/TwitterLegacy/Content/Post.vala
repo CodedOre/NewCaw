@@ -75,7 +75,7 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
     // TODO: Add `replied_count` by counting actual replies
     _reposted_count = json.get_int_member ("retweet_count");
 
-    // Parse the text into entities
+    // Parse the text into modules
     Json.Object? entities   = null;
     string       raw_text   = "";
     uint         text_start = 0;
@@ -141,8 +141,8 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
     });
 
     // Note all links from entities
-    Json.Array urls = entities.get_array_member ("urls");
-    urls.foreach_element ((array, index, element) => {
+    Json.Array links = entities.get_array_member ("urls");
+    links.foreach_element ((array, index, element) => {
       if (element.get_node_type () == OBJECT) {
         Json.Object obj    = element.get_object ();
         Json.Array  length = obj.get_array_member ("indices");
