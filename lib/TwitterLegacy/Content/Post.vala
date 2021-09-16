@@ -46,6 +46,11 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
   public TextModule[] text_modules { get; }
 
   /**
+   * The source application who created this Post.
+   */
+  public string source { get; }
+
+  /**
    * How often the post was liked.
    */
   public int64 liked_count { get; }
@@ -69,6 +74,20 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
     // Get basic data
     _id   = json.get_string_member ("id_str");
     _date = parse_time (json.get_string_member ("created_at"));
+
+    // Parse source
+    try {
+      string application  = json.get_string_member ("source");
+      var    source_regex = new Regex ("<a.*?>(.*?)</a>");
+      _source = source_regex.replace (
+        application,
+        application.length,
+        0,
+        "\\1"
+      );
+    } catch (RegexError e) {
+      error (@"Error while parsing source: $(e.message)");
+    }
 
     // Get metrics
     _liked_count    = json.get_int_member ("favorite_count");

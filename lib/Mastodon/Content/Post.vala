@@ -46,6 +46,11 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
   public TextModule[] text_modules { get; }
 
   /**
+   * The source application who created this Post.
+   */
+  public string source { get; }
+
+  /**
    * How often the post was liked.
    */
   public int64 liked_count { get; }
@@ -72,6 +77,8 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
       json.get_string_member ("created_at"),
       new TimeZone.utc ()
     );
+    Json.Object application = json.get_object_member ("application");
+    _source = application.get_string_member ("name");
 
     // Get metrics
     _liked_count    = json.get_int_member ("favourites_count");

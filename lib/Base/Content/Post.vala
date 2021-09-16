@@ -46,6 +46,11 @@ public interface Backend.Post : Object {
   public abstract TextModule[] text_modules { get; }
 
   /**
+   * The source application who created this Post.
+   */
+  public abstract string source { get; }
+
+  /**
    * How often the post was liked.
    */
   public abstract int64 liked_count { get; }

@@ -47,13 +47,14 @@ Json.Object? load_json (string file) {
  * @param check A Json.Object containing fields to check against.
  */
 void check_basic_fields (Backend.Post post, Json.Object check) {
-  // Check id and date
+  // Check id, date and source
   assert_true (post.id   == check.get_string_member ("id"));
   assert_true (post.date.equal (
     new DateTime.from_iso8601 (
       check.get_string_member ("date"),
       new TimeZone.utc ()
   )));
+  assert_true (post.source == check.get_string_member ("source"));
 
   // Check public metrics
   assert_true (post.liked_count    == check.get_int_member ("liked_count"));

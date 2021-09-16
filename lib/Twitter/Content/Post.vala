@@ -46,6 +46,11 @@ public class Backend.Twitter.Post : Object, Backend.Post {
   public TextModule[] text_modules { get; }
 
   /**
+   * The source application who created this Post.
+   */
+  public string source { get; }
+
+  /**
    * How often the post was liked.
    */
   public int64 liked_count { get; }
@@ -68,11 +73,12 @@ public class Backend.Twitter.Post : Object, Backend.Post {
   public Post.from_json (Json.Object json) {
     Json.Object data = json.get_object_member ("data");
     // Get basic data
-    _id = data.get_string_member ("id");
+    _id   = data.get_string_member ("id");
     _date = new DateTime.from_iso8601 (
       data.get_string_member ("created_at"),
       new TimeZone.utc ()
     );
+    _source = data.get_string_member ("source");
 
     // Get metrics
     Json.Object metrics = data.get_object_member ("public_metrics");
