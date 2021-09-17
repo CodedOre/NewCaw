@@ -36,5 +36,6 @@ backendlib = library(
   'cawbird',
   libfiles,
   dependencies:   libdepends,
-	vala_vapi:     'libcawbird.vapi'
+	vala_vapi:     'libcawbird.vapi',
+	install:        true
 )

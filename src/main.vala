@@ -20,6 +20,7 @@
 
 int main (string[] args) {
   var app = new Adw.Application ("uk.co.ibboard.Cawbird.Devel", ApplicationFlags.FLAGS_NONE);
+  app.set_resource_base_path ("/uk/co/ibboard/Cawbird/");
 
   app.activate.connect (() => {
   });
