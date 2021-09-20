@@ -115,49 +115,55 @@ public class Backend.Twitter.Post : Object, Backend.Post {
     // Parse entities when detected
     if (entities != null) {
       // Note all hashtags from entities
-      Json.Array hashtags = entities.get_array_member ("hashtags");
-      hashtags.foreach_element ((array, index, element) => {
-        if (element.get_node_type () == OBJECT) {
-          Json.Object obj    = element.get_object ();
-          var entity         = TextModule ();
-          entity.type        = TAG;
-          entity.display     = "#" + obj.get_string_member ("tag");
-          entity.target      = "#" + obj.get_string_member ("tag");
-          entity.text_start  = (uint) obj.get_int_member ("start");
-          entity.text_end    = (uint) obj.get_int_member ("end");
-          main_entities += entity;
-        }
-      });
+      if (entities.has_member ("hashtags")) {
+        Json.Array hashtags = entities.get_array_member ("hashtags");
+        hashtags.foreach_element ((array, index, element) => {
+          if (element.get_node_type () == OBJECT) {
+            Json.Object obj    = element.get_object ();
+            var entity         = TextModule ();
+            entity.type        = TAG;
+            entity.display     = "#" + obj.get_string_member ("tag");
+            entity.target      = "#" + obj.get_string_member ("tag");
+            entity.text_start  = (uint) obj.get_int_member ("start");
+            entity.text_end    = (uint) obj.get_int_member ("end");
+            main_entities += entity;
+          }
+        });
+      }
 
       // Note all mentions from entities
-      Json.Array mentions = entities.get_array_member ("mentions");
-      mentions.foreach_element ((array, index, element) => {
-        if (element.get_node_type () == OBJECT) {
-          Json.Object obj    = element.get_object ();
-          var entity         = TextModule ();
-          entity.type        = MENTION;
-          entity.display     = "@" + obj.get_string_member ("username");
-          entity.target      = "@" + obj.get_string_member ("username");
-          entity.text_start  = (uint) obj.get_int_member ("start");
-          entity.text_end    = (uint) obj.get_int_member ("end");
-          main_entities += entity;
-        }
-      });
+      if (entities.has_member ("mentions")) {
+        Json.Array mentions = entities.get_array_member ("mentions");
+        mentions.foreach_element ((array, index, element) => {
+          if (element.get_node_type () == OBJECT) {
+            Json.Object obj    = element.get_object ();
+            var entity         = TextModule ();
+            entity.type        = MENTION;
+            entity.display     = "@" + obj.get_string_member ("username");
+            entity.target      = "@" + obj.get_string_member ("username");
+            entity.text_start  = (uint) obj.get_int_member ("start");
+            entity.text_end    = (uint) obj.get_int_member ("end");
+            main_entities += entity;
+          }
+        });
+      }
 
       // Note all links from entities
-      Json.Array links = entities.get_array_member ("urls");
-      links.foreach_element ((array, index, element) => {
-        if (element.get_node_type () == OBJECT) {
-          Json.Object obj    = element.get_object ();
-          var entity         = TextModule ();
-          entity.type        = LINK;
-          entity.display     = obj.get_string_member ("display_url");
-          entity.target      = obj.get_string_member ("expanded_url");
-          entity.text_start  = (uint) obj.get_int_member ("start");
-          entity.text_end    = (uint) obj.get_int_member ("end");
-          main_entities += entity;
-        }
-      });
+      if (entities.has_member ("urls")) {
+        Json.Array links = entities.get_array_member ("urls");
+        links.foreach_element ((array, index, element) => {
+          if (element.get_node_type () == OBJECT) {
+            Json.Object obj    = element.get_object ();
+            var entity         = TextModule ();
+            entity.type        = LINK;
+            entity.display     = obj.get_string_member ("display_url");
+            entity.target      = obj.get_string_member ("expanded_url");
+            entity.text_start  = (uint) obj.get_int_member ("start");
+            entity.text_end    = (uint) obj.get_int_member ("end");
+            main_entities += entity;
+          }
+        });
+      }
     }
 
     // Convert text to one TextModule when no entities are present
