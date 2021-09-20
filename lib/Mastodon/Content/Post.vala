@@ -142,6 +142,10 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
 
     // Create the text modules
     foreach (string module in module_text) {
+      if (module == "") {
+        continue;
+      }
+
       // Parse mentions
       if (Regex.match_simple ("<mention.*?/>", module)) {
         try {
