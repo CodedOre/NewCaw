@@ -1,0 +1,38 @@
+{
+  "data": {
+    "text": "New post, new test!\nNow, let's test for a #hashtag, but also for some at the end: #hashtag2 #hashtag3 #hashtag4",
+    "public_metrics": {
+      "retweet_count": 0,
+      "reply_count": 0,
+      "like_count": 0,
+      "quote_count": 0
+    },
+    "created_at": "2021-09-20T08:09:46.000Z",
+    "entities": {
+      "hashtags": [
+        {
+          "start": 42,
+          "end": 50,
+          "tag": "hashtag"
+        },
+        {
+          "start": 82,
+          "end": 91,
+          "tag": "hashtag2"
+        },
+        {
+          "start": 92,
+          "end": 101,
+          "tag": "hashtag3"
+        },
+        {
+          "start": 102,
+          "end": 111,
+          "tag": "hashtag4"
+        }
+      ]
+    },
+    "source": "Twitter Web App",
+    "id": "1439864347640139776"
+  }
+}

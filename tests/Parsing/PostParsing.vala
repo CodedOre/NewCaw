@@ -129,6 +129,9 @@ int main (string[] args) {
   GLib.Test.add_func ("/PostParsing/EntitiesPost", () => {
     run_post_test ("EntitiesPost.json", "EntitiesChecks.json");
   });
+  GLib.Test.add_func ("/PostParsing/HashtagsPost", () => {
+    run_post_test ("HashtagsPost.json", "HashtagsChecks.json");
+  });
 
   return GLib.Test.run ();
 }
