@@ -71,10 +71,11 @@ void check_basic_fields (Backend.Post post, Json.Object check) {
 void check_text_parsing (Backend.Post post, Json.Object check) {
   assert_true (post.text == check.get_string_member ("text"));
   Json.Array modules = check.get_array_member ("text_modules");
-  assert_true (modules.get_length () == post.text_modules.length);
+  Backend.TextModule[] post_modules = post.get_text_modules ();
+  assert_true (modules.get_length () == post_modules.length);
   modules.foreach_element ((array, index, element) => {
     Json.Object obj         = element.get_object ();
-    Backend.TextModule  mod = post.text_modules [index];
+    Backend.TextModule  mod = post_modules [index];
     assert_true ((int) mod.type == obj.get_int_member        ("type"));
     assert_true (mod.display    == obj.get_string_member     ("display"));
     assert_true (mod.target     == obj.get_string_member     ("target"));

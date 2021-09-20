@@ -41,11 +41,6 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
   public string text { get; }
 
   /**
-   * The text split into modules for formatting.
-   */
-  public TextModule[] text_modules { get; }
-
-  /**
    * The source application who created this Post.
    */
   public string source { get; }
@@ -87,7 +82,7 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
 
     // Parse the text into modules
     parse_text (json.get_string_member ("content"));
-    _text = format_text ();
+    _text = format_text (text_modules);
   }
 
   /**
@@ -118,7 +113,7 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
       text_module.target     = null;
       text_module.text_start = 0;
       text_module.text_end   = parsed_text.length;
-      _text_modules         += text_module;
+      text_modules          += text_module;
       return;
     }
 
@@ -157,7 +152,7 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
           text_module.text_start = text_index;
           text_index             = text_index + text_module.display.length;
           text_module.text_end   = text_index;
-          _text_modules         += text_module;
+          text_modules          += text_module;
         } catch (RegexError e) {
           error (@"Error while parsing text: $(e.message)");
         }
@@ -175,7 +170,7 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
           text_module.text_start = text_index;
           text_index             = text_index + text_module.display.length;
           text_module.text_end   = text_index;
-          _text_modules         += text_module;
+          text_modules          += text_module;
         } catch (RegexError e) {
           error (@"Error while parsing text: $(e.message)");
         }
@@ -193,7 +188,7 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
           text_module.text_start = text_index;
           text_index             = text_index + text_module.display.length;
           text_module.text_end   = text_index;
-          _text_modules         += text_module;
+          text_modules          += text_module;
         } catch (RegexError e) {
           error (@"Error while parsing text: $(e.message)");
         }
@@ -208,9 +203,25 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
       text_module.text_start = text_index;
       text_index             = text_index + module.length;
       text_module.text_end   = text_index;
-      _text_modules         += text_module;
+      text_modules          += text_module;
     }
 
   }
+
+#if DEBUG
+  /**
+   * Returns the text modules.
+   *
+   * Only used in test cases and therefore only available in debug builds.
+   */
+  public TextModule[] get_text_modules () {
+    return text_modules;
+  }
+#endif
+
+  /**
+   * The text split into modules for formatting.
+   */
+  private TextModule[] text_modules;
 
 }

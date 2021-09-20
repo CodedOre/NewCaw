@@ -41,11 +41,6 @@ public interface Backend.Post : Object {
   public abstract string text { get; }
 
   /**
-   * The text split into modules for formatting.
-   */
-  public abstract TextModule[] text_modules { get; }
-
-  /**
    * The source application who created this Post.
    */
   public abstract string source { get; }
@@ -71,7 +66,7 @@ public interface Backend.Post : Object {
    * This function creates a usable string for the UI and
    * also accounts for format setting done in the client.
    */
-  protected string format_text () {
+  protected string format_text (TextModule[] text_modules) {
     var builder = new StringBuilder ();
 
     // Iterates through all TextModules
@@ -95,5 +90,14 @@ public interface Backend.Post : Object {
     // Returns the text to be used in the UI
     return builder.str;
   }
+
+#if DEBUG
+  /**
+   * Returns the text modules.
+   *
+   * Only used in test cases and therefore only available in debug builds.
+   */
+  public abstract TextModule[] get_text_modules ();
+#endif
 
 }

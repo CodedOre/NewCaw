@@ -6,6 +6,10 @@ project(
 )
 
 # Project arguments
+if get_option('buildtype') == 'debug' or get_option('buildtype') == 'debugoptimized'
+  add_project_arguments('-D', 'DEBUG', language: 'vala')
+endif
+
 if get_option('support_mastodon')
   add_project_arguments('-D', 'SUPPORT_MASTODON', language: 'vala')
 endif

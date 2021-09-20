@@ -41,11 +41,6 @@ public class Backend.Twitter.Post : Object, Backend.Post {
   public string text { get; }
 
   /**
-   * The text split into modules for formatting.
-   */
-  public TextModule[] text_modules { get; }
-
-  /**
    * The source application who created this Post.
    */
   public string source { get; }
@@ -100,7 +95,7 @@ public class Backend.Twitter.Post : Object, Backend.Post {
     }
 
     parse_text (raw_text, entities);
-    _text = format_text ();
+    _text = format_text (text_modules);
   }
 
   /**
@@ -174,7 +169,7 @@ public class Backend.Twitter.Post : Object, Backend.Post {
       only_text.target     = null;
       only_text.text_start = 0;
       only_text.text_end   = raw_text.length - 1;
-      _text_modules       += only_text;
+      text_modules        += only_text;
       return;
     }
 
@@ -194,8 +189,8 @@ public class Backend.Twitter.Post : Object, Backend.Post {
       first_text.text_start = 0;
       first_text.text_end   = first_entity.text_start;
       first_text.display    = raw_text [first_text.text_start:first_text.text_end];
-      _text_modules        += first_text;
-      _text_modules        += first_entity;
+      text_modules         += first_text;
+      text_modules         += first_entity;
     }
 
     if (main_entities.length > 1) {
@@ -209,8 +204,8 @@ public class Backend.Twitter.Post : Object, Backend.Post {
           text_module.text_start = last_entity.text_end;
           text_module.text_end   = current_entity.text_start;
           text_module.display    = raw_text [text_module.text_start:text_module.text_end];
-          _text_modules         += text_module;
-          _text_modules         += current_entity;
+          text_modules          += text_module;
+          text_modules          += current_entity;
         }
       }
     }
@@ -224,9 +219,25 @@ public class Backend.Twitter.Post : Object, Backend.Post {
         last_text.text_start = last_entity.text_end;
         last_text.text_end   = raw_text.length;
         last_text.display    = raw_text [last_text.text_start:last_text.text_end];
-        _text_modules       += last_text;
+        text_modules        += last_text;
       }
     }
   }
+
+#if DEBUG
+  /**
+   * Returns the text modules.
+   *
+   * Only used in test cases and therefore only available in debug builds.
+   */
+  public TextModule[] get_text_modules () {
+    return text_modules;
+  }
+#endif
+
+  /**
+   * The text split into modules for formatting.
+   */
+  private TextModule[] text_modules;
 
 }
