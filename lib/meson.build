@@ -9,23 +9,27 @@ libdepends = [
 # Base files
 libfiles = [
   'Base/Content/Post.vala',
-  'Base/Content/TextModule.vala'
+  'Base/Content/TextModule.vala',
+  'Base/Utils/TextUtils.vala'
 ]
 
 # Add files for active backends
 if get_option('support_mastodon')
   libfiles += [
-    'Mastodon/Content/Post.vala'
+    'Mastodon/Content/Post.vala',
+    'Mastodon/Utils/TextUtils.vala'
   ]
 endif
 if get_option('support_twitter')
   libfiles += [
-    'Twitter/Content/Post.vala'
+    'Twitter/Content/Post.vala',
+    'Twitter/Utils/TextUtils.vala'
   ]
 endif
 if get_option('support_twitter_legacy')
   libfiles += [
-    'TwitterLegacy/Content/Post.vala'
+    'TwitterLegacy/Content/Post.vala',
+    'TwitterLegacy/Utils/TextUtils.vala'
   ]
 endif
 
