@@ -85,54 +85,80 @@ void check_text_parsing (Backend.Post post, Json.Object check) {
 }
 
 /**
- * Tests a specific post using two json files.
+ * Tests creation of a specific post and runs test on it.
  */
-void run_post_test (string post_json, string check_json) {
-  Json.Object[]  check_objects = {};
-  Backend.Post[] checked_posts = {};
+void run_post_test (string module, string post_json, string check_json) {
+  Json.Object  check_object;
+  Json.Object  post_object;
+  Backend.Post checked_post;
 
-  // Creates a Post object from the post_json
-  #if SUPPORT_MASTODON
-  check_objects += load_json (@"PostData/Mastodon/$(check_json)");
-  checked_posts += new Backend.Mastodon.Post.from_json (
-    load_json (@"PostData/Mastodon/$(post_json)")
-  );
+  // Creates a Post object from the post json
+  check_object = load_json (@"PostData/$(module)/$(check_json)");
+  post_object  = load_json (@"PostData/$(module)/$(post_json)");
+  switch (module) {
+#if SUPPORT_MASTODON
+    case "Mastodon":
+      checked_post = new Backend.Mastodon.Post.from_json (post_object);
+      break;
 #endif
 #if SUPPORT_TWITTER
-  check_objects += load_json (@"PostData/Twitter/$(check_json)");
-  checked_posts += new Backend.Twitter.Post.from_json (
-    load_json (@"PostData/Twitter/$(post_json)")
-  );
+    case "Twitter":
+      checked_post = new Backend.Twitter.Post.from_json (post_object);
+      break;
 #endif
 #if SUPPORT_TWITTER_LEGACY
-  check_objects += load_json (@"PostData/TwitterLegacy/$(check_json)");
-  checked_posts += new Backend.TwitterLegacy.Post.from_json (
-    load_json (@"PostData/TwitterLegacy/$(post_json)")
-  );
+    case "TwitterLegacy":
+      checked_post = new Backend.TwitterLegacy.Post.from_json (post_object);
+      break;
 #endif
-
-  // Check parsed posts against check objects.
-  for (int i = 0; i < check_objects.length; i++) {
-    check_basic_fields (checked_posts[i], check_objects[i]);
-    check_text_parsing (checked_posts[i], check_objects[i]);
+    default:
+      error ("No valid Post could be created!");
   }
+
+  // Check parsed post against check objects.
+  check_basic_fields (checked_post, check_object);
+  check_text_parsing (checked_post, check_object);
 }
 
 /**
  * Tests parsing of Post content.
  */
 int main (string[] args) {
-  GLib.Test.init (ref args);
+  Test.init (ref args);
 
-  GLib.Test.add_func ("/PostParsing/BasicPost", () => {
-    run_post_test ("BasicPost.json", "BasicChecks.json");
+#if SUPPORT_MASTODON
+  Test.add_func ("/PostParsing/BasicPost/Mastodon", () => {
+    run_post_test ("Mastodon", "BasicPost.json", "BasicChecks.json");
   });
-  GLib.Test.add_func ("/PostParsing/EntitiesPost", () => {
-    run_post_test ("EntitiesPost.json", "EntitiesChecks.json");
+  Test.add_func ("/PostParsing/EntitiesPost/Mastodon", () => {
+    run_post_test ("Mastodon", "EntitiesPost.json", "EntitiesChecks.json");
   });
-  GLib.Test.add_func ("/PostParsing/HashtagsPost", () => {
-    run_post_test ("HashtagsPost.json", "HashtagsChecks.json");
+  Test.add_func ("/PostParsing/HashtagsPost/Mastodon", () => {
+    run_post_test ("Mastodon", "HashtagsPost.json", "HashtagsChecks.json");
   });
+#endif
+#if SUPPORT_TWITTER
+  Test.add_func ("/PostParsing/BasicPost/Twitter", () => {
+    run_post_test ("Twitter", "BasicPost.json", "BasicChecks.json");
+  });
+  Test.add_func ("/PostParsing/EntitiesPost/Twitter", () => {
+    run_post_test ("Twitter", "EntitiesPost.json", "EntitiesChecks.json");
+  });
+  Test.add_func ("/PostParsing/HashtagsPost/Twitter", () => {
+    run_post_test ("Twitter", "HashtagsPost.json", "HashtagsChecks.json");
+  });
+#endif
+#if SUPPORT_TWITTER_LEGACY
+  Test.add_func ("/PostParsing/BasicPost/TwitterLegacy", () => {
+    run_post_test ("TwitterLegacy", "BasicPost.json", "BasicChecks.json");
+  });
+  Test.add_func ("/PostParsing/EntitiesPost/TwitterLegacy", () => {
+    run_post_test ("TwitterLegacy", "EntitiesPost.json", "EntitiesChecks.json");
+  });
+  Test.add_func ("/PostParsing/HashtagsPost/TwitterLegacy", () => {
+    run_post_test ("TwitterLegacy", "HashtagsPost.json", "HashtagsChecks.json");
+  });
+#endif
 
-  return GLib.Test.run ();
+  return Test.run ();
 }
