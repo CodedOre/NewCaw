@@ -150,6 +150,8 @@ namespace Backend.Twitter.TextUtils {
       }
     }
 
+    Backend.TextUtils.mark_trailing_tags (final_modules);
+
     return final_modules;
   }
 

@@ -144,6 +144,8 @@ namespace Backend.Mastodon.TextUtils {
       final_modules         += text_module;
     }
 
+    Backend.TextUtils.mark_trailing_tags (final_modules);
+
     return final_modules;
   }
 

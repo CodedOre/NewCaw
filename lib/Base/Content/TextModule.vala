@@ -28,6 +28,7 @@ using GLib;
 public enum Backend.TextModuleType {
   TEXT,
   TAG,
+  TRAIL_TAG,
   MENTION,
   LINK
 }

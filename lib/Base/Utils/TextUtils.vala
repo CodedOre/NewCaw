@@ -52,7 +52,47 @@ namespace Backend.TextUtils {
     }
 
     // Returns the text to be used in the UI
-    return builder.str;
+    return builder.str.chomp ();
+  }
+
+  private void mark_trailing_tags (TextModule[] modules) {
+    bool   search_trail_tags = true;
+    bool   mark_trail_tags   = false;
+    size_t module_index      = modules.length - 1;
+
+    while (search_trail_tags) {
+      TextModule mod = modules [module_index];
+      switch (mod.type) {
+        case TAG:
+          mark_trail_tags = true;
+          break;
+        case TEXT:
+          for (int i = 0; i < mod.display.length; i++) {
+            if (! mod.display [i].isspace ()) {
+              search_trail_tags = false;
+              break;
+            }
+          }
+          break;
+        default:
+          search_trail_tags = false;
+          break;
+      }
+      if (module_index == 0) {
+        search_trail_tags = false;
+      }
+      module_index--;
+    }
+
+    while (mark_trail_tags) {
+      module_index++;
+      if (module_index == modules.length) {
+        break;
+      }
+      if (modules [module_index].type == TAG) {
+        modules [module_index].type == TRAIL_TAG;
+      }
+    }
   }
 
 }
