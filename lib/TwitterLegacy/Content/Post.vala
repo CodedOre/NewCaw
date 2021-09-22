@@ -38,7 +38,11 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
   /**
    * The message of this post.
    */
-  public string text { get; }
+  public string text {
+    owned get {
+      return Backend.TextUtils.format_text (text_modules);
+    }
+  }
 
   /**
    * The source application who created this Post.
@@ -110,7 +114,6 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
     }
 
     text_modules = TextUtils.parse_text (raw_text, entities);
-    _text = Backend.TextUtils.format_text (text_modules);
   }
 
 #if DEBUG

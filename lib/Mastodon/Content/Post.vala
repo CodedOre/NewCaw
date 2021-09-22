@@ -38,7 +38,11 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
   /**
    * The message of this post.
    */
-  public string text { get; }
+  public string text {
+    owned get {
+      return Backend.TextUtils.format_text (text_modules);
+    }
+  }
 
   /**
    * The source application who created this Post.
@@ -82,7 +86,6 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
 
     // Parse the text into modules
     text_modules = TextUtils.parse_text (json.get_string_member ("content"));
-    _text = Backend.TextUtils.format_text (text_modules);
   }
 
 #if DEBUG

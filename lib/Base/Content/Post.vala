@@ -38,7 +38,7 @@ public interface Backend.Post : Object {
   /**
    * The message of this post.
    */
-  public abstract string text { get; }
+  public abstract string text { owned get; }
 
   /**
    * The source application who created this Post.
