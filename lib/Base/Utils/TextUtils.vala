@@ -51,7 +51,8 @@ namespace Backend.TextUtils {
           if (get_format_flag (HIDE_TRAILING_TAGS)) {
             break;
           }
-          continue;
+          builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"hashtag\">$(module.display)</a>");
+          break;
         case TAG:
           builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"hashtag\">$(module.display)</a>");
           break;
@@ -137,7 +138,7 @@ namespace Backend.TextUtils {
     if (setting) {
       format_flags = format_flags | flag;
     } else {
-      format_flags = format_flags & flag;
+      format_flags = format_flags & ~flag;
     }
   }
 
