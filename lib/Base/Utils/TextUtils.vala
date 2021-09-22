@@ -24,6 +24,17 @@
 namespace Backend.TextUtils {
 
   /**
+   * Various settings for text formatting.
+   */
+  [Flags]
+  public enum FormatFlag {
+    /**
+     * Hide hashtags after the text.
+     */
+    HIDE_TRAILING_TAGS
+  }
+
+  /**
    * Formats a text from a set of TextModules.
    *
    * @param text_modules An array of all modules of the text.
@@ -36,6 +47,11 @@ namespace Backend.TextUtils {
     // Iterates through all TextModules
     foreach (TextModule module in text_modules) {
       switch (module.type) {
+        case TRAIL_TAG:
+          if (get_format_flag (HIDE_TRAILING_TAGS)) {
+            break;
+          }
+          continue;
         case TAG:
           builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"hashtag\">$(module.display)</a>");
           break;
@@ -55,6 +71,11 @@ namespace Backend.TextUtils {
     return builder.str.chomp ();
   }
 
+  /**
+   * Set trailing tags to the right type, allowing them to be hidden with format_text.
+   *
+   * @param text_modules An array of all modules of the text.
+   */
   private void mark_trailing_tags (TextModule[] modules) {
     bool   search_trail_tags = true;
     bool   mark_trail_tags   = false;
@@ -94,5 +115,35 @@ namespace Backend.TextUtils {
       }
     }
   }
+
+  /**
+   * Checks if a certain flag for text formatting is set.
+   *
+   * @param flag The flag to be checked.
+   *
+   * @return A boolean if the flag is set.
+   */
+  public bool get_format_flag (FormatFlag flag) {
+    return flag in format_flags;
+  }
+
+  /**
+   * Sets a flag for text formatting to a certain value.
+   *
+   * @param flag The flag to be set.
+   * @param setting If the flag should be enabled or not.
+   */
+  public void set_format_flag (FormatFlag flag, bool setting) {
+    if (setting) {
+      format_flags = format_flags | flag;
+    } else {
+      format_flags = format_flags & flag;
+    }
+  }
+
+  /**
+   * Settings for the formatting of text.
+   */
+  private FormatFlag format_flags = 0;
 
 }
