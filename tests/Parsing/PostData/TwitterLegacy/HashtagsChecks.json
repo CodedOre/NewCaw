@@ -25,7 +25,7 @@
       "text_end":   82
     },
     {
-      "type":       1,
+      "type":       2,
       "display":    "#hashtag2",
       "target":     "#hashtag2",
       "text_start": 82,
@@ -39,7 +39,7 @@
       "text_end":   92
     },
     {
-      "type":       1,
+      "type":       2,
       "display":    "#hashtag3",
       "target":     "#hashtag3",
       "text_start": 92,
@@ -53,7 +53,7 @@
       "text_end":   102
     },
     {
-      "type":       1,
+      "type":       2,
       "display":    "#hashtag4",
       "target":     "#hashtag4",
       "text_start": 102,
