@@ -1,7 +1,10 @@
 {
   "id":              "1437660432987271168",
   "date":            "2021-09-14T06:12:12.000Z",
-  "text":            "So, what about a post with some entities with in?\n\nHow about a mention to <a href=\"@CodedOre\" title=\"@CodedOre\" class=\"mention\">@CodedOre</a>, an <a href=\"#hashtag\" title=\"#hashtag\" class=\"hashtag\">#hashtag</a> for <a href=\"#cawbird\" title=\"#cawbird\" class=\"hashtag\">#cawbird</a>, and how about a web link for last:\n\n<a href=\"https://ibboard.co.uk/cawbird/\" title=\"https://ibboard.co.uk/cawbird/\" class=\"weblink\">ibboard.co.uk/cawbird/</a>\n\nThis post contains a lot more than the last!",
+  "text": {
+    "no_flags": "So, what about a post with some entities with in?\n\nHow about a mention to <a href=\"@CodedOre\" title=\"@CodedOre\" class=\"mention\">@CodedOre</a>, an <a href=\"#hashtag\" title=\"#hashtag\" class=\"hashtag\">#hashtag</a> for <a href=\"#cawbird\" title=\"#cawbird\" class=\"hashtag\">#cawbird</a>, and how about a web link for last:\n\n<a href=\"https://ibboard.co.uk/cawbird/\" title=\"https://ibboard.co.uk/cawbird/\" class=\"weblink\">ibboard.co.uk/cawbird/</a>\n\nThis post contains a lot more than the last!",
+    "no_trail_tags": "So, what about a post with some entities with in?\n\nHow about a mention to <a href=\"@CodedOre\" title=\"@CodedOre\" class=\"mention\">@CodedOre</a>, an <a href=\"#hashtag\" title=\"#hashtag\" class=\"hashtag\">#hashtag</a> for <a href=\"#cawbird\" title=\"#cawbird\" class=\"hashtag\">#cawbird</a>, and how about a web link for last:\n\n<a href=\"https://ibboard.co.uk/cawbird/\" title=\"https://ibboard.co.uk/cawbird/\" class=\"weblink\">ibboard.co.uk/cawbird/</a>\n\nThis post contains a lot more than the last!"
+  },
   "text_modules": [
     {
       "type":       0,
