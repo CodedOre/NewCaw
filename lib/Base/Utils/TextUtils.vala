@@ -111,7 +111,7 @@ namespace Backend.TextUtils {
         break;
       }
       if (modules [module_index].type == TAG) {
-        modules [module_index].type == TRAIL_TAG;
+        modules [module_index].type = TRAIL_TAG;
       }
     }
   }
