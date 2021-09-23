@@ -18,6 +18,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+using GLib;
+
 /**
  * Provides utilities for parsing and formatting text.
  */

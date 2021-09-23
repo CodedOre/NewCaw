@@ -1,6 +1,6 @@
 project(
   'Cawbird',
-  ['c', 'vala'],
+  ['vala', 'c'],
   version:        '1.9.0',
   meson_version:  '>= 0.56.0',
 )
