@@ -1,10 +1,18 @@
 {
   "data": {
-    "id": "1437660432987271168",
-    "created_at": "2021-09-14T06:12:12.000Z",
-    "source": "Twitter Web App",
-    "text": "So, what about a post with some entities with in?\n\nHow about a mention to @CodedOre, an #hashtag for #cawbird, and how about a web link for last:\n\nhttps://t.co/pVhgJ8gEf4\n\nThis post contains a lot more than the last!",
     "entities": {
+      "hashtags": [
+        {
+          "start": 88,
+          "end": 96,
+          "tag": "hashtag"
+        },
+        {
+          "start": 101,
+          "end": 109,
+          "tag": "cawbird"
+        }
+      ],
       "urls": [
         {
           "start": 147,
@@ -37,25 +45,27 @@
           "username": "CodedOre",
           "id": "1289885321325404162"
         }
-      ],
-      "hashtags": [
-        {
-          "start": 88,
-          "end": 96,
-          "tag": "hashtag"
-        },
-        {
-          "start": 101,
-          "end": 109,
-          "tag": "cawbird"
-        }
       ]
     },
+    "created_at": "2021-09-14T06:12:12.000Z",
+    "id": "1437660432987271168",
+    "text": "So, what about a post with some entities with in?\n\nHow about a mention to @CodedOre, an #hashtag for #cawbird, and how about a web link for last:\n\nhttps://t.co/pVhgJ8gEf4\n\nThis post contains a lot more than the last!",
+    "source": "Twitter Web App",
+    "author_id": "1303637097803382786",
     "public_metrics": {
       "retweet_count": 0,
       "reply_count": 0,
       "like_count": 0,
       "quote_count": 0
     }
+  },
+  "includes": {
+    "users": [
+      {
+        "id": "1303637097803382786",
+        "name": "CawbirdTestAccount",
+        "username": "CawbirdA"
+      }
+    ]
   }
 }
