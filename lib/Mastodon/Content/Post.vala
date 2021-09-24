@@ -45,6 +45,11 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
   }
 
   /**
+   * The User who created this Post.
+   */
+  public Backend.User author { get; }
+
+  /**
    * The source application who created this Post.
    */
   public string source { get; }
@@ -86,6 +91,10 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
 
     // Parse the text into modules
     text_modules = TextUtils.parse_text (json.get_string_member ("content"));
+
+    // Get the creator of this Post
+    Json.Object user_obj = json.get_object_member ("account");
+    _author = new User.from_json (user_obj);
   }
 
 #if DEBUG

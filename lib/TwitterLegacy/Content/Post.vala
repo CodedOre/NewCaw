@@ -45,6 +45,11 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
   }
 
   /**
+   * The User who created this Post.
+   */
+  public Backend.User author { get; }
+
+  /**
    * The source application who created this Post.
    */
   public string source { get; }
@@ -114,6 +119,10 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
     }
 
     text_modules = TextUtils.parse_text (raw_text, entities);
+
+    // Creates the a User object for the author
+    Json.Object author_obj = json.get_object_member ("user");
+    _author = new User.from_json (author_obj);
   }
 
 #if DEBUG

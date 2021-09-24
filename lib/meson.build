@@ -10,6 +10,7 @@ libdepends = [
 libfiles = [
   'Base/Content/Post.vala',
   'Base/Content/TextModule.vala',
+  'Base/Content/User.vala',
   'Base/Utils/TextUtils.vala'
 ]
 
@@ -17,18 +18,21 @@ libfiles = [
 if get_option('support_mastodon')
   libfiles += [
     'Mastodon/Content/Post.vala',
+    'Mastodon/Content/User.vala',
     'Mastodon/Utils/TextUtils.vala'
   ]
 endif
 if get_option('support_twitter')
   libfiles += [
     'Twitter/Content/Post.vala',
+    'Twitter/Content/User.vala',
     'Twitter/Utils/TextUtils.vala'
   ]
 endif
 if get_option('support_twitter_legacy')
   libfiles += [
     'TwitterLegacy/Content/Post.vala',
+    'TwitterLegacy/Content/User.vala',
     'TwitterLegacy/Utils/TextUtils.vala'
   ]
 endif

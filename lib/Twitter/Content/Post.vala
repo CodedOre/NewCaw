@@ -45,6 +45,11 @@ public class Backend.Twitter.Post : Object, Backend.Post {
   }
 
   /**
+   * The User who created this Post.
+   */
+  public Backend.User author { get; }
+
+  /**
    * The source application who created this Post.
    */
   public string source { get; }
@@ -99,6 +104,40 @@ public class Backend.Twitter.Post : Object, Backend.Post {
     }
 
     text_modules = TextUtils.parse_text (raw_text, entities);
+
+    // Get the author id from this post
+    if (! data.has_member ("author_id")) {
+      warning ("Could not create author for this Post: Missing author_id!");
+      return;
+    }
+    string author_id = data.get_string_member ("author_id");
+
+    // Look for an user object with author id
+    Json.Object author_obj = null;
+
+    /* TODO: Check how includes are handled with an array of Posts.
+     *       We probably will hand the includes object to this function
+     *       as a separate function later on... */
+
+    if (json.has_member ("includes")) {
+      Json.Object includes = json.get_object_member ("includes");
+      if (includes.has_member ("users")) {
+        Json.Array users_array = includes.get_array_member ("users");
+        // Look in included users for author id
+        users_array.foreach_element ((array, index, element) => {
+          if (element.get_node_type () == OBJECT) {
+            Json.Object obj = element.get_object ();
+            if (obj.get_string_member("id") == author_id) {
+              author_obj = obj;
+            }
+          }
+        });
+      }
+    }
+    // Create user object from found json
+    if (author_obj != null) {
+      _author = new User.from_json (author_obj);
+    }
   }
 
 #if DEBUG

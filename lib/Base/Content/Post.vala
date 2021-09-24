@@ -41,6 +41,11 @@ public interface Backend.Post : Object {
   public abstract string text { owned get; }
 
   /**
+   * The User who created this Post.
+   */
+  public abstract Backend.User author { get; }
+
+  /**
    * The source application who created this Post.
    */
   public abstract string source { get; }
