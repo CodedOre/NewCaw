@@ -44,7 +44,7 @@ cawdepends += declare_dependency(
 
 # Sources of the client
 cawfiles = [
-  'src/main.vala'
+  'src/Cawbird.vala'
 ]
 
 cawfiles += gnome.compile_resources(

@@ -1,4 +1,4 @@
-/* main.vala
+/* Cawbird.vala
  *
  * Copyright 2021 Frederick Schenk
  *
@@ -18,12 +18,23 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+using GLib;
+
+public class Cawbird : Adw.Application {
+
+  public Cawbird () {
+#if DEBUG
+    Object (application_id: "uk.co.ibboard.Cawbird.Devel");
+    set_resource_base_path ("/uk/co/ibboard/Cawbird/");
+#else
+    Object (application_id: "uk.co.ibboard.Cawbird");
+#endif
+  }
+
+  protected override void activate () {}
+
+}
+
 int main (string[] args) {
-  var app = new Adw.Application ("uk.co.ibboard.Cawbird.Devel", ApplicationFlags.FLAGS_NONE);
-  app.set_resource_base_path ("/uk/co/ibboard/Cawbird/");
-
-  app.activate.connect (() => {
-  });
-
-  return app.run (args);
+  return new Cawbird ().run (args);
 }
