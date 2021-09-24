@@ -21,90 +21,6 @@
 using GLib;
 
 /**
- * Loads a file and parses an Json.Object from it.
- *
- * @param file A string to file to be loaded.
- *
- * @return A Json.Object parsed from the file.
- */
-Json.Object? load_json (string file) {
-  var parser = new Json.Parser();
-
-  try {
-    parser.load_from_file (file);
-  } catch (Error e) {
-    error (@"Unable to parse '$file': $(e.message)");
-  }
-
-  Json.Node root = parser.get_root ();
-  return root.get_object ();
-}
-
-/**
- * Test basic fields
- *
- * @param post The Post to be checked.
- * @param check A Json.Object containing fields to check against.
- */
-void check_basic_fields (Backend.Post post, Json.Object check) {
-  // Check id, date and source
-  assert_true (post.id   == check.get_string_member ("id"));
-  assert_true (post.date.equal (
-    new DateTime.from_iso8601 (
-      check.get_string_member ("date"),
-      new TimeZone.utc ()
-  )));
-  assert_true (post.source == check.get_string_member ("source"));
-
-  // Check public metrics
-  assert_true (post.liked_count    == check.get_int_member ("liked_count"));
-  assert_true (post.replied_count  == check.get_int_member ("replied_count"));
-  assert_true (post.reposted_count == check.get_int_member ("reposted_count"));
-}
-
-#if DEBUG
-/**
- * Test text_modules
- *
- * @param post The Post to be checked.
- * @param check A Json.Object containing fields to check against.
- */
-void check_text_parsing (Backend.Post post, Json.Object check) {
-  Json.Array modules = check.get_array_member ("text_modules");
-  Backend.TextModule[] post_modules = post.get_text_modules ();
-  assert_true (modules.get_length () == post_modules.length);
-
-  modules.foreach_element ((array, index, element) => {
-    Json.Object obj         = element.get_object ();
-    Backend.TextModule  mod = post_modules [index];
-    assert_true ((int) mod.type == obj.get_int_member        ("type"));
-    assert_true (mod.display    == obj.get_string_member     ("display"));
-    assert_true (mod.target     == obj.get_string_member     ("target"));
-    assert_true (mod.text_start == (uint) obj.get_int_member ("text_start"));
-    assert_true (mod.text_end   == (uint) obj.get_int_member ("text_end"));
-  });
-}
-#endif
-
-/**
- * Test text using different formatting settings.
- *
- * @param post The Post to be checked.
- * @param check A Json.Object containing fields to check against.
- */
-void check_text_formatting (Backend.Post post, Json.Object check) {
-  Json.Object text_obj = check.get_object_member ("text");
-
-  // Check without format flags
-  Backend.TextUtils.set_format_flag (HIDE_TRAILING_TAGS, false);
-  assert_true (post.text == text_obj.get_string_member ("no_flags"));
-
-  // Check with no trailing tags set
-  Backend.TextUtils.set_format_flag (HIDE_TRAILING_TAGS, true);
-  assert_true (post.text == text_obj.get_string_member ("no_trail_tags"));
-}
-
-/**
  * Tests creation of a specific post and runs test on it.
  */
 void run_post_test (string module, string post_json, string check_json) {
@@ -113,8 +29,8 @@ void run_post_test (string module, string post_json, string check_json) {
   Backend.Post checked_post;
 
   // Creates a Post object from the post json
-  check_object = load_json (@"PostData/$(module)/$(check_json)");
-  post_object  = load_json (@"PostData/$(module)/$(post_json)");
+  check_object = TestUtils.load_json (@"PostData/$(module)/$(check_json)");
+  post_object  = TestUtils.load_json (@"PostData/$(module)/$(post_json)");
   switch (module) {
 #if SUPPORT_MASTODON
     case "Mastodon":
@@ -136,11 +52,15 @@ void run_post_test (string module, string post_json, string check_json) {
   }
 
   // Check parsed post against check objects.
-  check_basic_fields (checked_post, check_object);
+  PostChecks.check_basic_fields (checked_post, check_object);
 #if DEBUG
-  check_text_parsing (checked_post, check_object);
+  PostChecks.check_text_parsing (checked_post, check_object);
 #endif
-  check_text_formatting (checked_post, check_object);
+  PostChecks.check_text_formatting (checked_post, check_object);
+
+  // Check post author against check object
+  Json.Object author_checks = check_object.get_object_member ("author");
+  UserChecks.check_basic_fields (checked_post.author, author_checks);
 }
 
 /**

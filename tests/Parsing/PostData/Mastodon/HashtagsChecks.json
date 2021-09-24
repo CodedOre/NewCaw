@@ -63,6 +63,11 @@
       "text_end":   116
     }
   ],
+  "author": {
+    "id":           "106866867257179166",
+    "display_name": "CawbirdTestAccount",
+    "username":     "cawbird_test_account"
+  },
   "source":          "Web",
   "liked_count":     0,
   "replied_count":   0,

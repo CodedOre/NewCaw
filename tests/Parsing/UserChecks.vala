@@ -1,4 +1,4 @@
-/* User.vala
+/* UserChecks.vala
  *
  * Copyright 2021 Frederick Schenk
  *
@@ -20,38 +20,15 @@
 
 using GLib;
 
-/**
- * Stores information about one user of a platform.
- */
-public class Backend.Mastodon.User : Object, Backend.User {
+namespace UserChecks {
 
   /**
-   * The identifier of the user in the API.
+   * Checks the basic information for this user.
    */
-  public string id { get; }
-
-  /**
-   * The "name" of the user.
-   */
-  public string display_name { get; }
-
-  /**
-   * The unique handle of this user.
-   */
-  public string username { get; }
-
-  /**
-   * Parses an given Json.Object and creates an User object.
-   *
-   * @param json A Json.Object retrieved from the API.
-   */
-  public User.from_json (Json.Object json) {
-    // Parse id of the User
-    _id = json.get_string_member ("id");
-
-    // Parse the names of this User
-    _display_name = json.get_string_member ("display_name");
-    _username     = json.get_string_member ("username");
+  void check_basic_fields (Backend.User user, Json.Object check) {
+    assert_true (user.id           == check.get_string_member ("id"));
+    assert_true (user.display_name == check.get_string_member ("display_name"));
+    assert_true (user.username     == check.get_string_member ("username"));
   }
 
 }

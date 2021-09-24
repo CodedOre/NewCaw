@@ -1,7 +1,15 @@
 libtests = {
   'Parsing': {
     'PostParsing': [
-      'Parsing/PostParsing.vala'
+      'TestUtils.vala',
+      'Parsing/PostChecks.vala',
+      'Parsing/PostParsing.vala',
+      'Parsing/UserChecks.vala'
+    ],
+    'UserParsing': [
+      'TestUtils.vala',
+      'Parsing/UserChecks.vala',
+      'Parsing/UserParsing.vala'
     ]
   }
 }

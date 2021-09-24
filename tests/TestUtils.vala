@@ -1,4 +1,4 @@
-/* User.vala
+/* TestUtils.vala
  *
  * Copyright 2021 Frederick Schenk
  *
@@ -20,38 +20,26 @@
 
 using GLib;
 
-/**
- * Stores information about one user of a platform.
- */
-public class Backend.Mastodon.User : Object, Backend.User {
+namespace TestUtils {
 
   /**
-   * The identifier of the user in the API.
-   */
-  public string id { get; }
-
-  /**
-   * The "name" of the user.
-   */
-  public string display_name { get; }
-
-  /**
-   * The unique handle of this user.
-   */
-  public string username { get; }
-
-  /**
-   * Parses an given Json.Object and creates an User object.
+   * Loads a file and parses an Json.Object from it.
    *
-   * @param json A Json.Object retrieved from the API.
+   * @param file A string to file to be loaded.
+   *
+   * @return A Json.Object parsed from the file.
    */
-  public User.from_json (Json.Object json) {
-    // Parse id of the User
-    _id = json.get_string_member ("id");
+  Json.Object? load_json (string file) {
+    var parser = new Json.Parser();
 
-    // Parse the names of this User
-    _display_name = json.get_string_member ("display_name");
-    _username     = json.get_string_member ("username");
+    try {
+      parser.load_from_file (file);
+    } catch (Error e) {
+      error (@"Unable to parse '$file': $(e.message)");
+    }
+
+    Json.Node root = parser.get_root ();
+    return root.get_object ();
   }
 
 }
