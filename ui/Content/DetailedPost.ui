@@ -64,6 +64,7 @@
     <child>
       <object class="GtkLabel" id="post_text_label">
         <property name="halign">start</property>
+        <property name="selectable">true</property>
         <property name="use-markup">true</property>
         <property name="wrap">True</property>
         <style>
