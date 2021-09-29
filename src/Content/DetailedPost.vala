@@ -30,6 +30,12 @@ public class DetailedPost : Gtk.Box {
   private unowned Gtk.Label author_display_label;
   [GtkChild]
   private unowned Gtk.Label author_name_label;
+  [GtkChild]
+  private unowned Adw.ButtonContent post_likes_display;
+  [GtkChild]
+  private unowned Adw.ButtonContent post_reposts_display;
+  [GtkChild]
+  private unowned Adw.ButtonContent post_replies_display;
 
   /**
    * Creates a new DetailedPost widget displaying a specific Post.
@@ -44,6 +50,11 @@ public class DetailedPost : Gtk.Box {
     post_text_label.label = displayed_post.text;
     string date_text = displayed_post.date.format ("%x, %X");
     post_info_label.label = @"$(date_text) using $(displayed_post.source)";
+
+    // Set up public metrics
+    post_likes_display.label   = displayed_post.liked_count.to_string ();
+    post_reposts_display.label = displayed_post.reposted_count.to_string ();
+    post_replies_display.label = displayed_post.replied_count.to_string ();
 
     // Set up author information
     author_display_label.label = displayed_post.author.display_name;
