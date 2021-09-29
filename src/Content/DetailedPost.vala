@@ -24,6 +24,12 @@ public class DetailedPost : Gtk.Box {
   // UI-Elements of DetailedPost
   [GtkChild]
   private unowned Gtk.Label post_text_label;
+  [GtkChild]
+  private unowned Gtk.Label post_info_label;
+  [GtkChild]
+  private unowned Gtk.Label author_display_label;
+  [GtkChild]
+  private unowned Gtk.Label author_name_label;
 
   /**
    * Creates a new DetailedPost widget displaying a specific Post.
@@ -36,6 +42,12 @@ public class DetailedPost : Gtk.Box {
 
     // Set up Post information
     post_text_label.label = displayed_post.text;
+    string date_text = displayed_post.date.format ("%x, %X");
+    post_info_label.label = @"$(date_text) using $(displayed_post.source)";
+
+    // Set up author information
+    author_display_label.label = displayed_post.author.display_name;
+    author_name_label.label    = "@" + displayed_post.author.username;
   }
 
   /**
