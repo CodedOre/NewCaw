@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/uk/co/ibboard/Cawbird">
+    <file>ui/Content/DetailedPost.ui</file>
   </gresource>
 </gresources>
