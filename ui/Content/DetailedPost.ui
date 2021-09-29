@@ -77,7 +77,6 @@
         <child>
           <object class="GtkBox">
             <property name="spacing">8</property>
-            <property name="homogeneous">true</property>
             <property name="sensitive">false</property>
             <child>
               <object class="GtkToggleButton">

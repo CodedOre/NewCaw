@@ -52,9 +52,9 @@ public class DetailedPost : Gtk.Box {
     post_info_label.label = @"$(date_text) using $(displayed_post.source)";
 
     // Set up public metrics
-    post_likes_display.label   = displayed_post.liked_count.to_string ();
-    post_reposts_display.label = displayed_post.reposted_count.to_string ();
-    post_replies_display.label = displayed_post.replied_count.to_string ();
+    post_likes_display.label   = displayed_post.liked_count.to_string ("%'d");
+    post_reposts_display.label = displayed_post.reposted_count.to_string ("%'d");
+    post_replies_display.label = displayed_post.replied_count.to_string ("%'d");
 
     // Set up author information
     author_display_label.label = displayed_post.author.display_name;
