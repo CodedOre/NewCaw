@@ -2,5 +2,6 @@
 <gresources>
   <gresource prefix="/uk/co/ibboard/Cawbird">
     <file>ui/Content/DetailedPost.ui</file>
+    <file alias="style.css">ui/style.css</file>
   </gresource>
 </gresources>
