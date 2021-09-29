@@ -86,6 +86,7 @@ public class Backend.Twitter.Post : Object, Backend.Post {
 
     // Get metrics
     Json.Object metrics = data.get_object_member ("public_metrics");
+    _liked_count        = metrics.get_int_member ("like_count");
     _replied_count      = metrics.get_int_member ("reply_count");
     _reposted_count     = (
       metrics.get_int_member ("retweet_count") +
