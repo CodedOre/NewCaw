@@ -105,5 +105,7 @@ int main (string[] args) {
   });
 #endif
 
+  // TODO: Add edge case with post which was quoted and reposted.
+
   return Test.run ();
 }

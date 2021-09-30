@@ -1,14 +1,16 @@
 {
   "data": {
+    "source": "Twitter Web App",
+    "text": "New post, new test!\nNow, let's test for a #hashtag, but also for some at the end: #hashtag2 #hashtag3 #hashtag4",
+    "created_at": "2021-09-20T08:09:46.000Z",
     "id": "1439864347640139776",
-    "author_id": "1303637097803382786",
     "public_metrics": {
       "retweet_count": 0,
       "reply_count": 0,
       "like_count": 0,
       "quote_count": 0
     },
-    "text": "New post, new test!\nNow, let's test for a #hashtag, but also for some at the end: #hashtag2 #hashtag3 #hashtag4",
+    "author_id": "1303637097803382786",
     "entities": {
       "hashtags": [
         {
@@ -32,9 +34,7 @@
           "tag": "hashtag4"
         }
       ]
-    },
-    "source": "Twitter Web App",
-    "created_at": "2021-09-20T08:09:46.000Z"
+    }
   },
   "includes": {
     "users": [
