@@ -8,56 +8,56 @@
   },
   "text_modules": [
     {
-      "type":       0,
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
       "display":    "New post, new test!\nNow, let&apos;s test for a ",
       "target":     null,
       "text_start": 0,
       "text_end":   47
     },
     {
-      "type":       1,
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TAG",
       "display":    "#hashtag",
       "target":     "#hashtag",
       "text_start": 47,
       "text_end":   55
     },
     {
-      "type":       0,
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
       "display":    ", but also for some at the end: ",
       "target":     null,
       "text_start": 55,
       "text_end":   87
     },
     {
-      "type":       2,
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TRAIL_TAG",
       "display":    "#hashtag2",
       "target":     "#hashtag2",
       "text_start": 87,
       "text_end":   96
     },
     {
-      "type":       0,
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
       "display":    " ",
       "target":     null,
       "text_start": 96,
       "text_end":   97
     },
     {
-      "type":       2,
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TRAIL_TAG",
       "display":    "#hashtag3",
       "target":     "#hashtag3",
       "text_start": 97,
       "text_end":   106
     },
     {
-      "type":       0,
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
       "display":    " ",
       "target":     null,
       "text_start": 106,
       "text_end":   107
     },
     {
-      "type":       2,
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TRAIL_TAG",
       "display":    "#hashtag4",
       "target":     "#hashtag4",
       "text_start": 107,

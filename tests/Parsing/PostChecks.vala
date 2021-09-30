@@ -60,11 +60,11 @@ namespace PostChecks {
     modules.foreach_element ((array, index, element) => {
       Json.Object obj         = element.get_object ();
       Backend.TextModule  mod = post_modules [index];
-      assert_true ((int) mod.type == obj.get_int_member        ("type"));
-      assert_true (mod.display    == obj.get_string_member     ("display"));
-      assert_true (mod.target     == obj.get_string_member     ("target"));
-      assert_true (mod.text_start == (uint) obj.get_int_member ("text_start"));
-      assert_true (mod.text_end   == (uint) obj.get_int_member ("text_end"));
+      assert_true (mod.type.to_string () == obj.get_string_member     ("type"));
+      assert_true (mod.display           == obj.get_string_member     ("display"));
+      assert_true (mod.target            == obj.get_string_member     ("target"));
+      assert_true (mod.text_start        == (uint) obj.get_int_member ("text_start"));
+      assert_true (mod.text_end          == (uint) obj.get_int_member ("text_end"));
     });
   }
   #endif

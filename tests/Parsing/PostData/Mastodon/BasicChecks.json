@@ -8,7 +8,7 @@
   },
   "text_modules": [
     {
-      "type":       0,
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
       "display":    "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text.",
       "target":     null,
       "text_start": 0,

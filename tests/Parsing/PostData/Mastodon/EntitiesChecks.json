@@ -8,63 +8,63 @@
   },
   "text_modules": [
     {
-      "type":       0,
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
       "display":    "So, what about a post with some entities with in?\n\nHow about a mention to ",
       "target":     null,
       "text_start": 0,
       "text_end":   74
     },
     {
-      "type":       3,
+      "type":       "BACKEND_TEXT_MODULE_TYPE_MENTION",
       "display":    "@CodedOre",
       "target":     "@CodedOre@mastodon.online",
       "text_start": 74,
       "text_end":   83
     },
     {
-      "type":       0,
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
       "display":    ", an ",
       "target":     null,
       "text_start": 83,
       "text_end":   88
     },
     {
-      "type":       1,
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TAG",
       "display":    "#hashtag",
       "target":     "#hashtag",
       "text_start": 88,
       "text_end":   96
     },
     {
-      "type":       0,
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
       "display":    " for ",
       "target":     null,
       "text_start": 96,
       "text_end":   101
     },
     {
-      "type":       1,
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TAG",
       "display":    "#cawbird",
       "target":     "#cawbird",
       "text_start": 101,
       "text_end":   109
     },
     {
-      "type":       0,
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
       "display":    ", and how about a web link for last:\n\n",
       "target":     null,
       "text_start": 109,
       "text_end":   147
     },
     {
-      "type":       4,
+      "type":       "BACKEND_TEXT_MODULE_TYPE_LINK",
       "display":    "ibboard.co.uk/cawbird/",
       "target":     "https://ibboard.co.uk/cawbird/",
       "text_start": 147,
       "text_end":   169
     },
     {
-      "type":       0,
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
       "display":    "\n\nThis post contains a lot more than the last!",
       "target":     null,
       "text_start": 169,
