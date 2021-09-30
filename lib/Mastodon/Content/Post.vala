@@ -31,6 +31,11 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
   public string id { get; }
 
   /**
+   * The type of this post.
+   */
+  public PostType post_type { get; default = NORMAL; }
+
+  /**
    * The time this post was posted.
    */
   public DateTime date { get; }
@@ -111,6 +116,7 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
     if (! json.get_null_member ("reblog")) {
       Json.Object original_post = json.get_object_member ("reblog");
       _referenced_post = new Post.from_json (original_post);
+      _post_type       = REPOST;
     }
   }
 

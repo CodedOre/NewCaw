@@ -31,6 +31,11 @@ public interface Backend.Post : Object {
   public abstract string id { get; }
 
   /**
+   * The type of this post.
+   */
+  public abstract PostType post_type { get; }
+
+  /**
    * The time this post was posted.
    */
   public abstract DateTime date { get; }

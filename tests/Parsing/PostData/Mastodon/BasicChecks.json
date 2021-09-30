@@ -1,6 +1,7 @@
 {
-  "id":              "106883926076492274",
-  "date":            "2021-09-06T09:08:02.188Z",
+  "id":         "106883926076492274",
+  "post_type":  "BACKEND_POST_TYPE_NORMAL",
+  "date":       "2021-09-06T09:08:02.188Z",
   "text": {
     "no_flags": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text.",
     "no_trail_tags": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text."

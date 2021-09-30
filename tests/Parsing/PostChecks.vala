@@ -30,7 +30,8 @@ namespace PostChecks {
    */
   void check_basic_fields (Backend.Post post, Json.Object check) {
     // Check id, date and source
-    assert_true (post.id   == check.get_string_member ("id"));
+    assert_true (post.id == check.get_string_member ("id"));
+    assert_true (post.post_type.to_string () == check.get_string_member ("post_type"));
     assert_true (post.date.equal (
       new DateTime.from_iso8601 (
         check.get_string_member ("date"),

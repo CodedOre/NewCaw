@@ -9,6 +9,7 @@ libdepends = [
 # Base files
 libfiles = [
   'Base/Content/Post.vala',
+  'Base/Content/PostEnums.vala',
   'Base/Content/TextModule.vala',
   'Base/Content/User.vala',
   'Base/Utils/TextUtils.vala'

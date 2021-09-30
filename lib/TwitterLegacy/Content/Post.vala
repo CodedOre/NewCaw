@@ -31,6 +31,11 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
   public string id { get; }
 
   /**
+   * The type of this post.
+   */
+  public PostType post_type { get; }
+
+  /**
    * The time this post was posted.
    */
   public DateTime date { get; }
@@ -133,6 +138,7 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
     if (json.has_member ("retweeted_status")) {
       Json.Object original_post = json.get_object_member ("retweeted_status");
       _referenced_post = new Post.from_json (original_post);
+      _post_type       = REPOST;
     }
   }
 

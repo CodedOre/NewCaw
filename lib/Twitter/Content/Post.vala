@@ -31,6 +31,11 @@ public class Backend.Twitter.Post : Object, Backend.Post {
   public string id { get; }
 
   /**
+   * The type of this post.
+   */
+  public PostType post_type { get; }
+
+  /**
    * The time this post was posted.
    */
   public DateTime date { get; }
@@ -174,6 +179,7 @@ public class Backend.Twitter.Post : Object, Backend.Post {
     // Create a referenced post from found json
     if (reference_obj != null) {
       _referenced_post = new Post.from_json (reference_obj, includes);
+      _post_type       = REPOST;
     }
   }
 
