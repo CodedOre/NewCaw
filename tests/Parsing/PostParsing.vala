@@ -39,7 +39,9 @@ void run_post_test (string module, string post_json, string check_json) {
 #endif
 #if SUPPORT_TWITTER
     case "Twitter":
-      checked_post = new Backend.Twitter.Post.from_json (post_object);
+      Json.Object post_data = post_object.get_object_member ("data");
+      Json.Object includes  = post_object.get_object_member ("includes");
+      checked_post = new Backend.Twitter.Post.from_json (post_data, includes);
       break;
 #endif
 #if SUPPORT_TWITTER_LEGACY

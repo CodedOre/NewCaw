@@ -43,17 +43,10 @@ public class Backend.Twitter.User : Object, Backend.User {
   /**
    * Parses an given Json.Object and creates an User object.
    *
-   * @param json A Json.Object retrieved from the API.
+   * @param data The Json.Object containing the specific Post.
+   * @param includes A Json.Object including additional objects which may be related to this Post.
    */
-  public User.from_json (Json.Object json) {
-    // Check for a data object
-    Json.Object data;
-    if (json.has_member ("data")) {
-      data = json.get_object_member ("data");
-    } else {
-      data = json;
-    }
-
+  public User.from_json (Json.Object data, Json.Object? includes = null) {
     // Get id of this User
     _id = data.get_string_member ("id");
 

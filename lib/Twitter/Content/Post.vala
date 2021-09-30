@@ -72,10 +72,10 @@ public class Backend.Twitter.Post : Object, Backend.Post {
   /**
    * Parses an given Json.Object and creates an Post object.
    *
-   * @param json A Json.Object retrieved from the API.
+   * @param data The Json.Object containing the specific Post.
+   * @param includes A Json.Object including additional objects which may be related to this Post.
    */
-  public Post.from_json (Json.Object json) {
-    Json.Object data = json.get_object_member ("data");
+  public Post.from_json (Json.Object data, Json.Object? includes = null) {
     // Get basic data
     _id   = data.get_string_member ("id");
     _date = new DateTime.from_iso8601 (
@@ -116,12 +116,8 @@ public class Backend.Twitter.Post : Object, Backend.Post {
     // Look for an user object with author id
     Json.Object author_obj = null;
 
-    /* TODO: Check how includes are handled with an array of Posts.
-     *       We probably will hand the includes object to this function
-     *       as a separate function later on... */
-
-    if (json.has_member ("includes")) {
-      Json.Object includes = json.get_object_member ("includes");
+    // Check the includes for relevant information
+    if (includes != null) {
       if (includes.has_member ("users")) {
         Json.Array users_array = includes.get_array_member ("users");
         // Look in included users for author id
