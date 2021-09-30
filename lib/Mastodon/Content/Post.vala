@@ -55,6 +55,11 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
   public string source { get; }
 
   /**
+   * If an post is an repost or quote, this stores the post reposted or quoted.
+   */
+  public Backend.Post? referenced_post { get; }
+
+  /**
    * How often the post was liked.
    */
   public int64 liked_count { get; }
@@ -81,8 +86,14 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
       json.get_string_member ("created_at"),
       new TimeZone.utc ()
     );
-    Json.Object application = json.get_object_member ("application");
-    _source = application.get_string_member ("name");
+
+    // Get the application name if available
+    if (! json.get_null_member ("application")) {
+      Json.Object application = json.get_object_member ("application");
+      _source = application.get_string_member ("name");
+    } else {
+      _source = "Undefined";
+    }
 
     // Get metrics
     _liked_count    = json.get_int_member ("favourites_count");
@@ -95,6 +106,12 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
     // Get the creator of this Post
     Json.Object user_obj = json.get_object_member ("account");
     _author = new User.from_json (user_obj);
+
+    // If this is a boost, create a referenced post
+    if (! json.get_null_member ("reblog")) {
+      Json.Object original_post = json.get_object_member ("reblog");
+      _referenced_post = new Post.from_json (original_post);
+    }
   }
 
 #if DEBUG

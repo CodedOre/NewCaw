@@ -63,6 +63,23 @@ void run_post_test (string module, string post_json, string check_json) {
   // Check post author against check object
   Json.Object author_checks = check_object.get_object_member ("author");
   UserChecks.check_basic_fields (checked_post.author, author_checks);
+
+  // Check referenced post if checked_post is repost or quote
+  if (check_object.has_member ("referenced_post")) {
+    Backend.Post ref_post  = checked_post.referenced_post;
+    Json.Object  ref_check = check_object.get_object_member ("referenced_post");
+
+    // Check parsed post against check objects.
+    PostChecks.check_basic_fields (ref_post, ref_check);
+#if DEBUG
+    PostChecks.check_text_parsing (ref_post, ref_check);
+#endif
+    PostChecks.check_text_formatting (ref_post, ref_check);
+
+    // Check post author against check object
+    Json.Object ref_author_checks = ref_check.get_object_member ("author");
+    UserChecks.check_basic_fields (ref_post.author, ref_author_checks);
+  }
 }
 
 /**
@@ -80,6 +97,9 @@ int main (string[] args) {
   });
   Test.add_func ("/PostParsing/HashtagsPost/Mastodon", () => {
     run_post_test ("Mastodon", "HashtagsPost.json", "HashtagsChecks.json");
+  });
+  Test.add_func ("/PostParsing/RepostPost/Mastodon", () => {
+    run_post_test ("Mastodon", "RepostPost.json", "RepostChecks.json");
   });
 #endif
 #if SUPPORT_TWITTER

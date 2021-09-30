@@ -1,0 +1,66 @@
+{
+  "id":    "107020119650688309",
+  "date":  "2021-09-30T10:23:51.196Z",
+  "text": {
+    "no_flags": "RT <a href=\"@cawbird_test_account@mastodon.social\" title=\"@cawbird_test_account@mastodon.social\" class=\"mention\">@cawbird_test_account</a> Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text.",
+    "no_trail_tags": "RT <a href=\"@cawbird_test_account@mastodon.social\" title=\"@cawbird_test_account@mastodon.social\" class=\"mention\">@cawbird_test_account</a> Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text."
+  },
+  "text_modules": [
+    {
+      "type":       0,
+      "display":    "RT ",
+      "target":     null,
+      "text_start": 0,
+      "text_end":   3
+    },
+    {
+      "type":       3,
+      "display":    "@cawbird_test_account",
+      "target":     "@cawbird_test_account@mastodon.social",
+      "text_start": 3,
+      "text_end":   24
+    },
+    {
+      "type":       0,
+      "display":    " Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text.",
+      "target":     null,
+      "text_start": 24,
+      "text_end":   181
+    }
+  ],
+  "author": {
+    "id":           "106866867257179166",
+    "display_name": "CawbirdTestAccount",
+    "username":     "cawbird_test_account"
+  },
+  "source": "Undefined",
+  "referenced_post": {
+    "id":    "106883926076492274",
+    "date":  "2021-09-06T09:08:02.188Z",
+    "text": {
+      "no_flags": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text.",
+      "no_trail_tags": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text."
+    },
+    "text_modules": [
+      {
+        "type":       0,
+        "display":    "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text.",
+        "target":     null,
+        "text_start": 0,
+        "text_end":   156
+      }
+    ],
+    "author": {
+      "id":           "106866867257179166",
+      "display_name": "CawbirdTestAccount",
+      "username":     "cawbird_test_account"
+    },
+    "source":         "Web",
+    "liked_count":     0,
+    "replied_count":   0,
+    "reposted_count":  1
+  },
+  "liked_count":     0,
+  "replied_count":   0,
+  "reposted_count":  0
+}

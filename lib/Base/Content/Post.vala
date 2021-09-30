@@ -51,6 +51,11 @@ public interface Backend.Post : Object {
   public abstract string source { get; }
 
   /**
+   * If an post is an repost or quote, this stores the post reposted or quoted.
+   */
+  public abstract Post? referenced_post { get; }
+
+  /**
    * How often the post was liked.
    */
   public abstract int64 liked_count { get; }
