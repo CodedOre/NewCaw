@@ -23,6 +23,14 @@ public class DetailedPost : Gtk.Box {
 
   // UI-Elements of DetailedPost
   [GtkChild]
+  private unowned Gtk.Box repost_status_box;
+  [GtkChild]
+  private unowned Gtk.Label repost_display_label;
+  [GtkChild]
+  private unowned Gtk.Label repost_name_label;
+  [GtkChild]
+  private unowned Gtk.Label repost_time_label;
+  [GtkChild]
   private unowned Gtk.Label post_text_label;
   [GtkChild]
   private unowned Gtk.Label post_info_label;
@@ -43,22 +51,36 @@ public class DetailedPost : Gtk.Box {
    * @param post The Post which is to be displayed in this widget.
    */
   public DetailedPost (Backend.Post post) {
-    // Set up displayed post
     displayed_post = post;
 
+    // Determine which post to show in main view
+    bool         show_repost = false;
+    Backend.Post main_post   = displayed_post;
+    if (post.post_type == REPOST) {
+      show_repost = true;
+      main_post   = post.referenced_post;
+    }
+
     // Set up Post information
-    post_text_label.label = displayed_post.text;
-    string date_text = displayed_post.date.format ("%x, %X");
-    post_info_label.label = @"$(date_text) using $(displayed_post.source)";
+    post_text_label.label = main_post.text;
+    string date_text      = main_post.date.format ("%x, %X");
+    post_info_label.label = @"$(date_text) using $(main_post.source)";
 
     // Set up public metrics
-    post_likes_display.label   = displayed_post.liked_count.to_string ("%'d");
-    post_reposts_display.label = displayed_post.reposted_count.to_string ("%'d");
-    post_replies_display.label = displayed_post.replied_count.to_string ("%'d");
+    post_likes_display.label   = main_post.liked_count.to_string ("%'d");
+    post_reposts_display.label = main_post.reposted_count.to_string ("%'d");
+    post_replies_display.label = main_post.replied_count.to_string ("%'d");
 
     // Set up author information
-    author_display_label.label = displayed_post.author.display_name;
-    author_name_label.label    = "@" + displayed_post.author.username;
+    author_display_label.label = main_post.author.display_name;
+    author_name_label.label    = "@" + main_post.author.username;
+
+    // If repost, display reposting user
+    if (show_repost) {
+      repost_display_label.label = displayed_post.author.display_name;
+      repost_name_label.label    = displayed_post.author.username;
+      repost_status_box.visible  = true;
+    }
   }
 
   /**
