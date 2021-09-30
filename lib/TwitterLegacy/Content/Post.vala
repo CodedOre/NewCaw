@@ -55,6 +55,11 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
   public string source { get; }
 
   /**
+   * If an post is an repost or quote, this stores the post reposted or quoted.
+   */
+  public Backend.Post? referenced_post { get; }
+
+  /**
    * How often the post was liked.
    */
   public int64 liked_count { get; }
@@ -123,6 +128,12 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
     // Creates the a User object for the author
     Json.Object author_obj = json.get_object_member ("user");
     _author = new User.from_json (author_obj);
+
+    // If this is a retweet, create a referenced post
+    if (json.has_member ("retweeted_status")) {
+      Json.Object original_post = json.get_object_member ("retweeted_status");
+      _referenced_post = new Post.from_json (original_post);
+    }
   }
 
 #if DEBUG

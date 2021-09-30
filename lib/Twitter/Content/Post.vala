@@ -55,6 +55,11 @@ public class Backend.Twitter.Post : Object, Backend.Post {
   public string source { get; }
 
   /**
+   * If an post is an repost or quote, this stores the post reposted or quoted.
+   */
+  public Backend.Post? referenced_post { get; }
+
+  /**
    * How often the post was liked.
    */
   public int64 liked_count { get; }
@@ -113,11 +118,27 @@ public class Backend.Twitter.Post : Object, Backend.Post {
     }
     string author_id = data.get_string_member ("author_id");
 
-    // Look for an user object with author id
-    Json.Object author_obj = null;
+    // Check if Post was a repost
+    string referenced_id = "";
+    if (data.has_member ("referenced_tweets")) {
+      // Get all referenced posts
+      Json.Array references = data.get_array_member ("referenced_tweets");
 
-    // Check the includes for relevant information
+      // Get the id of the reference
+      references.foreach_element ((array, index, element) => {
+        if (element.get_node_type () == OBJECT) {
+          Json.Object obj = element.get_object ();
+          referenced_id   = obj.get_string_member ("id");
+        }
+      });
+    }
+
+    // Look for specific objects in the includes
+    Json.Object author_obj    = null;
+    Json.Object reference_obj = null;
+
     if (includes != null) {
+      // Check for users in the includes
       if (includes.has_member ("users")) {
         Json.Array users_array = includes.get_array_member ("users");
         // Look in included users for author id
@@ -130,10 +151,29 @@ public class Backend.Twitter.Post : Object, Backend.Post {
           }
         });
       }
+      // Check for referenced posts
+      if (includes.has_member ("tweets")) {
+        Json.Array tweets_array = includes.get_array_member ("tweets");
+        // Look in included posts for referenced id
+        tweets_array.foreach_element ((array, index, element) => {
+          if (element.get_node_type () == OBJECT) {
+            Json.Object obj = element.get_object ();
+            if (obj.get_string_member("id") == referenced_id) {
+              reference_obj = obj;
+            }
+          }
+        });
+      }
     }
+
     // Create user object from found json
     if (author_obj != null) {
       _author = new User.from_json (author_obj);
+    }
+
+    // Create a referenced post from found json
+    if (reference_obj != null) {
+      _referenced_post = new Post.from_json (reference_obj, includes);
     }
   }
 
