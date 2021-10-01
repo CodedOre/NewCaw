@@ -55,6 +55,16 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
   public Backend.User author { get; }
 
   /**
+   * The website where this post originates from.
+   */
+  public string domain { get; }
+
+  /**
+   * The url to visit this post on the original website.
+   */
+  public string url { get; }
+
+  /**
    * The source application who created this Post.
    */
   public string source { get; }
@@ -117,6 +127,25 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
       Json.Object original_post = json.get_object_member ("reblog");
       _referenced_post = new Post.from_json (original_post);
       _post_type       = REPOST;
+    }
+
+    // Get url to html site if available
+    if (! json.get_null_member ("url")) {
+      _url = json.get_string_member ("url");
+    } else {
+      _url = json.get_string_member ("uri");
+    }
+    // Get domain from the url
+    try {
+      var domain_regex = new Regex ("https?://(.*?)/.*");
+      _domain = domain_regex.replace (
+        url,
+        url.length,
+        0,
+        "\\1"
+      );
+    } catch (RegexError e) {
+      error (@"Error while parsing domain: $(e.message)");
     }
   }
 

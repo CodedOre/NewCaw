@@ -43,7 +43,7 @@ namespace Backend.TextUtils {
    *
    * @return A string showing the relative time passed since datetime.
    */
-  public string get_relative_time (DateTime datetime, bool long_format = false) {
+  public string display_time_delta (DateTime datetime, bool long_format = false) {
     // Get Timespan from datetime to now
     var      nowtime  = new DateTime.now ();
     TimeSpan gonetime = nowtime.difference (datetime);

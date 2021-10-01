@@ -34,6 +34,8 @@
     "display_name": "CawbirdTestAccount",
     "username":     "CawbirdA"
   },
+  "domain":  "Twitter.com",
+  "url":     "https://Twitter.com/CawbirdA/status/1443521950287020034",
   "source":  "Twitter Web App",
   "referenced_post": {
     "id":       "1434805586529505284",
@@ -57,6 +59,8 @@
       "display_name": "CawbirdTestAccount",
       "username":     "CawbirdA"
     },
+    "domain":          "Twitter.com",
+    "url":             "https://Twitter.com/CawbirdA/status/1434805586529505284",
     "source":          "Twitter Web App",
     "liked_count":     0,
     "replied_count":   0,

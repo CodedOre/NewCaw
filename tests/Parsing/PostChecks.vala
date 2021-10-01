@@ -37,6 +37,8 @@ namespace PostChecks {
         check.get_string_member ("date"),
         new TimeZone.utc ()
     )));
+    assert_true (post.url    == check.get_string_member ("url"));
+    assert_true (post.domain == check.get_string_member ("domain"));
     assert_true (post.source == check.get_string_member ("source"));
 
     // Check public metrics

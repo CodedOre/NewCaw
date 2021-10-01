@@ -55,6 +55,20 @@ public class Backend.Twitter.Post : Object, Backend.Post {
   public Backend.User author { get; }
 
   /**
+   * The website where this post originates from.
+   */
+  public string domain {
+    get {
+      return "Twitter.com";
+    }
+  }
+
+  /**
+   * The url to visit this post on the original website.
+   */
+  public string url { get; }
+
+  /**
    * The source application who created this Post.
    */
   public string source { get; }
@@ -181,6 +195,9 @@ public class Backend.Twitter.Post : Object, Backend.Post {
       _referenced_post = new Post.from_json (reference_obj, includes);
       _post_type       = REPOST;
     }
+
+    // Create url from author username und post id
+    _url = @"https://$(domain)/$(author.username)/status/$(id)";
   }
 
 #if DEBUG

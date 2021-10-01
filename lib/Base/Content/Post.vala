@@ -56,6 +56,19 @@ public interface Backend.Post : Object {
   public abstract string source { get; }
 
   /**
+   * The website where this post originates from.
+   *
+   * Mostly important for the Mastodon backend, where a post
+   * can come from multiple site thanks to the federation.
+   */
+  public abstract string domain { get; }
+
+  /**
+   * The url to visit this post on the original website.
+   */
+  public abstract string url { get; }
+
+  /**
    * If an post is an repost or quote, this stores the post reposted or quoted.
    */
   public abstract Post? referenced_post { get; }

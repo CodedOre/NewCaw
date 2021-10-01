@@ -79,7 +79,7 @@ public class DetailedPost : Gtk.Box {
     if (show_repost) {
       repost_display_label.label = displayed_post.author.display_name;
       repost_name_label.label    = displayed_post.author.username;
-      repost_time_label.label    = Backend.TextUtils.get_relative_time (displayed_post.date);
+      repost_time_label.label    = Backend.TextUtils.display_time_delta (displayed_post.date);
       repost_status_box.visible  = true;
     }
   }

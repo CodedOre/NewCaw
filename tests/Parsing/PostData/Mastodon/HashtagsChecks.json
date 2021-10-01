@@ -69,6 +69,8 @@
     "display_name": "CawbirdTestAccount",
     "username":     "cawbird_test_account"
   },
+  "domain":          "mastodon.social",
+  "url":             "https://mastodon.social/@cawbird_test_account/106962969208581539",
   "source":          "Web",
   "liked_count":     0,
   "replied_count":   0,
