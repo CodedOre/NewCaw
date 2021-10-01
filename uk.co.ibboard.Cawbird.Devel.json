@@ -7,9 +7,21 @@
   "finish-args":
   [
     "--share=ipc",
+    "--share=network",
     "--socket=wayland",
-    "--socket=x11",
-    "--talk-name=org.a11y.Bus"
+    "--socket=fallback-x11",
+    "--device=dri"
+  ],
+  "cleanup" : [
+    "/include",
+    "/lib/pkgconfig",
+    "/man",
+    "/share/doc",
+    "/share/gtk-doc",
+    "/share/man",
+    "/share/pkgconfig",
+    "*.la",
+    "*.a"
   ],
   "modules":
   [
