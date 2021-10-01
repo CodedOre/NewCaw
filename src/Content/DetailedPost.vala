@@ -44,6 +44,8 @@ public class DetailedPost : Gtk.Box {
   private unowned Adw.ButtonContent post_reposts_display;
   [GtkChild]
   private unowned Adw.ButtonContent post_replies_display;
+  [GtkChild]
+  private unowned Gtk.MenuButton post_options_button;
 
   /**
    * Creates a new DetailedPost widget displaying a specific Post.
@@ -74,6 +76,18 @@ public class DetailedPost : Gtk.Box {
     // Set up author information
     author_display_label.label = main_post.author.display_name;
     author_name_label.label    = "@" + main_post.author.username;
+
+    // Set up options menu
+    var    post_options_menu = new Menu ();
+    string open_link_label   = @"Open on $(main_post.domain)";
+    string open_link_action  = @"post.open_on_domain::$(main_post.url)";
+    post_options_menu.append (open_link_label, open_link_action);
+    post_options_button.menu_model = post_options_menu;
+
+    // Set up widget actions
+    this.install_action ("post.open_on_domain", "s", (widget, action, arg) => {
+      Gtk.show_uri (null, arg.get_string (), Gdk.CURRENT_TIME);
+    });
 
     // If repost, display reposting user
     if (show_repost) {
