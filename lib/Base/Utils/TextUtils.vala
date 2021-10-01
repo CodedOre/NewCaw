@@ -37,6 +37,48 @@ namespace Backend.TextUtils {
   }
 
   /**
+   * Create a string representing the timespan from a certain date.
+   *
+   * @param datetime A GLib.DateTime which is used as reference point.
+   *
+   * @return A string showing the relative time passed since datetime.
+   */
+  public string get_relative_time (DateTime datetime, bool long_format = false) {
+    // Get Timespan from datetime to now
+    var      nowtime  = new DateTime.now ();
+    TimeSpan gonetime = nowtime.difference (datetime);
+
+    // Display time diff for minutes
+    int minutes = (int)(gonetime / 1000.0 / 1000.0 / 60.0);
+    if (minutes == 0) {
+      return "Now";
+    } else if (minutes < 60) {
+      if (long_format) {
+        return @"$(minutes) minutes ago";
+      } else {
+        return @"$(minutes)m";
+      }
+    }
+
+    // Display time diff for hours
+    int hours = (int)(minutes / 60.0);
+    if (hours < 24) {
+      if (long_format) {
+        return @"$(hours) hours ago";
+      } else {
+        return @"$(hours)h";
+      }
+    }
+
+    // Display time diff for longer periods
+    if (datetime.get_year () == nowtime.get_year ()) {
+      return datetime.format ("%e %B");
+    } else {
+      return datetime.format ("%e %B %Y");
+    }
+  }
+
+  /**
    * Formats a text from a set of TextModules.
    *
    * @param text_modules An array of all modules of the text.
