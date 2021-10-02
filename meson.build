@@ -9,6 +9,9 @@ project(
 i18n  = import('i18n')
 gnome = import('gnome')
 
+# Set up translation domain
+add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name()), language:'c')
+
 # Set build configuration
 if get_option('buildtype') == 'debug' or get_option('buildtype') == 'debugoptimized'
   add_project_arguments('-D', 'DEBUG', language: 'vala')
@@ -24,9 +27,6 @@ endif
 if get_option('support_twitter_legacy')
   add_project_arguments('-D', 'SUPPORT_TWITTER_LEGACY', language: 'vala')
 endif
-
-# Set up translation domain
-add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name()), language:'c')
 
 # Build and test the backend from subdirectories
 subdir('lib')
@@ -50,7 +50,8 @@ cawdepends += declare_dependency(
 cawfiles = [
   'src/config.vapi',
   'src/Cawbird.vala',
-  'src/Content/DetailedPost.vala'
+  'src/Content/DetailedPost.vala',
+  'src/Utils/DisplayUtils.vala'
 ]
 
 # Compile program resources
