@@ -20,7 +20,7 @@ msgstr ""
 #: src/Content/DetailedPost.vala:69
 #, c-format
 msgid "%s using %s"
-msgstr "%s via %s"
+msgstr "%s über %s"
 
 #. Set up options menu
 #: src/Content/DetailedPost.vala:82
