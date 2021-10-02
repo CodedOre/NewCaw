@@ -137,7 +137,7 @@ public class Backend.Twitter.Post : Object, Backend.Post {
     }
     string author_id = data.get_string_member ("author_id");
 
-    // Check if Post was a repost
+    // Check if Post is a quote or repost
     string referenced_id = "";
     if (data.has_member ("referenced_tweets")) {
       // Get all referenced posts
@@ -148,6 +148,17 @@ public class Backend.Twitter.Post : Object, Backend.Post {
         if (element.get_node_type () == OBJECT) {
           Json.Object obj = element.get_object ();
           referenced_id   = obj.get_string_member ("id");
+          string obj_type = obj.get_string_member ("type");
+          switch (obj_type) {
+            case "quoted":
+              _post_type = QUOTE;
+              break;
+            case "retweeted":
+              _post_type = REPOST;
+              break;
+            default:
+              error ("Could not create referenced_post for this Post: Unknown object type!");
+          }
         }
       });
     }
@@ -193,7 +204,6 @@ public class Backend.Twitter.Post : Object, Backend.Post {
     // Create a referenced post from found json
     if (reference_obj != null) {
       _referenced_post = new Post.from_json (reference_obj, includes);
-      _post_type       = REPOST;
     }
 
     // Create url from author username und post id

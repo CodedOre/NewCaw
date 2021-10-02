@@ -148,8 +148,12 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
     Json.Object author_obj = json.get_object_member ("user");
     _author = new User.from_json (author_obj);
 
-    // If this is a retweet, create a referenced post
-    if (json.has_member ("retweeted_status")) {
+    // If this is a quote or repost, create a referenced post
+    if (json.has_member ("quoted_status")) {
+      Json.Object original_post = json.get_object_member ("quoted_status");
+      _referenced_post = new Post.from_json (original_post);
+      _post_type       = QUOTE;
+    } else if (json.has_member ("retweeted_status")) {
       Json.Object original_post = json.get_object_member ("retweeted_status");
       _referenced_post = new Post.from_json (original_post);
       _post_type       = REPOST;

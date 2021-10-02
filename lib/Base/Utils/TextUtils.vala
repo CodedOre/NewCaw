@@ -53,6 +53,7 @@ namespace Backend.TextUtils {
           if (get_format_flag (HIDE_TRAILING_TAGS)) {
             break;
           }
+          // FIXME: valac complains that it needs the break after, but maybe we could avoid this copied line...
           builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"hashtag\">$(module.display)</a>");
           break;
         case TAG:

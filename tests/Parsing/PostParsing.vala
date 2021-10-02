@@ -115,6 +115,9 @@ int main (string[] args) {
   Test.add_func ("/PostParsing/RepostPost/Twitter", () => {
     run_post_test ("Twitter", "RepostPost.json", "RepostChecks.json");
   });
+  Test.add_func ("/PostParsing/QuotePost/Twitter", () => {
+    run_post_test ("Twitter", "QuotePost.json", "QuoteChecks.json");
+  });
 #endif
 #if SUPPORT_TWITTER_LEGACY
   Test.add_func ("/PostParsing/BasicPost/TwitterLegacy", () => {
@@ -128,6 +131,9 @@ int main (string[] args) {
   });
   Test.add_func ("/PostParsing/RepostPost/TwitterLegacy", () => {
     run_post_test ("TwitterLegacy", "RepostPost.json", "RepostChecks.json");
+  });
+  Test.add_func ("/PostParsing/QuotePost/TwitterLegacy", () => {
+    run_post_test ("TwitterLegacy", "QuotePost.json", "QuoteChecks.json");
   });
 #endif
 
