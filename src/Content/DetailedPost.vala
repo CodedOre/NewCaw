@@ -66,7 +66,7 @@ public class DetailedPost : Gtk.Box {
     // Set up Post information
     post_text_label.label = main_post.text;
     string date_text      = main_post.date.format ("%x, %X");
-    post_info_label.label = @"$(date_text) using $(main_post.source)";
+    post_info_label.label = _("%s using %s").printf (date_text, main_post.source);
 
     // Set up public metrics
     post_likes_display.label   = main_post.liked_count.to_string ("%'d");
@@ -79,7 +79,7 @@ public class DetailedPost : Gtk.Box {
 
     // Set up options menu
     var    post_options_menu = new Menu ();
-    string open_link_label   = @"Open on $(main_post.domain)";
+    string open_link_label   = _("Open on %s").printf (main_post.domain);
     string open_link_action  = @"post.open_on_domain::$(main_post.url)";
     post_options_menu.append (open_link_label, open_link_action);
     post_options_button.menu_model = post_options_menu;

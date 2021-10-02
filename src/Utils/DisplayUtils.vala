@@ -41,9 +41,9 @@ namespace DisplayUtils {
       return "Now";
     } else if (minutes < 60) {
       if (long_format) {
-        return @"$(minutes) minutes ago";
+        return ngettext("%i minute ago", "%i minutes ago", minutes).printf (minutes);
       } else {
-        return @"$(minutes)m";
+        return _("%im").printf (minutes);
       }
     }
 
@@ -51,17 +51,19 @@ namespace DisplayUtils {
     int hours = (int)(minutes / 60.0);
     if (hours < 24) {
       if (long_format) {
-        return @"$(hours) hours ago";
+        return ngettext("%i hour ago", "%i hours ago", minutes).printf (minutes);
       } else {
-        return @"$(hours)h";
+        return _("%ih").printf (minutes);
       }
     }
 
     // Display time diff for longer periods
     if (datetime.get_year () == nowtime.get_year ()) {
-      return datetime.format ("%e %B");
+      // TRANSLATORS: Full-text date format for tweets from this years - see https://valadoc.org/glib-2.0/GLib.DateTime.format.html
+      return datetime.format (_("%e %B"));
     } else {
-      return datetime.format ("%e %B %Y");
+      // TRANSLATORS: Full-text date format for tweets from previous years - see https://valadoc.org/glib-2.0/GLib.DateTime.format.html
+      return datetime.format (_("%e %B %Y"));
     }
   }
 
