@@ -6,7 +6,6 @@ project(
 )
 
 # Load meson modules
-i18n  = import('i18n')
 gnome = import('gnome')
 
 # Set up translation domain
@@ -80,4 +79,4 @@ executable(
 )
 
 # Add the translations
-subdir('po')
+subproject('po')
