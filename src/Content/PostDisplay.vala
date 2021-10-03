@@ -21,7 +21,7 @@
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/PostDisplay.ui")]
 public class PostDisplay : Gtk.Box {
 
-  // UI-Elements of PostDisplay
+  // UI-Elements for the repost
   [GtkChild]
   private unowned Gtk.Box repost_status_box;
   [GtkChild]
@@ -30,14 +30,22 @@ public class PostDisplay : Gtk.Box {
   private unowned Gtk.Label repost_name_label;
   [GtkChild]
   private unowned Gtk.Label repost_time_label;
-  [GtkChild]
-  private unowned Gtk.Label post_text_label;
-  [GtkChild]
-  private unowned Gtk.Label post_info_label;
+
+  // UI-Elements for the post information
   [GtkChild]
   private unowned Gtk.Label author_display_label;
   [GtkChild]
   private unowned Gtk.Label author_name_label;
+  [GtkChild]
+  private unowned Gtk.Label post_info_label;
+  [GtkChild]
+  private unowned Gtk.Label post_time_label;
+
+  // UI-Elements for the text
+  [GtkChild]
+  private unowned Gtk.Label post_text_label;
+
+  // UI-Elements for the action box
   [GtkChild]
   private unowned Adw.ButtonContent post_likes_display;
   [GtkChild]
@@ -83,6 +91,10 @@ public class PostDisplay : Gtk.Box {
     string open_link_action  = @"post.open_on_domain::$(main_post.url)";
     post_options_menu.append (open_link_label, open_link_action);
     post_options_button.menu_model = post_options_menu;
+
+    // Set up short time label
+    string post_time_text = DisplayUtils.display_time_delta (displayed_post.date);
+    post_time_label.label = @"<a href=\"$(main_post.url)\" title=\"$(open_link_label)\" class=\"weblink\">$(post_time_text)</a>";
 
     // Set up widget actions
     this.install_action ("post.open_on_domain", "s", (widget, action, arg) => {

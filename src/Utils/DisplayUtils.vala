@@ -60,10 +60,18 @@ namespace DisplayUtils {
     // Display time diff for longer periods
     if (datetime.get_year () == nowtime.get_year ()) {
       // TRANSLATORS: Full-text date format for tweets from this years - see https://valadoc.org/glib-2.0/GLib.DateTime.format.html
-      return datetime.format (_("%e %B"));
+      if (long_format) {
+        return datetime.format (_("%e %B"));
+      } else {
+        return datetime.format (_("%e %b"));
+      }
     } else {
       // TRANSLATORS: Full-text date format for tweets from previous years - see https://valadoc.org/glib-2.0/GLib.DateTime.format.html
-      return datetime.format (_("%e %B %Y"));
+      if (long_format) {
+        return datetime.format (_("%e %B %Y"));
+      } else {
+        return datetime.format (_("%e %b %y"));
+      }
     }
   }
 

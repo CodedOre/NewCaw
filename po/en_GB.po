@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cawbird 1.9.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ibboard/cawbird/issues/new\n"
-"POT-Creation-Date: 2021-10-02 14:03+0200\n"
+"POT-Creation-Date: 2021-10-03 12:41+0200\n"
 "PO-Revision-Date: 2021-10-02 14:02+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,13 +17,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/Content/DetailedPost.vala:69
+#: src/Content/PostDisplay.vala:71
 #, c-format
 msgid "%s using %s"
 msgstr "%s using %s"
 
 #. Set up options menu
-#: src/Content/DetailedPost.vala:82
+#: src/Content/PostDisplay.vala:85
 #, c-format
 msgid "Open on %s"
 msgstr "Open on %s"
@@ -54,11 +54,21 @@ msgstr "%ih"
 
 #. Display time diff for longer periods
 #. TRANSLATORS: Full-text date format for tweets from this years - see https://valadoc.org/glib-2.0/GLib.DateTime.format.html
-#: src/Utils/DisplayUtils.vala:63
+#: src/Utils/DisplayUtils.vala:64
 msgid "%e %B"
 msgstr "%e %B"
 
-#. TRANSLATORS: Full-text date format for tweets from previous years - see https://valadoc.org/glib-2.0/GLib.DateTime.format.html
 #: src/Utils/DisplayUtils.vala:66
+#, fuzzy
+msgid "%e %b"
+msgstr "%e %B"
+
+#. TRANSLATORS: Full-text date format for tweets from previous years - see https://valadoc.org/glib-2.0/GLib.DateTime.format.html
+#: src/Utils/DisplayUtils.vala:71
 msgid "%e %B %Y"
+msgstr "%e %B %Y"
+
+#: src/Utils/DisplayUtils.vala:73
+#, fuzzy
+msgid "%e %b %y"
 msgstr "%e %B %Y"
