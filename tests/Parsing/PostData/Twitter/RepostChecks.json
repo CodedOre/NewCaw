@@ -3,8 +3,7 @@
   "post_type":  "BACKEND_POST_TYPE_REPOST",
   "date":       "2021-09-30T10:23:46.000Z",
   "text": {
-    "no_flags": "RT <a href=\"@CawbirdA\" title=\"@CawbirdA\" class=\"mention\">@CawbirdA</a>: Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don't e\u2026",
-    "no_trail_tags": "RT <a href=\"@CawbirdA\" title=\"@CawbirdA\" class=\"mention\">@CawbirdA</a>: Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don't e\u2026"
+    "no_flags": "RT <a href=\"@CawbirdA\" title=\"@CawbirdA\" class=\"mention\">@CawbirdA</a>: Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don't e\u2026"
   },
   "text_modules": [
     {
@@ -42,8 +41,7 @@
     "post_type":  "BACKEND_POST_TYPE_NORMAL",
     "date":       "2021-09-06T09:08:03.000Z",
     "text": {
-      "no_flags": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don't expect an interesting text.",
-      "no_trail_tags": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don't expect an interesting text."
+      "no_flags": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don't expect an interesting text."
     },
     "text_modules": [
       {

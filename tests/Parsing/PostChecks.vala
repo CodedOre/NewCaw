@@ -82,11 +82,22 @@ namespace PostChecks {
 
     // Check without format flags
     Backend.TextUtils.set_format_flag (HIDE_TRAILING_TAGS, false);
+    Backend.TextUtils.set_format_flag (SHOW_QUOTE_LINKS,   false);
     assert_true (post.text == text_obj.get_string_member ("no_flags"));
 
     // Check with no trailing tags set
-    Backend.TextUtils.set_format_flag (HIDE_TRAILING_TAGS, true);
-    assert_true (post.text == text_obj.get_string_member ("no_trail_tags"));
+    if (text_obj.has_member ("no_trail_tags")) {
+      Backend.TextUtils.set_format_flag (HIDE_TRAILING_TAGS, true);
+      Backend.TextUtils.set_format_flag (SHOW_QUOTE_LINKS,   false);
+      assert_true (post.text == text_obj.get_string_member ("no_trail_tags"));
+    }
+
+    if (text_obj.has_member ("shown_quote_links")) {
+      // Check with displayed quote links
+      Backend.TextUtils.set_format_flag (HIDE_TRAILING_TAGS, false);
+      Backend.TextUtils.set_format_flag (SHOW_QUOTE_LINKS,   true);
+      assert_true (post.text == text_obj.get_string_member ("shown_quote_links"));
+    }
   }
 
 }
