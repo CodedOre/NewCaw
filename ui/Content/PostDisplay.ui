@@ -137,6 +137,15 @@
       </object>
     </child>
     <child>
+      <object class="GtkListBox" id="quote_container">
+        <property name="visible">false</property>
+        <property name="selection-mode">none</property>
+        <style>
+          <class name="content"/>
+        </style>
+      </object>
+    </child>
+    <child>
       <object class="GtkBox" id="post_metrics_box">
         <property name="visible">false</property>
         <property name="margin-top">4</property>

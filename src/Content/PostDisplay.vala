@@ -18,6 +18,12 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+public enum PostDisplayType {
+  LIST,
+  MAIN,
+  QUOTE
+}
+
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/PostDisplay.ui")]
 public class PostDisplay : Gtk.Box {
 
@@ -33,6 +39,8 @@ public class PostDisplay : Gtk.Box {
 
   // UI-Elements for the post information
   [GtkChild]
+  private unowned Adw.Avatar author_avatar;
+  [GtkChild]
   private unowned Gtk.Label author_display_label;
   [GtkChild]
   private unowned Gtk.Label author_name_label;
@@ -44,6 +52,10 @@ public class PostDisplay : Gtk.Box {
   // UI-Elements for the text
   [GtkChild]
   private unowned Gtk.Label post_text_label;
+
+  // UI-Elements for the quote display
+  [GtkChild]
+  private unowned Gtk.ListBox quote_container;
 
   // UI-Elements for the post metrics
   [GtkChild]
@@ -72,7 +84,7 @@ public class PostDisplay : Gtk.Box {
    *
    * @param post The Post which is to be displayed in this widget.
    */
-  public PostDisplay (Backend.Post post, bool main_display = false) {
+  public PostDisplay (Backend.Post post, PostDisplayType display_type = LIST) {
     // Store the post to display
     displayed_post = post;
 
@@ -97,7 +109,7 @@ public class PostDisplay : Gtk.Box {
     string open_link_label = _("Open on %s").printf (main_post.domain);
 
     // Set up the post information area
-    if (main_display) {
+    if (display_type == MAIN) {
       // Set up author side-by-side when main display
       author_display_label.label = main_post.author.display_name;
       author_name_label.label    = "@" + main_post.author.username;
@@ -117,10 +129,25 @@ public class PostDisplay : Gtk.Box {
 
     // Display post message in main label
     post_text_label.label      = main_post.text;
-    post_text_label.selectable = main_display;
+    post_text_label.selectable = true ? display_type == MAIN : false;
+
+    // Display referenced_post if quote
+    if (main_post.post_type == QUOTE) {
+      var quote_post = new PostDisplay (main_post.referenced_post, QUOTE);
+      quote_container.append (quote_post);
+      quote_container.visible = true;
+    }
+
+    // Make the UI smaller in a quote display
+    if (display_type == QUOTE) {
+      post_text_label.set_css_classes ({ "caption" });
+      post_time_label.set_css_classes ({ "caption" });
+      author_display_label.set_css_classes ({ "caption-heading" });
+      author_avatar.size = 32;
+    }
 
     // Set up either metrics or action box
-    if (main_display) {
+    if (display_type == MAIN) {
       // Set up action box
       post_actions_box.visible = true;
 
