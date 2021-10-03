@@ -62,7 +62,7 @@ namespace Backend.TextUtils {
         case MENTION:
           builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"mention\">$(module.display)</a>");
           break;
-        case LINK:
+        case WEBLINK:
           builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"weblink\">$(module.display)</a>");
           break;
         default:

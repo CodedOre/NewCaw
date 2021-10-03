@@ -15,7 +15,7 @@
       "text_end":   76
     },
     {
-      "type":       "BACKEND_TEXT_MODULE_TYPE_LINK",
+      "type":       "BACKEND_TEXT_MODULE_TYPE_WEBLINK",
       "display":    "twitter.com/CawbirdA/statu\u2026",
       "target":     "https://twitter.com/CawbirdA/status/1437660432987271168",
       "text_start": 76,
@@ -89,7 +89,7 @@
         "text_end":   147
       },
       {
-        "type":       "BACKEND_TEXT_MODULE_TYPE_LINK",
+        "type":       "BACKEND_TEXT_MODULE_TYPE_WEBLINK",
         "display":    "ibboard.co.uk/cawbird/",
         "target":     "https://ibboard.co.uk/cawbird/",
         "text_start": 147,

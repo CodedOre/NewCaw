@@ -30,7 +30,7 @@ public enum Backend.TextModuleType {
   TAG,
   TRAIL_TAG,
   MENTION,
-  LINK
+  WEBLINK
 }
 
 /**

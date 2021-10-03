@@ -122,7 +122,7 @@ namespace Backend.Mastodon.TextUtils {
         try {
           var regex              = new Regex ("<link name=\"(.*?)\" link=\"(.*?)\"/>");
           var text_module        = TextModule ();
-          text_module.type       = LINK;
+          text_module.type       = WEBLINK;
           text_module.display    = regex.replace (module, module.length, 0, "\\1");
           text_module.target     = regex.replace (module, module.length, 0, "\\2");
           text_module.text_start = text_index;

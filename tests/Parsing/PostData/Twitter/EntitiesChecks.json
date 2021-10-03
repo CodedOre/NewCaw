@@ -57,7 +57,7 @@
       "text_end":   147
     },
     {
-      "type":       "BACKEND_TEXT_MODULE_TYPE_LINK",
+      "type":       "BACKEND_TEXT_MODULE_TYPE_WEBLINK",
       "display":    "ibboard.co.uk/cawbird/",
       "target":     "https://ibboard.co.uk/cawbird/",
       "text_start": 147,

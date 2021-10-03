@@ -80,7 +80,7 @@ namespace Backend.Twitter.TextUtils {
           if (element.get_node_type () == OBJECT) {
             Json.Object obj    = element.get_object ();
             var entity         = TextModule ();
-            entity.type        = LINK;
+            entity.type        = WEBLINK;
             entity.display     = obj.get_string_member ("display_url");
             entity.target      = obj.get_string_member ("expanded_url");
             entity.text_start  = (uint) obj.get_int_member ("start");
