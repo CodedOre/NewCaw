@@ -1,4 +1,4 @@
-/* DetailedPost.vala
+/* PostDisplay.vala
  *
  * Copyright 2021 Frederick Schenk
  *
@@ -18,10 +18,10 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/DetailedPost.ui")]
-public class DetailedPost : Gtk.Box {
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/PostDisplay.ui")]
+public class PostDisplay : Gtk.Box {
 
-  // UI-Elements of DetailedPost
+  // UI-Elements of PostDisplay
   [GtkChild]
   private unowned Gtk.Box repost_status_box;
   [GtkChild]
@@ -48,11 +48,11 @@ public class DetailedPost : Gtk.Box {
   private unowned Gtk.MenuButton post_options_button;
 
   /**
-   * Creates a new DetailedPost widget displaying a specific Post.
+   * Creates a new PostDisplay widget displaying a specific Post.
    *
    * @param post The Post which is to be displayed in this widget.
    */
-  public DetailedPost (Backend.Post post) {
+  public PostDisplay (Backend.Post post) {
     displayed_post = post;
 
     // Determine which post to show in main view

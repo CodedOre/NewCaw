@@ -1,2 +1,2 @@
-src/Content/DetailedPost.vala
+src/Content/PostDisplay.vala
 src/Utils/DisplayUtils.vala

@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
-  <template class="DetailedPost" parent="GtkBox">
+  <template class="PostDisplay" parent="GtkBox">
     <property name="orientation">vertical</property>
     <property name="margin-start">12</property>
     <property name="margin-end">12</property>

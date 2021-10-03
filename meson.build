@@ -50,7 +50,7 @@ cawdepends += declare_dependency(
 cawfiles = [
   'src/config.vapi',
   'src/Cawbird.vala',
-  'src/Content/DetailedPost.vala',
+  'src/Content/PostDisplay.vala',
   'src/Utils/DisplayUtils.vala'
 ]
 
