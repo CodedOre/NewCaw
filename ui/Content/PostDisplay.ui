@@ -129,7 +129,6 @@
         <property name="margin-start">4</property>
         <property name="margin-end">4</property>
         <property name="xalign">0.0</property>
-        <property name="selectable">true</property>
         <property name="use-markup">true</property>
         <property name="wrap">True</property>
         <style>
@@ -138,15 +137,76 @@
       </object>
     </child>
     <child>
-      <object class="GtkBox">
+      <object class="GtkBox" id="post_metrics_box">
+        <property name="visible">false</property>
+        <property name="margin-top">4</property>
+        <property name="margin-bottom">4</property>
+        <property name="margin-start">4</property>
+        <property name="margin-end">4</property>
+        <property name="spacing">12</property>
+        <child>
+          <object class="GtkBox">
+            <property name="spacing">6</property>
+            <child>
+              <object class="GtkImage" id="post_likes_display_image">
+                <property name="icon-name">not-liked-symbolic</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="post_likes_display_label">
+                <style>
+                  <class name="heading"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="spacing">6</property>
+            <child>
+              <object class="GtkImage" id="post_reposts_display_image">
+                <property name="icon-name">repost-symbolic</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="post_reposts_display_label">
+                <style>
+                  <class name="heading"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="spacing">6</property>
+            <child>
+              <object class="GtkImage" id="post_replies_display_image">
+                <property name="icon-name">reply-symbolic</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="post_replies_display_label">
+                <style>
+                  <class name="heading"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="post_actions_box">
+        <property name="visible">false</property>
         <child>
           <object class="GtkBox">
             <property name="spacing">8</property>
-            <property name="sensitive">false</property>
             <child>
-              <object class="GtkToggleButton">
+              <object class="GtkButton" id="post_like_button">
                 <child>
-                  <object class="AdwButtonContent" id="post_likes_display">
+                  <object class="AdwButtonContent" id="post_like_button_display">
                     <property name="icon-name">not-liked-symbolic</property>
                   </object>
                 </child>
@@ -156,9 +216,9 @@
               </object>
             </child>
             <child>
-              <object class="GtkToggleButton">
+              <object class="GtkButton" id="post_repost_button">
                 <child>
-                  <object class="AdwButtonContent" id="post_reposts_display">
+                  <object class="AdwButtonContent" id="post_repost_button_display">
                     <property name="icon-name">repost-symbolic</property>
                   </object>
                 </child>
@@ -168,9 +228,9 @@
               </object>
             </child>
             <child>
-              <object class="GtkToggleButton">
+              <object class="GtkButton" id="post_reply_button">
                 <child>
-                  <object class="AdwButtonContent" id="post_replies_display">
+                  <object class="AdwButtonContent" id="post_reply_button_display">
                     <property name="icon-name">reply-symbolic</property>
                   </object>
                 </child>

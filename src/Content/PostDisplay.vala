@@ -21,7 +21,7 @@
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/PostDisplay.ui")]
 public class PostDisplay : Gtk.Box {
 
-  // UI-Elements for the repost
+  // UI-Elements for the repost display
   [GtkChild]
   private unowned Gtk.Box repost_status_box;
   [GtkChild]
@@ -45,13 +45,25 @@ public class PostDisplay : Gtk.Box {
   [GtkChild]
   private unowned Gtk.Label post_text_label;
 
+  // UI-Elements for the post metrics
+  [GtkChild]
+  private unowned Gtk.Box post_metrics_box;
+  [GtkChild]
+  private unowned Gtk.Label post_likes_display_label;
+  [GtkChild]
+  private unowned Gtk.Label post_reposts_display_label;
+  [GtkChild]
+  private unowned Gtk.Label post_replies_display_label;
+
   // UI-Elements for the action box
   [GtkChild]
-  private unowned Adw.ButtonContent post_likes_display;
+  private unowned Gtk.Box post_actions_box;
   [GtkChild]
-  private unowned Adw.ButtonContent post_reposts_display;
+  private unowned Adw.ButtonContent post_like_button_display;
   [GtkChild]
-  private unowned Adw.ButtonContent post_replies_display;
+  private unowned Adw.ButtonContent post_repost_button_display;
+  [GtkChild]
+  private unowned Adw.ButtonContent post_reply_button_display;
   [GtkChild]
   private unowned Gtk.MenuButton post_options_button;
 
@@ -60,59 +72,92 @@ public class PostDisplay : Gtk.Box {
    *
    * @param post The Post which is to be displayed in this widget.
    */
-  public PostDisplay (Backend.Post post) {
+  public PostDisplay (Backend.Post post, bool main_display = false) {
+    // Store the post to display
     displayed_post = post;
 
     // Determine which post to show in main view
-    bool         show_repost = false;
-    Backend.Post main_post   = displayed_post;
+    bool show_repost = false;
     if (post.post_type == REPOST) {
       show_repost = true;
       main_post   = post.referenced_post;
+    } else {
+      main_post = displayed_post;
     }
 
-    // Set up Post information
-    post_text_label.label = main_post.text;
-    string date_text      = main_post.date.format ("%x, %X");
-    post_info_label.label = _("%s using %s").printf (date_text, main_post.source);
-
-    // Set up public metrics
-    post_likes_display.label   = main_post.liked_count.to_string ("%'d");
-    post_reposts_display.label = main_post.reposted_count.to_string ("%'d");
-    post_replies_display.label = main_post.replied_count.to_string ("%'d");
-
-    // Set up author information
-    author_display_label.label = main_post.author.display_name;
-    author_name_label.label    = "@" + main_post.author.username;
-
-    // Set up options menu
-    var    post_options_menu = new Menu ();
-    string open_link_label   = _("Open on %s").printf (main_post.domain);
-    string open_link_action  = @"post.open_on_domain::$(main_post.url)";
-    post_options_menu.append (open_link_label, open_link_action);
-    post_options_button.menu_model = post_options_menu;
-
-    // Set up short time label
-    string post_time_text = DisplayUtils.display_time_delta (displayed_post.date);
-    post_time_label.label = @"<a href=\"$(main_post.url)\" title=\"$(open_link_label)\" class=\"weblink\">$(post_time_text)</a>";
-
-    // Set up widget actions
-    this.install_action ("post.open_on_domain", "s", (widget, action, arg) => {
-      Gtk.show_uri (null, arg.get_string (), Gdk.CURRENT_TIME);
-    });
-
-    // If repost, display reposting user
+    // Set up the repost display
     if (show_repost) {
       repost_display_label.label = displayed_post.author.display_name;
       repost_name_label.label    = displayed_post.author.username;
       repost_time_label.label    = DisplayUtils.display_time_delta (displayed_post.date);
       repost_status_box.visible  = true;
     }
+
+    // Hint for the user where the post can be opened in the browser
+    string open_link_label = _("Open on %s").printf (main_post.domain);
+
+    // Set up the post information area
+    if (main_display) {
+      // Set up author side-by-side when main display
+      author_display_label.label = main_post.author.display_name;
+      author_name_label.label    = "@" + main_post.author.username;
+
+      // Add date and source to info label
+      string date_text      = main_post.date.format ("%x, %X");
+      post_info_label.label = _("%s using %s").printf (date_text, main_post.source);
+    } else {
+      // Set up author top-and-bottom when list display
+      author_display_label.label = main_post.author.display_name;
+      post_info_label.label      = "@" + main_post.author.username;
+
+      // Add relative date and link to page in corner
+      string post_time_text = DisplayUtils.display_time_delta (displayed_post.date);
+      post_time_label.label = @"<a href=\"$(main_post.url)\" title=\"$(open_link_label)\" class=\"weblink\">$(post_time_text)</a>";
+    }
+
+    // Display post message in main label
+    post_text_label.label      = main_post.text;
+    post_text_label.selectable = main_display;
+
+    // Set up either metrics or action box
+    if (main_display) {
+      // Set up action box
+      post_actions_box.visible = true;
+
+      // Set up metrics in buttons
+      post_like_button_display.label   = main_post.liked_count.to_string ("%'d");
+      post_repost_button_display.label = main_post.reposted_count.to_string ("%'d");
+      post_reply_button_display.label  = main_post.replied_count.to_string ("%'d");
+
+      // Set up options menu
+      var    post_options_menu = new Menu ();
+      string open_link_action  = @"post.open_on_domain::$(main_post.url)";
+      post_options_menu.append (open_link_label, open_link_action);
+      post_options_button.menu_model = post_options_menu;
+    } else {
+      // Set up metrics box
+      post_metrics_box.visible = true;
+
+      // Set up metrics labels
+      post_likes_display_label.label   = main_post.liked_count.to_string ("%'d");
+      post_reposts_display_label.label = main_post.reposted_count.to_string ("%'d");
+      post_replies_display_label.label = main_post.replied_count.to_string ("%'d");
+    }
+
+    // Set up widget actions
+    this.install_action ("post.open_on_domain", "s", (widget, action, arg) => {
+      Gtk.show_uri (null, arg.get_string (), Gdk.CURRENT_TIME);
+    });
   }
 
   /**
    * The displayed post.
    */
   private Backend.Post displayed_post;
+
+  /**
+   * The post displayed in the main view.
+   */
+  private Backend.Post main_post;
 
 }
