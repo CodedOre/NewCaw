@@ -100,7 +100,7 @@ public class PostDisplay : Gtk.Box {
     // Set up the repost display
     if (show_repost) {
       repost_display_label.label = displayed_post.author.display_name;
-      repost_name_label.label    = displayed_post.author.username;
+      repost_name_label.label    = "@" + displayed_post.author.username;
       repost_time_label.label    = DisplayUtils.display_time_delta (displayed_post.date);
       repost_status_box.visible  = true;
     }
@@ -123,7 +123,7 @@ public class PostDisplay : Gtk.Box {
       post_info_label.label      = "@" + main_post.author.username;
 
       // Add relative date and link to page in corner
-      string post_time_text = DisplayUtils.display_time_delta (displayed_post.date);
+      string post_time_text = DisplayUtils.display_time_delta (main_post.date);
       post_time_label.label = @"<a href=\"$(main_post.url)\" title=\"$(open_link_label)\" class=\"weblink\">$(post_time_text)</a>";
     }
 
