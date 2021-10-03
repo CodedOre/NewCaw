@@ -51,9 +51,9 @@ namespace DisplayUtils {
     int hours = (int)(minutes / 60.0);
     if (hours < 24) {
       if (long_format) {
-        return ngettext("%i hour ago", "%i hours ago", minutes).printf (minutes);
+        return ngettext("%i hour ago", "%i hours ago", hours).printf (hours);
       } else {
-        return _("%ih").printf (minutes);
+        return _("%ih").printf (hours);
       }
     }
 
