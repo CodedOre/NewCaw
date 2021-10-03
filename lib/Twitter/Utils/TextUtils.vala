@@ -85,6 +85,12 @@ namespace Backend.Twitter.TextUtils {
             entity.target      = obj.get_string_member ("expanded_url");
             entity.text_start  = (uint) obj.get_int_member ("start");
             entity.text_end    = (uint) obj.get_int_member ("end");
+
+            // Check if link is a internal link
+            if (Regex.match_simple ("https://twitter.com/.*?/status/.*?", entity.target)) {
+              entity.type = QUOTELINK;
+            }
+
             main_entities     += entity;
           }
         });

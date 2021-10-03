@@ -33,7 +33,11 @@ namespace Backend.TextUtils {
     /**
      * Hide hashtags after the text.
      */
-    HIDE_TRAILING_TAGS
+    HIDE_TRAILING_TAGS,
+    /**
+     * Display links leading to quotes.
+     */
+    SHOW_QUOTE_LINKS
   }
 
   /**
@@ -61,6 +65,12 @@ namespace Backend.TextUtils {
           break;
         case MENTION:
           builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"mention\">$(module.display)</a>");
+          break;
+        case QUOTELINK:
+          if (! get_format_flag (SHOW_QUOTE_LINKS)) {
+            break;
+          }
+          builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"weblink\">$(module.display)</a>");
           break;
         case WEBLINK:
           builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"weblink\">$(module.display)</a>");
