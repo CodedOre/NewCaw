@@ -131,8 +131,8 @@ public class PostDisplay : Gtk.Box {
     post_text_label.label      = main_post.text;
     post_text_label.selectable = true ? display_type == MAIN : false;
 
-    // Display referenced_post if quote
-    if (main_post.post_type == QUOTE) {
+    // Display quote if not itself quote display
+    if (main_post.post_type == QUOTE && display_type != QUOTE) {
       var quote_post = new PostDisplay (main_post.referenced_post, QUOTE);
       quote_container.append (quote_post);
       quote_container.visible = true;
