@@ -14,7 +14,24 @@ add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name()), la
 # Set build configuration
 if get_option('buildtype') == 'debug' or get_option('buildtype') == 'debugoptimized'
   add_project_arguments('-D', 'DEBUG', language: 'vala')
+
+  # Create a version number based on the git commit for development versions
+  git = find_program('git', required : false, disabler : true)
+  if git.found()
+    # Get short version of commit id and use it as version number
+    git_branch = run_command(git, 'rev-parse', '--abbrev-ref', 'HEAD')
+    git_commit = run_command(git, 'rev-parse', '--short', 'HEAD')
+    version = git_branch.stdout().strip() + '-' + git_commit.stdout().strip()
+  else
+    # Use project version as fallback
+    version = meson.project_version() + '-devel'
+  endif
+else
+  # Use project version in release builds
+  version = meson.project_version()
 endif
+
+message('Building ' + meson.project_name () + ' ' + version)
 
 # Configure supported platforms
 if get_option('support_mastodon')
@@ -64,6 +81,7 @@ cawfiles += gnome.compile_resources(
 cdata = configuration_data()
 cdata.set_quoted ('LOCALEDIR', join_paths(get_option('prefix'), get_option('localedir')))
 cdata.set_quoted ('GETTEXT_PACKAGE', meson.project_name())
+cdata.set_quoted ('PROJECT_VERSION', version)
 configure_file(
   output: 'config.h',
   configuration: cdata
