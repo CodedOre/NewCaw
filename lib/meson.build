@@ -3,11 +3,15 @@
 # Backend dependencies
 libdepends = [
   dependency('glib-2.0', version: '>=2.50'),
-  dependency('json-glib-1.0')
+  dependency('gtk4',     version: '>= 4.0'),
+  dependency('json-glib-1.0'),
+  dependency('libsoup-3.0')
 ]
 
 # Base files
 libfiles = [
+  'Base/Content/Media.vala',
+  'Base/Content/Picture.vala',
   'Base/Content/Post.vala',
   'Base/Content/PostEnums.vala',
   'Base/Content/TextModule.vala',
@@ -18,6 +22,8 @@ libfiles = [
 # Add files for active backends
 if get_option('support_mastodon')
   libfiles += [
+    'Mastodon/Content/Media.vala',
+    'Mastodon/Content/Picture.vala',
     'Mastodon/Content/Post.vala',
     'Mastodon/Content/User.vala',
     'Mastodon/Utils/TextUtils.vala'

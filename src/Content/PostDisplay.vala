@@ -129,6 +129,7 @@ public class PostDisplay : Gtk.Box {
 
     // Display post message in main label
     post_text_label.label      = main_post.text;
+    // FIXME: valac complains about "unreachable code", is this our or valac issue?
     post_text_label.selectable = true ? display_type == MAIN : false;
 
     // Display quote if not itself quote display
