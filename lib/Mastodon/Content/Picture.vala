@@ -32,6 +32,8 @@ public class Backend.Mastodon.Picture : Backend.Picture, Backend.Mastodon.Media 
 
   /**
    * Loads the media for display.
+   *
+   * @return The final media or null if loading failed.
    */
   public async Gdk.Texture? load_media () {
     // Load from storage if already loaded
