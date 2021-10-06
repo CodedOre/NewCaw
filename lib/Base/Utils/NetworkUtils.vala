@@ -33,14 +33,12 @@ namespace Backend.NetworkUtils {
   private async MemoryInputStream? download_stream (string url, Cancellable? cancellable = null) {
     // Init call
     MemoryInputStream result   = null;
-    GLib.SourceFunc   callback = download_stream.callback;
     var               message  = new Soup.Message ("GET", url);
 
     // Load the data asynchronous
     global_session ().send_and_read_async.begin (
       message, Priority.DEFAULT, cancellable, (obj, res) => {
         if (cancellable.is_cancelled ()) {
-          callback ();
           return;
         }
         try {
@@ -48,8 +46,6 @@ namespace Backend.NetworkUtils {
           result = new MemoryInputStream.from_bytes (streambytes);
         } catch (GLib.Error e) {
           error (@"While downloading $(url): $(e.message)");
-        } finally {
-          callback ();
         }
       }
     );
