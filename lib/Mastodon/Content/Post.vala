@@ -147,6 +147,16 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
     } catch (RegexError e) {
       error (@"Error while parsing domain: $(e.message)");
     }
+
+    // Get media attachments
+    Backend.Media[] parsed_media = {};
+    Json.Array      media_jsons  = json.get_array_member ("media_attachments");
+    media_jsons.foreach_element ((array, index, element) => {
+      if (element.get_node_type () == OBJECT) {
+        Json.Object obj    = element.get_object ();
+        parsed_media += Backend.Mastodon.Media.create_media_from_json (obj);
+      }
+    });
   }
 
   /**
