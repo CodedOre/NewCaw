@@ -36,12 +36,15 @@ public class Backend.Mastodon.Picture : Backend.Picture, Backend.Mastodon.Media 
    * @return The final media or null if loading failed.
    */
   public async Gdk.Texture? load_media () {
-    // Load from storage if already loaded
-    if (media != null) {
-      return media;
+    if (media == null) {
+      // Load the image if not in storage
+      MediaLoader.load_image.begin (media_url, (obj, res) => {
+        media = MediaLoader.load_image.end (res);
+      });
+      yield;
     }
-    // TODO: Implement the downloader
-    return null;
+    // Return stored image
+    return media;
   }
 
   /**

@@ -84,27 +84,15 @@ public abstract class Backend.Mastodon.Media : Object, Backend.Media {
    * @return The final preview image or null if loading failed.
    */
   public async Gdk.Texture? load_preview () {
-    // Load from storage if already loaded
-    if (preview_image != null) {
-      return preview_image;
+    if (preview_image == null) {
+      // Load the image if not in storage
+      MediaLoader.load_image.begin (preview_url, (obj, res) => {
+        preview_image = MediaLoader.load_image.end (res);
+      });
+      yield;
     }
-    // Downloads the preview image
-    MemoryInputStream? stream = null;
-    NetworkUtils.download_stream.begin (preview_url, null, (obj, res) => {
-      stream = NetworkUtils.download_stream.end (res);
-    });
-    yield;
-    if (stream == null) {
-      return null;
-    }
-    // Create a Gdk.Texture using the loaded data
-    try {
-      var texbuf    = new Gdk.Pixbuf.from_stream (stream);
-      preview_image = Gdk.Texture.for_pixbuf (texbuf);
-      return preview_image;
-    } catch (GLib.Error e) {
-      error (@"While creating texture for $(preview_url): $(e.message)");
-    }
+    // Return stored image
+    return preview_image;
   }
 
   /**

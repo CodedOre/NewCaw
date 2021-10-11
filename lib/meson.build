@@ -17,7 +17,7 @@ libfiles = [
   'Base/Content/PostEnums.vala',
   'Base/Content/TextModule.vala',
   'Base/Content/User.vala',
-  'Base/Utils/NetworkUtils.vala',
+  'Base/Utils/MediaLoader.vala',
   'Base/Utils/TextUtils.vala'
 ]
 
