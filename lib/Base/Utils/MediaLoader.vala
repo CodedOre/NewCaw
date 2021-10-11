@@ -35,17 +35,22 @@ internal class Backend.MediaLoader : Object {
   public static async Gdk.Texture? load_image (string url) {
     // Initialize loader and result
     MediaLoader self   = get_loader ();
-    Gdk.Texture result = null;
+    Gdk.Texture result;
 
     // Initiate the task
+    // FIXME: Other type than null for no callback?
     var load_task = new Task (self, null, null);
 
     load_task.set_task_data (url, null);
 
     // Load and convert the image in a thread.
     try {
+      // Run the loader in a thread
       load_task.run_in_thread_sync (load_image_threaded);
-      result = load_task.propagate_pointer () as Gdk.Texture;
+      // Get the output and set's it as the result
+      Value thread_result;
+      load_task.propagate_value (out thread_result);
+      result = thread_result.get_object () as Gdk.Texture;
     } catch (Error e) {
       error (@"Failed to download media from link \"@(url)\": $(e.message)");
     }
@@ -75,7 +80,7 @@ internal class Backend.MediaLoader : Object {
     // Fail when stream is empty
     if (stream == null) {
       // FIXME: Replace this with an return_error
-      task.return_pointer (null, null);
+      task.return_value (null);
       return;
     }
 
@@ -84,7 +89,7 @@ internal class Backend.MediaLoader : Object {
     try {
       var texbuf  = new Gdk.Pixbuf.from_stream (stream);
       var texture = Gdk.Texture.for_pixbuf (texbuf);
-      task.return_pointer (texture, null);
+      task.return_value (texture);
     } catch (Error e) {
       task.return_error (e);
     }
