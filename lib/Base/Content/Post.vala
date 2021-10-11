@@ -88,6 +88,11 @@ public interface Backend.Post : Object {
    */
   public abstract int64 reposted_count { get; }
 
+  /**
+   * Returns media attached to this Post.
+   */
+  public abstract Media[] get_media ();
+
 #if DEBUG
   /**
    * Returns the text modules.

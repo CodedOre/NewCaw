@@ -149,6 +149,13 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
     }
   }
 
+  /**
+   * Returns media attached to this Post.
+   */
+  public Media[] get_media () {
+    return attached_media;
+  }
+
 #if DEBUG
   /**
    * Returns the text modules.
@@ -159,6 +166,11 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
     return text_modules;
   }
 #endif
+
+  /**
+   * All media attached to this post.
+   */
+  public Media[] attached_media;
 
   /**
    * The text split into modules for formatting.

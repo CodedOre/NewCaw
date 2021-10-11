@@ -33,7 +33,7 @@ public abstract class Backend.Mastodon.Media : Object, Backend.Media {
       case "image":
         return new Picture.from_json (json);
       default:
-        error ("Failed to create a Media object: No valid media type!");
+        error ("Failed to create a Media object: Unknown media type!");
     }
   }
 
