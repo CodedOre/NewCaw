@@ -18,6 +18,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+using GLib;
+
 public interface Backend.Picture : Backend.Media {
 
   /**

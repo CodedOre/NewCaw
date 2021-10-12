@@ -18,6 +18,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+using GLib;
+
 public abstract class Backend.Mastodon.Media : Object, Backend.Media {
 
   /**
