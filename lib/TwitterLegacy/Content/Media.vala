@@ -20,7 +20,7 @@
 
 using GLib;
 
-public abstract class Backend.Mastodon.Media : Object, Backend.Media {
+public abstract class Backend.TwitterLegacy.Media : Object, Backend.Media {
 
   /**
    * Creates the right sub-class of Media for a given Json.Object.
@@ -32,7 +32,7 @@ public abstract class Backend.Mastodon.Media : Object, Backend.Media {
   public static Backend.Media create_media_from_json (Json.Object json) {
     string media_type = json.get_string_member ("type");
     switch (media_type) {
-      case "image":
+      case "photo":
         return new Picture.from_json (json);
       default:
         error ("Failed to create a Media object: Unknown media type!");
@@ -65,19 +65,21 @@ public abstract class Backend.Mastodon.Media : Object, Backend.Media {
    * @param json A Json.Object containing the data.
    */
   protected Media.from_json (Json.Object json) {
-    // Get basic data
-    _id       = json.get_string_member ("id");
-    _alt_text = json.get_string_member ("description");
+    // Get the id of this media
+    _id = json.get_string_member ("id_str");
 
-    // Get size data
-    Json.Object meta     = json.get_object_member ("meta");
-    Json.Object org_meta = meta.get_object_member ("original");
-    _width  = (int) org_meta.get_int_member ("width");
-    _height = (int) org_meta.get_int_member ("height");
+    // Get the alt text, if available
+    if (json.has_member ("alt_text_ext")) {
+      _alt_text = json.get_string_member ("alt_text_ext");
+    } else {
+      _alt_text = "";
+    }
 
-    // Get media urls
-    _preview_url = json.get_string_member ("preview_url");
-    _media_url   = json.get_string_member ("url");
+    // Get size of main media
+    Json.Object sizes_obj = json.get_object_member ("sizes");
+    Json.Object large_obj = sizes_obj.get_object_member ("large");
+    _width  = (int) large_obj.get_int_member ("w");
+    _height = (int) large_obj.get_int_member ("h");
   }
 
   /**

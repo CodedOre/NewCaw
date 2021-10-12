@@ -36,12 +36,12 @@ public interface Backend.Media : Object {
   /**
    * The url to the preview image for this media.
    */
-  public abstract string preview_url { get; }
+  public abstract string preview_url { get; protected set; }
 
   /**
    * The url to the full media object.
    */
-  public abstract string media_url { get; }
+  public abstract string media_url { get; protected set; }
 
   /**
    * An text description of the media.

@@ -40,6 +40,8 @@ if get_option('support_twitter')
 endif
 if get_option('support_twitter_legacy')
   libfiles += [
+    'TwitterLegacy/Content/Media.vala',
+    'TwitterLegacy/Content/Picture.vala',
     'TwitterLegacy/Content/Post.vala',
     'TwitterLegacy/Content/User.vala',
     'TwitterLegacy/Utils/TextUtils.vala'
