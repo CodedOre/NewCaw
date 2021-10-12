@@ -33,6 +33,8 @@ if get_option('support_mastodon')
 endif
 if get_option('support_twitter')
   libfiles += [
+    'Twitter/Content/Media.vala',
+    'Twitter/Content/Picture.vala',
     'Twitter/Content/Post.vala',
     'Twitter/Content/User.vala',
     'Twitter/Utils/TextUtils.vala'
