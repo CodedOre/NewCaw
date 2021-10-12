@@ -177,7 +177,7 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
       media_array.foreach_element ((array, index, element) => {
         if (element.get_node_type () == OBJECT) {
           Json.Object obj    = element.get_object ();
-          parsed_media += Backend.Mastodon.Media.create_media_from_json (obj);}
+          parsed_media += Backend.TwitterLegacy.Media.create_media_from_json (obj);}
       });
     }
     attached_media = parsed_media;

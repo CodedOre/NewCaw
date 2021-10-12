@@ -138,7 +138,7 @@ public class Backend.Twitter.Post : Object, Backend.Post {
     string author_id = data.get_string_member ("author_id");
 
     // Check if Post is a quote or repost
-    string referenced_id = "";
+    string referenced_id = null;
     if (data.has_member ("referenced_tweets")) {
       // Get all referenced posts
       Json.Array references = data.get_array_member ("referenced_tweets");
@@ -163,9 +163,29 @@ public class Backend.Twitter.Post : Object, Backend.Post {
       });
     }
 
+    // Look for attachments
+    string[] media_keys = {};
+    if (data.has_member ("attachments")) {
+      Json.Object attachments = data.get_object_member ("attachments");
+
+      // Look for attached media
+      if (attachments.has_member ("media_keys")) {
+        Json.Array media_attachments = attachments.get_array_member ("media_keys");
+          media_attachments.foreach_element ((array, index, element) => {
+            if (element.get_node_type () == VALUE) {
+              string next_key = element.get_string ();
+              if (next_key != null) {
+                media_keys += next_key;
+              }
+            }
+          });
+      }
+    }
+
     // Look for specific objects in the includes
-    Json.Object author_obj    = null;
-    Json.Object reference_obj = null;
+    Json.Object author_obj       = null;
+    Json.Object reference_obj    = null;
+    Backend.Media[] parsed_media = {};
 
     if (includes != null) {
       // Check for users in the includes
@@ -182,7 +202,7 @@ public class Backend.Twitter.Post : Object, Backend.Post {
         });
       }
       // Check for referenced posts
-      if (includes.has_member ("tweets")) {
+      if (referenced_id != null && includes.has_member ("tweets")) {
         Json.Array tweets_array = includes.get_array_member ("tweets");
         // Look in included posts for referenced id
         tweets_array.foreach_element ((array, index, element) => {
@@ -190,6 +210,18 @@ public class Backend.Twitter.Post : Object, Backend.Post {
             Json.Object obj = element.get_object ();
             if (obj.get_string_member("id") == referenced_id) {
               reference_obj = obj;
+            }
+          }
+        });
+      }
+      // Check for attached media
+      if (media_keys.length != 0 && includes.has_member ("media")) {
+        Json.Array media_jsons = includes.get_array_member ("media");
+        media_jsons.foreach_element ((array, index, element) => {
+          if (element.get_node_type () == OBJECT) {
+            Json.Object obj = element.get_object ();
+            if (obj.get_string_member("media_key") in media_keys) {
+              parsed_media += Backend.Twitter.Media.create_media_from_json (obj);
             }
           }
         });
