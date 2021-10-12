@@ -157,12 +157,13 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
         parsed_media += Backend.Mastodon.Media.create_media_from_json (obj);
       }
     });
+    attached_media = parsed_media;
   }
 
   /**
    * Returns media attached to this Post.
    */
-  public Media[] get_media () {
+  public Backend.Media[] get_media () {
     return attached_media;
   }
 
@@ -180,7 +181,7 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
   /**
    * All media attached to this post.
    */
-  public Media[] attached_media;
+  public Backend.Media[] attached_media;
 
   /**
    * The text split into modules for formatting.

@@ -161,12 +161,32 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
 
     // Create url from author username und post id
     _url = @"https://$(domain)/$(author.username)/status/$(id)";
+
+    // Check if a media array is present
+    Json.Array media_array = null;
+    if (json.has_member ("extended_entities")) {
+      Json.Object ext_entities = json.get_object_member ("extended_entities");
+      media_array = ext_entities.get_array_member ("media");
+    } else if (entities.has_member ("media")) {
+      media_array = entities.get_array_member ("media");
+    }
+
+    // Parse attached media from array
+    Backend.Media[] parsed_media = {};
+    if (media_array != null) {
+      media_array.foreach_element ((array, index, element) => {
+        if (element.get_node_type () == OBJECT) {
+          Json.Object obj    = element.get_object ();
+          parsed_media += Backend.Mastodon.Media.create_media_from_json (obj);}
+      });
+    }
+    attached_media = parsed_media;
   }
 
   /**
    * Returns media attached to this Post.
    */
-  public Media[] get_media () {
+  public Backend.Media[] get_media () {
     return attached_media;
   }
 
@@ -184,7 +204,7 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
   /**
    * All media attached to this post.
    */
-  public Media[] attached_media;
+  public Backend.Media[] attached_media;
 
   /**
    * The text split into modules for formatting.
