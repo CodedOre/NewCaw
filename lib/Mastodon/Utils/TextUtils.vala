@@ -23,7 +23,7 @@ using GLib;
 /**
  * Provides utilities for parsing and formatting text.
  */
-namespace Backend.Mastodon.TextUtils {
+internal class Backend.Mastodon.TextUtils : Backend.TextUtils {
 
   /**
    * Parses the text into a list of TextEntities.
@@ -33,7 +33,7 @@ namespace Backend.Mastodon.TextUtils {
    *
    * @return A array of TextModules for format_text.
    */
-  private TextModule[] parse_text (string raw_text) {
+  public static TextModule[] parse_text (string raw_text) {
     string       parsed_text   = raw_text;
     string[]     module_text   = {};
     TextModule[] final_modules = {};

@@ -23,7 +23,7 @@ using GLib;
 /**
  * Provides utilities for parsing and formatting text.
  */
-namespace Backend.TwitterLegacy.TextUtils {
+internal class Backend.TwitterLegacy.TextUtils : Backend.TextUtils {
 
   /**
    * Parses the text into a list of TextEntities.
@@ -33,7 +33,7 @@ namespace Backend.TwitterLegacy.TextUtils {
    *
    * @return A array of TextModules for format_text.
    */
-  private TextModule[] parse_text (string raw_text, Json.Object? entities) {
+  public static TextModule[] parse_text (string raw_text, Json.Object? entities) {
     TextModule?[] main_entities = {};
     TextModule [] final_modules = {};
 
@@ -164,7 +164,7 @@ namespace Backend.TwitterLegacy.TextUtils {
    *
    * @return A GLib.DateTime with the date from the string.
    */
-  private DateTime parse_time (string text) {
+  public static DateTime parse_time (string text) {
     // Initialize variables
     var zone = new TimeZone.utc ();
     int year, month, day, hour, minute;

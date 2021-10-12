@@ -23,7 +23,7 @@ using GLib;
 /**
  * Provides utilities for parsing and formatting text.
  */
-namespace Backend.Twitter.TextUtils {
+internal class Backend.Twitter.TextUtils : Backend.TextUtils {
 
   /**
    * Parses the text into a list of TextEntities.
@@ -33,7 +33,7 @@ namespace Backend.Twitter.TextUtils {
    *
    * @return A array of TextModules for format_text.
    */
-  private TextModule[] parse_text (string raw_text, Json.Object? entities) {
+  public static TextModule[] parse_text (string raw_text, Json.Object? entities) {
     TextModule?[] main_entities = {};
     TextModule [] final_modules = {};
 

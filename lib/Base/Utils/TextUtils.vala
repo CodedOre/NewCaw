@@ -23,7 +23,7 @@ using GLib;
 /**
  * Provides utilities for parsing and formatting text.
  */
-namespace Backend.TextUtils {
+public class Backend.TextUtils : Object {
 
   /**
    * Various settings for text formatting.
@@ -47,7 +47,7 @@ namespace Backend.TextUtils {
    *
    * @return A formatted string for display in a Pango capable text field.
    */
-  private string format_text (TextModule[] text_modules) {
+  internal static string format_text (TextModule[] text_modules) {
     var builder = new StringBuilder ();
 
     // Iterates through all TextModules
@@ -90,7 +90,7 @@ namespace Backend.TextUtils {
    *
    * @param text_modules An array of all modules of the text.
    */
-  private void mark_trailing_tags (TextModule[] modules) {
+  internal static void mark_trailing_tags (TextModule[] modules) {
     bool   search_trail_tags = true;
     bool   mark_trail_tags   = false;
     size_t module_index      = modules.length - 1;
@@ -137,7 +137,7 @@ namespace Backend.TextUtils {
    *
    * @return A boolean if the flag is set.
    */
-  public bool get_format_flag (FormatFlag flag) {
+  public static bool get_format_flag (FormatFlag flag) {
     return flag in format_flags;
   }
 
@@ -147,7 +147,7 @@ namespace Backend.TextUtils {
    * @param flag The flag to be set.
    * @param setting If the flag should be enabled or not.
    */
-  public void set_format_flag (FormatFlag flag, bool setting) {
+  public static void set_format_flag (FormatFlag flag, bool setting) {
     if (setting) {
       format_flags = format_flags | flag;
     } else {
@@ -158,6 +158,6 @@ namespace Backend.TextUtils {
   /**
    * Settings for the formatting of text.
    */
-  private FormatFlag format_flags = 0;
+  private static FormatFlag format_flags = 0;
 
 }
