@@ -90,10 +90,7 @@ public abstract class Backend.TwitterLegacy.Media : Object, Backend.Media {
   public async Gdk.Texture? load_preview () {
     if (preview_image == null) {
       // Load the image if not in storage
-      MediaLoader.load_image.begin (preview_url, (obj, res) => {
-        preview_image = MediaLoader.load_image.end (res);
-      });
-      yield;
+      preview_image = yield MediaLoader.load_image (preview_url);
     }
     // Return stored image
     return preview_image;

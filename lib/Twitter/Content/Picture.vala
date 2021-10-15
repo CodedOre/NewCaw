@@ -45,10 +45,7 @@ public class Backend.Twitter.Picture : Backend.Picture, Backend.Twitter.Media  {
   public async Gdk.Texture? load_media () {
     if (media == null) {
       // Load the image if not in storage
-      MediaLoader.load_image.begin (media_url, (obj, res) => {
-        media = MediaLoader.load_image.end (res);
-      });
-      yield;
+      media = yield MediaLoader.load_image (media_url);
     }
     // Return stored image
     return media;

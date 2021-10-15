@@ -28,6 +28,8 @@ public class MediaPreviewItem : Gtk.Widget {
 
   // UI-Elements of MediaPreviewItem
   [GtkChild]
+  private unowned Gtk.Picture preview;
+  [GtkChild]
   private unowned Gtk.Button selector;
   [GtkChild]
   private unowned Gtk.Image alt_text_indicator;
@@ -39,6 +41,12 @@ public class MediaPreviewItem : Gtk.Widget {
     // Init object with construct only properties
     Object (css_name: "frame");
     displayed_media = media;
+
+    // Load and set the Paintable
+    displayed_media.load_preview.begin ((obj, res) => {
+      displayed_paintable = displayed_media.load_preview.end (res);
+      preview.set_paintable (displayed_paintable);
+    });
 
     // Set alt-text if available
     if (displayed_media.alt_text != null) {
@@ -59,5 +67,10 @@ public class MediaPreviewItem : Gtk.Widget {
    * The displayed Media object.
    */
   private Backend.Media displayed_media;
+
+  /**
+   * The displayed Gdk.Paintable.
+   */
+  Gdk.Paintable? displayed_paintable = null;
 
 }
