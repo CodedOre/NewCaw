@@ -26,6 +26,42 @@ using GLib;
 public class MediaPreview : Gtk.Grid {
 
   /**
+   * Defines the layout of MediaPreview depending on size and item.
+   *
+   * This is a three dimensional array, containing numbers
+   * used to place the image frames on the grid.
+   *
+   * It's dimensions are as follows\:
+   * - The first  dimension is for the overall number of displayed media.
+   * - The second dimension is for the n-th item inside a array.
+   * - The last   dimension contains the settings for the grid, used in Gtk.Grid.
+   */
+  private const int[,,] PREVIEW_GRID_LAYOUT = {
+    // One media to display
+    {
+      {0, 0, 2, 2}
+    },
+    // Two media to display
+    {
+      {0, 0, 1, 2},
+      {1, 0, 1, 2}
+    },
+    // Three media to display
+    {
+      {0, 0, 1, 2},
+      {1, 0, 1, 1},
+      {1, 1, 1, 1}
+    },
+    // Four media to display
+    {
+      {0, 0, 1, 1},
+      {1, 0, 1, 1},
+      {0, 1, 1, 1},
+      {1, 1, 1, 1}
+    },
+  };
+
+  /**
    * Set the media to be displayed in this widget.
    *
    * @param media An Array with the media to be displayed.
@@ -43,6 +79,19 @@ public class MediaPreview : Gtk.Grid {
       displayed_media = media [:3];
     } else {
       displayed_media = media;
+    }
+
+    // Arrange media on the grid
+    for (int i = 0; i < displayed_media.length; i++) {
+      // Create a frame and place a picture in it
+      MediaPreviewItem media_item = new MediaPreviewItem (displayed_media [i]);
+
+      // Positions the frame in the grid
+      int item_column = PREVIEW_GRID_LAYOUT [displayed_media.length - 1, i, 0];
+      int item_row    = PREVIEW_GRID_LAYOUT [displayed_media.length - 1, i, 1];
+      int item_width  = PREVIEW_GRID_LAYOUT [displayed_media.length - 1, i, 2];
+      int item_height = PREVIEW_GRID_LAYOUT [displayed_media.length - 1, i, 3];
+      this.attach (media_item, item_column, item_row, item_width, item_height);
     }
   }
 

@@ -67,6 +67,7 @@ cawfiles = [
   'src/config.vapi',
   'src/Cawbird.vala',
   'src/Content/MediaPreview.vala',
+  'src/Content/MediaPreviewItem.vala',
   'src/Content/PostDisplay.vala',
   'src/Utils/DisplayUtils.vala'
 ]
