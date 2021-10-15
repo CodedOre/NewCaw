@@ -57,9 +57,11 @@ public class MediaPreviewItem : Gtk.Widget {
   /**
    * Deconstructs MediaPreviewItem and it's childrens
    */
-  ~MediaPreviewItem () {
+  public override void dispose () {
     // Destructs children of MediaPreviewItem
-    // TODO: Destruct childrens manually before deconstructing MediaPreviewItem
+    preview.unparent ();
+    selector.unparent ();
+    alt_text_indicator.unparent ();
   }
 
   /**
