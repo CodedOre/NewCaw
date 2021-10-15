@@ -1,3 +1,15 @@
+/*
+ * Removes the underline from selected links.
+ */
 link.hashtag, link.mention, link.weblink {
   text-decoration: none;
+}
+
+/*
+ * Creates an circular indicator around an image.
+ * Use other classes, such as .osd, for background.
+ */
+image.indicator {
+  padding: 6px;
+  border-radius: 50%;
 }

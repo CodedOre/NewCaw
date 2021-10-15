@@ -23,12 +23,41 @@ using GLib;
 /**
  * A widget displaying the preview for a single item.
  */
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/MediaPreviewItem.ui")]
 public class MediaPreviewItem : Gtk.Widget {
+
+  // UI-Elements of MediaPreviewItem
+  [GtkChild]
+  private unowned Gtk.Button selector;
+  [GtkChild]
+  private unowned Gtk.Image alt_text_indicator;
 
   /**
    * Creates a MediaPreviewItem for a certain Media.
    */
   public MediaPreviewItem (Backend.Media media) {
+    // Init object with construct only properties
+    Object (css_name: "frame");
+    displayed_media = media;
+
+    // Set alt-text if available
+    if (displayed_media.alt_text != null) {
+      alt_text_indicator.set_tooltip_text (displayed_media.alt_text);
+      alt_text_indicator.visible = true;
+    }
   }
+
+  /**
+   * Deconstructs MediaPreviewItem and it's childrens
+   */
+  ~MediaPreviewItem () {
+    // Destructs children of MediaPreviewItem
+    // TODO: Destruct childrens manually before deconstructing MediaPreviewItem
+  }
+
+  /**
+   * The displayed Media object.
+   */
+  private Backend.Media displayed_media;
 
 }

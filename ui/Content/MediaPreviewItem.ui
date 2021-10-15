@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="MediaPreviewItem" parent="GtkWidget">
+    <property name="layout-manager">
+      <object class="GtkConstraintLayout">
+        <constraints>
+          <constraint target="selector" target-attribute="width"
+                      relation="eq"
+                      source="super" source-attribute="width"
+                      strength="required"/>
+          <constraint target="selector" target-attribute="height"
+                      relation="eq"
+                      source="super" source-attribute="height"
+                      strength="required"/>
+
+
+          <constraint target="alt_text_indicator" target-attribute="end"
+                      relation="eq"
+                      source="super" source-attribute="end"
+                      constant="-8" strength="required"/>
+          <constraint target="alt_text_indicator" target-attribute="bottom"
+                      relation="eq"
+                      source="super" source-attribute="bottom"
+                      constant="-8" strength="required"/>
+        </constraints>
+      </object>
+    </property>
+    <child>
+      <object class="GtkButton" id="selector">
+        <style>
+          <class name="flat"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="alt_text_indicator">
+        <property name="visible">false</property>
+        <property name="icon-name">accessories-text-editor-symbolic</property>
+        <style>
+          <class name="osd"/>
+          <class name="indicator"/>
+        </style>
+      </object>
+    </child>
+  </template>
+</interface>
