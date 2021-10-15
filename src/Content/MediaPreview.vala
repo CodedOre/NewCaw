@@ -84,14 +84,16 @@ public class MediaPreview : Gtk.Grid {
     // Arrange media on the grid
     for (int i = 0; i < displayed_media.length; i++) {
       // Create a frame and place a picture in it
-      MediaPreviewItem media_item = new MediaPreviewItem (displayed_media [i]);
+      var item_frame = new Gtk.Frame (null);
+      var media_item = new MediaPreviewItem (displayed_media [i]);
+      item_frame.child = media_item;
 
       // Positions the frame in the grid
       int item_column = PREVIEW_GRID_LAYOUT [displayed_media.length - 1, i, 0];
       int item_row    = PREVIEW_GRID_LAYOUT [displayed_media.length - 1, i, 1];
       int item_width  = PREVIEW_GRID_LAYOUT [displayed_media.length - 1, i, 2];
       int item_height = PREVIEW_GRID_LAYOUT [displayed_media.length - 1, i, 3];
-      this.attach (media_item, item_column, item_row, item_width, item_height);
+      this.attach (item_frame, item_column, item_row, item_width, item_height);
     }
   }
 

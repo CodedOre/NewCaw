@@ -39,7 +39,6 @@ public class MediaPreviewItem : Gtk.Widget {
    */
   public MediaPreviewItem (Backend.Media media) {
     // Init object with construct only properties
-    Object (css_name: "frame");
     displayed_media = media;
 
     // Load and set the Paintable
