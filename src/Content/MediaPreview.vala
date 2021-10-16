@@ -62,6 +62,11 @@ public class MediaPreview : Gtk.Grid {
   };
 
   /**
+   * The spacing between the different items.
+   */
+  private const int ITEM_SPACING = 6;
+
+  /**
    * Set the media to be displayed in this widget.
    *
    * @param media An Array with the media to be displayed.
@@ -69,9 +74,9 @@ public class MediaPreview : Gtk.Grid {
   public void display_media (Backend.Media[] media) {
     // Set some basic properties
     this.column_homogeneous = true;
-    this.column_spacing     = 6;
+    this.column_spacing     = ITEM_SPACING;
     this.row_homogeneous    = true;
-    this.row_spacing        = 6;
+    this.row_spacing        = ITEM_SPACING;
 
     // Set internal fields
     if (media.length > 4) {
@@ -83,16 +88,18 @@ public class MediaPreview : Gtk.Grid {
 
     // Arrange media on the grid
     for (int i = 0; i < displayed_media.length; i++) {
-      // Create a frame and place a picture in it
-      var item_frame = new Gtk.Frame (null);
-      var media_item = new MediaPreviewItem (displayed_media [i]);
-      item_frame.child = media_item;
-
-      // Positions the frame in the grid
+      // Get the position arguments for the media
       int item_column = PREVIEW_GRID_LAYOUT [displayed_media.length - 1, i, 0];
       int item_row    = PREVIEW_GRID_LAYOUT [displayed_media.length - 1, i, 1];
       int item_width  = PREVIEW_GRID_LAYOUT [displayed_media.length - 1, i, 2];
       int item_height = PREVIEW_GRID_LAYOUT [displayed_media.length - 1, i, 3];
+
+      // Create a Frame to hold a media preview
+      var media_item   = new MediaPreviewItem (displayed_media [i], item_width, item_height, ITEM_SPACING);
+      var item_frame   = new Gtk.Frame (null);
+      item_frame.child = media_item;
+
+      // Positions the frame in the grid
       this.attach (item_frame, item_column, item_row, item_width, item_height);
     }
   }

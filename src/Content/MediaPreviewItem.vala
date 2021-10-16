@@ -26,6 +26,11 @@ using GLib;
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/MediaPreviewItem.ui")]
 public class MediaPreviewItem : Gtk.Widget {
 
+  /**
+   * The ratio between height and width.
+   */
+  private const double WIDTH_TO_HEIGHT = 0.5;
+
   // UI-Elements of MediaPreviewItem
   [GtkChild]
   private unowned Gtk.Picture preview;
@@ -37,9 +42,15 @@ public class MediaPreviewItem : Gtk.Widget {
   /**
    * Creates a MediaPreviewItem for a certain Media.
    */
-  public MediaPreviewItem (Backend.Media media) {
+  public MediaPreviewItem (Backend.Media media, int width, int height, int spacing) {
     // Init object with construct only properties
     displayed_media = media;
+
+    // Set up the width-to-height ratio
+    double height_multiplier = (height / width) * WIDTH_TO_HEIGHT;
+    double height_constant   = (height - 1) * spacing;
+    var    height_constraint = new Gtk.Constraint (this, HEIGHT, EQ, this, WIDTH, height_multiplier, height_constant, Gtk.ConstraintStrength.REQUIRED);
+    ((Gtk.ConstraintLayout) this.layout_manager).add_constraint (height_constraint);
 
     // Load and set the Paintable
     displayed_media.load_preview.begin ((obj, res) => {
