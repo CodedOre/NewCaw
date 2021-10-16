@@ -6,15 +6,6 @@
     <property name="layout-manager">
       <object class="GtkConstraintLayout">
         <constraints>
-          <constraint target="preview" target-attribute="width"
-                      relation="eq"
-                      source="super" source-attribute="width"
-                      strength="required"/>
-          <constraint target="preview" target-attribute="height"
-                      relation="eq"
-                      source="super" source-attribute="height"
-                      strength="required"/>
-
           <constraint target="selector" target-attribute="width"
                       relation="eq"
                       source="super" source-attribute="width"

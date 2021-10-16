@@ -22,6 +22,8 @@ using GLib;
 
 /**
  * A widget displaying the preview for a single item.
+ *
+ * FIXME: This is not completely functional, we should use a custom layout adapted to this functionality.
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/MediaPreviewItem.ui")]
 public class MediaPreviewItem : Gtk.Widget {
@@ -44,6 +46,7 @@ public class MediaPreviewItem : Gtk.Widget {
    */
   public MediaPreviewItem (Backend.Media media, int width, int height, int spacing) {
     // Init object with construct only properties
+    Object (overflow: Gtk.Overflow.HIDDEN);
     displayed_media = media;
 
     // Set up the width-to-height ratio
@@ -54,8 +57,8 @@ public class MediaPreviewItem : Gtk.Widget {
 
     // Load and set the Paintable
     displayed_media.load_preview.begin ((obj, res) => {
-      displayed_paintable = displayed_media.load_preview.end (res);
-      preview.set_paintable (displayed_paintable);
+      displayed_texture = displayed_media.load_preview.end (res);
+      position_texture ();
     });
 
     // Set alt-text if available
@@ -63,6 +66,57 @@ public class MediaPreviewItem : Gtk.Widget {
       alt_text_indicator.set_tooltip_text (displayed_media.alt_text);
       alt_text_indicator.visible = true;
     }
+  }
+
+  /**
+   * Places and positions the texture.
+   */
+  private void position_texture () {
+    // Check if displayed_texture is valid
+    if (displayed_texture == null) {
+      warning ("MediaPreviewItem: No texture for display found!");
+      return;
+    }
+
+    // Remove exiting preview constraints
+    foreach (Gtk.Constraint constraint in preview_constraints) {
+      ((Gtk.ConstraintLayout) this.layout_manager).remove_constraint (constraint);
+    }
+
+    // Get the sizes of the item and the texture
+    int text_height = displayed_texture.height;
+    int text_width  = displayed_texture.width;
+    int item_height = this.get_allocated_height ();
+    int item_width  = this.get_allocated_width ();
+
+    // Determine the longer sides of item and texture
+    bool horizontal_item = true ? item_width > item_height : false;
+    bool horizontal_text = true ? text_width > text_height : false;
+
+    // Modify the picture constraint for display
+    if ((horizontal_item && horizontal_text) || (! horizontal_item && ! horizontal_text)) {
+      // Clip top and bottom
+      preview_constraints = {
+        new Gtk.Constraint (preview, TOP,    EQ, this, TOP,    1, -512, Gtk.ConstraintStrength.REQUIRED),
+        new Gtk.Constraint (preview, BOTTOM, EQ, this, BOTTOM, 1,  512, Gtk.ConstraintStrength.REQUIRED),
+        new Gtk.Constraint (preview, WIDTH,  EQ, this, WIDTH,  1,    0, Gtk.ConstraintStrength.REQUIRED)
+      };
+    } else {
+      // Clip start and end
+      preview_constraints = {
+        new Gtk.Constraint (preview, START,  EQ, this, START,  1, -512, Gtk.ConstraintStrength.REQUIRED),
+        new Gtk.Constraint (preview, END,    EQ, this, END,    1,  512, Gtk.ConstraintStrength.REQUIRED),
+        new Gtk.Constraint (preview, HEIGHT, EQ, this, HEIGHT, 1,    0, Gtk.ConstraintStrength.REQUIRED)
+      };
+    }
+
+    // Add the new constraints
+    foreach (Gtk.Constraint constraint in preview_constraints) {
+      ((Gtk.ConstraintLayout) this.layout_manager).add_constraint (constraint);
+    }
+
+    // Places the texture in the picture
+    preview.set_paintable (displayed_texture);
   }
 
   /**
@@ -81,8 +135,13 @@ public class MediaPreviewItem : Gtk.Widget {
   private Backend.Media displayed_media;
 
   /**
-   * The displayed Gdk.Paintable.
+   * The displayed Gdk.Texture.
    */
-  Gdk.Paintable? displayed_paintable = null;
+  Gdk.Texture? displayed_texture = null;
+
+  /**
+   * The Gtk.Constraint defining the positioning of a Gtk.Picture.
+   */
+  private Gtk.Constraint[] preview_constraints;
 
 }
