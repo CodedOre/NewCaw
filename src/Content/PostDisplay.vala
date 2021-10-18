@@ -55,7 +55,9 @@ public class PostDisplay : Gtk.Box {
   [GtkChild]
   private unowned Gtk.Label post_text_label;
 
-  // UI-Elements for the quote display
+  // UI-Elements for the additional content
+  [GtkChild]
+  private unowned MediaPreview media_previewer;
   [GtkChild]
   private unowned Gtk.ListBox quote_container;
 
@@ -133,6 +135,12 @@ public class PostDisplay : Gtk.Box {
     post_text_label.label      = main_post.text;
     // FIXME: valac complains about "unreachable code", is this our or valac issue?
     post_text_label.selectable = true ? display_type == MAIN : false;
+
+    // Display media if post contains some
+    if (main_post.get_media ().length > 0) {
+      media_previewer.display_media (main_post.get_media ());
+      media_previewer.visible = true;
+    }
 
     // Display quote if not itself quote display
     if (main_post.post_type == QUOTE && display_type != QUOTE) {

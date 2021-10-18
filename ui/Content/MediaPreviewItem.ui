@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="MediaPreviewItem" parent="GtkWidget">
+    <child>
+      <object class="GtkPicture" id="preview"/>
+    </child>
+    <child>
+      <object class="GtkButton" id="selector">
+        <style>
+          <class name="flat"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="alt_text_indicator">
+        <property name="visible">false</property>
+        <property name="halign">end</property>
+        <property name="valign">end</property>
+        <property name="margin-end">8</property>
+        <property name="margin-bottom">8</property>
+        <property name="icon-name">accessories-text-editor-symbolic</property>
+        <style>
+          <class name="osd"/>
+          <class name="indicator"/>
+        </style>
+      </object>
+    </child>
+  </template>
+</interface>

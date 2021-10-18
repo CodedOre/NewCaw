@@ -5,6 +5,7 @@
     <file alias="icons/scalable/actions/not-liked-symbolic.svg">data/icons/not-liked-symbolic.svg</file>
     <file alias="icons/scalable/actions/reply-symbolic.svg">data/icons/reply-symbolic.svg</file>
     <file alias="icons/scalable/actions/repost-symbolic.svg">data/icons/repost-symbolic.svg</file>
+    <file>ui/Content/MediaPreviewItem.ui</file>
     <file>ui/Content/PostDisplay.ui</file>
     <file alias="style.css">ui/style.css</file>
   </gresource>

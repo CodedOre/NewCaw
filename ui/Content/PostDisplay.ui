@@ -137,6 +137,11 @@
       </object>
     </child>
     <child>
+      <object class="MediaPreview" id="media_previewer">
+        <property name="visible">false</property>
+      </object>
+    </child>
+    <child>
       <object class="GtkListBox" id="quote_container">
         <property name="visible">false</property>
         <property name="selection-mode">none</property>
