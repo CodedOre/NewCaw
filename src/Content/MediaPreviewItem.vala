@@ -92,8 +92,8 @@ public class MediaPreviewItem : Gtk.Widget {
       int item_width  = this.get_allocated_width ();
 
       // Determine the longer sides of item and texture
-      bool horizontal_item = true ? item_width > item_height : false;
-      bool horizontal_text = true ? text_width > text_height : false;
+      bool horizontal_item = item_width > item_height;
+      bool horizontal_text = text_width > text_height;
 
       // Modify the picture constraint for display
       int translate_x, translate_y;
