@@ -29,6 +29,11 @@ using GLib;
 public class MediaPreviewItem : Gtk.Widget {
 
   /**
+   * The minimum width of this widget.
+   */
+  private const int MINIMUM_WIDTH = 150;
+
+  /**
    * The ratio between height and width.
    */
   private const double WIDTH_TO_HEIGHT = 0.5;
@@ -49,13 +54,13 @@ public class MediaPreviewItem : Gtk.Widget {
     Object (overflow: Gtk.Overflow.HIDDEN);
     displayed_media = media;
 
-    // Set up the width-to-height ratio
-    double height_multiplier = (height / width) * WIDTH_TO_HEIGHT;
-    double height_constant   = (height - 1) * spacing;
-    var    height_constraint = new Gtk.Constraint (this, HEIGHT, EQ, this, WIDTH, height_multiplier, height_constant, Gtk.ConstraintStrength.REQUIRED);
-    ((Gtk.ConstraintLayout) this.layout_manager).add_constraint (height_constraint);
+    // Set grid size variables
+    cell_width   = width;
+    cell_height  = height;
+    grid_spacing = spacing;
 
     // Load and set the Paintable
+    // FIXME: Appears to be not async...
     displayed_media.load_preview.begin ((obj, res) => {
       displayed_texture = displayed_media.load_preview.end (res);
       position_texture ();
@@ -71,6 +76,7 @@ public class MediaPreviewItem : Gtk.Widget {
   /**
    * Places and positions the texture.
    */
+/*
   private void position_texture () {
     // Check if displayed_texture is valid
     if (displayed_texture == null) {
@@ -118,6 +124,51 @@ public class MediaPreviewItem : Gtk.Widget {
     // Places the texture in the picture
     preview.set_paintable (displayed_texture);
   }
+*/
+
+  /**
+   * Returns the Gtk.SizeRequestMode to GTK.
+   */
+  public override Gtk.SizeRequestMode get_request_mode () {
+    return HEIGHT_FOR_WIDTH;
+  }
+
+  /**
+   * Determines the size of this widget.
+   */
+  public override void measure (Gtk.Orientation orientation,
+                                            int for_size,
+                                        out int minimum,
+                                        out int natural,
+                                        out int minimum_baseline,
+                                        out int natural_baseline)
+  {
+    // Checkt the orientation to measure
+    if (orientation == HORIZONTAL) {
+      // Put out constant values for width
+      minimum = MINIMUM_WIDTH;
+      natural = MINIMUM_WIDTH;
+    } else {
+      // Get allocated width of widget
+      // FIXME: Ensure we get a width before the first snapshot
+      int allocated_width;
+      if (this.get_allocated_width () > 0) {
+        allocated_width = this.get_allocated_width ();
+      } else {
+        allocated_width = MINIMUM_WIDTH;
+      }
+
+      // Set the height to be a multiplier of the width
+      double height_multiplier = (cell_height / cell_width) * WIDTH_TO_HEIGHT;
+      double height_constant   = (cell_height - 1) * grid_spacing;
+      minimum = (int) (allocated_width * height_multiplier + height_constant);
+      natural = (int) (allocated_width * height_multiplier + height_constant);
+    }
+
+    // Set baselines
+    minimum_baseline = -1;
+    natural_baseline = -1;
+  }
 
   /**
    * Deconstructs MediaPreviewItem and it's childrens
@@ -140,8 +191,17 @@ public class MediaPreviewItem : Gtk.Widget {
   Gdk.Texture? displayed_texture = null;
 
   /**
-   * The Gtk.Constraint defining the positioning of a Gtk.Picture.
+   * The width of this widget in the grid.
    */
-  private Gtk.Constraint[] preview_constraints;
+  private int cell_width;
 
+  /**
+   * The height of this widget in the grid.
+   */
+  private int cell_height;
+
+  /**
+   * The used spacing in the grid.
+   */
+  private int grid_spacing;
 }
