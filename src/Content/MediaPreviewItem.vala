@@ -22,8 +22,6 @@ using GLib;
 
 /**
  * A widget displaying the preview for a single item.
- *
- * FIXME: This is not completely functional, we should use a custom layout adapted to this functionality.
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/MediaPreviewItem.ui")]
 public class MediaPreviewItem : Gtk.Widget {
@@ -63,7 +61,7 @@ public class MediaPreviewItem : Gtk.Widget {
     // FIXME: Appears to be not async...
     displayed_media.load_preview.begin ((obj, res) => {
       displayed_texture = displayed_media.load_preview.end (res);
-      position_texture ();
+      preview.set_paintable (displayed_texture);
     });
 
     // Set alt-text if available
@@ -73,58 +71,52 @@ public class MediaPreviewItem : Gtk.Widget {
     }
   }
 
-  /**
-   * Places and positions the texture.
-   */
-/*
-  private void position_texture () {
-    // Check if displayed_texture is valid
-    if (displayed_texture == null) {
-      warning ("MediaPreviewItem: No texture for display found!");
-      return;
+  public override void size_allocate (int width, int height, int baseline) {
+
+    // Allocate selector and alt_text_indicator
+    selector.allocate (width, height, baseline, null);
+    alt_text_indicator.allocate (width, height, baseline, null);
+
+    // Create Gsk.Transform when preview texture is found
+    Gsk.Transform preview_format = null;
+    int           preview_height = height;
+    int           preview_width  = width;
+    if (displayed_texture != null) {
+      // Get the sizes of the item and the texture
+      // TODO: Check if cell width and height remove flicker
+      int text_height = displayed_texture.height;
+      int text_width  = displayed_texture.width;
+      int item_height = this.get_allocated_height ();
+      int item_width  = this.get_allocated_width ();
+
+      // Determine the longer sides of item and texture
+      bool horizontal_item = true ? item_width > item_height : false;
+      bool horizontal_text = true ? text_width > text_height : false;
+
+      // Modify the picture constraint for display
+      int translate_x, translate_y;
+      if ((horizontal_item && horizontal_text) || (! horizontal_item && ! horizontal_text)) {
+        // Clip top and bottom
+        translate_x     = 0;
+        translate_y     = -1 * (item_height / 2);
+        preview_height *= 2;
+      } else {
+        // Clip start and end
+        translate_x    = -1 * (item_width / 2);
+        translate_y    = 0;
+        preview_width *= 2;
+      }
+
+      // Apply calculated transform
+      string transform_command = @"translate($(translate_x),$(translate_y))";
+      if (! Gsk.Transform.parse (transform_command, out preview_format)) {
+        error ("MediaPreviewItem: Could not transform preview!");
+      }
     }
 
-    // Remove exiting preview constraints
-    foreach (Gtk.Constraint constraint in preview_constraints) {
-      ((Gtk.ConstraintLayout) this.layout_manager).remove_constraint (constraint);
-    }
-
-    // Get the sizes of the item and the texture
-    int text_height = displayed_texture.height;
-    int text_width  = displayed_texture.width;
-    int item_height = this.get_allocated_height ();
-    int item_width  = this.get_allocated_width ();
-
-    // Determine the longer sides of item and texture
-    bool horizontal_item = true ? item_width > item_height : false;
-    bool horizontal_text = true ? text_width > text_height : false;
-
-    // Modify the picture constraint for display
-    if ((horizontal_item && horizontal_text) || (! horizontal_item && ! horizontal_text)) {
-      // Clip top and bottom
-      preview_constraints = {
-        new Gtk.Constraint (preview, TOP,    EQ, this, TOP,    1, -512, Gtk.ConstraintStrength.REQUIRED),
-        new Gtk.Constraint (preview, BOTTOM, EQ, this, BOTTOM, 1,  512, Gtk.ConstraintStrength.REQUIRED),
-        new Gtk.Constraint (preview, WIDTH,  EQ, this, WIDTH,  1,    0, Gtk.ConstraintStrength.REQUIRED)
-      };
-    } else {
-      // Clip start and end
-      preview_constraints = {
-        new Gtk.Constraint (preview, START,  EQ, this, START,  1, -512, Gtk.ConstraintStrength.REQUIRED),
-        new Gtk.Constraint (preview, END,    EQ, this, END,    1,  512, Gtk.ConstraintStrength.REQUIRED),
-        new Gtk.Constraint (preview, HEIGHT, EQ, this, HEIGHT, 1,    0, Gtk.ConstraintStrength.REQUIRED)
-      };
-    }
-
-    // Add the new constraints
-    foreach (Gtk.Constraint constraint in preview_constraints) {
-      ((Gtk.ConstraintLayout) this.layout_manager).add_constraint (constraint);
-    }
-
-    // Places the texture in the picture
-    preview.set_paintable (displayed_texture);
+    // Allocate preview picture
+    preview.allocate (preview_width, preview_height, baseline, preview_format);
   }
-*/
 
   /**
    * Returns the Gtk.SizeRequestMode to GTK.

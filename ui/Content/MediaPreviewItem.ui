@@ -3,29 +3,6 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
   <template class="MediaPreviewItem" parent="GtkWidget">
-    <!-- <property name="layout-manager"> -->
-    <!--   <object class="GtkConstraintLayout"> -->
-    <!--     <constraints> -->
-    <!--       <constraint target="selector" target-attribute="width" -->
-    <!--                   relation="eq" -->
-    <!--                   source="super" source-attribute="width" -->
-    <!--                   strength="required"/> -->
-    <!--       <constraint target="selector" target-attribute="height" -->
-    <!--                   relation="eq" -->
-    <!--                   source="super" source-attribute="height" -->
-    <!--                   strength="required"/> -->
-
-    <!--       <constraint target="alt_text_indicator" target-attribute="end" -->
-    <!--                   relation="eq" -->
-    <!--                   source="super" source-attribute="end" -->
-    <!--                   constant="-8" strength="required"/> -->
-    <!--       <constraint target="alt_text_indicator" target-attribute="bottom" -->
-    <!--                   relation="eq" -->
-    <!--                   source="super" source-attribute="bottom" -->
-    <!--                   constant="-8" strength="required"/> -->
-    <!--     </constraints> -->
-    <!--   </object> -->
-    <!-- </property> -->
     <child>
       <object class="GtkPicture" id="preview"/>
     </child>
@@ -39,6 +16,10 @@
     <child>
       <object class="GtkImage" id="alt_text_indicator">
         <property name="visible">false</property>
+        <property name="halign">end</property>
+        <property name="valign">end</property>
+        <property name="margin-end">8</property>
+        <property name="margin-bottom">8</property>
         <property name="icon-name">accessories-text-editor-symbolic</property>
         <style>
           <class name="osd"/>
