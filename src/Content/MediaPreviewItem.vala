@@ -22,6 +22,8 @@ using GLib;
 
 /**
  * A widget displaying the preview for a single item.
+ *
+ * TODO: Add some feedback when loading image-
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/MediaPreviewItem.ui")]
 public class MediaPreviewItem : Gtk.Widget {
@@ -143,6 +145,7 @@ public class MediaPreviewItem : Gtk.Widget {
     } else {
       // Get allocated width of widget
       // FIXME: Ensure we get a width before the first snapshot
+      // FIXME: Fix non-measure when maximized
       int allocated_width;
       if (this.get_allocated_width () > 0) {
         allocated_width = this.get_allocated_width ();
