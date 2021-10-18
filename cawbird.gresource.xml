@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/uk/co/ibboard/Cawbird">
+    <file alias="icons/scalable/actions/animated-symbolic.svg">data/icons/animated-symbolic.svg</file>
     <file alias="icons/scalable/actions/liked-symbolic.svg">data/icons/liked-symbolic.svg</file>
     <file alias="icons/scalable/actions/not-liked-symbolic.svg">data/icons/not-liked-symbolic.svg</file>
     <file alias="icons/scalable/actions/reply-symbolic.svg">data/icons/reply-symbolic.svg</file>

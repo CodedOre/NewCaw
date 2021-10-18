@@ -6,10 +6,13 @@ link.hashtag, link.mention, link.weblink {
 }
 
 /*
- * Creates an circular indicator around an image.
- * Use other classes, such as .osd, for background.
+ * Styles for the indicator box, using a pill.
  */
-image.indicator {
+box.indicator {
   padding: 6px;
-  border-radius: 50%;
+  border-radius: 15px;
+}
+box.indicator > image {
+  margin-left: 3px;
+  margin-right: 3px;
 }

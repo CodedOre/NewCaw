@@ -14,13 +14,32 @@
       </object>
     </child>
     <child>
-      <object class="GtkImage" id="alt_text_indicator">
+      <object class="GtkBox" id="media_indicator_box">
         <property name="visible">false</property>
         <property name="halign">end</property>
         <property name="valign">end</property>
         <property name="margin-end">8</property>
         <property name="margin-bottom">8</property>
-        <property name="icon-name">accessories-text-editor-symbolic</property>
+        <child>
+          <object class="GtkImage" id="animated_type_indicator">
+            <property name="visible">false</property>
+            <property name="icon-name">animated-symbolic</property>
+            <property name="tooltip-text" translatable="yes">Animated GIF</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkImage" id="video_type_indicator">
+            <property name="visible">false</property>
+            <property name="icon-name">camera-video-symbolic</property>
+            <property name="tooltip-text" translatable="yes">Video</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkImage" id="alt_text_indicator">
+            <property name="visible">false</property>
+            <property name="icon-name">accessories-text-editor-symbolic</property>
+          </object>
+        </child>
         <style>
           <class name="osd"/>
           <class name="indicator"/>

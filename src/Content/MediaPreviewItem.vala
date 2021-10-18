@@ -44,6 +44,12 @@ public class MediaPreviewItem : Gtk.Widget {
   [GtkChild]
   private unowned Gtk.Button selector;
   [GtkChild]
+  private unowned Gtk.Box media_indicator_box;
+  [GtkChild]
+  private unowned Gtk.Image animated_type_indicator;
+  [GtkChild]
+  private unowned Gtk.Image video_type_indicator;
+  [GtkChild]
   private unowned Gtk.Image alt_text_indicator;
 
   /**
@@ -71,13 +77,16 @@ public class MediaPreviewItem : Gtk.Widget {
       alt_text_indicator.set_tooltip_text (displayed_media.alt_text);
       alt_text_indicator.visible = true;
     }
+
+    // Make media_indicator_box visible when a indicator is set
+    media_indicator_box.visible = animated_type_indicator.visible || video_type_indicator.visible || alt_text_indicator.visible;
   }
 
   public override void size_allocate (int width, int height, int baseline) {
 
     // Allocate selector and alt_text_indicator
     selector.allocate (width, height, baseline, null);
-    alt_text_indicator.allocate (width, height, baseline, null);
+    media_indicator_box.allocate (width, height, baseline, null);
 
     // Create Gsk.Transform when preview texture is found
     Gsk.Transform preview_format = null;
@@ -172,7 +181,7 @@ public class MediaPreviewItem : Gtk.Widget {
     // Destructs children of MediaPreviewItem
     preview.unparent ();
     selector.unparent ();
-    alt_text_indicator.unparent ();
+    media_indicator_box.unparent ();
   }
 
   /**
