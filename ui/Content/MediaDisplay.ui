@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="MediaDisplay" parent="GtkWidget">
+    <property name="width-request">360</property>
+    <property name="height-request">450</property>
+    <property name="layout-manager">
+      <object class="GtkConstraintLayout">
+        <constraints>
+          <constraint target="top_bar" target-attribute="width"
+                      relation="eq"
+                      source="super" source-attribute="width"
+                      strength="required"/>
+        </constraints>
+      </object>
+    </property>
+    <child>
+      <object class="GtkRevealer" id="top_bar">
+        <property name="reveal-child">true</property>
+        <child>
+          <object class="GtkWindowHandle">
+            <child>
+              <object class="GtkActionBar">
+                <child type="start">
+                  <object class="GtkWindowControls">
+                    <property name="side">start</property>
+                  </object>
+                </child>
+                <child type="center">
+                  <object class="AdwCarouselIndicatorDots">
+                  </object>
+                </child>
+                <child type="end">
+                  <object class="GtkWindowControls">
+                    <property name="side">end</property>
+                  </object>
+                </child>
+                <style>
+                  <class name="osd"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

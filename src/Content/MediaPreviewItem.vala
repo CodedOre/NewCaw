@@ -175,7 +175,7 @@ public class MediaPreviewItem : Gtk.Widget {
   }
 
   /**
-   * Deconstructs MediaPreviewItem and it's childrens
+   * Deconstructs MediaPreviewItem and it's childrens.
    */
   public override void dispose () {
     // Destructs children of MediaPreviewItem
