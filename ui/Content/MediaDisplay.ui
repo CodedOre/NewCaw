@@ -35,6 +35,15 @@
                       source="super" source-attribute="center-y"
                       strength="required"/>
 
+          <constraint target="bottom_bar" target-attribute="width"
+                      relation="eq"
+                      source="super" source-attribute="width"
+                      strength="required"/>
+          <constraint target="bottom_bar" target-attribute="bottom"
+                      relation="eq"
+                      source="super" source-attribute="bottom"
+                      strength="required"/>
+
           <constraint target="top_bar" target-attribute="width"
                       relation="eq"
                       source="super" source-attribute="width"
@@ -88,6 +97,79 @@
             </child>
             <style>
               <class name="circular"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRevealer" id="bottom_bar">
+        <property name="transition-type">crossfade</property>
+        <binding name="reveal-child">
+          <lookup name="display_controls">MediaDisplay</lookup>
+        </binding>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <property name="valign">end</property>
+            <child>
+              <object class="GtkSeparator"/>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="margin-top">6</property>
+                <property name="margin-bottom">6</property>
+                <property name="margin-start">6</property>
+                <property name="margin-end">6</property>
+                <property name="spacing">6</property>
+                <child>
+                  <object class="GtkButton">
+                    <child>
+                      <object class="AdwButtonContent">
+                        <property name="icon-name">zoom-out-symbolic</property>
+                      </object>
+                    </child>
+                    <style>
+                      <class name="flat"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <child>
+                      <object class="AdwButtonContent">
+                        <property name="icon-name">zoom-fit-best-symbolic</property>
+                      </object>
+                    </child>
+                    <style>
+                      <class name="flat"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <child>
+                      <object class="AdwButtonContent">
+                        <property name="icon-name">zoom-in-symbolic</property>
+                      </object>
+                    </child>
+                    <style>
+                      <class name="flat"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="hexpand">true</property>
+                    <property name="halign">start</property>
+                    <property name="xalign">0.0</property>
+                    <property name="wrap">true</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <style>
+              <class name="background"/>
             </style>
           </object>
         </child>

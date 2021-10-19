@@ -33,6 +33,10 @@ public class MediaDisplay : Gtk.Widget {
   [GtkChild]
   private unowned Gtk.Revealer next_controls;
 
+  // UI-Elements for the bottom bar
+  [GtkChild]
+  private unowned Gtk.Revealer bottom_bar;
+
   // UI-Elements for the top bar
   [GtkChild]
   private unowned Gtk.Revealer top_bar;
@@ -51,6 +55,7 @@ public class MediaDisplay : Gtk.Widget {
     media_carousel.unparent ();
     previous_controls.unparent ();
     next_controls.unparent ();
+    bottom_bar.unparent ();
     top_bar.unparent ();
   }
 
