@@ -28,12 +28,20 @@ public class MediaDisplay : Gtk.Widget {
   [GtkChild]
   private unowned Gtk.Revealer top_bar;
 
+  // UI-Elements for the buttons
+  [GtkChild]
+  private unowned Gtk.Revealer previous_controls;
+  [GtkChild]
+  private unowned Gtk.Revealer next_controls;
+
   /*
    * Deconstructs MediaDisplay and it's childrens.
    */
   public override void dispose () {
-    // Destructs children of MediaPreviewItem
+    // Destructs children of MediaDisplay
     top_bar.unparent ();
+    previous_controls.unparent ();
+    next_controls.unparent ();
   }
 
 }

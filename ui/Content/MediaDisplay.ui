@@ -12,9 +12,71 @@
                       relation="eq"
                       source="super" source-attribute="width"
                       strength="required"/>
+
+          <constraint target="previous_controls" target-attribute="start"
+                      relation="eq"
+                      source="super" source-attribute="start"
+                      constant="16" strength="required"/>
+          <constraint target="previous_controls" target-attribute="center-y"
+                      relation="eq"
+                      source="super" source-attribute="center-y"
+                      strength="required"/>
+
+          <constraint target="next_controls" target-attribute="end"
+                      relation="eq"
+                      source="super" source-attribute="end"
+                      constant="-16" strength="required"/>
+          <constraint target="next_controls" target-attribute="center-y"
+                      relation="eq"
+                      source="super" source-attribute="center-y"
+                      strength="required"/>
         </constraints>
       </object>
     </property>
+    <child>
+      <object class="GtkRevealer" id="previous_controls">
+        <property name="reveal-child">true</property>
+        <property name="transition-type">crossfade</property>
+        <child>
+          <object class="GtkButton">
+            <child>
+              <object class="AdwButtonContent">
+                <property name="margin-top">8</property>
+                <property name="margin-bottom">8</property>
+                <property name="margin-start">8</property>
+                <property name="margin-end">8</property>
+                <property name="icon-name">go-previous-symbolic</property>
+              </object>
+            </child>
+            <style>
+              <class name="circular"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRevealer" id="next_controls">
+        <property name="reveal-child">true</property>
+        <property name="transition-type">crossfade</property>
+        <child>
+          <object class="GtkButton">
+            <child>
+              <object class="AdwButtonContent">
+                <property name="margin-top">8</property>
+                <property name="margin-bottom">8</property>
+                <property name="margin-start">8</property>
+                <property name="margin-end">8</property>
+                <property name="icon-name">go-next-symbolic</property>
+              </object>
+            </child>
+            <style>
+              <class name="circular"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </child>
     <child>
       <object class="GtkRevealer" id="top_bar">
         <property name="reveal-child">true</property>
