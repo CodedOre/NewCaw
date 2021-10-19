@@ -55,10 +55,13 @@ public class MediaPreviewItem : Gtk.Widget {
   /**
    * Creates a MediaPreviewItem for a certain Media.
    */
-  public MediaPreviewItem (Backend.Media media, int width, int height, int spacing) {
+  public MediaPreviewItem (Backend.Media media, int index, int width, int height, int spacing) {
     // Init object with construct only properties
     Object (overflow: Gtk.Overflow.HIDDEN);
     displayed_media = media;
+
+    // Finalize the selector action
+    selector.set_action_target ("i", index);
 
     // Set grid size variables
     cell_width   = width;

@@ -133,7 +133,6 @@ public class PostDisplay : Gtk.Box {
 
     // Display post message in main label
     post_text_label.label      = main_post.text;
-    // FIXME: valac complains about "unreachable code", is this our or valac issue?
     post_text_label.selectable = display_type == MAIN;
 
     // Display media if post contains some
@@ -169,7 +168,7 @@ public class PostDisplay : Gtk.Box {
 
       // Set up options menu
       var    post_options_menu = new Menu ();
-      string open_link_action  = @"post.open_on_domain::$(main_post.url)";
+      string open_link_action  = @"post_display.open_link::$(main_post.url)";
       post_options_menu.append (open_link_label, open_link_action);
       post_options_button.menu_model = post_options_menu;
     } else {
@@ -182,9 +181,14 @@ public class PostDisplay : Gtk.Box {
       post_replies_display_label.label = main_post.replied_count.to_string ("%'d");
     }
 
-    // Set up widget actions
-    this.install_action ("post.open_on_domain", "s", (widget, action, arg) => {
+    // Set up "Open link" action
+    this.install_action ("post_display.open_link", "s", (widget, action, arg) => {
       Gtk.show_uri (null, arg.get_string (), Gdk.CURRENT_TIME);
+    });
+
+    // Set up "display media" action
+    this.install_action ("post_display.display_media", "i", (widget, action, arg) => {
+      // TODO: Open MediaDisplay with media using MainWindow
     });
   }
 

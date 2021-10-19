@@ -95,7 +95,7 @@ public class MediaPreview : Gtk.Grid {
       int item_height = PREVIEW_GRID_LAYOUT [displayed_media.length - 1, i, 3];
 
       // Create a Frame to hold a media preview
-      var media_item   = new MediaPreviewItem (displayed_media [i], item_width, item_height, ITEM_SPACING);
+      var media_item   = new MediaPreviewItem (displayed_media [i], i, item_width, item_height, ITEM_SPACING);
       var item_frame   = new Gtk.Frame (null);
       item_frame.child = media_item;
 
