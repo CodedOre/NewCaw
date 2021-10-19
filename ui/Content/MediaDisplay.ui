@@ -35,8 +35,10 @@
     </property>
     <child>
       <object class="GtkRevealer" id="previous_controls">
-        <property name="reveal-child">true</property>
         <property name="transition-type">crossfade</property>
+        <binding name="reveal-child">
+          <lookup name="display_controls">MediaDisplay</lookup>
+        </binding>
         <child>
           <object class="GtkButton">
             <child>
@@ -57,8 +59,10 @@
     </child>
     <child>
       <object class="GtkRevealer" id="next_controls">
-        <property name="reveal-child">true</property>
         <property name="transition-type">crossfade</property>
+        <binding name="reveal-child">
+          <lookup name="display_controls">MediaDisplay</lookup>
+        </binding>
         <child>
           <object class="GtkButton">
             <child>
@@ -79,7 +83,10 @@
     </child>
     <child>
       <object class="GtkRevealer" id="top_bar">
-        <property name="reveal-child">true</property>
+        <property name="transition-type">crossfade</property>
+        <binding name="reveal-child">
+          <lookup name="display_controls">MediaDisplay</lookup>
+        </binding>
         <child>
           <object class="AdwHeaderBar">
             <child type="start">

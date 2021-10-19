@@ -34,6 +34,11 @@ public class MediaDisplay : Gtk.Widget {
   [GtkChild]
   private unowned Gtk.Revealer next_controls;
 
+  /**
+   * If the UI should be displayed.
+   */
+  public bool display_controls { get; set; default = true; }
+
   /*
    * Deconstructs MediaDisplay and it's childrens.
    */
