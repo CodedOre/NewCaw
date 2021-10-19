@@ -8,9 +8,13 @@
     <property name="layout-manager">
       <object class="GtkConstraintLayout">
         <constraints>
-          <constraint target="top_bar" target-attribute="width"
+          <constraint target="media_carousel" target-attribute="width"
                       relation="eq"
                       source="super" source-attribute="width"
+                      strength="required"/>
+          <constraint target="media_carousel" target-attribute="height"
+                      relation="eq"
+                      source="super" source-attribute="height"
                       strength="required"/>
 
           <constraint target="previous_controls" target-attribute="start"
@@ -30,9 +34,17 @@
                       relation="eq"
                       source="super" source-attribute="center-y"
                       strength="required"/>
+
+          <constraint target="top_bar" target-attribute="width"
+                      relation="eq"
+                      source="super" source-attribute="width"
+                      strength="required"/>
         </constraints>
       </object>
     </property>
+    <child>
+      <object class="AdwCarousel" id="media_carousel"/>
+    </child>
     <child>
       <object class="GtkRevealer" id="previous_controls">
         <property name="transition-type">crossfade</property>
@@ -100,6 +112,7 @@
             </child>
             <child type="title">
               <object class="AdwCarouselIndicatorDots">
+                <property name="carousel">media_carousel</property>
               </object>
             </child>
           </object>

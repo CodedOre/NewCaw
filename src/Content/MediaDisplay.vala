@@ -24,15 +24,18 @@
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/MediaDisplay.ui")]
 public class MediaDisplay : Gtk.Widget {
 
-  // UI-Elements for the top bar
-  [GtkChild]
-  private unowned Gtk.Revealer top_bar;
+  // UI-Elements for the content
+  private unowned Adw.Carousel media_carousel;
 
   // UI-Elements for the buttons
   [GtkChild]
   private unowned Gtk.Revealer previous_controls;
   [GtkChild]
   private unowned Gtk.Revealer next_controls;
+
+  // UI-Elements for the top bar
+  [GtkChild]
+  private unowned Gtk.Revealer top_bar;
 
   /**
    * If the UI should be displayed.
@@ -44,9 +47,11 @@ public class MediaDisplay : Gtk.Widget {
    */
   public override void dispose () {
     // Destructs children of MediaDisplay
-    top_bar.unparent ();
+    // FIXME: AdwCarousel can't be unparented, as 'GTK_IS_WIDGET (widget)' fails
+    media_carousel.unparent ();
     previous_controls.unparent ();
     next_controls.unparent ();
+    top_bar.unparent ();
   }
 
 }
