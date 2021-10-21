@@ -36,4 +36,18 @@ public class MainWindow : Adw.ApplicationWindow {
 		Object (application: app);
   }
 
+  /**
+   * Displays a MediaDisplay as an sub-window.
+   */
+  public void show_media_display (MediaDisplay display) {
+    // Create a window holding the MediaDisplay
+    var display_window   = new Adw.Window ();
+    display_window.modal = true;
+
+    // Place the MediaDisplay in the window and presents it
+    display_window.set_content (display);
+    display_window.set_transient_for (this);
+    display_window.present ();
+  }
+
 }

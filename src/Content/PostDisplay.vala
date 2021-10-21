@@ -189,6 +189,17 @@ public class PostDisplay : Gtk.Box {
     // Set up "display media" action
     this.install_action ("post_display.display_media", "i", (widget, action, arg) => {
       // TODO: Open MediaDisplay with media using MainWindow
+      // Create the MediaDisplay
+      var media_display = new MediaDisplay ();
+
+      // Get the MainWindow for this PostDisplay
+      Gtk.Root display_root = widget.get_root ();
+      if (display_root is MainWindow) {
+        var main_window = (MainWindow) display_root;
+        main_window.show_media_display (media_display);
+      } else {
+        error ("PostDisplay: Can not display MediaDisplay without MainWindow!");
+      }
     });
   }
 
