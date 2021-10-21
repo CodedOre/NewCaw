@@ -168,8 +168,7 @@ public class PostDisplay : Gtk.Box {
 
       // Set up options menu
       var    post_options_menu = new Menu ();
-      string open_link_action  = @"post_display.open_link::$(main_post.url)";
-      post_options_menu.append (open_link_label, open_link_action);
+      post_options_menu.append (open_link_label, "post_display.open_link");
       post_options_button.menu_model = post_options_menu;
     } else {
       // Set up metrics box
@@ -182,18 +181,25 @@ public class PostDisplay : Gtk.Box {
     }
 
     // Set up "Open link" action
-    this.install_action ("post_display.open_link", "s", (widget, action, arg) => {
-      Gtk.show_uri (null, arg.get_string (), Gdk.CURRENT_TIME);
+    this.install_action ("post_display.open_link", null, (widget, action) => {
+      // Get the instance for this
+      PostDisplay display = (PostDisplay) widget;
+
+      // Open link to main post
+      Gtk.show_uri (null, display.main_post.url, Gdk.CURRENT_TIME);
     });
 
     // Set up "display media" action
     this.install_action ("post_display.display_media", "i", (widget, action, arg) => {
-      // TODO: Open MediaDisplay with media using MainWindow
+      // Get the instance for this
+      PostDisplay display = (PostDisplay) widget;
+
       // Create the MediaDisplay
-      var media_display = new MediaDisplay ();
+      int focused_media = (int) arg.get_int32 ();
+      var media_display = new MediaDisplay (display.main_post.get_media (), focused_media);
 
       // Get the MainWindow for this PostDisplay
-      Gtk.Root display_root = widget.get_root ();
+      Gtk.Root display_root = display.get_root ();
       if (display_root is MainWindow) {
         var main_window = (MainWindow) display_root;
         main_window.show_media_display (media_display);

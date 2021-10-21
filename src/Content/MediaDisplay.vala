@@ -46,7 +46,10 @@ public class MediaDisplay : Gtk.Widget {
    */
   public bool display_controls { get; set; default = true; }
 
-  /*
+  public MediaDisplay (Backend.Media[] media, int focus) {
+  }
+
+  /**
    * Deconstructs MediaDisplay and it's childrens.
    */
   public override void dispose () {
