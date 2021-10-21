@@ -68,6 +68,7 @@ cawfiles = [
   'src/Cawbird.vala',
   'src/MainWindow.vala',
   'src/Content/MediaDisplay.vala',
+  'src/Content/MediaDisplayItem.vala',
   'src/Content/MediaPreview.vala',
   'src/Content/MediaPreviewItem.vala',
   'src/Content/PostDisplay.vala',

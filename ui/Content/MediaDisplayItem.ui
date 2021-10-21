@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="MediaDisplayItem" parent="GtkWidget">
+    <property name="hexpand">true</property>
+    <property name="vexpand">true</property>
+    <child>
+      <object class="GtkPicture" id="content"/>
+    </child>
+  </template>
+</interface>

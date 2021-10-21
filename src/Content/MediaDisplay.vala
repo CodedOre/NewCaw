@@ -18,6 +18,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+using GLib;
+
 /**
  * A view widget displaying Media in full.
  */
@@ -25,6 +27,7 @@
 public class MediaDisplay : Gtk.Widget {
 
   // UI-Elements for the content
+  [GtkChild]
   private unowned Adw.Carousel media_carousel;
 
   // UI-Elements for the buttons
@@ -47,6 +50,11 @@ public class MediaDisplay : Gtk.Widget {
   public bool display_controls { get; set; default = true; }
 
   public MediaDisplay (Backend.Media[] media, int focus) {
+    // Create a display for all media
+    foreach (Backend.Media item in media) {
+      var item_display = new MediaDisplayItem (item);
+      media_carousel.append (item_display);
+    }
   }
 
   /**
