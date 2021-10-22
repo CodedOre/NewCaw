@@ -62,6 +62,7 @@
         </binding>
         <child>
           <object class="GtkButton">
+            <property name="action-name">media_display.select_previous</property>
             <child>
               <object class="AdwButtonContent">
                 <property name="margin-top">8</property>
@@ -87,6 +88,7 @@
         </binding>
         <child>
           <object class="GtkButton">
+            <property name="action-name">media_display.select_next</property>
             <child>
               <object class="AdwButtonContent">
                 <property name="margin-top">8</property>

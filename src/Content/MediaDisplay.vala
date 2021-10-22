@@ -49,12 +49,42 @@ public class MediaDisplay : Gtk.Widget {
    */
   public bool display_controls { get; set; default = true; }
 
+  /**
+   * Creates a new instance of MediaDisplay.
+   */
   public MediaDisplay (Backend.Media[] media, int focus) {
     // Create a display for all media
     foreach (Backend.Media item in media) {
       var item_display = new MediaDisplayItem (item);
+      media_items     += item_display;
       media_carousel.append (item_display);
     }
+
+    // Set up the "Button scroll" actions
+    this.install_action ("media_display.select_previous", null, (widget, action) => {
+      // Get the instance for this
+      MediaDisplay display = (MediaDisplay) widget;
+
+      // Get the current position of the carousel
+      int i = (int) display.media_carousel.position;
+
+      // Scroll to the previous widget
+      if (i > 0) {
+        display.media_carousel.scroll_to (display.media_items [i-1]);
+      }
+    });
+    this.install_action ("media_display.select_next", null, (widget, action) => {
+      // Get the instance for this
+      MediaDisplay display = (MediaDisplay) widget;
+
+      // Get the current position of the carousel
+      int i = (int) display.media_carousel.position;
+
+      // Scroll to the next widget
+      if (i < display.media_items.length - 1) {
+        display.media_carousel.scroll_to (display.media_items [i+1]);
+      }
+    });
   }
 
   /**
@@ -69,5 +99,10 @@ public class MediaDisplay : Gtk.Widget {
     bottom_bar.unparent ();
     top_bar.unparent ();
   }
+
+  /**
+   * The display items of this widget.
+   */
+  private MediaDisplayItem[] media_items;
 
 }
