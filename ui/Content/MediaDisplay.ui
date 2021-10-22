@@ -129,39 +129,45 @@
                 <property name="margin-end">6</property>
                 <property name="spacing">6</property>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkBox" id="zoom_controls">
+                    <property name="valign">center</property>
+                    <property name="spacing">6</property>
                     <child>
-                      <object class="AdwButtonContent">
-                        <property name="icon-name">zoom-out-symbolic</property>
+                      <object class="GtkButton">
+                        <child>
+                          <object class="AdwButtonContent">
+                            <property name="icon-name">zoom-out-symbolic</property>
+                          </object>
+                        </child>
+                        <style>
+                          <class name="flat"/>
+                        </style>
                       </object>
                     </child>
-                    <style>
-                      <class name="flat"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton">
                     <child>
-                      <object class="AdwButtonContent">
-                        <property name="icon-name">zoom-fit-best-symbolic</property>
+                      <object class="GtkButton">
+                        <child>
+                          <object class="AdwButtonContent">
+                            <property name="icon-name">zoom-fit-best-symbolic</property>
+                          </object>
+                        </child>
+                        <style>
+                          <class name="flat"/>
+                        </style>
                       </object>
                     </child>
-                    <style>
-                      <class name="flat"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton">
                     <child>
-                      <object class="AdwButtonContent">
-                        <property name="icon-name">zoom-in-symbolic</property>
+                      <object class="GtkButton">
+                        <child>
+                          <object class="AdwButtonContent">
+                            <property name="icon-name">zoom-in-symbolic</property>
+                          </object>
+                        </child>
+                        <style>
+                          <class name="flat"/>
+                        </style>
                       </object>
                     </child>
-                    <style>
-                      <class name="flat"/>
-                    </style>
                   </object>
                 </child>
                 <child>

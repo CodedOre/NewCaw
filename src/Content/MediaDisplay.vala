@@ -111,6 +111,10 @@ public class MediaDisplay : Gtk.Widget {
 
     // Set up the description
     description_label.label = media.alt_text;
+
+    // Disable scroll buttons if on first/last item
+    previous_controls.sensitive = ! (position == 0);
+    next_controls.sensitive     = ! (position == media_items.length - 1);
   }
 
   /**
