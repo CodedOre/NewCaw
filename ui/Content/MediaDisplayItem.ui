@@ -5,6 +5,9 @@
   <template class="MediaDisplayItem" parent="GtkWidget">
     <property name="hexpand">true</property>
     <property name="vexpand">true</property>
+    <property name="layout-manager">
+      <object class="GtkBinLayout"/>
+    </property>
     <child>
       <object class="GtkPicture" id="content"/>
     </child>
