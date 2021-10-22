@@ -189,6 +189,7 @@
               <object class="GtkActionBar">
                 <child type="start">
                   <object class="GtkButton">
+                    <property name="action-name">window.close</property>
                     <child>
                       <object class="AdwButtonContent">
                         <property name="icon-name">go-previous-symbolic</property>
