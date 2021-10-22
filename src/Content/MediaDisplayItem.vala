@@ -35,6 +35,33 @@ public class MediaDisplayItem : Gtk.Widget {
   public MediaDisplayItem (Backend.Media media) {
     // Set the used media
     displayed_media = media;
+
+    // Load the preview image
+    // FIXME: May not be async...
+    displayed_media.load_preview.begin ((obj, res) => {
+      // Set displayed texture to preview if media is not yet loaded
+      if (displayed_paintable == null) {
+        displayed_paintable = displayed_media.load_preview.end (res);
+      }
+      // Displays the to displayed texture
+      if (displayed_paintable != null) {
+        content.set_paintable (displayed_paintable);
+      }
+    });
+
+    // Load the actual media depending on the media type
+    if (displayed_media is Backend.Picture) {
+      var picture = (Backend.Picture) displayed_media;
+      // Load the high-res image
+      // FIXME: May not be async...
+      picture.load_media.begin ((obj, res) => {
+        displayed_paintable = picture.load_media.end (res);
+        // Displays the image
+        if (displayed_paintable != null) {
+          content.set_paintable (displayed_paintable);
+        }
+      });
+    }
   }
 
   /**
@@ -49,5 +76,10 @@ public class MediaDisplayItem : Gtk.Widget {
    * The displayed media.
    */
   private Backend.Media displayed_media;
+
+  /**
+   * The displayed Gdk.Texture.
+   */
+  Gdk.Paintable? displayed_paintable = null;
 
 }
