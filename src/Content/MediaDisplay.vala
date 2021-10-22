@@ -39,6 +39,8 @@ public class MediaDisplay : Gtk.Widget {
   // UI-Elements for the bottom bar
   [GtkChild]
   private unowned Gtk.Revealer bottom_bar;
+  [GtkChild]
+  private unowned Gtk.Label description_label;
 
   // UI-Elements for the top bar
   [GtkChild]
@@ -85,6 +87,22 @@ public class MediaDisplay : Gtk.Widget {
         display.media_carousel.scroll_to (display.media_items [i+1]);
       }
     });
+
+    // Launch changed_page to setup the first item
+    changed_page ();
+  }
+
+  /**
+   * Adapt the UI to a changed page.
+   */
+  [GtkCallback]
+  private void changed_page () {
+    // Get the currently displayed media
+    int           position = (int) media_carousel.position;
+    Backend.Media media    = media_items [position].displayed_media;
+
+    // Set up the description
+    description_label.label = media.alt_text;
   }
 
   /**

@@ -34,7 +34,7 @@ public class MediaDisplayItem : Gtk.Widget {
    */
   public MediaDisplayItem (Backend.Media media) {
     // Set the used media
-    displayed_media = media;
+    _displayed_media = media;
 
     // Load the preview image
     // FIXME: May not be async...
@@ -75,7 +75,7 @@ public class MediaDisplayItem : Gtk.Widget {
   /**
    * The displayed media.
    */
-  private Backend.Media displayed_media;
+  public Backend.Media displayed_media { get; }
 
   /**
    * The displayed Gdk.Texture.
