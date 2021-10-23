@@ -57,3 +57,6 @@ subdir('src')
 
 # Add the translations
 subproject('po')
+
+# Add post-install script
+meson.add_install_script('build-aux/meson-postinstall.py')
