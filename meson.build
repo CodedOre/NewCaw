@@ -52,49 +52,7 @@ subdir('tests')
 cawresources = []
 subdir('data')
 subdir('ui')
-
-# Dependencies for the client
-cawdepends = [
-  dependency('gio-2.0',       version: '>= 2.50'),
-  dependency('glib-2.0',      version: '>= 2.50'),
-  dependency('gtk4',          version: '>= 4.0'),
-  dependency('libadwaita-1',  version: '>= 1.0')
-]
-
-cawdepends += declare_dependency(
-  link_with:            backendlib,
-  include_directories:  backendsrc,
-  dependencies:         libdepends
-)
-
-# Sources of the client
-cawfiles = [
-  'src/config.vapi',
-  'src/Cawbird.vala',
-  'src/Content/MediaPreview.vala',
-  'src/Content/MediaPreviewItem.vala',
-  'src/Content/PostDisplay.vala',
-  'src/Utils/DisplayUtils.vala'
-]
-
-# Add build configurations
-cdata = configuration_data()
-cdata.set_quoted ('LOCALEDIR', join_paths(get_option('prefix'), get_option('localedir')))
-cdata.set_quoted ('GETTEXT_PACKAGE', meson.project_name())
-cdata.set_quoted ('PROJECT_VERSION', version)
-configure_file(
-  output: 'config.h',
-  configuration: cdata
-)
-
-# Build the program
-executable(
-  'cawbird',
-  [ cawfiles, cawresources ],
-  dependencies:  cawdepends,
-  vala_args:    '--target-glib=2.50',
-  install:       true
-)
+subdir('src')
 
 # Add the translations
 subproject('po')
