@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Cawbird
+GenericName=Twitter Client
+Comment=A window to the social world
+# TRANSLATORS: Search terms to find this application, separated by semicolons. The list must end with a semicolon!
+Keywords=twitter;
+Exec=cawbird
+Type=Application
+Icon=uk.co.ibboard.Cawbird
+Categories=Network;GTK;
+# DBusActivatable=true
+StartupWMClass=cawbird
+X-Purism-FormFactor=Workstation;Mobile;

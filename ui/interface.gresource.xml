@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <!-- CSS Stylesheets -->
+  <gresource prefix="/uk/co/ibboard/Cawbird">
+    <file>style.css</file>
+  </gresource>
+  <!-- UI Files -->
+  <gresource prefix="/uk/co/ibboard/Cawbird/ui">
+    <file>MainWindow.ui</file>
+    <file>Content/MediaDisplay.ui</file>
+    <file>Content/MediaDisplayItem.ui</file>
+    <file>Content/MediaPreviewItem.ui</file>
+    <file>Content/PostDisplay.ui</file>
+  </gresource>
+</gresources>

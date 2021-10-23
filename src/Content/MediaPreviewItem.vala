@@ -69,7 +69,7 @@ public class MediaPreviewItem : Gtk.Widget {
     grid_spacing = spacing;
 
     // Load and set the Paintable
-    // FIXME: Appears to be not async...
+    // FIXME: May not be async...
     displayed_media.load_preview.begin ((obj, res) => {
       displayed_texture = displayed_media.load_preview.end (res);
       preview.set_paintable (displayed_texture);
@@ -97,7 +97,7 @@ public class MediaPreviewItem : Gtk.Widget {
     int           preview_width  = width;
     if (displayed_texture != null) {
       // Get the sizes of the item and the texture
-      // TODO: Check if cell width and height remove flicker
+      // FIXME: Fix flickering when quickly resizing the window
       int text_height = displayed_texture.height;
       int text_width  = displayed_texture.width;
       int item_height = this.get_allocated_height ();
@@ -136,7 +136,7 @@ public class MediaPreviewItem : Gtk.Widget {
    * Returns the Gtk.SizeRequestMode to GTK.
    */
   public override Gtk.SizeRequestMode get_request_mode () {
-    return HEIGHT_FOR_WIDTH;
+    return CONSTANT_SIZE;
   }
 
   /**
@@ -156,8 +156,6 @@ public class MediaPreviewItem : Gtk.Widget {
       natural = MINIMUM_WIDTH;
     } else {
       // Get allocated width of widget
-      // FIXME: Ensure we get a width before the first snapshot
-      // FIXME: Fix non-measure when maximized
       int allocated_width;
       if (this.get_allocated_width () > 0) {
         allocated_width = this.get_allocated_width ();
@@ -178,7 +176,16 @@ public class MediaPreviewItem : Gtk.Widget {
   }
 
   /**
-   * Deconstructs MediaPreviewItem and it's childrens.
+   * Snapshots the widget for display.
+   */
+  public override void snapshot (Gtk.Snapshot snapshot) {
+    this.queue_resize ();
+    this.queue_allocate ();
+    base.snapshot (snapshot);
+  }
+
+  /**
+   * Deconstructs MediaPreviewItem and it's childrens
    */
   public override void dispose () {
     // Destructs children of MediaPreviewItem
