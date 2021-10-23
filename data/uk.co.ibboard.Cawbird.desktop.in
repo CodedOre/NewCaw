@@ -8,6 +8,6 @@ Exec=cawbird
 Type=Application
 Icon=uk.co.ibboard.Cawbird
 Categories=Network;GTK;
-DBusActivatable=true
+# DBusActivatable=true
 StartupWMClass=cawbird
 X-Purism-FormFactor=Workstation;Mobile;
