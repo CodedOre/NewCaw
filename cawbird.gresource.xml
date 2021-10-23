@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gresources>
-  <gresource prefix="/uk/co/ibboard/Cawbird">
-    <file>ui/Content/MediaPreviewItem.ui</file>
-    <file>ui/Content/PostDisplay.ui</file>
-    <file alias="style.css">ui/style.css</file>
-  </gresource>
-</gresources>

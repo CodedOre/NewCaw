@@ -48,10 +48,10 @@ endif
 subdir('lib')
 subdir('tests')
 
+# Build the code and data for the client
 cawresources = []
-
-# Build the data directory
 subdir('data')
+subdir('ui')
 
 # Dependencies for the client
 cawdepends = [
@@ -76,13 +76,6 @@ cawfiles = [
   'src/Content/PostDisplay.vala',
   'src/Utils/DisplayUtils.vala'
 ]
-
-# Compile program resources
-cawresources += gnome.compile_resources(
-  'cawbird_resources',
-  'cawbird.gresource.xml',
-  c_name: 'cawbird'
-)
 
 # Add build configurations
 cdata = configuration_data()
