@@ -69,7 +69,10 @@ public class MediaPreviewItem : Gtk.Widget {
     // FIXME: May not be async...
     displayed_media.load_preview.begin ((obj, res) => {
       displayed_texture = displayed_media.load_preview.end (res);
-      preview.set_paintable (displayed_texture);
+      if (displayed_texture != null) {
+        preview.set_paintable (displayed_texture);
+        preview.remove_css_class ("loading-media");
+      }
     });
 
     // Set alt-text if available

@@ -4,7 +4,11 @@
   <requires lib="libadwaita" version="1.0"/>
   <template class="MediaPreviewItem" parent="GtkWidget">
     <child>
-      <object class="GtkPicture" id="preview"/>
+      <object class="GtkPicture" id="preview">
+        <style>
+          <class name="loading-media"/>
+        </style>
+      </object>
     </child>
     <child>
       <object class="GtkButton" id="selector">

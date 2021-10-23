@@ -16,3 +16,24 @@ box.indicator > image {
   margin-left: 3px;
   margin-right: 3px;
 }
+
+/**
+ * An animated gradient, used to display a loading media.
+ */
+.loading-media {
+  background: linear-gradient(90deg, alpha(@dark_1, 0.25), alpha(@light_2, 0.5), alpha(@dark_1, 0.25));
+  background-size: 200% 100%;
+  animation: animated-loading 5s linear infinite;
+}
+
+@keyframes animated-loading {
+    0% {
+      background-position:0% 50%;
+    }
+    50% {
+      background-position:100% 50%;
+    }
+    100% {
+      background-position:0% 50%;
+    }
+}
