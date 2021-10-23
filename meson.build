@@ -7,6 +7,7 @@ project(
 
 # Load meson modules
 gnome = import('gnome')
+i18n  = import('i18n')
 
 # Set up translation domain
 add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name()), language:'c')
