@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/uk/co/ibboard/Cawbird/icons/scalable">
+    <file>actions/animated-symbolic.svg</file>
+    <file>actions/liked-symbolic.svg</file>
+    <file>actions/not-liked-symbolic.svg</file>
+    <file>actions/reply-symbolic.svg</file>
+    <file>actions/repost-symbolic.svg</file>
+  </gresource>
+</gresources>

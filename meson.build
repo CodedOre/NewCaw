@@ -48,6 +48,11 @@ endif
 subdir('lib')
 subdir('tests')
 
+cawresources = []
+
+# Build the data directory
+subdir('data')
+
 # Dependencies for the client
 cawdepends = [
   dependency('gio-2.0',       version: '>= 2.50'),
@@ -73,7 +78,7 @@ cawfiles = [
 ]
 
 # Compile program resources
-cawfiles += gnome.compile_resources(
+cawresources += gnome.compile_resources(
   'cawbird_resources',
   'cawbird.gresource.xml',
   c_name: 'cawbird'
@@ -92,7 +97,7 @@ configure_file(
 # Build the program
 executable(
   'cawbird',
-  cawfiles,
+  [ cawfiles, cawresources ],
   dependencies:  cawdepends,
   vala_args:    '--target-glib=2.50',
   install:       true
