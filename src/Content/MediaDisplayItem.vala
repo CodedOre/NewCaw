@@ -37,11 +37,11 @@ public class MediaDisplayItem : Gtk.Widget {
     _displayed_media = media;
 
     // Load the preview image
-    // FIXME: May not be async...
-    displayed_media.load_preview.begin ((obj, res) => {
+    displayed_media.preview.begin_loading ();
+    displayed_media.preview.load_completed.connect (() => {
       // Set displayed texture to preview if media is not yet loaded
       if (displayed_paintable == null) {
-        displayed_paintable = displayed_media.load_preview.end (res);
+        displayed_paintable = displayed_media.preview.get_media ();
       }
       // Displays the to displayed texture
       if (displayed_paintable != null) {
@@ -53,10 +53,9 @@ public class MediaDisplayItem : Gtk.Widget {
     if (displayed_media is Backend.Picture) {
       var picture = (Backend.Picture) displayed_media;
       // Load the high-res image
-      // FIXME: May not be async...
-      picture.load_media.begin ((obj, res) => {
-        displayed_paintable = picture.load_media.end (res);
-        // Displays the image
+      picture.media.begin_loading ();
+      picture.media.load_completed.connect (() => {
+        displayed_paintable = picture.media.get_media ();
         if (displayed_paintable != null) {
           content.set_paintable (displayed_paintable);
         }
