@@ -35,6 +35,15 @@ public class Backend.ImageLoader : Backend.MediaLoader {
   }
 
   /**
+   * Returns if the image is loaded.
+   *
+   * @return True if the image is loaded.
+   */
+  public override bool is_loaded () {
+    return image != null;
+  }
+
+  /**
    * Initiates the download.
    */
   public override void begin_loading () {

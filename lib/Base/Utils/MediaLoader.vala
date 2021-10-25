@@ -23,6 +23,7 @@ using GLib;
 /**
  * An interface containing basic utilities for downloading media.
  */
+// FIXME: Some `assertion 'self != NULL' failed` issue
 public abstract class Backend.MediaLoader : Object {
 
   /**
@@ -39,6 +40,13 @@ public abstract class Backend.MediaLoader : Object {
     // Set the to be loaded url.
     loaded_url = url;
   }
+
+  /**
+   * Returns if the media is loaded.
+   *
+   * @return True if the media is loaded.
+   */
+  public abstract bool is_loaded ();
 
   /**
    * Initiates the download.

@@ -37,29 +37,39 @@ public class MediaDisplayItem : Gtk.Widget {
     _displayed_media = media;
 
     // Load the preview image
-    displayed_media.preview.begin_loading ();
-    displayed_media.preview.load_completed.connect (() => {
-      // Set displayed texture to preview if media is not yet loaded
-      if (displayed_paintable == null) {
-        displayed_paintable = displayed_media.preview.get_media ();
-      }
-      // Displays the to displayed texture
-      if (displayed_paintable != null) {
-        content.set_paintable (displayed_paintable);
-      }
-    });
+    if (displayed_media.preview.is_loaded ()) {
+      displayed_paintable = displayed_media.preview.get_media ();
+      content.set_paintable (displayed_paintable);
+    } else {
+      displayed_media.preview.begin_loading ();
+      displayed_media.preview.load_completed.connect (() => {
+        // Set displayed texture to preview if media is not yet loaded
+        if (displayed_paintable == null) {
+          displayed_paintable = displayed_media.preview.get_media ();
+        }
+        // Displays the to displayed texture
+        if (displayed_paintable != null) {
+          content.set_paintable (displayed_paintable);
+        }
+      });
+    }
 
     // Load the actual media depending on the media type
     if (displayed_media is Backend.Picture) {
       var picture = (Backend.Picture) displayed_media;
       // Load the high-res image
-      picture.media.begin_loading ();
-      picture.media.load_completed.connect (() => {
+      if (picture.media.is_loaded ()) {
         displayed_paintable = picture.media.get_media ();
-        if (displayed_paintable != null) {
-          content.set_paintable (displayed_paintable);
-        }
-      });
+        content.set_paintable (displayed_paintable);
+      } else {
+        picture.media.begin_loading ();
+        picture.media.load_completed.connect (() => {
+          displayed_paintable = picture.media.get_media ();
+          if (displayed_paintable != null) {
+            content.set_paintable (displayed_paintable);
+          }
+        });
+      }
     }
   }
 
