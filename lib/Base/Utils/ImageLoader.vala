@@ -1,4 +1,4 @@
-/* Picture.vala
+/* ImageLoader.vala
  *
  * Copyright 2021 Frederick Schenk
  *
@@ -20,35 +20,8 @@
 
 using GLib;
 
-public class Backend.Mastodon.Picture : Backend.Picture, Backend.Mastodon.Media  {
-
-  /**
-   * Creates an Picture object from a given Json.Object.
-   *
-   * @param json A Json.Object containing the data.
-   */
-  public Picture.from_json (Json.Object json) {
-    // Set base properties
-    base.from_json (json);
-  }
-
-  /**
-   * Loads the media for display.
-   *
-   * @return The final media or null if loading failed.
-   */
-  public async Gdk.Texture? load_media () {
-    if (media == null) {
-      // Load the image if not in storage
-      // TODO: Reimplement downloader when new loader is available
-    }
-    // Return stored image
-    return media;
-  }
-
-  /**
-   * The downloaded media in storage.
-   */
-  private Gdk.Texture? media;
-
+/**
+ * A MediaLoader for downloading images.
+ */
+public class Backend.ImageLoader : Object, Backend.MediaLoader {
 }

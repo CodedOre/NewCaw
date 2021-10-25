@@ -84,7 +84,7 @@ public abstract class Backend.Twitter.Media : Object, Backend.Media {
   public async Gdk.Texture? load_preview () {
     if (preview_image == null) {
       // Load the image if not in storage
-      preview_image = yield MediaLoader.load_image (preview_url);
+      // TODO: Reimplement downloader when new loader is available
     }
     // Return stored image
     return preview_image;

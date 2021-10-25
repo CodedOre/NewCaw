@@ -45,7 +45,7 @@ public class Backend.TwitterLegacy.Picture : Backend.Picture, Backend.TwitterLeg
   public async Gdk.Texture? load_media () {
     if (media == null) {
       // Load the image if not in storage
-      media = yield MediaLoader.load_image (media_url);
+      // TODO: Reimplement downloader when new loader is available
     }
     // Return stored image
     return media;
