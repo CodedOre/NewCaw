@@ -89,9 +89,8 @@ public class MediaDisplay : Gtk.Widget {
     });
 
     // Show/Hide the UI when clicking on the UI
-    // FIXME: Fix activation on drag
     var click_controller = new Gtk.GestureClick ();
-    click_controller.pressed.connect (() => {
+    click_controller.released.connect (() => {
       display_controls = ! display_controls;
     });
     media_carousel.add_controller (click_controller);
