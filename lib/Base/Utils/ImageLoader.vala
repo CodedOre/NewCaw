@@ -23,5 +23,30 @@ using GLib;
 /**
  * A MediaLoader for downloading images.
  */
-public class Backend.ImageLoader : Object, Backend.MediaLoader {
+public class Backend.ImageLoader : Backend.MediaLoader {
+
+  /**
+   * Creates an ImageLoader and prepares it for loading the image.
+   *
+   * @param url The url of the image to be loaded.
+   */
+  internal ImageLoader (string url) {
+    base (url);
+  }
+
+  /**
+   * Initiates the download.
+   */
+  public override void begin_loading () {
+  }
+
+  /**
+   * Returns the final downloaded media.
+   *
+   * @return The final media for download, or null if not possible.
+   */
+  public Gdk.Texture? get_media () {
+    return null;
+  }
+
 }
