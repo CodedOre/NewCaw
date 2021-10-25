@@ -38,6 +38,12 @@ public class Backend.ImageLoader : Backend.MediaLoader {
    * Initiates the download.
    */
   public override void begin_loading () {
+    // Creates a Task for loading
+    var load_task = new Task (this, null, finalize_loading);
+    load_task.set_task_data (loaded_url, null);
+
+    // Runs the loading in a thread
+    load_task.run_in_thread (load_threaded);
   }
 
   /**
@@ -46,7 +52,7 @@ public class Backend.ImageLoader : Backend.MediaLoader {
    * @return The final media for download, or null if not possible.
    */
   public Gdk.Texture? get_media () {
-    return null;
+    return image;
   }
 
   /**
@@ -59,10 +65,10 @@ public class Backend.ImageLoader : Backend.MediaLoader {
    * @param data Data given to the function (in this case the url).
    * @param cancellable The cancellable to cancel this thread.
    */
-  private void load_threaded (Task         task,
-                              Object       self,
-                              void*        data,
-                              Cancellable? cancellable) {
+  private static void load_threaded (Task         task,
+                                     Object       self,
+                                     void*        data,
+                                     Cancellable? cancellable) {
     // Initialize session, stream and url
     string            url          = (string) data;
     var               load_session = new Soup.Session ();
@@ -88,8 +94,31 @@ public class Backend.ImageLoader : Backend.MediaLoader {
   }
 
   /**
+   * Stores the downloaded image and notifies the callers.
+   *
+   * Implements delegate GLib.TaskReadyCallback.
+   *
+   * @param self The ImageLoader initiating this call.
+   * @param task The task which is running this thread.
+   */
+  private void finalize_loading  (Object? self, Task task) {
+    try {
+      // Retrieve and store the image
+      Value thread_result;
+      task.propagate_value (out thread_result);
+      image = thread_result.get_object () as Gdk.Texture;
+    } catch (Error e) {
+      // Display any error that could have happened
+      warning (@"Failed to download media from link \"@(url)\": $(e.message)");
+    }
+
+    // Notifies callers
+    load_completed ();
+  }
+
+  /**
    * The loaded image.
    */
-  private Gdk.Texture image;
+  private Gdk.Texture? image = null;
 
 }

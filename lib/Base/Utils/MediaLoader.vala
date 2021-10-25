@@ -65,10 +65,10 @@ public abstract class Backend.MediaLoader : Object {
    *
    * @return The content loaded in an GLib.MemoryInputStream, or null if failed.
    */
-  protected MemoryInputStream download_stream (string       url,
-                                               Soup.Session session,
-                                               Cancellable? cancellable)
-                                               throws Error {
+  protected static MemoryInputStream download_stream (string       url,
+                                                      Soup.Session session,
+                                                      Cancellable? cancellable)
+                                                      throws Error {
     // Init call
     Bytes             streambytes;
     MemoryInputStream result;
