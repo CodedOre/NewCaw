@@ -45,6 +45,8 @@ public class MediaDisplay : Gtk.Widget {
   // UI-Elements for the top bar
   [GtkChild]
   private unowned Gtk.Revealer top_bar;
+  [GtkChild]
+  private unowned Gtk.ProgressBar loading_progress;
 
   /**
    * If the UI should be displayed.

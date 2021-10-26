@@ -188,12 +188,16 @@
     </child>
     <child>
       <object class="GtkRevealer" id="top_bar">
+        <property name="hexpand">true</property>
         <property name="transition-type">crossfade</property>
         <binding name="reveal-child">
           <lookup name="display_controls">MediaDisplay</lookup>
         </binding>
         <child>
           <object class="GtkWindowHandle">
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
             <child>
               <object class="GtkActionBar">
                 <child type="start">
@@ -214,6 +218,15 @@
                 <style>
                   <class name="osd"/>
                 </style>
+              </object>
+            </child>
+                <child>
+                  <object class="GtkProgressBar" id="loading_progress">
+                    <style>
+                      <class name="osd"/>
+                    </style>
+                  </object>
+                </child>
               </object>
             </child>
           </object>

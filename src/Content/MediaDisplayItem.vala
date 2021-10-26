@@ -26,6 +26,8 @@ public class MediaDisplayItem : Gtk.Widget {
   // UI-Elements of MediaDisplayItem
   [GtkChild]
   private unowned Gtk.Picture content;
+  [GtkChild]
+  private unowned Adw.Bin load_indicator;
 
   /**
    * Creates the widget.
@@ -55,10 +57,12 @@ public class MediaDisplayItem : Gtk.Widget {
       // Load the high-res image
       // FIXME: May not be async...
       picture.load_media.begin ((obj, res) => {
-        displayed_paintable = picture.load_media.end (res);
+        Gdk.Texture image = picture.load_media.end (res);
         // Displays the image
-        if (displayed_paintable != null) {
+        if (image != null) {
+          displayed_paintable = image;
           content.set_paintable (displayed_paintable);
+          load_indicator.remove_css_class ("loading_media");
         }
       });
     }
@@ -70,6 +74,7 @@ public class MediaDisplayItem : Gtk.Widget {
   public override void dispose () {
     // Destructs children of MediaDisplayItem
     content.unparent ();
+    load_indicator.unparent ();
   }
 
   /**
