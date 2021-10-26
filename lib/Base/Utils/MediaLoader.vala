@@ -21,78 +21,46 @@
 using GLib;
 
 /**
- * A helper class providing static methods to load media.
+ * An interface containing basic utilities for downloading media.
  */
-internal class Backend.MediaLoader : Object {
+// FIXME: Some `assertion 'self != NULL' failed` issue
+public abstract class Backend.MediaLoader : Object {
 
   /**
-   * Loads an image from a url and returns it as a Gdk.Texture.
-   *
-   * @param url The url from which the image is loaded.
-   *
-   * @return A Gdk.Texture containing the image, or null if failed.
+   * Signals that the download is completed.
    */
-  public static async Gdk.Texture? load_image (string url) {
-    // Initialize loader and result
-    MediaLoader self   = get_loader ();
-    Gdk.Texture result;
+  public signal void load_completed ();
 
-    // Initiate the task
-    // FIXME: Other type than null for no callback?
-    var load_task = new Task (self, null, null);
-
-    load_task.set_task_data (url, null);
-
-    // Load and convert the image in a thread.
-    try {
-      // Run the loader in a thread
-      load_task.run_in_thread_sync (load_image_threaded);
-      // Get the output and set's it as the result
-      Value thread_result;
-      load_task.propagate_value (out thread_result);
-      result = thread_result.get_object () as Gdk.Texture;
-    } catch (Error e) {
-      error (@"Failed to download media from link \"@(url)\": $(e.message)");
-    }
-
-    return result;
+  /**
+   * Creates an MediaLoader and prepares it for loading the image.
+   *
+   * @param url The url of the image to be loaded.
+   */
+  internal MediaLoader (string url) {
+    // Set the to be loaded url.
+    loaded_url = url;
   }
 
   /**
-   * Loads an image inside a thread.
+   * Returns if the media is loaded.
    *
-   * Implements the delegate GLib.TaskThreadFunc.
-   *
-   * @param task The task which is running this thread.
-   * @param self The MediaLoader initiating this call.
-   * @param data Data given to the function (in this case the url).
-   * @param cancellable The cancellable to cancel this thread.
+   * @return True if the media is loaded.
    */
-  private static void load_image_threaded (Task task, Object self, void* data, Cancellable? cancellable) {
-    // Initialize session, stream and url
-    string             url          = (string) data;
-    var                load_session = new Soup.Session ();
-    MemoryInputStream? stream       = null;
+  public abstract bool is_loaded ();
 
-    // Load the media as a input stream
-    stream = download_stream (url, load_session, null);
+  /**
+   * Initiates the download.
+   */
+  public abstract void begin_loading ();
 
-    // Fail when stream is empty
-    if (stream == null) {
-      // FIXME: Replace this with an return_error
-      task.return_value (null);
-      return;
-    }
-
-    // Create a Gdk.Texture with the stream
-    // TODO: Replace the Pixbuf creation with Bytes when this is available (GTK 4.6)
-    try {
-      var texbuf  = new Gdk.Pixbuf.from_stream (stream);
-      var texture = Gdk.Texture.for_pixbuf (texbuf);
-      task.return_value (texture);
-    } catch (Error e) {
-      task.return_error (e);
-    }
+  /**
+   * Returns the download progress.
+   *
+   * @return A double representing the progress of the load.
+   */
+  public double load_progress () {
+    // TODO: Find a method in Soup which gives us the progress.
+    return 0.0;
   }
 
   /**
@@ -100,22 +68,27 @@ internal class Backend.MediaLoader : Object {
    *
    * @param url The url with the content.
    * @param session The Soup.Session to use.
-   * @param cancellable A GLib.Cancellable
+   * @param cancellable A GLib.Cancellable.
+   *
+   * @throws GLib.Error Errors that resulted while Soup downloaded the stream.
    *
    * @return The content loaded in an GLib.MemoryInputStream, or null if failed.
    */
-  private static MemoryInputStream? download_stream (string url, Soup.Session session, Cancellable? cancellable) {
+  protected static MemoryInputStream download_stream (string       url,
+                                                      Soup.Session session,
+                                                      Cancellable? cancellable)
+                                                      throws Error {
     // Init call
-    Bytes              streambytes;
-    MemoryInputStream? result      = null;
-    var                message     = new Soup.Message ("GET", url);
+    Bytes             streambytes;
+    MemoryInputStream result;
+    var               message = new Soup.Message ("GET", url);
 
     // Load the data
     try {
       streambytes = session.send_and_read (message, cancellable);
       result      = new MemoryInputStream.from_bytes (streambytes);
     } catch (Error e) {
-      error (@"While downloading $(url): $(e.message)");
+      throw e;
     }
 
     // Return the loaded data
@@ -123,22 +96,8 @@ internal class Backend.MediaLoader : Object {
   }
 
   /**
-   * Returns or creates the global MediaLoader.
-   *
-   * @return A unowned instance of the MediaLoader.
+   * The url for the media to be downloaded.
    */
-  private static unowned MediaLoader get_loader () {
-    if (global_loader == null) {
-      // Creates a MediaLoader if needed
-      global_loader = new MediaLoader ();
-    }
-    // Returns the global instance
-    return global_loader;
-  }
-
-  /**
-   * The global session of the MediaLoader.
-   */
-  private static MediaLoader? global_loader;
+  protected string loaded_url;
 
 }

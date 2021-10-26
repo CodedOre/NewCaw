@@ -60,6 +60,11 @@ public abstract class Backend.Mastodon.Media : Object, Backend.Media {
   public string alt_text { get; }
 
   /**
+   * The ImageLoader to load the preview.
+   */
+  public ImageLoader preview { get; }
+
+  /**
    * Creates an Media object from a given Json.Object.
    *
    * @param json A Json.Object containing the data.
@@ -78,20 +83,9 @@ public abstract class Backend.Mastodon.Media : Object, Backend.Media {
     // Get media urls
     _preview_url = json.get_string_member ("preview_url");
     _media_url   = json.get_string_member ("url");
-  }
 
-  /**
-   * Loads the preview image for display.
-   *
-   * @return The final preview image or null if loading failed.
-   */
-  public async Gdk.Texture? load_preview () {
-    if (preview_image == null) {
-      // Load the image if not in storage
-      preview_image = yield MediaLoader.load_image (preview_url);
-    }
-    // Return stored image
-    return preview_image;
+    // Create a ImageLoader for the preview
+    _preview = new ImageLoader (preview_url);
   }
 
   /**
@@ -101,11 +95,6 @@ public abstract class Backend.Mastodon.Media : Object, Backend.Media {
     width  = _width;
     height = _height;
   }
-
-  /**
-   * The preview image for this media.
-   */
-  private Gdk.Texture? preview_image;
 
   /**
    * The width of this media.

@@ -69,11 +69,18 @@ public class MediaPreviewItem : Gtk.Widget {
     grid_spacing = spacing;
 
     // Load and set the Paintable
-    // FIXME: May not be async...
-    displayed_media.load_preview.begin ((obj, res) => {
-      displayed_texture = displayed_media.load_preview.end (res);
+    if (displayed_media.preview.is_loaded ()) {
+      displayed_texture = displayed_media.preview.get_media ();
       preview.set_paintable (displayed_texture);
-    });
+    } else {
+      displayed_media.preview.begin_loading ();
+      displayed_media.preview.load_completed.connect (() => {
+        displayed_texture = displayed_media.preview.get_media ();
+        if (displayed_texture != null) {
+          preview.set_paintable (displayed_texture);
+        }
+      });
+    }
 
     // Set alt-text if available
     if (displayed_media.alt_text != null) {

@@ -23,13 +23,9 @@ using GLib;
 public interface Backend.Picture : Backend.Media {
 
   /**
-   * Notices the frontend of a completed download.
+   * The ImageLoader to load the media.
    */
-  public signal void load_media_completed ();
+  public abstract ImageLoader media { get; }
 
-  /**
-   * Loads the media for display.
-   */
-  public abstract async Gdk.Texture? load_media ();
 
 }
