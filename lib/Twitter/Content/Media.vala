@@ -79,9 +79,6 @@ public abstract class Backend.Twitter.Media : Object, Backend.Media {
     // Get size of main media
     _width  = (int) json.get_int_member ("width");
     _height = (int) json.get_int_member ("height");
-
-    // Create a ImageLoader
-    _preview = new ImageLoader (preview_url);
   }
 
   /**

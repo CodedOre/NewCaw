@@ -84,7 +84,7 @@ public abstract class Backend.Mastodon.Media : Object, Backend.Media {
     _preview_url = json.get_string_member ("preview_url");
     _media_url   = json.get_string_member ("url");
 
-    // Create a ImageLoader
+    // Create a ImageLoader for the preview
     _preview = new ImageLoader (preview_url);
   }
 

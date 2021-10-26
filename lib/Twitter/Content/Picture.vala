@@ -38,8 +38,12 @@ public class Backend.Twitter.Picture : Backend.Picture, Backend.Twitter.Media  {
 
     // Set urls for preview and media
     string base_url = json.get_string_member ("url");
-    media_url       = @"$(base_url)?name=small";
-    preview_url     = @"$(base_url)?name=large";
+    preview_url     = @"$(base_url)?name=small";
+    media_url       = @"$(base_url)?name=large";
+
+    // Create a ImageLoader for preview and media
+    _preview = new ImageLoader (preview_url);
+    _media   = new ImageLoader (media_url);
   }
 
 }

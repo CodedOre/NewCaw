@@ -35,6 +35,9 @@ public class Backend.Mastodon.Picture : Backend.Picture, Backend.Mastodon.Media 
   public Picture.from_json (Json.Object json) {
     // Set base properties
     base.from_json (json);
+
+    // Create a ImageLoader for the media
+    _media = new ImageLoader (media_url);
   }
 
 }
