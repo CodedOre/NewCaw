@@ -85,6 +85,9 @@ public abstract class Backend.TwitterLegacy.Media : Object, Backend.Media {
     Json.Object large_obj = sizes_obj.get_object_member ("large");
     _width  = (int) large_obj.get_int_member ("w");
     _height = (int) large_obj.get_int_member ("h");
+
+    // Create a ImageLoader for the preview
+    _preview = new ImageLoader (preview_url);
   }
 
   /**
