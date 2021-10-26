@@ -78,6 +78,7 @@ public class MediaPreviewItem : Gtk.Widget {
         displayed_texture = displayed_media.preview.get_media ();
         if (displayed_texture != null) {
           preview.set_paintable (displayed_texture);
+          preview.remove_css_class ("loading-media");
         }
       });
     }
