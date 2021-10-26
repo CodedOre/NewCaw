@@ -63,6 +63,7 @@ public class MediaDisplayItem : Gtk.Widget {
       if (picture.media.is_loaded ()) {
         displayed_paintable = picture.media.get_media ();
         content.set_paintable (displayed_paintable);
+        load_indicator.remove_css_class ("loading-media");
       } else {
         picture.media.begin_loading ();
         picture.media.load_completed.connect (() => {
@@ -71,7 +72,7 @@ public class MediaDisplayItem : Gtk.Widget {
           if (image != null) {
             displayed_paintable = image;
             content.set_paintable (displayed_paintable);
-            load_indicator.remove_css_class ("loading_media");
+            load_indicator.remove_css_class ("loading-media");
           }
         });
       }
