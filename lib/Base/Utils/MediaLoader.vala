@@ -22,8 +22,9 @@ using GLib;
 
 /**
  * An interface containing basic utilities for downloading media.
+ *
+ * TODO: Improve Error handling
  */
-// FIXME: Some `assertion 'self != NULL' failed` issue
 public abstract class Backend.MediaLoader : Object {
 
   /**

@@ -22,8 +22,6 @@ using GLib;
 
 /**
  * A widget displaying the preview for a single item.
- *
- * TODO: Add some feedback when loading image-
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/MediaPreviewItem.ui")]
 public class MediaPreviewItem : Gtk.Widget {

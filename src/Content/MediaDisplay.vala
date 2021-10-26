@@ -23,6 +23,7 @@ using GLib;
 /**
  * A view widget displaying Media in full.
  */
+// TODO: Maybe move the loading animation from the items to this
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/MediaDisplay.ui")]
 public class MediaDisplay : Gtk.Widget {
 
@@ -123,7 +124,6 @@ public class MediaDisplay : Gtk.Widget {
    */
   public override void dispose () {
     // Destructs children of MediaDisplay
-    // FIXME: AdwCarousel can't be unparented, as 'GTK_IS_WIDGET (widget)' fails
     media_carousel.unparent ();
     previous_controls.unparent ();
     next_controls.unparent ();

@@ -72,8 +72,8 @@ public class MediaDisplayItem : Gtk.Widget {
           if (image != null) {
             displayed_paintable = image;
             content.set_paintable (displayed_paintable);
-            load_indicator.add_css_class ("fade-out");
             // TODO: Remove both animations after 1s
+            load_indicator.add_css_class ("fade-out");
           }
         });
       }
