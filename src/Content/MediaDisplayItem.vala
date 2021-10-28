@@ -25,6 +25,8 @@ public class MediaDisplayItem : Gtk.Widget {
 
   // UI-Elements of MediaDisplayItem
   [GtkChild]
+  private unowned Gtk.ScrolledWindow scroll_window;
+  [GtkChild]
   private unowned Gtk.Picture content;
 
   /**
@@ -87,7 +89,7 @@ public class MediaDisplayItem : Gtk.Widget {
    */
   public override void dispose () {
     // Destructs children of MediaDisplayItem
-    content.unparent ();
+    scroll_window.unparent ();
   }
 
   /**
