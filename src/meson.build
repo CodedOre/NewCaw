@@ -24,6 +24,7 @@ cawfiles = [
   'Content/MediaPreview.vala',
   'Content/MediaPreviewItem.vala',
   'Content/PostDisplay.vala',
+  'Content/ScrollablePicture.vala',
   'Utils/DisplayUtils.vala'
 ]
 
