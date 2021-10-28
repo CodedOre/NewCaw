@@ -17,6 +17,15 @@
                       source="super" source-attribute="height"
                       strength="required"/>
 
+          <constraint target="load_indicator" target-attribute="width"
+                      relation="eq"
+                      source="super" source-attribute="width"
+                      strength="required"/>
+          <constraint target="load_indicator" target-attribute="height"
+                      relation="eq"
+                      source="super" source-attribute="height"
+                      strength="required"/>
+
           <constraint target="previous_controls" target-attribute="start"
                       relation="eq"
                       source="super" source-attribute="start"
@@ -54,6 +63,15 @@
     <child>
       <object class="AdwCarousel" id="media_carousel">
         <signal name="page-changed" handler="changed_page"/>
+      </object>
+    </child>
+    <child>
+      <object class="AdwBin" id="load_indicator">
+        <property name="can-focus">false</property>
+        <property name="can-target">false</property>
+        <style>
+          <class name="loading-media"/>
+        </style>
       </object>
     </child>
     <child>

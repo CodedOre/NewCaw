@@ -39,6 +39,22 @@ box.indicator > image {
 }
 
 /**
+ * Fades in an element (used to show .loading-media).
+ */
+.fade-in {
+  animation: fading-in 1s forwards;
+}
+
+@keyframes fading-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/**
  * Fades out an element (used to hide .loading-media).
  */
 .fade-out {

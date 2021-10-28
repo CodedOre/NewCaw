@@ -26,8 +26,11 @@ public class MediaDisplayItem : Gtk.Widget {
   // UI-Elements of MediaDisplayItem
   [GtkChild]
   private unowned Gtk.Picture content;
-  [GtkChild]
-  private unowned Adw.Bin load_indicator;
+
+  /**
+   * If the high-res media is fully loaded.
+   */
+  public bool media_loaded { get; set; }
 
   /**
    * Creates the widget.
@@ -63,7 +66,7 @@ public class MediaDisplayItem : Gtk.Widget {
       if (picture.media.is_loaded ()) {
         displayed_paintable = picture.media.get_media ();
         content.set_paintable (displayed_paintable);
-        load_indicator.remove_css_class ("loading-media");
+        media_loaded = true;
       } else {
         picture.media.begin_loading ();
         picture.media.load_completed.connect (() => {
@@ -72,8 +75,7 @@ public class MediaDisplayItem : Gtk.Widget {
           if (image != null) {
             displayed_paintable = image;
             content.set_paintable (displayed_paintable);
-            // TODO: Remove both animations after 1s
-            load_indicator.add_css_class ("fade-out");
+            media_loaded = true;
           }
         });
       }
@@ -86,7 +88,6 @@ public class MediaDisplayItem : Gtk.Widget {
   public override void dispose () {
     // Destructs children of MediaDisplayItem
     content.unparent ();
-    load_indicator.unparent ();
   }
 
   /**

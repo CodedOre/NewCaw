@@ -11,12 +11,5 @@
     <child>
       <object class="GtkPicture" id="content"/>
     </child>
-    <child>
-      <object class="AdwBin" id="load_indicator">
-        <style>
-          <class name="loading-media"/>
-        </style>
-      </object>
-    </child>
   </template>
 </interface>

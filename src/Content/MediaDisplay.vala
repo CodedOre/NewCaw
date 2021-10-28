@@ -23,13 +23,15 @@ using GLib;
 /**
  * A view widget displaying Media in full.
  */
-// TODO: Maybe move the loading animation from the items to this
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/MediaDisplay.ui")]
 public class MediaDisplay : Gtk.Widget {
 
   // UI-Elements for the content
   [GtkChild]
   private unowned Adw.Carousel media_carousel;
+  // FIXME: Loading animation sometime stops...
+  [GtkChild]
+  private unowned Adw.Bin load_indicator;
 
   // UI-Elements for the buttons
   [GtkChild]
@@ -61,6 +63,7 @@ public class MediaDisplay : Gtk.Widget {
     // Create a display for all media
     foreach (Backend.Media item in media) {
       var item_display = new MediaDisplayItem (item);
+      item_display.notify["media-loaded"].connect (set_load_indicator);
       media_items     += item_display;
       media_carousel.append (item_display);
     }
@@ -108,8 +111,12 @@ public class MediaDisplay : Gtk.Widget {
   [GtkCallback]
   private void changed_page () {
     // Get the currently displayed media
-    int           position = (int) media_carousel.position;
-    Backend.Media media    = media_items [position].displayed_media;
+    int              position = (int) media_carousel.position;
+    MediaDisplayItem display  = media_items [position];
+    Backend.Media    media    = display.displayed_media;
+
+    // Check loading state
+    set_load_indicator (display);
 
     // Set up the description
     description_label.label = media.alt_text;
@@ -120,16 +127,48 @@ public class MediaDisplay : Gtk.Widget {
   }
 
   /**
+   * Set's the loading indicator for the current displayed item.
+   */
+  private void set_load_indicator (Object obj, ParamSpec? spec = null) {
+    // Get calling and selected display item
+    int              position = (int) media_carousel.position;
+    MediaDisplayItem display  = media_items [position];
+    var              item     = obj as MediaDisplayItem;
+
+    // Stop when item not currently displayed
+    if (display != item) {
+      return;
+    }
+
+    // Get loading status
+    if (display.media_loaded && show_loading) {
+      // Hide animation if loading is complete
+      load_indicator.set_css_classes ({"loading-media", "fade-out"});
+      show_loading = false;
+    } else if (! display.media_loaded && ! show_loading) {
+      // Show animation when still loading
+      load_indicator.set_css_classes ({"loading-media", "fade-in"});
+      show_loading = true;
+    }
+  }
+
+  /**
    * Deconstructs MediaDisplay and it's childrens.
    */
   public override void dispose () {
     // Destructs children of MediaDisplay
     media_carousel.unparent ();
+    load_indicator.unparent ();
     previous_controls.unparent ();
     next_controls.unparent ();
     bottom_bar.unparent ();
     top_bar.unparent ();
   }
+
+  /**
+   * If the loading animation should be shown.
+   */
+  private bool show_loading = true;
 
   /**
    * The display items of this widget.
