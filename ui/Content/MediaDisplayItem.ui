@@ -11,7 +11,7 @@
     <child>
       <object class="GtkScrolledWindow" id="scroll_window">
         <child>
-          <object class="GtkPicture" id="content"/>
+          <object class="ScrollablePicture" id="content"/>
         </child>
       </object>
     </child>

@@ -20,5 +20,19 @@
 
 using GLib;
 
-public class ScrollablePicture {
+/**
+ * A simple widget displaying an image that can be zoomed in.
+ */
+public class ScrollablePicture : Gtk.Widget {
+
+  /**
+   * The zoom factor currently applied to this widget.
+   */
+  public float scale { get; set; }
+
+  /**
+   * The Gdk.Paintable being displayed.
+   */
+  public Gdk.Paintable paintable { get; set; }
+
 }

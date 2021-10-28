@@ -27,7 +27,7 @@ public class MediaDisplayItem : Gtk.Widget {
   [GtkChild]
   private unowned Gtk.ScrolledWindow scroll_window;
   [GtkChild]
-  private unowned Gtk.Picture content;
+  private unowned ScrollablePicture content;
 
   /**
    * If the high-res media is fully loaded.
@@ -46,7 +46,7 @@ public class MediaDisplayItem : Gtk.Widget {
     // Load the preview image
     if (displayed_media.preview.is_loaded ()) {
       displayed_paintable = displayed_media.preview.get_media ();
-      content.set_paintable (displayed_paintable);
+      content.paintable = displayed_paintable;
     } else {
       displayed_media.preview.begin_loading ();
       displayed_media.preview.load_completed.connect (() => {
@@ -56,7 +56,7 @@ public class MediaDisplayItem : Gtk.Widget {
         }
         // Displays the to displayed texture
         if (displayed_paintable != null) {
-          content.set_paintable (displayed_paintable);
+          content.paintable = displayed_paintable;
         }
       });
     }
@@ -67,7 +67,7 @@ public class MediaDisplayItem : Gtk.Widget {
       // Load the high-res image
       if (picture.media.is_loaded ()) {
         displayed_paintable = picture.media.get_media ();
-        content.set_paintable (displayed_paintable);
+        content.paintable = displayed_paintable;
         media_loaded = true;
       } else {
         picture.media.begin_loading ();
@@ -76,7 +76,7 @@ public class MediaDisplayItem : Gtk.Widget {
           // Displays the image
           if (image != null) {
             displayed_paintable = image;
-            content.set_paintable (displayed_paintable);
+            content.paintable = displayed_paintable;
             media_loaded = true;
           }
         });
