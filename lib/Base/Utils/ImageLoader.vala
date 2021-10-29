@@ -46,7 +46,7 @@ public class Backend.ImageLoader : Backend.MediaLoader {
   /**
    * Initiates the download.
    */
-  public override void begin_loading () {
+  public override void begin_loading (Cancellable? cancellable = null) {
     // Creates a Task for loading
     var load_task = new Task (this, null, finalize_loading);
     load_task.set_task_data (loaded_url, null);

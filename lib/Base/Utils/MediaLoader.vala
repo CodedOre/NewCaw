@@ -52,7 +52,7 @@ public abstract class Backend.MediaLoader : Object {
   /**
    * Initiates the download.
    */
-  public abstract void begin_loading ();
+  public abstract void begin_loading (Cancellable? cancellable = null);
 
   /**
    * Returns the download progress.

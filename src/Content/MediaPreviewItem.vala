@@ -56,7 +56,8 @@ public class MediaPreviewItem : Gtk.Widget {
   public MediaPreviewItem (Backend.Media media, int index, int width, int height, int spacing) {
     // Init object with construct only properties
     Object (overflow: Gtk.Overflow.HIDDEN);
-    displayed_media = media;
+    displayed_media  = media;
+    load_cancellable = new Cancellable ();
 
     // Finalize the selector action
     selector.set_action_target ("i", index);
@@ -92,7 +93,6 @@ public class MediaPreviewItem : Gtk.Widget {
   }
 
   public override void size_allocate (int width, int height, int baseline) {
-
     // Allocate selector and alt_text_indicator
     selector.allocate (width, height, baseline, null);
     media_indicator_box.allocate (width, height, baseline, null);
@@ -194,6 +194,8 @@ public class MediaPreviewItem : Gtk.Widget {
    * Deconstructs MediaPreviewItem and it's childrens
    */
   public override void dispose () {
+    // Cancel possible loads
+    load_cancellable.cancel ();
     // Destructs children of MediaPreviewItem
     preview.unparent ();
     selector.unparent ();
@@ -209,6 +211,11 @@ public class MediaPreviewItem : Gtk.Widget {
    * The displayed Gdk.Texture.
    */
   Gdk.Texture? displayed_texture = null;
+
+  /**
+   * A GLib.Cancellable to cancel loads when closing the item.
+   */
+  private Cancellable load_cancellable;
 
   /**
    * The width of this widget in the grid.

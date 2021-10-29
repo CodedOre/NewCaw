@@ -35,20 +35,26 @@ public class MediaDisplayItem : Gtk.Widget {
   public bool media_loaded { get; set; }
 
   /**
+   * The displayed media.
+   */
+  public Backend.Media displayed_media { get; private set; }
+
+  /**
    * Creates the widget.
    *
    * @param media The media which is displayed in this widget.
    */
   public MediaDisplayItem (Backend.Media media) {
-    // Set the used media
-    _displayed_media = media;
+    // Set media and create Cancellable
+    displayed_media  = media;
+    load_cancellable = new Cancellable ();
 
     // Load the preview image
     if (displayed_media.preview.is_loaded ()) {
       displayed_paintable = displayed_media.preview.get_media ();
       content.set_paintable (displayed_paintable);
     } else {
-      displayed_media.preview.begin_loading ();
+      displayed_media.preview.begin_loading (load_cancellable);
       displayed_media.preview.load_completed.connect (() => {
         // Set displayed texture to preview if media is not yet loaded
         if (displayed_paintable == null) {
@@ -70,7 +76,7 @@ public class MediaDisplayItem : Gtk.Widget {
         content.set_paintable (displayed_paintable);
         media_loaded = true;
       } else {
-        picture.media.begin_loading ();
+        picture.media.begin_loading (load_cancellable);
         picture.media.load_completed.connect (() => {
           Gdk.Texture image = picture.media.get_media ();
           // Displays the image
@@ -88,18 +94,20 @@ public class MediaDisplayItem : Gtk.Widget {
    * Deconstructs MediaPreviewItem and it's childrens.
    */
   public override void dispose () {
+    // Cancel possible loads
+    load_cancellable.cancel ();
     // Destructs children of MediaDisplayItem
     scroll_window.unparent ();
   }
 
   /**
-   * The displayed media.
+   * A GLib.Cancellable to cancel loads when closing the item.
    */
-  public Backend.Media displayed_media { get; }
+  private Cancellable load_cancellable;
 
   /**
    * The displayed Gdk.Texture.
    */
-  Gdk.Paintable? displayed_paintable = null;
+  private Gdk.Paintable? displayed_paintable = null;
 
 }
