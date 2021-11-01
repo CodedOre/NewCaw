@@ -1,5 +1,12 @@
 libtests = {
   'Parsing': {
+    'MediaParsing': [
+      'TestUtils.vala',
+      'Parsing/MediaChecks.vala',
+      'Parsing/MediaParsing.vala',
+      'Parsing/PostChecks.vala',
+      'Parsing/UserChecks.vala'
+    ],
     'PostParsing': [
       'TestUtils.vala',
       'Parsing/PostChecks.vala',
