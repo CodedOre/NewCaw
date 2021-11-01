@@ -62,7 +62,7 @@ public abstract class Backend.TwitterLegacy.Media : Object, Backend.Media {
   /**
    * The ImageLoader to load the preview.
    */
-  public ImageLoader preview { get; }
+  public ImageLoader preview { get; protected set; }
 
   /**
    * Creates an Media object from a given Json.Object.
@@ -85,9 +85,6 @@ public abstract class Backend.TwitterLegacy.Media : Object, Backend.Media {
     Json.Object large_obj = sizes_obj.get_object_member ("large");
     _width  = (int) large_obj.get_int_member ("w");
     _height = (int) large_obj.get_int_member ("h");
-
-    // Create a ImageLoader for the preview
-    _preview = new ImageLoader (preview_url);
   }
 
   /**

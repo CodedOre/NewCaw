@@ -51,7 +51,7 @@ public interface Backend.Media : Object {
   /**
    * The ImageLoader to load the preview.
    */
-  public abstract ImageLoader preview { get; }
+  public abstract ImageLoader preview { get; protected set; }
 
   /**
    * Returns the size of the widget.

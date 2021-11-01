@@ -62,7 +62,7 @@ public abstract class Backend.Mastodon.Media : Object, Backend.Media {
   /**
    * The ImageLoader to load the preview.
    */
-  public ImageLoader preview { get; }
+  public ImageLoader preview { get; protected set; }
 
   /**
    * Creates an Media object from a given Json.Object.

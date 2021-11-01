@@ -33,16 +33,17 @@ public class Backend.Twitter.Picture : Backend.Picture, Backend.Twitter.Media  {
    * @param json A Json.Object containing the data.
    */
   public Picture.from_json (Json.Object json) {
+    // Set base properties
+    base.from_json (json);
+
     // Set urls for preview and media
     string base_url = json.get_string_member ("url");
     preview_url     = @"$(base_url)?name=small";
     media_url       = @"$(base_url)?name=large";
 
     // Create a ImageLoader for the media
-    _media   = new ImageLoader (media_url);
-
-    // Set base properties
-    base.from_json (json);
+    _media  = new ImageLoader (media_url);
+    preview = new ImageLoader (preview_url);
   }
 
 }
