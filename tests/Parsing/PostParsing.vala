@@ -21,6 +21,22 @@
 using GLib;
 
 /**
+ * Runs different tests on a post.
+ */
+void run_post_checks (Backend.Post post, Json.Object checks) {
+  // Check parsed post against check objects.
+  PostChecks.check_basic_fields (post, checks);
+#if DEBUG
+  PostChecks.check_text_parsing (post, checks);
+#endif
+  PostChecks.check_text_formatting (post, checks);
+
+  // Check post author against check object
+  Json.Object author_checks = checks.get_object_member ("author");
+  UserChecks.check_basic_fields (post.author, author_checks);
+}
+
+/**
  * Tests creation of a specific post and runs test on it.
  */
 void run_post_test (string module, string post_json, string check_json) {
@@ -53,32 +69,14 @@ void run_post_test (string module, string post_json, string check_json) {
       error ("No valid Post could be created!");
   }
 
-  // Check parsed post against check objects.
-  PostChecks.check_basic_fields (checked_post, check_object);
-#if DEBUG
-  PostChecks.check_text_parsing (checked_post, check_object);
-#endif
-  PostChecks.check_text_formatting (checked_post, check_object);
-
-  // Check post author against check object
-  Json.Object author_checks = check_object.get_object_member ("author");
-  UserChecks.check_basic_fields (checked_post.author, author_checks);
+  // Run the checks for the post
+  run_post_checks (checked_post, check_object);
 
   // Check referenced post if checked_post is repost or quote
   if (check_object.has_member ("referenced_post")) {
     Backend.Post ref_post  = checked_post.referenced_post;
     Json.Object  ref_check = check_object.get_object_member ("referenced_post");
-
-    // Check parsed post against check objects.
-    PostChecks.check_basic_fields (ref_post, ref_check);
-#if DEBUG
-    PostChecks.check_text_parsing (ref_post, ref_check);
-#endif
-    PostChecks.check_text_formatting (ref_post, ref_check);
-
-    // Check post author against check object
-    Json.Object ref_author_checks = ref_check.get_object_member ("author");
-    UserChecks.check_basic_fields (ref_post.author, ref_author_checks);
+    run_post_checks (ref_post, ref_check);
   }
 }
 

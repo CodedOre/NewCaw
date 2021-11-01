@@ -19,3 +19,6 @@
  */
 
 using GLib;
+
+namespace MediaChecks {
+}
