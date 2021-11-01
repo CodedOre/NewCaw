@@ -79,9 +79,9 @@ public class Backend.ImageLoader : Backend.MediaLoader {
                                      void*        data,
                                      Cancellable? cancellable) {
     // Initialize session, stream and url
-    string            url          = (string) data;
-    var               load_session = new Soup.Session ();
-    MemoryInputStream stream;
+    string      url          = (string) data;
+    var         load_session = new Soup.Session ();
+    InputStream stream;
 
     // Load the media as a input stream
     try {

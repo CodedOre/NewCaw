@@ -75,19 +75,17 @@ public abstract class Backend.MediaLoader : Object {
    *
    * @return The content loaded in an GLib.MemoryInputStream, or null if failed.
    */
-  protected static MemoryInputStream download_stream (string       url,
+  protected static InputStream download_stream (string       url,
                                                       Soup.Session session,
                                                       Cancellable? cancellable)
                                                       throws Error {
     // Init call
-    Bytes             streambytes;
-    MemoryInputStream result;
-    var               message = new Soup.Message ("GET", url);
+    InputStream result;
+    var         message = new Soup.Message ("GET", url);
 
     // Load the data
     try {
-      streambytes = session.send_and_read (message, cancellable);
-      result      = new MemoryInputStream.from_bytes (streambytes);
+      result = session.send (message, cancellable);
     } catch (Error e) {
       throw e;
     }
