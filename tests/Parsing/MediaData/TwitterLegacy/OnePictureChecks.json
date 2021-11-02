@@ -4,7 +4,7 @@
   "date":       "2021-10-04T06:19:27.000Z",
   "text": {
     "no_flags":          "A new post is there!\nLet's test one picture here:",
-    "shown_quote_links": "A new post is there!\nLet's test one picture here: <a href=\"https://twitter.com/CawbirdA/status/1444910017153470465/photo/1\" title=\"https://twitter.com/CawbirdA/status/1444910017153470465/photo/1\" class=\"weblink\">pic.twitter.com/YnfnQob2nZ</a>"
+    "shown_media_links": "A new post is there!\nLet's test one picture here: <a href=\"https://twitter.com/CawbirdA/status/1444910017153470465/photo/1\" title=\"https://twitter.com/CawbirdA/status/1444910017153470465/photo/1\" class=\"weblink\">pic.twitter.com/YnfnQob2nZ</a>"
   },
   "text_modules": [
     {
@@ -15,7 +15,7 @@
       "text_end":   50
     },
     {
-      "type":       "BACKEND_TEXT_MODULE_TYPE_QUOTELINK",
+      "type":       "BACKEND_TEXT_MODULE_TYPE_MEDIALINK",
       "display":    "pic.twitter.com/YnfnQob2nZ",
       "target":     "https://twitter.com/CawbirdA/status/1444910017153470465/photo/1",
       "text_start": 50,

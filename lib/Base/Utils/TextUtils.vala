@@ -37,7 +37,11 @@ public class Backend.TextUtils : Object {
     /**
      * Display links leading to quotes.
      */
-    SHOW_QUOTE_LINKS
+    SHOW_QUOTE_LINKS,
+    /**
+     * Display links leading to media.
+     */
+    SHOW_MEDIA_LINKS
   }
 
   /**
@@ -65,6 +69,12 @@ public class Backend.TextUtils : Object {
           break;
         case MENTION:
           builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"mention\">$(module.display)</a>");
+          break;
+        case MEDIALINK:
+          if (! get_format_flag (SHOW_MEDIA_LINKS)) {
+            break;
+          }
+          builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"weblink\">$(module.display)</a>");
           break;
         case QUOTELINK:
           if (! get_format_flag (SHOW_QUOTE_LINKS)) {

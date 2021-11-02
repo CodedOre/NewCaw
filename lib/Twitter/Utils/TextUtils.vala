@@ -93,6 +93,7 @@ internal class Backend.Twitter.TextUtils : Backend.TextUtils {
 
               // Check if media link
               if (Regex.match_simple ("pic.twitter.com", entity.display)) {
+                entity.type = MEDIALINK;
                 if (media_included) {
                   // Ignore url when already included a media link
                   return;

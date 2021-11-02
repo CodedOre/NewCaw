@@ -4,7 +4,7 @@
   "date":       "2021-10-14T12:04:38.000Z",
   "text": {
     "no_flags":          "Image test numero two:\nTwo images.",
-    "shown_quote_links": "Image test numero two:\nTwo images. <a href=\"https://twitter.com/CawbirdA/status/1448620764295483403/photo/1\" title=\"https://twitter.com/CawbirdA/status/1448620764295483403/photo/1\" class=\"weblink\">pic.twitter.com/FMdp89Ko4E</a>"
+    "shown_media_links": "Image test numero two:\nTwo images. <a href=\"https://twitter.com/CawbirdA/status/1448620764295483403/photo/1\" title=\"https://twitter.com/CawbirdA/status/1448620764295483403/photo/1\" class=\"weblink\">pic.twitter.com/FMdp89Ko4E</a>"
   },
   "text_modules": [
     {
@@ -15,7 +15,7 @@
       "text_end":   35
     },
     {
-      "type":       "BACKEND_TEXT_MODULE_TYPE_QUOTELINK",
+      "type":       "BACKEND_TEXT_MODULE_TYPE_MEDIALINK",
       "display":    "pic.twitter.com/FMdp89Ko4E",
       "target":     "https://twitter.com/CawbirdA/status/1448620764295483403/photo/1",
       "text_start": 35,

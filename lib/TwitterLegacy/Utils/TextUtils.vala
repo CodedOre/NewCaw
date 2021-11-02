@@ -101,7 +101,7 @@ internal class Backend.TwitterLegacy.TextUtils : Backend.TextUtils {
           Json.Object obj    = element.get_object ();
           Json.Array  length = obj.get_array_member ("indices");
           var entity         = TextModule ();
-          entity.type        = QUOTELINK;
+          entity.type        = MEDIALINK;
           entity.display     = obj.get_string_member ("display_url");
           entity.target      = obj.get_string_member ("expanded_url");
           entity.text_start  = (uint) length.get_int_element (0);
