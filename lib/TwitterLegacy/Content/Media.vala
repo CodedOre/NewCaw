@@ -74,8 +74,8 @@ public abstract class Backend.TwitterLegacy.Media : Object, Backend.Media {
     _id = json.get_string_member ("id_str");
 
     // Get the alt text, if available
-    if (json.has_member ("alt_text_ext")) {
-      _alt_text = json.get_string_member ("alt_text_ext");
+    if (json.has_member ("ext_alt_text")) {
+      _alt_text = json.get_string_member ("ext_alt_text");
     } else {
       _alt_text = "";
     }
