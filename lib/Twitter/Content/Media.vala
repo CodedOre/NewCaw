@@ -74,7 +74,9 @@ public abstract class Backend.Twitter.Media : Object, Backend.Media {
     _id = json.get_string_member ("media_key");
 
     // Get the alt text
-    _alt_text = json.get_string_member ("alt_text");
+    if (json.has_member ("alt_text")) {
+      _alt_text = json.get_string_member ("alt_text");
+    }
 
     // Get size of main media
     _width  = (int) json.get_int_member ("width");

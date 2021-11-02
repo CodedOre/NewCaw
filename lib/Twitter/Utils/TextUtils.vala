@@ -75,6 +75,7 @@ internal class Backend.Twitter.TextUtils : Backend.TextUtils {
 
       // Note all links from entities
       if (entities.has_member ("urls")) {
+        bool media_included = false;
         Json.Array links = entities.get_array_member ("urls");
         links.foreach_element ((array, index, element) => {
           if (element.get_node_type () == OBJECT) {
@@ -89,6 +90,15 @@ internal class Backend.Twitter.TextUtils : Backend.TextUtils {
             // Check if link is a internal link
             if (Regex.match_simple ("https://twitter.com/.*?/status/.*?", entity.target)) {
               entity.type = QUOTELINK;
+
+              // Check if media link
+              if (Regex.match_simple ("pic.twitter.com", entity.display)) {
+                if (media_included) {
+                  // Ignore url when already included a media link
+                  return;
+                }
+                media_included = true;
+              }
             }
 
             main_entities     += entity;
@@ -116,7 +126,6 @@ internal class Backend.Twitter.TextUtils : Backend.TextUtils {
     });
 
     // Split the text into TextModules
-    // FIXME: Multiple media links have the same location in text...
     TextModule first_entity = main_entities [0];
     if (first_entity.text_start != 0) {
       var first_text        = TextModule ();
