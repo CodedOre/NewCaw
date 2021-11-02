@@ -1,0 +1,28 @@
+{
+  "id":         "107041808020442008",
+  "post_type":  "BACKEND_POST_TYPE_NORMAL",
+  "date":       "2021-10-04T06:19:29.462Z",
+  "text": {
+    "no_flags": "A new post is there!\nLet&apos;s test one picture here:"
+  },
+  "text_modules": [
+    {
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+      "display":    "A new post is there!\nLet&apos;s test one picture here:",
+      "target":     null,
+      "text_start": 0,
+      "text_end":   54
+    }
+  ],
+  "author": {
+    "id":           "106866867257179166",
+    "display_name": "CawbirdTestAccount",
+    "username":     "cawbird_test_account"
+  },
+  "domain":          "mastodon.social",
+  "url":             "https://mastodon.social/@cawbird_test_account/107041808020442008",
+  "source":          "Web",
+  "liked_count":     0,
+  "replied_count":   0,
+  "reposted_count":  0
+}

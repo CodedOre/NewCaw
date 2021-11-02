@@ -1,0 +1,28 @@
+{
+  "id":         "107099829696203153",
+  "post_type":  "BACKEND_POST_TYPE_NORMAL",
+  "date":       "2021-10-14T12:15:09.966Z",
+  "text": {
+    "no_flags": "And at last, now to show the maximum number I will test: 4!"
+  },
+  "text_modules": [
+    {
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+      "display":    "And at last, now to show the maximum number I will test: 4!",
+      "target":     null,
+      "text_start": 0,
+      "text_end":   59
+    }
+  ],
+  "author": {
+    "id":           "106866867257179166",
+    "display_name": "CawbirdTestAccount",
+    "username":     "cawbird_test_account"
+  },
+  "domain":          "mastodon.social",
+  "url":             "https://mastodon.social/@cawbird_test_account/107099829696203153",
+  "source":          "Web",
+  "liked_count":     0,
+  "replied_count":   0,
+  "reposted_count":  0
+}
