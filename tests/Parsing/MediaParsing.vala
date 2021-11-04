@@ -1,4 +1,4 @@
-/* PostParsing.vala
+/* MediaParsing.vala
  *
  * Copyright 2021 Frederick Schenk
  *
@@ -21,9 +21,9 @@
 using GLib;
 
 /**
- * Runs different tests on a post.
+ * Runs different tests on a media post.
  */
-void run_post_checks (Backend.Post post, Json.Object checks) {
+void run_media_checks (Backend.Post post, Json.Object checks) {
   // Check parsed post against check objects.
   PostChecks.check_basic_fields (post, checks);
 #if DEBUG
@@ -34,19 +34,24 @@ void run_post_checks (Backend.Post post, Json.Object checks) {
   // Check post author against check object
   Json.Object author_checks = checks.get_object_member ("author");
   UserChecks.check_basic_fields (post.author, author_checks);
+
+  // Check attached media against checks
+  if (checks.has_member ("attached_media")) {
+    MediaChecks.check_all_media (post, checks);
+  }
 }
 
 /**
- * Tests creation of a specific post and runs test on it.
+ * Tests creation of a specific media post and runs test on it.
  */
-void run_post_test (string module, string post_json, string check_json) {
+void run_media_test (string module, string post_json, string check_json) {
   Json.Object  check_object;
   Json.Object  post_object;
   Backend.Post checked_post;
 
   // Creates a Post object from the post json
-  check_object = TestUtils.load_json (@"PostData/$(module)/$(check_json)");
-  post_object  = TestUtils.load_json (@"PostData/$(module)/$(post_json)");
+  check_object = TestUtils.load_json (@"MediaData/$(module)/$(check_json)");
+  post_object  = TestUtils.load_json (@"MediaData/$(module)/$(post_json)");
   switch (module) {
 #if SUPPORT_MASTODON
     case "Mastodon":
@@ -70,68 +75,62 @@ void run_post_test (string module, string post_json, string check_json) {
   }
 
   // Run the checks for the post
-  run_post_checks (checked_post, check_object);
+  run_media_checks (checked_post, check_object);
 
   // Check referenced post if checked_post is repost or quote
   if (check_object.has_member ("referenced_post")) {
     Backend.Post ref_post  = checked_post.referenced_post;
     Json.Object  ref_check = check_object.get_object_member ("referenced_post");
-    run_post_checks (ref_post, ref_check);
+    run_media_checks (ref_post, ref_check);
   }
 }
 
 /**
- * Tests parsing of Post content.
+ * Tests parsing of Media post content.
  */
 int main (string[] args) {
   Test.init (ref args);
 
 #if SUPPORT_MASTODON
-  Test.add_func ("/PostParsing/BasicPost/Mastodon", () => {
-    run_post_test ("Mastodon", "BasicPost.json", "BasicChecks.json");
+  Test.add_func ("/MediaParsing/OnePicture/Mastodon", () => {
+    run_media_test ("Mastodon", "OnePicturePost.json", "OnePictureChecks.json");
   });
-  Test.add_func ("/PostParsing/EntitiesPost/Mastodon", () => {
-    run_post_test ("Mastodon", "EntitiesPost.json", "EntitiesChecks.json");
+  Test.add_func ("/MediaParsing/TwoPicture/Mastodon", () => {
+    run_media_test ("Mastodon", "TwoPicturePost.json", "TwoPictureChecks.json");
   });
-  Test.add_func ("/PostParsing/HashtagsPost/Mastodon", () => {
-    run_post_test ("Mastodon", "HashtagsPost.json", "HashtagsChecks.json");
+  Test.add_func ("/MediaParsing/ThreePicture/Mastodon", () => {
+    run_media_test ("Mastodon", "ThreePicturePost.json", "ThreePictureChecks.json");
   });
-  Test.add_func ("/PostParsing/RepostPost/Mastodon", () => {
-    run_post_test ("Mastodon", "RepostPost.json", "RepostChecks.json");
+  Test.add_func ("/MediaParsing/FourPicture/Mastodon", () => {
+    run_media_test ("Mastodon", "FourPicturePost.json", "FourPictureChecks.json");
   });
 #endif
 #if SUPPORT_TWITTER
-  Test.add_func ("/PostParsing/BasicPost/Twitter", () => {
-    run_post_test ("Twitter", "BasicPost.json", "BasicChecks.json");
+  Test.add_func ("/MediaParsing/OnePicture/Twitter", () => {
+    run_media_test ("Twitter", "OnePicturePost.json", "OnePictureChecks.json");
   });
-  Test.add_func ("/PostParsing/EntitiesPost/Twitter", () => {
-    run_post_test ("Twitter", "EntitiesPost.json", "EntitiesChecks.json");
+  Test.add_func ("/MediaParsing/TwoPicture/Twitter", () => {
+    run_media_test ("Twitter", "TwoPicturePost.json", "TwoPictureChecks.json");
   });
-  Test.add_func ("/PostParsing/HashtagsPost/Twitter", () => {
-    run_post_test ("Twitter", "HashtagsPost.json", "HashtagsChecks.json");
+  Test.add_func ("/MediaParsing/ThreePicture/Twitter", () => {
+    run_media_test ("Twitter", "ThreePicturePost.json", "ThreePictureChecks.json");
   });
-  Test.add_func ("/PostParsing/RepostPost/Twitter", () => {
-    run_post_test ("Twitter", "RepostPost.json", "RepostChecks.json");
-  });
-  Test.add_func ("/PostParsing/QuotePost/Twitter", () => {
-    run_post_test ("Twitter", "QuotePost.json", "QuoteChecks.json");
+  Test.add_func ("/MediaParsing/FourPicture/Twitter", () => {
+    run_media_test ("Twitter", "FourPicturePost.json", "FourPictureChecks.json");
   });
 #endif
 #if SUPPORT_TWITTER_LEGACY
-  Test.add_func ("/PostParsing/BasicPost/TwitterLegacy", () => {
-    run_post_test ("TwitterLegacy", "BasicPost.json", "BasicChecks.json");
+  Test.add_func ("/MediaParsing/OnePicture/TwitterLegacy", () => {
+    run_media_test ("TwitterLegacy", "OnePicturePost.json", "OnePictureChecks.json");
   });
-  Test.add_func ("/PostParsing/EntitiesPost/TwitterLegacy", () => {
-    run_post_test ("TwitterLegacy", "EntitiesPost.json", "EntitiesChecks.json");
+  Test.add_func ("/MediaParsing/TwoPicture/TwitterLegacy", () => {
+    run_media_test ("TwitterLegacy", "TwoPicturePost.json", "TwoPictureChecks.json");
   });
-  Test.add_func ("/PostParsing/HashtagsPost/TwitterLegacy", () => {
-    run_post_test ("TwitterLegacy", "HashtagsPost.json", "HashtagsChecks.json");
+  Test.add_func ("/MediaParsing/ThreePicture/TwitterLegacy", () => {
+    run_media_test ("TwitterLegacy", "ThreePicturePost.json", "ThreePictureChecks.json");
   });
-  Test.add_func ("/PostParsing/RepostPost/TwitterLegacy", () => {
-    run_post_test ("TwitterLegacy", "RepostPost.json", "RepostChecks.json");
-  });
-  Test.add_func ("/PostParsing/QuotePost/TwitterLegacy", () => {
-    run_post_test ("TwitterLegacy", "QuotePost.json", "QuoteChecks.json");
+  Test.add_func ("/MediaParsing/FourPicture/TwitterLegacy", () => {
+    run_media_test ("TwitterLegacy", "FourPicturePost.json", "FourPictureChecks.json");
   });
 #endif
 
