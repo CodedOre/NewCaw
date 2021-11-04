@@ -1,3 +1,6 @@
+# Tests for the backend library
+
+# Define all tests with category and files
 libtests = {
   'Parsing': {
     'MediaParsing': [
@@ -21,12 +24,14 @@ libtests = {
   }
 }
 
+# Set the test dependencies
 testdepends = declare_dependency(
   link_with:            backendlib,
   include_directories:  backendsrc,
   dependencies:         libdepends
 )
 
+# Build and run each test
 foreach category, tests : libtests
   foreach name, sources : tests
     testcase = executable(

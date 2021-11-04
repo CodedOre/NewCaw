@@ -131,7 +131,6 @@ internal class Backend.TwitterLegacy.TextUtils : Backend.TextUtils {
     });
 
     // Split the text into TextModules
-    // FIXME: Multiple media links have the same location in text...
     TextModule first_entity = main_entities [0];
     if (first_entity.text_start != 0) {
       var first_text        = TextModule ();
