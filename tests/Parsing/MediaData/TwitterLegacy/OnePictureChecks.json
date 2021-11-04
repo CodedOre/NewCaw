@@ -27,6 +27,17 @@
     "display_name": "CawbirdTestAccount",
     "username":     "CawbirdA"
   },
+  "attached_media": [
+    {
+      "id":          "1444909981329985547",
+      "type":        "BACKEND_MEDIA_TYPE_PICTURE",
+      "alt_text":    "The default background of the GNOME 41 desktop.",
+      "preview_url": "https://pbs.twimg.com/media/FA1Z-PmXEAs8TFt.jpg?name=small",
+      "media_url":   "https://pbs.twimg.com/media/FA1Z-PmXEAs8TFt.jpg?name=large",
+      "width":        2048,
+      "height":       1080
+    }
+  ],
   "domain":          "Twitter.com",
   "url":             "https://Twitter.com/CawbirdA/status/1444910017153470465",
   "source":          "Twitter Web App",

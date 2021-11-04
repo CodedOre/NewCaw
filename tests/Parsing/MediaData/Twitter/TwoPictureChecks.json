@@ -27,6 +27,26 @@
     "display_name": "CawbirdTestAccount",
     "username":     "CawbirdA"
   },
+  "attached_media": [
+    {
+      "id":          "3_1448620586989654024",
+      "type":        "BACKEND_MEDIA_TYPE_PICTURE",
+      "alt_text":    "The day variant of the Adwaita background.",
+      "preview_url": "https://pbs.twimg.com/media/FBqIv63WEAgVUHM.jpg?name=small",
+      "media_url":   "https://pbs.twimg.com/media/FBqIv63WEAgVUHM.jpg?name=large",
+      "width":        4096,
+      "height":       2160
+    },
+    {
+      "id":          "3_1448620606413475843",
+      "type":        "BACKEND_MEDIA_TYPE_PICTURE",
+      "alt_text":    "The morning variant of the Adwaita background.",
+      "preview_url": "https://pbs.twimg.com/media/FBqIxDOWEAMgrqE.jpg?name=small",
+      "media_url":   "https://pbs.twimg.com/media/FBqIxDOWEAMgrqE.jpg?name=large",
+      "width":        4096,
+      "height":       2160
+    }
+  ],
   "domain":          "Twitter.com",
   "url":             "https://Twitter.com/CawbirdA/status/1448620764295483403",
   "source":          "Twitter Web App",

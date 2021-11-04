@@ -27,6 +27,44 @@
     "display_name": "CawbirdTestAccount",
     "username":     "CawbirdA"
   },
+  "attached_media": [
+    {
+      "id":          "1448621106131243008",
+      "type":        "BACKEND_MEDIA_TYPE_PICTURE",
+      "alt_text":     null,
+      "preview_url": "https://pbs.twimg.com/media/FBqJOI0WEAAAiOn.jpg?name=small",
+      "media_url":   "https://pbs.twimg.com/media/FBqJOI0WEAAAiOn.jpg?name=large",
+      "width":        2048,
+      "height":       1080
+    },
+    {
+      "id":          "1448621106173259796",
+      "type":        "BACKEND_MEDIA_TYPE_PICTURE",
+      "alt_text":     null,
+      "preview_url": "https://pbs.twimg.com/media/FBqJOI-XMBQjQ5h.jpg?name=small",
+      "media_url":   "https://pbs.twimg.com/media/FBqJOI-XMBQjQ5h.jpg?name=large",
+      "width":        2048,
+      "height":       1080
+    },
+    {
+      "id":          "1448621106336776213",
+      "type":        "BACKEND_MEDIA_TYPE_PICTURE",
+      "alt_text":     null,
+      "preview_url": "https://pbs.twimg.com/media/FBqJOJlWQBUX4rf.jpg?name=small",
+      "media_url":   "https://pbs.twimg.com/media/FBqJOJlWQBUX4rf.jpg?name=large",
+      "width":        2048,
+      "height":       1080
+    },
+    {
+      "id":          "1448621106785566720",
+      "type":        "BACKEND_MEDIA_TYPE_PICTURE",
+      "alt_text":     null,
+      "preview_url": "https://pbs.twimg.com/media/FBqJOLQWQAAlxNx.jpg?name=small",
+      "media_url":   "https://pbs.twimg.com/media/FBqJOLQWQAAlxNx.jpg?name=large",
+      "width":        2048,
+      "height":       1080
+    }
+  ],
   "domain":          "Twitter.com",
   "url":             "https://Twitter.com/CawbirdA/status/1448621218572247045",
   "source":          "Twitter Web App",

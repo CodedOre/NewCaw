@@ -27,6 +27,35 @@
     "display_name": "CawbirdTestAccount",
     "username":     "CawbirdA"
   },
+  "attached_media": [
+    {
+      "id":          "3_1448620921460232194",
+      "type":        "BACKEND_MEDIA_TYPE_PICTURE",
+      "alt_text":     null,
+      "preview_url": "https://pbs.twimg.com/media/FBqJDY3WEAItnI8.jpg?name=small",
+      "media_url":   "https://pbs.twimg.com/media/FBqJDY3WEAItnI8.jpg?name=large",
+      "width":        4096,
+      "height":       2160
+    },
+    {
+      "id":          "3_1448620921372221453",
+      "type":        "BACKEND_MEDIA_TYPE_PICTURE",
+      "alt_text":     null,
+      "preview_url": "https://pbs.twimg.com/media/FBqJDYiXIA0h7n7.jpg?name=small",
+      "media_url":   "https://pbs.twimg.com/media/FBqJDYiXIA0h7n7.jpg?name=large",
+      "width":        4096,
+      "height":       2160
+    },
+    {
+      "id":          "3_1448620921758097413",
+      "type":        "BACKEND_MEDIA_TYPE_PICTURE",
+      "alt_text":     null,
+      "preview_url": "https://pbs.twimg.com/media/FBqJDZ-XIAUVnCJ.jpg?name=small",
+      "media_url":   "https://pbs.twimg.com/media/FBqJDZ-XIAUVnCJ.jpg?name=large",
+      "width":        4096,
+      "height":       2160
+    }
+  ],
   "domain":          "Twitter.com",
   "url":             "https://Twitter.com/CawbirdA/status/1448620997389783045",
   "source":          "Twitter Web App",
