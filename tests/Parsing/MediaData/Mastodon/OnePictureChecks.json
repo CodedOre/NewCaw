@@ -21,8 +21,13 @@
   },
   "attached_media": [
     {
-      "id":       "107041799746036809",
-      "alt_text": "The default background of the GNOME 41 desktop."
+      "id":          "107041799746036809",
+      "type":        "BACKEND_MEDIA_TYPE_PICTURE",
+      "alt_text":    "The default background of the GNOME 41 desktop.",
+      "preview_url": "https://files.mastodon.social/media_attachments/files/107/041/799/746/036/809/small/46b41f9d41fcdaf3.png",
+      "media_url":   "https://files.mastodon.social/media_attachments/files/107/041/799/746/036/809/original/46b41f9d41fcdaf3.png",
+      "width":        1983,
+      "height":       1046
     }
   ],
   "domain":          "mastodon.social",
