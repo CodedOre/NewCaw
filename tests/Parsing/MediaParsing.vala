@@ -34,6 +34,20 @@ void run_media_checks (Backend.Post post, Json.Object checks) {
   // Check post author against check object
   Json.Object author_checks = checks.get_object_member ("author");
   UserChecks.check_basic_fields (post.author, author_checks);
+
+  // Check attached media against checks
+  if (checks.has_member ("attached_media")) {
+    // Get all media and media checks
+    Json.Array      media_checks = checks.get_array_member ("attached_media");
+    Backend.Media[] media_objs   = post.get_media ();
+    media_checks.foreach_element ((array, index, element) => {
+      Json.Object   med_check = element.get_object ();
+      Backend.Media media     = media_objs [index];
+
+      // Run basic data checks
+      MediaChecks.check_basic_fields (media, med_check);
+    });
+  }
 }
 
 /**

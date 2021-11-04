@@ -20,6 +20,9 @@
 
 using GLib;
 
+/**
+ * Checks for testing a parsed Post.
+ */
 namespace PostChecks {
 
   /**

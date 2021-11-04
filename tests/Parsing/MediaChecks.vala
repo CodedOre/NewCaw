@@ -20,5 +20,21 @@
 
 using GLib;
 
+/**
+ * Checks for testing a parsed Media object.
+ */
 namespace MediaChecks {
+
+  /**
+   * Test basic fields
+   *
+   * @param post The Post to be checked.
+   * @param check A Json.Object containing fields to check against.
+   */
+  void check_basic_fields (Backend.Media media, Json.Object check) {
+    // Check id and alt_text
+    assert_true (media.id       == check.get_string_member ("id"));
+    assert_true (media.alt_text == check.get_string_member ("alt_text"));
+  }
+
 }
