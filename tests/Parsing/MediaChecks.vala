@@ -27,9 +27,31 @@ using GLib;
 namespace MediaChecks {
 
   /**
-   * Test basic fields
+   * Tests all media in a post.
    *
    * @param post The Post to be checked.
+   * @param check A Json.Object containing fields to check against.
+   */
+  void check_all_media (Backend.Post post, Json.Object checks) {
+    // Get all media and media checks
+    Json.Array      media_checks = checks.get_array_member ("attached_media");
+    Backend.Media[] media_objs   = post.get_media ();
+    assert_true (media_checks.get_length () == media_objs.length);
+
+    // Check each individual media
+    media_checks.foreach_element ((array, index, element) => {
+      Json.Object   med_check = element.get_object ();
+      Backend.Media media     = media_objs [index];
+
+      // Run basic data checks
+      check_basic_fields (media, med_check);
+    });
+  }
+
+  /**
+   * Tests basic fields
+   *
+   * @param media The Media to be checked.
    * @param check A Json.Object containing fields to check against.
    */
   void check_basic_fields (Backend.Media media, Json.Object check) {
