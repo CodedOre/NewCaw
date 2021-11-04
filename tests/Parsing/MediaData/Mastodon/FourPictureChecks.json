@@ -19,6 +19,44 @@
     "display_name": "CawbirdTestAccount",
     "username":     "cawbird_test_account"
   },
+  "attached_media": [
+    {
+      "id":          "107099825678531258",
+      "type":        "BACKEND_MEDIA_TYPE_PICTURE",
+      "alt_text":     null,
+      "preview_url": "https://files.mastodon.social/media_attachments/files/107/099/825/678/531/258/small/a9097b06bcef7114.png",
+      "media_url":   "https://files.mastodon.social/media_attachments/files/107/099/825/678/531/258/original/a9097b06bcef7114.png",
+      "width":        1983,
+      "height":       1046
+    },
+    {
+      "id":          "107099826661052081",
+      "type":        "BACKEND_MEDIA_TYPE_PICTURE",
+      "alt_text":     null,
+      "preview_url": "https://files.mastodon.social/media_attachments/files/107/099/826/661/052/081/small/cbfbf77f3d170aff.png",
+      "media_url":   "https://files.mastodon.social/media_attachments/files/107/099/826/661/052/081/original/cbfbf77f3d170aff.png",
+      "width":        1983,
+      "height":       1046
+    },
+    {
+      "id":          "107099826664431203",
+      "type":        "BACKEND_MEDIA_TYPE_PICTURE",
+      "alt_text":     null,
+      "preview_url": "https://files.mastodon.social/media_attachments/files/107/099/826/664/431/203/small/6c711c63225f14ea.png",
+      "media_url":   "https://files.mastodon.social/media_attachments/files/107/099/826/664/431/203/original/6c711c63225f14ea.png",
+      "width":        1983,
+      "height":       1046
+    },
+    {
+      "id":          "107099826684465663",
+      "type":        "BACKEND_MEDIA_TYPE_PICTURE",
+      "alt_text":     null,
+      "preview_url": "https://files.mastodon.social/media_attachments/files/107/099/826/684/465/663/small/21a1d8a442677fc4.png",
+      "media_url":   "https://files.mastodon.social/media_attachments/files/107/099/826/684/465/663/original/21a1d8a442677fc4.png",
+      "width":        1983,
+      "height":       1046
+    }
+  ],
   "domain":          "mastodon.social",
   "url":             "https://mastodon.social/@cawbird_test_account/107099829696203153",
   "source":          "Web",
