@@ -62,7 +62,7 @@ public abstract class Backend.Twitter.Media : Object, Backend.Media {
   /**
    * The ImageLoader to load the preview.
    */
-  public ImageLoader preview { get; }
+  public ImageLoader preview { get; protected set; }
 
   /**
    * Creates an Media object from a given Json.Object.
@@ -74,14 +74,13 @@ public abstract class Backend.Twitter.Media : Object, Backend.Media {
     _id = json.get_string_member ("media_key");
 
     // Get the alt text
-    _alt_text = json.get_string_member ("alt_text");
+    if (json.has_member ("alt_text")) {
+      _alt_text = json.get_string_member ("alt_text");
+    }
 
     // Get size of main media
     _width  = (int) json.get_int_member ("width");
     _height = (int) json.get_int_member ("height");
-
-    // Create a ImageLoader for the preview
-    _preview = new ImageLoader (preview_url);
   }
 
   /**

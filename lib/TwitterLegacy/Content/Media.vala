@@ -62,7 +62,7 @@ public abstract class Backend.TwitterLegacy.Media : Object, Backend.Media {
   /**
    * The ImageLoader to load the preview.
    */
-  public ImageLoader preview { get; }
+  public ImageLoader preview { get; protected set; }
 
   /**
    * Creates an Media object from a given Json.Object.
@@ -74,8 +74,8 @@ public abstract class Backend.TwitterLegacy.Media : Object, Backend.Media {
     _id = json.get_string_member ("id_str");
 
     // Get the alt text, if available
-    if (json.has_member ("alt_text_ext")) {
-      _alt_text = json.get_string_member ("alt_text_ext");
+    if (json.has_member ("ext_alt_text")) {
+      _alt_text = json.get_string_member ("ext_alt_text");
     } else {
       _alt_text = "";
     }
@@ -85,9 +85,6 @@ public abstract class Backend.TwitterLegacy.Media : Object, Backend.Media {
     Json.Object large_obj = sizes_obj.get_object_member ("large");
     _width  = (int) large_obj.get_int_member ("w");
     _height = (int) large_obj.get_int_member ("h");
-
-    // Create a ImageLoader for the preview
-    _preview = new ImageLoader (preview_url);
   }
 
   /**

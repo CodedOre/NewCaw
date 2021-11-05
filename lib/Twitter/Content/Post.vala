@@ -238,6 +238,9 @@ public class Backend.Twitter.Post : Object, Backend.Post {
       _referenced_post = new Post.from_json (reference_obj, includes);
     }
 
+    // Store the attached media
+    attached_media = parsed_media;
+
     // Create url from author username und post id
     _url = @"https://$(domain)/$(author.username)/status/$(id)";
   }
@@ -245,7 +248,7 @@ public class Backend.Twitter.Post : Object, Backend.Post {
   /**
    * Returns media attached to this Post.
    */
-  public Media[] get_media () {
+  public Backend.Media[] get_media () {
     return attached_media;
   }
 
@@ -263,7 +266,7 @@ public class Backend.Twitter.Post : Object, Backend.Post {
   /**
    * All media attached to this post.
    */
-  public Media[] attached_media;
+  public Backend.Media[] attached_media;
 
   /**
    * The text split into modules for formatting.
