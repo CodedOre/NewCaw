@@ -18,6 +18,9 @@ cawdepends += declare_dependency(
 cawfiles = [
   'config.vapi',
   'Cawbird.vala',
+  'MainWindow.vala',
+  'Content/MediaDisplay.vala',
+  'Content/MediaDisplayItem.vala',
   'Content/MediaPreview.vala',
   'Content/MediaPreviewItem.vala',
   'Content/PostDisplay.vala',

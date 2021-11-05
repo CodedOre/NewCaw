@@ -91,6 +91,27 @@ internal class Backend.TwitterLegacy.TextUtils : Backend.TextUtils {
       }
     });
 
+    // Note the first link for media
+    if (entities.has_member ("media")) {
+    Json.Array media = entities.get_array_member ("media");
+    if (media.get_length () > 0) {
+      // As Twitter only places one media link, only get the first media
+      Json.Node element = media.get_element (0);
+        if (element.get_node_type () == OBJECT) {
+          Json.Object obj    = element.get_object ();
+          Json.Array  length = obj.get_array_member ("indices");
+          var entity         = TextModule ();
+          entity.type        = MEDIALINK;
+          entity.display     = obj.get_string_member ("display_url");
+          entity.target      = obj.get_string_member ("expanded_url");
+          entity.text_start  = (uint) length.get_int_element (0);
+          entity.text_end    = (uint) length.get_int_element (1);
+
+          main_entities += entity;
+        }
+      }
+    }
+
     // Convert text to one TextModule when no entities are present
     if (main_entities.length == 0) {
       var only_text        = TextModule ();
@@ -110,7 +131,6 @@ internal class Backend.TwitterLegacy.TextUtils : Backend.TextUtils {
     });
 
     // Split the text into TextModules
-    // FIXME: Multiple media links have the same location in text...
     TextModule first_entity = main_entities [0];
     if (first_entity.text_start != 0) {
       var first_text        = TextModule ();

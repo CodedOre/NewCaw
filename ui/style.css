@@ -27,13 +27,45 @@ box.indicator > image {
 }
 
 @keyframes animated-loading {
-    0% {
-      background-position:0% 50%;
-    }
-    50% {
-      background-position:100% 50%;
-    }
-    100% {
-      background-position:0% 50%;
-    }
+  0% {
+    background-position:0% 50%;
+  }
+  50% {
+    background-position:100% 50%;
+  }
+  100% {
+    background-position:0% 50%;
+  }
+}
+
+/**
+ * Fades in an element (used to show .loading-media).
+ */
+.fade-in {
+  animation: fading-in 1s forwards;
+}
+
+@keyframes fading-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/**
+ * Fades out an element (used to hide .loading-media).
+ */
+.fade-out {
+  animation: fading-out 1s forwards;
+}
+
+@keyframes fading-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

@@ -32,6 +32,12 @@ public class Cawbird : Adw.Application {
   }
 
   protected override void activate () {
+    // Open the MainWindow
+    var win = this.active_window;
+    if (win == null) {
+      win = new MainWindow (this);
+    }
+    win.present ();
   }
 
   public static int main (string[] args) {

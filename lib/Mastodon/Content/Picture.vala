@@ -23,6 +23,11 @@ using GLib;
 public class Backend.Mastodon.Picture : Backend.Picture, Backend.Mastodon.Media  {
 
   /**
+   * The ImageLoader to load the media.
+   */
+  public ImageLoader media { get; }
+
+  /**
    * Creates an Picture object from a given Json.Object.
    *
    * @param json A Json.Object containing the data.
@@ -30,25 +35,9 @@ public class Backend.Mastodon.Picture : Backend.Picture, Backend.Mastodon.Media 
   public Picture.from_json (Json.Object json) {
     // Set base properties
     base.from_json (json);
-  }
 
-  /**
-   * Loads the media for display.
-   *
-   * @return The final media or null if loading failed.
-   */
-  public async Gdk.Texture? load_media () {
-    if (media == null) {
-      // Load the image if not in storage
-      media = yield MediaLoader.load_image (media_url);
-    }
-    // Return stored image
-    return media;
+    // Create a ImageLoader for the media
+    _media = new ImageLoader (media_url);
   }
-
-  /**
-   * The downloaded media in storage.
-   */
-  private Gdk.Texture? media;
 
 }

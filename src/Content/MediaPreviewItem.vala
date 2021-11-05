@@ -22,8 +22,6 @@ using GLib;
 
 /**
  * A widget displaying the preview for a single item.
- *
- * TODO: Add some feedback when loading image-
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/MediaPreviewItem.ui")]
 public class MediaPreviewItem : Gtk.Widget {
@@ -55,10 +53,14 @@ public class MediaPreviewItem : Gtk.Widget {
   /**
    * Creates a MediaPreviewItem for a certain Media.
    */
-  public MediaPreviewItem (Backend.Media media, int width, int height, int spacing) {
+  public MediaPreviewItem (Backend.Media media, int index, int width, int height, int spacing) {
     // Init object with construct only properties
     Object (overflow: Gtk.Overflow.HIDDEN);
-    displayed_media = media;
+    displayed_media  = media;
+    load_cancellable = new Cancellable ();
+
+    // Finalize the selector action
+    selector.set_action_target ("i", index);
 
     // Set grid size variables
     cell_width   = width;
@@ -66,14 +68,19 @@ public class MediaPreviewItem : Gtk.Widget {
     grid_spacing = spacing;
 
     // Load and set the Paintable
-    // FIXME: May not be async...
-    displayed_media.load_preview.begin ((obj, res) => {
-      displayed_texture = displayed_media.load_preview.end (res);
-      if (displayed_texture != null) {
-        preview.set_paintable (displayed_texture);
-        preview.remove_css_class ("loading-media");
-      }
-    });
+    if (displayed_media.preview.is_loaded ()) {
+      displayed_texture = displayed_media.preview.get_media ();
+      preview.set_paintable (displayed_texture);
+    } else {
+      displayed_media.preview.begin_loading ();
+      displayed_media.preview.load_completed.connect (() => {
+        displayed_texture = displayed_media.preview.get_media ();
+        if (displayed_texture != null) {
+          preview.set_paintable (displayed_texture);
+          preview.remove_css_class ("loading-media");
+        }
+      });
+    }
 
     // Set alt-text if available
     if (displayed_media.alt_text != null) {
@@ -86,7 +93,6 @@ public class MediaPreviewItem : Gtk.Widget {
   }
 
   public override void size_allocate (int width, int height, int baseline) {
-
     // Allocate selector and alt_text_indicator
     selector.allocate (width, height, baseline, null);
     media_indicator_box.allocate (width, height, baseline, null);
@@ -188,6 +194,8 @@ public class MediaPreviewItem : Gtk.Widget {
    * Deconstructs MediaPreviewItem and it's childrens
    */
   public override void dispose () {
+    // Cancel possible loads
+    load_cancellable.cancel ();
     // Destructs children of MediaPreviewItem
     preview.unparent ();
     selector.unparent ();
@@ -203,6 +211,11 @@ public class MediaPreviewItem : Gtk.Widget {
    * The displayed Gdk.Texture.
    */
   Gdk.Texture? displayed_texture = null;
+
+  /**
+   * A GLib.Cancellable to cancel loads when closing the item.
+   */
+  private Cancellable load_cancellable;
 
   /**
    * The width of this widget in the grid.

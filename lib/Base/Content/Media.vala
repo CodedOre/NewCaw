@@ -49,14 +49,9 @@ public interface Backend.Media : Object {
   public abstract string alt_text { get; }
 
   /**
-   * Notices the frontend of a completed download.
+   * The ImageLoader to load the preview.
    */
-  public signal void load_preview_completed ();
-
-  /**
-   * Loads the preview image for display.
-   */
-  public abstract async Gdk.Texture? load_preview ();
+  public abstract ImageLoader preview { get; protected set; }
 
   /**
    * Returns the size of the widget.

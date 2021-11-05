@@ -60,6 +60,11 @@ public abstract class Backend.TwitterLegacy.Media : Object, Backend.Media {
   public string alt_text { get; }
 
   /**
+   * The ImageLoader to load the preview.
+   */
+  public ImageLoader preview { get; protected set; }
+
+  /**
    * Creates an Media object from a given Json.Object.
    *
    * @param json A Json.Object containing the data.
@@ -69,8 +74,8 @@ public abstract class Backend.TwitterLegacy.Media : Object, Backend.Media {
     _id = json.get_string_member ("id_str");
 
     // Get the alt text, if available
-    if (json.has_member ("alt_text_ext")) {
-      _alt_text = json.get_string_member ("alt_text_ext");
+    if (json.has_member ("ext_alt_text")) {
+      _alt_text = json.get_string_member ("ext_alt_text");
     } else {
       _alt_text = "";
     }
@@ -83,31 +88,12 @@ public abstract class Backend.TwitterLegacy.Media : Object, Backend.Media {
   }
 
   /**
-   * Loads the preview image for display.
-   *
-   * @return The final preview image or null if loading failed.
-   */
-  public async Gdk.Texture? load_preview () {
-    if (preview_image == null) {
-      // Load the image if not in storage
-      preview_image = yield MediaLoader.load_image (preview_url);
-    }
-    // Return stored image
-    return preview_image;
-  }
-
-  /**
    * Returns the size of the widget.
    */
   public void get_dimensions (out int width, out int height) {
     width  = _width;
     height = _height;
   }
-
-  /**
-   * The preview image for this media.
-   */
-  private Gdk.Texture? preview_image;
 
   /**
    * The width of this media.

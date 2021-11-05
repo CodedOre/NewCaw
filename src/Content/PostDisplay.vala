@@ -133,7 +133,6 @@ public class PostDisplay : Gtk.Box {
 
     // Display post message in main label
     post_text_label.label      = main_post.text;
-    // FIXME: valac complains about "unreachable code", is this our or valac issue?
     post_text_label.selectable = display_type == MAIN;
 
     // Display media if post contains some
@@ -169,8 +168,7 @@ public class PostDisplay : Gtk.Box {
 
       // Set up options menu
       var    post_options_menu = new Menu ();
-      string open_link_action  = @"post.open_on_domain::$(main_post.url)";
-      post_options_menu.append (open_link_label, open_link_action);
+      post_options_menu.append (open_link_label, "post_display.open_link");
       post_options_button.menu_model = post_options_menu;
     } else {
       // Set up metrics box
@@ -182,9 +180,32 @@ public class PostDisplay : Gtk.Box {
       post_replies_display_label.label = main_post.replied_count.to_string ("%'d");
     }
 
-    // Set up widget actions
-    this.install_action ("post.open_on_domain", "s", (widget, action, arg) => {
-      Gtk.show_uri (null, arg.get_string (), Gdk.CURRENT_TIME);
+    // Set up "Open link" action
+    this.install_action ("post_display.open_link", null, (widget, action) => {
+      // Get the instance for this
+      PostDisplay display = (PostDisplay) widget;
+
+      // Open link to main post
+      Gtk.show_uri (null, display.main_post.url, Gdk.CURRENT_TIME);
+    });
+
+    // Set up "display media" action
+    this.install_action ("post_display.display_media", "i", (widget, action, arg) => {
+      // Get the instance for this
+      PostDisplay display = (PostDisplay) widget;
+
+      // Create the MediaDisplay
+      int focused_media = (int) arg.get_int32 ();
+      var media_display = new MediaDisplay (display.main_post.get_media (), focused_media);
+
+      // Get the MainWindow for this PostDisplay
+      Gtk.Root display_root = display.get_root ();
+      if (display_root is MainWindow) {
+        var main_window = (MainWindow) display_root;
+        main_window.show_media_display (media_display);
+      } else {
+        error ("PostDisplay: Can not display MediaDisplay without MainWindow!");
+      }
     });
   }
 
