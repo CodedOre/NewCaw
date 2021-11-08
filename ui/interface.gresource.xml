@@ -11,5 +11,6 @@
     <file>Content/MediaDisplayItem.ui</file>
     <file>Content/MediaPreviewItem.ui</file>
     <file>Content/PostDisplay.ui</file>
+    <file>Content/UserAvatar.ui</file>
   </gresource>
 </gresources>

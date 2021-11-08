@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="UserAvatar" parent="GtkWidget">
+    <property name="layout-manager">
+      <object class="GtkConstraintLayout">
+        <constraints>
+          <constraint target="super" target-attribute="height"
+                      relation="eq"
+                      source="super" source-attribute="width"
+                      strength="required"/>
+        </constraints>
+      </object>
+    </property>
+  </template>
+</interface>
