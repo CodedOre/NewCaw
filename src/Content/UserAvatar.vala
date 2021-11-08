@@ -54,6 +54,15 @@ public class UserAvatar : Gtk.Widget {
   }
 
   /**
+   * Bind settings to this widget.
+   */
+  construct {
+    var settings = new Settings ("uk.co.ibboard.Cawbird");
+    settings.bind ("round-avatars", this, "rounded",
+                    GLib.SettingsBindFlags.DEFAULT);
+  }
+
+  /**
    * Sets and load the avatar.
    */
   public void set_avatar (Backend.ImageLoader avatar) {
