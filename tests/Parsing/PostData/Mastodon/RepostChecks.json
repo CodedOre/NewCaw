@@ -31,7 +31,8 @@
   "author": {
     "id":           "106866867257179166",
     "display_name": "CawbirdTestAccount",
-    "username":     "cawbird_test_account"
+    "username":     "cawbird_test_account",
+    "avatar_url":   "https://mastodon.social/avatars/original/missing.png"
   },
   "source": "Undefined",
   "referenced_post": {
@@ -54,7 +55,8 @@
     "author": {
       "id":           "106866867257179166",
       "display_name": "CawbirdTestAccount",
-      "username":     "cawbird_test_account"
+      "username":     "cawbird_test_account",
+      "avatar_url":   "https://mastodon.social/avatars/original/missing.png"
     },
     "domain":         "mastodon.social",
     "url":            "https://mastodon.social/@cawbird_test_account/106883926076492274",
