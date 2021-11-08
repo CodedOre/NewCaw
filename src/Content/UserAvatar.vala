@@ -36,6 +36,24 @@ public class UserAvatar : Gtk.Widget {
   public int size { get; set; default = 48; }
 
   /**
+   * If this avatar is rounded.
+   */
+  public bool rounded {
+    get {
+      return is_rounded;
+    }
+    set {
+      is_rounded = value;
+      if (is_rounded && avatar_holder.has_css_class ("squared")) {
+        avatar_holder.remove_css_class ("squared");
+      }
+      if (! is_rounded && ! avatar_holder.has_css_class ("squared")) {
+        avatar_holder.add_css_class ("squared");
+      }
+    }
+  }
+
+  /**
    * Sets and load the avatar.
    */
   public void set_avatar (Backend.ImageLoader avatar) {
@@ -73,5 +91,10 @@ public class UserAvatar : Gtk.Widget {
    * A GLib.Cancellable to cancel loads when closing the item.
    */
   private Cancellable load_cancellable;
+
+  /**
+   * Stores if this avatar is rounded.
+   */
+  private bool is_rounded;
 
 }

@@ -18,6 +18,13 @@ box.indicator > image {
 }
 
 /**
+ * Makes a AdwAvatar square.
+ */
+widget.squared > avatar {
+  border-radius: 5%;
+}
+
+/**
  * An animated gradient, used to display a loading media.
  */
 .loading-media {
