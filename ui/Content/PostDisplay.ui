@@ -18,7 +18,7 @@
           <object class="GtkBox">
             <property name="spacing">4</property>
             <child>
-              <object class="AdwAvatar" id="repost_avatar">
+              <object class="UserAvatar" id="repost_avatar">
                 <property name="size">24</property>
                 <property name="margin-end">4</property>
               </object>
@@ -68,8 +68,7 @@
       <object class="GtkBox">
         <property name="spacing">4</property>
         <child>
-          <object class="AdwAvatar" id="author_avatar">
-            <property name="size">48</property>
+          <object class="UserAvatar" id="author_avatar">
             <property name="margin-end">6</property>
           </object>
         </child>

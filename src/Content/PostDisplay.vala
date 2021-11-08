@@ -33,6 +33,8 @@ public class PostDisplay : Gtk.Box {
   [GtkChild]
   private unowned Gtk.Box repost_status_box;
   [GtkChild]
+  private unowned UserAvatar repost_avatar;
+  [GtkChild]
   private unowned Gtk.Label repost_display_label;
   [GtkChild]
   private unowned Gtk.Label repost_name_label;
@@ -41,7 +43,7 @@ public class PostDisplay : Gtk.Box {
 
   // UI-Elements for the post information
   [GtkChild]
-  private unowned Adw.Avatar author_avatar;
+  private unowned UserAvatar author_avatar;
   [GtkChild]
   private unowned Gtk.Label author_display_label;
   [GtkChild]
