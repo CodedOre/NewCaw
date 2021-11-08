@@ -28,6 +28,11 @@ using GLib;
 public abstract class Backend.MediaLoader : Object {
 
   /**
+   * The url to the media to be loaded.
+   */
+  public string url { get; construct set; }
+
+  /**
    * Signals that the download is completed.
    */
   public signal void load_completed ();
@@ -38,8 +43,7 @@ public abstract class Backend.MediaLoader : Object {
    * @param url The url of the image to be loaded.
    */
   internal MediaLoader (string url) {
-    // Set the to be loaded url.
-    loaded_url = url;
+    Object (url: url);
   }
 
   /**
@@ -93,10 +97,5 @@ public abstract class Backend.MediaLoader : Object {
     // Return the loaded data
     return result;
   }
-
-  /**
-   * The url for the media to be downloaded.
-   */
-  protected string loaded_url;
 
 }

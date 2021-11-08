@@ -31,7 +31,7 @@ public class Backend.ImageLoader : Backend.MediaLoader {
    * @param url The url of the image to be loaded.
    */
   internal ImageLoader (string url) {
-    base (url);
+    Object (url: url);
   }
 
   /**
@@ -49,7 +49,7 @@ public class Backend.ImageLoader : Backend.MediaLoader {
   public override void begin_loading (Cancellable? cancellable = null) {
     // Creates a Task for loading
     var load_task = new Task (this, null, finalize_loading);
-    load_task.set_task_data (loaded_url, null);
+    load_task.set_task_data (url, null);
 
     // Runs the loading in a thread
     load_task.run_in_thread (load_threaded);

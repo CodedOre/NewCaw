@@ -80,12 +80,8 @@ public abstract class Backend.Mastodon.Media : Object, Backend.Media {
     _width  = (int) org_meta.get_int_member ("width");
     _height = (int) org_meta.get_int_member ("height");
 
-    // Get media urls
-    _preview_url = json.get_string_member ("preview_url");
-    _media_url   = json.get_string_member ("url");
-
     // Create a ImageLoader for the preview
-    _preview = new ImageLoader (preview_url);
+    _preview = new ImageLoader (json.get_string_member ("preview_url"));
   }
 
   /**

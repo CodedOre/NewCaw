@@ -72,9 +72,14 @@ namespace MediaChecks {
     assert_true (media_width  == check.get_int_member ("width"));
     assert_true (media_height == check.get_int_member ("height"));
 
-    // Check preview and media url
-    assert_true (media.preview_url == check.get_string_member ("preview_url"));
-    assert_true (media.media_url   == check.get_string_member ("media_url"));
+    // Check preview url
+    assert_true (media.preview.url == check.get_string_member ("preview_url"));
+
+    // Check picture specific things
+    if (media is Backend.Picture) {
+      Backend.Picture picture = media as Backend.Picture;
+      assert_true (picture.media.url   == check.get_string_member ("media_url"));
+    }
   }
 
 }

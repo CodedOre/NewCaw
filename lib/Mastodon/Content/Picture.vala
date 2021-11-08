@@ -37,7 +37,7 @@ public class Backend.Mastodon.Picture : Backend.Picture, Backend.Mastodon.Media 
     base.from_json (json);
 
     // Create a ImageLoader for the media
-    _media = new ImageLoader (media_url);
+    _media = new ImageLoader (json.get_string_member ("url"));
   }
 
 }

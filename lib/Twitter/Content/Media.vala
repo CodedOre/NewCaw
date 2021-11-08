@@ -45,16 +45,6 @@ public abstract class Backend.Twitter.Media : Object, Backend.Media {
   public string id { get; }
 
   /**
-   * The url to the preview image for this media.
-   */
-  public string preview_url { get; protected set; }
-
-  /**
-   * The url to the full media object.
-   */
-  public string media_url { get; protected set; }
-
-  /**
    * An text description of the media.
    */
   public string alt_text { get; }

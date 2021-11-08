@@ -34,16 +34,6 @@ public interface Backend.Media : Object {
   public abstract string id { get; }
 
   /**
-   * The url to the preview image for this media.
-   */
-  public abstract string preview_url { get; protected set; }
-
-  /**
-   * The url to the full media object.
-   */
-  public abstract string media_url { get; protected set; }
-
-  /**
    * An text description of the media.
    */
   public abstract string alt_text { get; }
