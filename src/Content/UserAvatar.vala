@@ -36,11 +36,42 @@ public class UserAvatar : Gtk.Widget {
   public int size { get; set; default = 48; }
 
   /**
+   * Sets and load the avatar.
+   */
+  public void set_avatar (Backend.ImageLoader avatar) {
+    // Load and set the Avatar
+    if (avatar.is_loaded ()) {
+      displayed_texture = avatar.get_media ();
+      avatar_holder.set_custom_image (displayed_texture);
+    } else {
+      avatar.begin_loading ();
+      avatar.load_completed.connect (() => {
+        displayed_texture = avatar.get_media ();
+        if (displayed_texture != null) {
+          avatar_holder.set_custom_image (displayed_texture);
+        }
+      });
+    }
+  }
+
+  /**
    * Deconstructs UserAvatar and it's childrens.
    */
   public override void dispose () {
+    // Cancel possible loads
+    load_cancellable.cancel ();
     // Destructs children of UserAvatar
     avatar_holder.unparent ();
   }
+
+  /**
+   * The displayed Gdk.Texture.
+   */
+  private Gdk.Texture? displayed_texture = null;
+
+  /**
+   * A GLib.Cancellable to cancel loads when closing the item.
+   */
+  private Cancellable load_cancellable;
 
 }
