@@ -40,4 +40,9 @@ public interface Backend.User : Object {
    */
   public abstract string username { get; }
 
+  /**
+   * The avatar image from this user.
+   */
+  public abstract ImageLoader avatar { get; }
+
 }

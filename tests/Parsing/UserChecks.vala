@@ -29,9 +29,15 @@ namespace UserChecks {
    * Checks the basic information for this user.
    */
   void check_basic_fields (Backend.User user, Json.Object check) {
+    // Check id from the user
     assert_true (user.id           == check.get_string_member ("id"));
+
+    // Check names of this user
     assert_true (user.display_name == check.get_string_member ("display_name"));
     assert_true (user.username     == check.get_string_member ("username"));
+
+    // Check the avatar url for this user
+    assert_true (user.avatar.url == check.get_string_member ("avatar_url"));
   }
 
 }

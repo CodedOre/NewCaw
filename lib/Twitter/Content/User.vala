@@ -41,6 +41,11 @@ public class Backend.Twitter.User : Object, Backend.User {
   public string username { get; }
 
   /**
+   * The avatar image from this user.
+   */
+  public ImageLoader avatar { get; }
+
+  /**
    * Parses an given Json.Object and creates an User object.
    *
    * @param data The Json.Object containing the specific Post.
@@ -53,6 +58,12 @@ public class Backend.Twitter.User : Object, Backend.User {
     // Get the names from this User
     _display_name = data.get_string_member ("name");
     _username     = data.get_string_member ("username");
+
+    // Get the url for the avatar and create the ImageLoader
+    if (data.has_member ("profile_image_url")) {
+      string avatar_url = data.get_string_member ("profile_image_url");
+      _avatar = new ImageLoader (avatar_url);
+    }
   }
 
 }

@@ -41,6 +41,11 @@ public class Backend.TwitterLegacy.User : Object, Backend.User {
   public string username { get; }
 
   /**
+   * The avatar image from this user.
+   */
+  public ImageLoader avatar { get; }
+
+  /**
    * Parses an given Json.Object and creates an User object.
    *
    * @param json A Json.Object retrieved from the API.
@@ -52,6 +57,10 @@ public class Backend.TwitterLegacy.User : Object, Backend.User {
     // Parses the names from this User
     _display_name = json.get_string_member ("name");
     _username     = json.get_string_member ("screen_name");
+
+    // Get the url for the avatar and create the ImageLoader
+    string avatar_url = json.get_string_member ("profile_image_url_https");
+    _avatar = new ImageLoader (avatar_url);
   }
 
 }
