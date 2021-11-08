@@ -33,6 +33,8 @@ public class PostDisplay : Gtk.Box {
   [GtkChild]
   private unowned Gtk.Box repost_status_box;
   [GtkChild]
+  private unowned UserAvatar repost_avatar;
+  [GtkChild]
   private unowned Gtk.Label repost_display_label;
   [GtkChild]
   private unowned Gtk.Label repost_name_label;
@@ -41,7 +43,7 @@ public class PostDisplay : Gtk.Box {
 
   // UI-Elements for the post information
   [GtkChild]
-  private unowned Adw.Avatar author_avatar;
+  private unowned UserAvatar author_avatar;
   [GtkChild]
   private unowned Gtk.Label author_display_label;
   [GtkChild]
@@ -103,6 +105,7 @@ public class PostDisplay : Gtk.Box {
 
     // Set up the repost display
     if (show_repost) {
+      repost_avatar.set_avatar (displayed_post.author.avatar);
       repost_display_label.label = displayed_post.author.display_name;
       repost_name_label.label    = "@" + displayed_post.author.username;
       repost_time_label.label    = DisplayUtils.display_time_delta (displayed_post.date);
@@ -111,6 +114,9 @@ public class PostDisplay : Gtk.Box {
 
     // Hint for the user where the post can be opened in the browser
     string open_link_label = _("Open on %s").printf (main_post.domain);
+
+    // Set up the author avatar
+    author_avatar.set_avatar (main_post.author.avatar);
 
     // Set up the post information area
     if (display_type == MAIN) {

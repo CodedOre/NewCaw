@@ -41,6 +41,11 @@ public class Backend.Mastodon.User : Object, Backend.User {
   public string username { get; }
 
   /**
+   * The avatar image from this user.
+   */
+  public ImageLoader avatar { get; }
+
+  /**
    * Parses an given Json.Object and creates an User object.
    *
    * @param json A Json.Object retrieved from the API.
@@ -52,6 +57,11 @@ public class Backend.Mastodon.User : Object, Backend.User {
     // Parse the names of this User
     _display_name = json.get_string_member ("display_name");
     _username     = json.get_string_member ("username");
+
+    // Get the url for the avatar and create the ImageLoader
+    // TODO: We may want to support the non-static avatars as well
+    string avatar_url = json.get_string_member ("avatar_static");
+    _avatar = new ImageLoader (avatar_url);
   }
 
 }
