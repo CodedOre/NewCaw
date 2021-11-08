@@ -10,8 +10,24 @@
                       relation="eq"
                       source="super" source-attribute="width"
                       strength="required"/>
+
+          <constraint target="avatar_holder" target-attribute="height"
+                      relation="eq"
+                      source="super" source-attribute="height"
+                      strength="required"/>
+          <constraint target="avatar_holder" target-attribute="width"
+                      relation="eq"
+                      source="super" source-attribute="width"
+                      strength="required"/>
         </constraints>
       </object>
     </property>
+    <child>
+      <object class="AdwAvatar" id="avatar_holder">
+        <binding name="size">
+          <lookup name="size">UserAvatar</lookup>
+        </binding>
+      </object>
+    </child>
   </template>
 </interface>

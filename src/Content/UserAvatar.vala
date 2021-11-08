@@ -25,4 +25,22 @@ using GLib;
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/UserAvatar.ui")]
 public class UserAvatar : Gtk.Widget {
+
+  // UI-Elements of UserAvatar
+  [GtkChild]
+  private unowned Adw.Avatar avatar_holder;
+
+  /**
+   * The size of this widget.
+   */
+  public int size { get; set; default = 48; }
+
+  /**
+   * Deconstructs UserAvatar and it's childrens.
+   */
+  public override void dispose () {
+    // Destructs children of UserAvatar
+    avatar_holder.unparent ();
+  }
+
 }
