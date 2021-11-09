@@ -88,6 +88,11 @@ public class MediaPreviewItem : Gtk.Widget {
       alt_text_indicator.visible = true;
     }
 
+    // Set the video type indicator
+    if (displayed_media is Backend.Video) {
+      video_type_indicator.visible = true;
+    }
+
     // Make media_indicator_box visible when a indicator is set
     media_indicator_box.visible = animated_type_indicator.visible || video_type_indicator.visible || alt_text_indicator.visible;
   }
