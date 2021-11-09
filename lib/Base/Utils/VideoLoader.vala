@@ -92,7 +92,9 @@ public class Backend.VideoLoader : Backend.MediaLoader {
     }
 
     // Create a Gtk.MediaFile with the stream
-    var result = Gtk.MediaFile.for_input_stream (stream);
+    var result = Gtk.MediaFile.empty ();
+    // FIXME: MediaFile creation from InputStream not (yet) possible
+    // var result = Gtk.MediaFile.for_input_stream (stream);
     task.return_value (result);
   }
 
