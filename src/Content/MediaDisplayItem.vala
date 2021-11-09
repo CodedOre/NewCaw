@@ -72,7 +72,7 @@ public class MediaDisplayItem : Gtk.Widget {
       });
     }
 
-    // Load the actual media depending on the media type
+    // Load the actual media
     if (displayed_media is Backend.Picture) {
       var picture = (Backend.Picture) displayed_media;
       // Load the high-res image
@@ -83,7 +83,7 @@ public class MediaDisplayItem : Gtk.Widget {
       } else {
         picture.media.begin_loading (load_cancellable);
         picture.media.load_completed.connect (() => {
-          Gdk.Texture image = picture.media.get_media ();
+          Gdk.Paintable image = picture.media.get_media ();
           // Displays the image
           if (image != null) {
             displayed_paintable = image;

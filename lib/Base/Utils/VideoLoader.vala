@@ -44,6 +44,15 @@ public class Backend.VideoLoader : Backend.MediaLoader {
   }
 
   /**
+   * Returns the final downloaded media.
+   *
+   * @return The final media for download, or null if not possible.
+   */
+  public override Gdk.Paintable? get_media () {
+    return video;
+  }
+
+  /**
    * Initiates the download.
    */
   public override void begin_loading (Cancellable? cancellable = null) {
@@ -53,15 +62,6 @@ public class Backend.VideoLoader : Backend.MediaLoader {
 
     // Runs the loading in a thread
     load_task.run_in_thread (load_threaded);
-  }
-
-  /**
-   * Returns the final downloaded media.
-   *
-   * @return The final media for download, or null if not possible.
-   */
-  public Gtk.MediaFile? get_media () {
-    return video;
   }
 
   /**

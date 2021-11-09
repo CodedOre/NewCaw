@@ -69,12 +69,12 @@ public class MediaPreviewItem : Gtk.Widget {
 
     // Load and set the Paintable
     if (displayed_media.preview.is_loaded ()) {
-      displayed_texture = displayed_media.preview.get_media ();
+      displayed_texture = displayed_media.preview.get_media () as Gdk.Texture;
       preview.set_paintable (displayed_texture);
     } else {
       displayed_media.preview.begin_loading ();
       displayed_media.preview.load_completed.connect (() => {
-        displayed_texture = displayed_media.preview.get_media ();
+        displayed_texture = displayed_media.preview.get_media () as Gdk.Texture;
         if (displayed_texture != null) {
           preview.set_paintable (displayed_texture);
           preview.remove_css_class ("loading-media");

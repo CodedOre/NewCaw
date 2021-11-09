@@ -54,6 +54,13 @@ public abstract class Backend.MediaLoader : Object {
   public abstract bool is_loaded ();
 
   /**
+   * Returns the final downloaded media.
+   *
+   * @return The final media for download, or null if not possible.
+   */
+  public abstract Gdk.Paintable? get_media ();
+
+  /**
    * Initiates the download.
    */
   public abstract void begin_loading (Cancellable? cancellable = null);
