@@ -34,6 +34,8 @@ public abstract class Backend.Mastodon.Media : Object, Backend.Media {
     switch (media_type) {
       case "image":
         return new Picture.from_json (json);
+      case "video":
+        return new Video.from_json (json);
       default:
         error ("Failed to create a Media object: Unknown media type!");
     }
