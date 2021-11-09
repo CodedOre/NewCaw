@@ -43,7 +43,13 @@ public class MediaDisplay : Gtk.Widget {
   [GtkChild]
   private unowned Gtk.Revealer bottom_bar;
   [GtkChild]
-  private unowned Gtk.Label description_label;
+  private unowned Gtk.Stack controls_stack;
+  [GtkChild]
+  private unowned Gtk.Label image_description_label;
+  [GtkChild]
+  private unowned Gtk.Label video_description_label;
+  [GtkChild]
+  private unowned Gtk.MediaControls video_controls;
 
   // UI-Elements for the top bar
   [GtkChild]
@@ -119,7 +125,25 @@ public class MediaDisplay : Gtk.Widget {
     set_load_indicator (display);
 
     // Set up the description
-    description_label.label = media.alt_text;
+    image_description_label.label = media.alt_text;
+    video_description_label.label = media.alt_text;
+
+    // Set the right controls for the media
+    if (media is Backend.Video) {
+      // Bind MediaControls to the MediaFile
+      var video  = media as Backend.Video;
+      var stream = video.media.get_media () as Gtk.MediaStream;
+      video_controls.set_media_stream (stream);
+      // Set the controls stack to the video controls
+      controls_stack.set_visible_child_name ("video-controls");
+    } else {
+      // Unbind MediaControls if needed
+      if (video_controls.media_stream != null) {
+        video_controls.set_media_stream (null);
+      }
+      // Set the controls stack to the image controls
+      controls_stack.set_visible_child_name ("image-controls");
+    }
 
     // Disable scroll buttons if on first/last item
     previous_controls.sensitive = ! (position == 0);
