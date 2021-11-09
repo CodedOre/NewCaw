@@ -17,9 +17,11 @@ libfiles = [
   'Base/Content/PostEnums.vala',
   'Base/Content/TextModule.vala',
   'Base/Content/User.vala',
+  'Base/Content/Video.vala',
   'Base/Utils/ImageLoader.vala',
   'Base/Utils/MediaLoader.vala',
-  'Base/Utils/TextUtils.vala'
+  'Base/Utils/TextUtils.vala',
+  'Base/Utils/VideoLoader.vala'
 ]
 
 # Add files for active backends
