@@ -72,21 +72,29 @@ public class MediaDisplayItem : Gtk.Widget {
       });
     }
 
-    // Load the actual media
+    // Get the MediaLoader for this media
+    Backend.MediaLoader? main_media = null;
     if (displayed_media is Backend.Picture) {
-      var picture = (Backend.Picture) displayed_media;
-      // Load the high-res image
-      if (picture.media.is_loaded ()) {
-        displayed_paintable = picture.media.get_media ();
+      var picture = displayed_media as Backend.Picture;
+      main_media  = picture.media;
+    }
+    if (displayed_media is Backend.Video) {
+      var video  = displayed_media as Backend.Video;
+      main_media = video.media;
+    }
+
+    if (main_media != null) {
+      // Load the actual media
+      if (main_media.is_loaded ()) {
+        displayed_paintable = main_media.get_media ();
         content.set_paintable (displayed_paintable);
         media_loaded = true;
       } else {
-        picture.media.begin_loading (load_cancellable);
-        picture.media.load_completed.connect (() => {
-          Gdk.Paintable image = picture.media.get_media ();
-          // Displays the image
-          if (image != null) {
-            displayed_paintable = image;
+        main_media.begin_loading (load_cancellable);
+        main_media.load_completed.connect (() => {
+          displayed_paintable = main_media.get_media ();
+          if (displayed_paintable != null) {
+            // Displays the paintable
             content.set_paintable (displayed_paintable);
             media_loaded = true;
           }
