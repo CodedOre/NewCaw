@@ -29,7 +29,6 @@ public class MediaDisplay : Gtk.Widget {
   // UI-Elements for the content
   [GtkChild]
   private unowned Adw.Carousel media_carousel;
-  // FIXME: Loading animation sometime stops...
   [GtkChild]
   private unowned Adw.Bin load_indicator;
 

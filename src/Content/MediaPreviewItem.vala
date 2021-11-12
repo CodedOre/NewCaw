@@ -103,7 +103,6 @@ public class MediaPreviewItem : Gtk.Widget {
     int           preview_width  = width;
     if (displayed_texture != null) {
       // Get the sizes of the item and the texture
-      // FIXME: Fix flickering when quickly resizing the window
       int text_height = displayed_texture.height;
       int text_width  = displayed_texture.width;
       int item_height = this.get_allocated_height ();

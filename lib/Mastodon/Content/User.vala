@@ -59,7 +59,6 @@ public class Backend.Mastodon.User : Object, Backend.User {
     _username     = json.get_string_member ("username");
 
     // Get the url for the avatar and create the ImageLoader
-    // TODO: We may want to support the non-static avatars as well
     string avatar_url = json.get_string_member ("avatar_static");
     _avatar = new ImageLoader (avatar_url);
   }

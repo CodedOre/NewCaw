@@ -22,8 +22,6 @@ using GLib;
 
 /**
  * An interface containing basic utilities for downloading media.
- *
- * TODO: Improve Error handling
  */
 public abstract class Backend.MediaLoader : Object {
 
@@ -64,7 +62,6 @@ public abstract class Backend.MediaLoader : Object {
    * @return A double representing the progress of the load.
    */
   public double load_progress () {
-    // TODO: Find a method in Soup which gives us the progress.
     return 0.0;
   }
 

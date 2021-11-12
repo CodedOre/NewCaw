@@ -92,7 +92,6 @@ public class Backend.ImageLoader : Backend.MediaLoader {
     }
 
     // Create a Gdk.Texture with the stream
-    // TODO: (Maybe) replace the Pixbuf creation with Bytes when this is available (GTK 4.6)
     try {
       var texbuf  = new Gdk.Pixbuf.from_stream (stream);
       var texture = Gdk.Texture.for_pixbuf (texbuf);

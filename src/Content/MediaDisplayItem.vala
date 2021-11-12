@@ -22,8 +22,6 @@ using GLib;
 
 /**
  * A widget displaying the preview or media for a single item.
- *
- * TODO: Add zoom functionality by making a scrollable paintable.
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/MediaDisplayItem.ui")]
 public class MediaDisplayItem : Gtk.Widget {

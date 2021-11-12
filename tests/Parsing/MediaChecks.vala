@@ -23,7 +23,6 @@ using GLib;
 /**
  * Checks for testing a parsed Media object.
  */
-// TODO: Maybe add an downloader test to see if downloading works properly...
 namespace MediaChecks {
 
   /**
