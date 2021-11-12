@@ -61,6 +61,26 @@ public class Backend.TwitterLegacy.User : Object, Backend.User {
     // Get the url for the avatar and create the ImageLoader
     string avatar_url = json.get_string_member ("profile_image_url_https");
     _avatar = new ImageLoader (avatar_url);
+
+    // Get possible flags for this user
+    if (json.get_boolean_member ("protected")) {
+      flags = flags | MODERATED | PROTECTED;
+    }
+    if (json.get_boolean_member ("verified")) {
+      flags = flags | VERIFIED;
+    }
   }
+
+  /**
+   * Checks if the User has a certain flag set.
+   */
+  public bool has_flag (UserFlag flag) {
+    return flag in flags;
+  }
+
+  /**
+   * Stores the flags for this user.
+   */
+  private UserFlag flags;
 
 }

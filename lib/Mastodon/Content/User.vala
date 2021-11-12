@@ -61,6 +61,26 @@ public class Backend.Mastodon.User : Object, Backend.User {
     // Get the url for the avatar and create the ImageLoader
     string avatar_url = json.get_string_member ("avatar_static");
     _avatar = new ImageLoader (avatar_url);
+
+    // Get possible flags for this user
+    if (json.get_boolean_member ("locked")) {
+      flags = flags | MODERATED;
+    }
+    if (json.get_boolean_member ("bot")) {
+      flags = flags | BOT;
+    }
   }
+
+  /**
+   * Checks if the User has a certain flag set.
+   */
+  public bool has_flag (UserFlag flag) {
+    return flag in flags;
+  }
+
+  /**
+   * Stores the flags for this user.
+   */
+  private UserFlag flags;
 
 }

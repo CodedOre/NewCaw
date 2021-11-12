@@ -1,4 +1,4 @@
-/* User.vala
+/* UserEnums.vala
  *
  * Copyright 2021 Frederick Schenk
  *
@@ -21,33 +21,24 @@
 using GLib;
 
 /**
- * Stores information about one user of a platform.
+ * Flags defining some properties of a User.
  */
-public interface Backend.User : Object {
-
+[Flags]
+public enum UserFlag {
   /**
-   * The identifier of the user in the API.
+   * Sets if the User moderates it’s followers.
    */
-  public abstract string id { get; }
-
+  MODERATED,
   /**
-   * The "name" of the user.
+   * Sets if the User don't allow public access to his timeline.
    */
-  public abstract string display_name { get; }
-
+  PROTECTED,
   /**
-   * The unique handle of this user.
+   * Sets if the User is verified by the platform.
    */
-  public abstract string username { get; }
-
+  VERIFIED,
   /**
-   * The avatar image from this user.
+   * Sets if the User is a automated bot.
    */
-  public abstract ImageLoader avatar { get; }
-
-  /**
-   * Checks if the User has a certain flag set.
-   */
-  public abstract bool has_flag (UserFlag flag);
-
+  BOT
 }

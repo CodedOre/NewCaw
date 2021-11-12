@@ -64,6 +64,26 @@ public class Backend.Twitter.User : Object, Backend.User {
       string avatar_url = data.get_string_member ("profile_image_url");
       _avatar = new ImageLoader (avatar_url);
     }
+
+    // Get possible flags for this user
+    if (data.get_boolean_member ("protected")) {
+      flags = flags | MODERATED | PROTECTED;
+    }
+    if (data.get_boolean_member ("verified")) {
+      flags = flags | VERIFIED;
+    }
   }
+
+  /**
+   * Checks if the User has a certain flag set.
+   */
+  public bool has_flag (UserFlag flag) {
+    return flag in flags;
+  }
+
+  /**
+   * Stores the flags for this user.
+   */
+  private UserFlag flags;
 
 }
