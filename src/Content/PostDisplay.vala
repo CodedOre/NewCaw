@@ -20,14 +20,29 @@
 
 using GLib;
 
-public enum PostDisplayType {
-  LIST,
-  MAIN,
-  QUOTE
-}
-
+/**
+ * Displays the content of one Post.
+ */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/PostDisplay.ui")]
 public class PostDisplay : Gtk.Box {
+
+  /**
+   * How the content will be displayed.
+   */
+  public enum DisplayType {
+    /**
+     * Will be normally displayed, designed for use in a list.
+     */
+    LIST,
+    /**
+     * Added interactive elements, designed for selected posts.
+     */
+    MAIN,
+    /**
+     * Smaller display, used for quoted posts.
+     */
+    QUOTE
+  }
 
   // UI-Elements for the repost display
   [GtkChild]
@@ -90,7 +105,7 @@ public class PostDisplay : Gtk.Box {
    *
    * @param post The Post which is to be displayed in this widget.
    */
-  public PostDisplay (Backend.Post post, PostDisplayType display_type = LIST) {
+  public PostDisplay (Backend.Post post, DisplayType display_type = LIST) {
     // Store the post to display
     displayed_post = post;
 
