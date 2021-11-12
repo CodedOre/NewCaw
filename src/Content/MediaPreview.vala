@@ -98,6 +98,7 @@ public class MediaPreview : Gtk.Grid {
       var media_item   = new MediaPreviewItem (displayed_media [i], i, item_width, item_height, ITEM_SPACING);
       var item_frame   = new Gtk.Frame (null);
       item_frame.child = media_item;
+      item_frame.add_css_class ("card");
 
       // Positions the frame in the grid
       this.attach (item_frame, item_column, item_row, item_width, item_height);

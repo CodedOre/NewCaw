@@ -14,7 +14,6 @@
       <object class="GtkButton" id="selector">
         <property name="action_name">post_display.display_media</property>
         <style>
-          <class name="flat"/>
         </style>
       </object>
     </child>
