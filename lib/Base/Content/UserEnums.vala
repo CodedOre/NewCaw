@@ -24,7 +24,7 @@ using GLib;
  * Flags defining some properties of a User.
  */
 [Flags]
-public enum UserFlag {
+public enum Backend.UserFlag {
   /**
    * Sets if the User moderates it’s followers.
    */
