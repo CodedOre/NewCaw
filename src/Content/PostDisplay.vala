@@ -133,7 +133,8 @@ public class PostDisplay : Gtk.Box {
     string open_link_label = _("Open on %s").printf (main_post.domain);
 
     // Set up the author avatar
-    author_avatar.set_avatar (main_post.author.avatar);
+    bool verified_author = main_post.author.has_flag (VERIFIED);
+    author_avatar.set_avatar (main_post.author.avatar, verified_author);
 
     // Set up the post information area
     if (display_type == MAIN) {

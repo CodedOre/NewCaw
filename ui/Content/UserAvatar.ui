@@ -19,6 +19,15 @@
                       relation="eq"
                       source="super" source-attribute="width"
                       strength="required"/>
+
+          <constraint target="verified_badge" target-attribute="end"
+                      relation="eq"
+                      source="super" source-attribute="end"
+                      strength="required"/>
+          <constraint target="verified_badge" target-attribute="bottom"
+                      relation="eq"
+                      source="super" source-attribute="bottom"
+                      strength="required"/>
         </constraints>
       </object>
     </property>
@@ -27,6 +36,15 @@
         <binding name="size">
           <lookup name="size">UserAvatar</lookup>
         </binding>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="verified_badge">
+        <property name="visible">false</property>
+        <property name="icon-name">object-select-symbolic</property>
+        <style>
+          <class name="verified-badge"/>
+        </style>
       </object>
     </child>
   </template>

@@ -18,6 +18,15 @@ box.indicator > image {
 }
 
 /**
+ * Styles for badges, using separate, circular indicators.
+ */
+image.verified-badge {
+  border-radius: 50%;
+  background: @blue_3;
+  color: @light_1;
+}
+
+/**
  * Makes a AdwAvatar square.
  */
 widget.squared > avatar {

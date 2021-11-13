@@ -29,6 +29,8 @@ public class UserAvatar : Gtk.Widget {
   // UI-Elements of UserAvatar
   [GtkChild]
   private unowned Adw.Avatar avatar_holder;
+  [GtkChild]
+  private unowned Gtk.Image verified_badge;
 
   /**
    * The size of this widget.
@@ -65,7 +67,7 @@ public class UserAvatar : Gtk.Widget {
   /**
    * Sets and load the avatar.
    */
-  public void set_avatar (Backend.ImageLoader avatar) {
+  public void set_avatar (Backend.ImageLoader avatar, bool verified = false) {
     // Load and set the Avatar
     if (avatar.is_loaded ()) {
       displayed_texture = avatar.get_media ();
@@ -79,6 +81,8 @@ public class UserAvatar : Gtk.Widget {
         }
       });
     }
+    // Sets the verified badge
+    verified_badge.visible = verified;
   }
 
   /**
@@ -89,6 +93,7 @@ public class UserAvatar : Gtk.Widget {
     load_cancellable.cancel ();
     // Destructs children of UserAvatar
     avatar_holder.unparent ();
+    verified_badge.unparent ();
   }
 
   /**
