@@ -120,6 +120,8 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
     // Get metrics
     _liked_count    = json.get_int_member ("favorite_count");
     _reposted_count = json.get_int_member ("retweet_count");
+    // Set replied_count to -1 as API don't return this data
+    _replied_count  = -1;
 
     // Parse the text into modules
     Json.Object? entities   = null;

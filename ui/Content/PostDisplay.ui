@@ -161,7 +161,7 @@
           <object class="GtkBox">
             <property name="spacing">6</property>
             <child>
-              <object class="GtkImage" id="post_likes_display_image">
+              <object class="GtkImage">
                 <property name="icon-name">not-liked-symbolic</property>
               </object>
             </child>
@@ -178,7 +178,7 @@
           <object class="GtkBox">
             <property name="spacing">6</property>
             <child>
-              <object class="GtkImage" id="post_reposts_display_image">
+              <object class="GtkImage">
                 <property name="icon-name">repost-symbolic</property>
               </object>
             </child>
@@ -192,10 +192,10 @@
           </object>
         </child>
         <child>
-          <object class="GtkBox">
+          <object class="GtkBox" id="post_replies_display_box">
             <property name="spacing">6</property>
             <child>
-              <object class="GtkImage" id="post_replies_display_image">
+              <object class="GtkImage">
                 <property name="icon-name">reply-symbolic</property>
               </object>
             </child>

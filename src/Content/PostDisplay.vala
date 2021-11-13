@@ -86,6 +86,8 @@ public class PostDisplay : Gtk.Box {
   [GtkChild]
   private unowned Gtk.Label post_reposts_display_label;
   [GtkChild]
+  private unowned Gtk.Box post_replies_display_box;
+  [GtkChild]
   private unowned Gtk.Label post_replies_display_label;
 
   // UI-Elements for the action box
@@ -185,7 +187,9 @@ public class PostDisplay : Gtk.Box {
       // Set up metrics in buttons
       post_like_button_display.label   = main_post.liked_count.to_string ("%'d");
       post_repost_button_display.label = main_post.reposted_count.to_string ("%'d");
-      post_reply_button_display.label  = main_post.replied_count.to_string ("%'d");
+      if (main_post.replied_count >= 0) {
+        post_reply_button_display.label  = main_post.replied_count.to_string ("%'d");
+      }
 
       // Set up options menu
       var    post_options_menu = new Menu ();
@@ -198,7 +202,12 @@ public class PostDisplay : Gtk.Box {
       // Set up metrics labels
       post_likes_display_label.label   = main_post.liked_count.to_string ("%'d");
       post_reposts_display_label.label = main_post.reposted_count.to_string ("%'d");
-      post_replies_display_label.label = main_post.replied_count.to_string ("%'d");
+      if (main_post.replied_count >= 0) {
+        post_replies_display_label.label = main_post.replied_count.to_string ("%'d");
+      } else {
+        // Hide the replies metric if we don't get data for it.
+        post_replies_display_box.visible = false;
+      }
     }
 
     // Set up "Open link" action
