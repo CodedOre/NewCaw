@@ -25,6 +25,7 @@ cawfiles = [
   'Content/MediaPreviewItem.vala',
   'Content/PostDisplay.vala',
   'Content/UserAvatar.vala',
+  'Utils/BadgesBox.vala',
   'Utils/DisplayUtils.vala'
 ]
 

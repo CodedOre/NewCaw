@@ -62,6 +62,8 @@ public class PostDisplay : Gtk.Box {
   [GtkChild]
   private unowned Gtk.Label author_display_label;
   [GtkChild]
+  private unowned BadgesBox author_badges;
+  [GtkChild]
   private unowned Gtk.Label author_name_label;
   [GtkChild]
   private unowned Gtk.Label post_info_label;
@@ -133,8 +135,7 @@ public class PostDisplay : Gtk.Box {
     string open_link_label = _("Open on %s").printf (main_post.domain);
 
     // Set up the author avatar
-    bool verified_author = main_post.author.has_flag (VERIFIED);
-    author_avatar.set_avatar (main_post.author.avatar, verified_author);
+    author_avatar.set_avatar (main_post.author.avatar);
 
     // Set up the post information area
     if (display_type == MAIN) {

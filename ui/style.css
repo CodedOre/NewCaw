@@ -20,10 +20,22 @@ box.indicator > image {
 /**
  * Styles for badges, using separate, circular indicators.
  */
-image.verified-badge {
+badge {
   border-radius: 50%;
-  background: @blue_3;
+  padding: 3px;
   color: @light_1;
+}
+
+badge.verified {
+  background: @blue_3;
+}
+
+badge.bot {
+  background: @dark_2;
+}
+
+badge.protected {
+  background: @orange_3;
 }
 
 /**

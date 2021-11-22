@@ -12,5 +12,6 @@
     <file>Content/MediaPreviewItem.ui</file>
     <file>Content/PostDisplay.ui</file>
     <file>Content/UserAvatar.ui</file>
+    <file>Utils/BadgesBox.ui</file>
   </gresource>
 </gresources>

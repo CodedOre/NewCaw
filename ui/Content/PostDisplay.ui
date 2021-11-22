@@ -89,6 +89,9 @@
                   </object>
                 </child>
                 <child>
+                  <object class="BadgesBox" id="author_badges"/>
+                </child>
+                <child>
                   <object class="GtkLabel" id="author_name_label">
                     <property name="halign">start</property>
                     <property name="valign">end</property>

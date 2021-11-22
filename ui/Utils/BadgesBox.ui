@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="BadgesBox" parent="GtkBox">
+    <property name="halign">center</property>
+    <property name="valign">center</property>
+    <property name="spacing">2</property>
+    <child>
+      <object class="GtkImage" id="author_verified_badge">
+        <binding name="pixel-size">
+          <lookup name="icon-size">BadgesBox</lookup>
+        </binding>
+        <property name="css_name">badge</property>
+        <property name="icon-name">object-select-symbolic</property>
+        <style>
+          <class name="verified"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="author_bot_badge">
+        <binding name="pixel-size">
+          <lookup name="icon-size">BadgesBox</lookup>
+        </binding>
+        <property name="css_name">badge</property>
+        <property name="icon-name">bot-user-symbolic</property>
+        <style>
+          <class name="bot"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImage" id="author_protected_badge">
+        <binding name="pixel-size">
+          <lookup name="icon-size">BadgesBox</lookup>
+        </binding>
+        <property name="css_name">badge</property>
+        <property name="icon-name">protected-user-symbolic</property>
+        <style>
+          <class name="protected"/>
+        </style>
+      </object>
+    </child>
+  </template>
+</interface>
