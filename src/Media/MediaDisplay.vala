@@ -23,7 +23,7 @@ using GLib;
 /**
  * A view widget displaying Media in full.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/MediaDisplay.ui")]
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Media/MediaDisplay.ui")]
 public class MediaDisplay : Gtk.Widget {
 
   // UI-Elements for the content

@@ -23,7 +23,7 @@ using GLib;
 /**
  * A small helper widget to display different badges.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Utils/BadgesBox.ui")]
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Widgets/BadgesBox.ui")]
 public class BadgesBox : Gtk.Box {
 
   /**

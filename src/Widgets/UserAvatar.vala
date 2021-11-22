@@ -23,7 +23,7 @@ using GLib;
 /**
  * A small widget displaying an avatar of an user.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/UserAvatar.ui")]
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Widgets/UserAvatar.ui")]
 public class UserAvatar : Gtk.Widget {
 
   // UI-Elements of UserAvatar

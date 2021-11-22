@@ -7,11 +7,11 @@
   <!-- UI Files -->
   <gresource prefix="/uk/co/ibboard/Cawbird/ui">
     <file>MainWindow.ui</file>
-    <file>Content/MediaDisplay.ui</file>
-    <file>Content/MediaDisplayItem.ui</file>
-    <file>Content/MediaPreviewItem.ui</file>
     <file>Content/PostDisplay.ui</file>
-    <file>Content/UserAvatar.ui</file>
-    <file>Utils/BadgesBox.ui</file>
+    <file>Media/MediaDisplay.ui</file>
+    <file>Media/MediaDisplayItem.ui</file>
+    <file>Media/MediaPreviewItem.ui</file>
+    <file>Widgets/UserAvatar.ui</file>
+    <file>Widgets/BadgesBox.ui</file>
   </gresource>
 </gresources>

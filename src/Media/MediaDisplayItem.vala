@@ -23,7 +23,7 @@ using GLib;
 /**
  * A widget displaying the preview or media for a single item.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/MediaDisplayItem.ui")]
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Media/MediaDisplayItem.ui")]
 public class MediaDisplayItem : Gtk.Widget {
 
   // UI-Elements of MediaDisplayItem

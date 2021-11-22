@@ -19,14 +19,14 @@ cawfiles = [
   'config.vapi',
   'Cawbird.vala',
   'MainWindow.vala',
-  'Content/MediaDisplay.vala',
-  'Content/MediaDisplayItem.vala',
-  'Content/MediaPreview.vala',
-  'Content/MediaPreviewItem.vala',
   'Content/PostDisplay.vala',
-  'Content/UserAvatar.vala',
-  'Utils/BadgesBox.vala',
-  'Utils/DisplayUtils.vala'
+  'Media/MediaDisplay.vala',
+  'Media/MediaDisplayItem.vala',
+  'Media/MediaPreview.vala',
+  'Media/MediaPreviewItem.vala',
+  'Utils/DisplayUtils.vala',
+  'Widgets/UserAvatar.vala',
+  'Widgets/BadgesBox.vala'
 ]
 
 # Add build configurations
