@@ -3,11 +3,15 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
   <template class="BadgesBox" parent="GtkBox">
+    <property name="visible">false</property>
     <property name="halign">center</property>
     <property name="valign">center</property>
     <property name="spacing">2</property>
     <child>
       <object class="GtkImage" id="author_verified_badge">
+        <binding name="visible">
+          <lookup name="display-verified">BadgesBox</lookup>
+        </binding>
         <binding name="pixel-size">
           <lookup name="icon-size">BadgesBox</lookup>
         </binding>
@@ -20,6 +24,9 @@
     </child>
     <child>
       <object class="GtkImage" id="author_bot_badge">
+        <binding name="visible">
+          <lookup name="display-bot">BadgesBox</lookup>
+        </binding>
         <binding name="pixel-size">
           <lookup name="icon-size">BadgesBox</lookup>
         </binding>
@@ -32,6 +39,9 @@
     </child>
     <child>
       <object class="GtkImage" id="author_protected_badge">
+        <binding name="visible">
+          <lookup name="display-protected">BadgesBox</lookup>
+        </binding>
         <binding name="pixel-size">
           <lookup name="icon-size">BadgesBox</lookup>
         </binding>

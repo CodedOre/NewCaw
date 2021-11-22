@@ -31,4 +31,58 @@ public class BadgesBox : Gtk.Box {
    */
   public int icon_size { get; set; default = 12; }
 
+  /**
+   * If the verified badge should be shown.
+   */
+  public bool display_verified {
+    get {
+      return verified_visible;
+    }
+    set {
+      verified_visible = value;
+      this.visible = verified_visible || bot_visible || protected_visible;
+    }
+  }
+
+  /**
+   * If the bot badge should be shown.
+   */
+  public bool display_bot {
+    get {
+      return bot_visible;
+    }
+    set {
+      bot_visible = value;
+      this.visible = verified_visible || bot_visible || protected_visible;
+    }
+  }
+
+  /**
+   * If the protected badge should be shown.
+   */
+  public bool display_protected {
+    get {
+      return protected_visible;
+    }
+    set {
+      protected_visible = value;
+      this.visible = verified_visible || bot_visible || protected_visible;
+    }
+  }
+
+  /**
+   * Stores if the verified badge should be shown.
+   */
+  private bool verified_visible = false;
+
+  /**
+   * Stores if the bot badge should be shown.
+   */
+  private bool bot_visible = false;
+
+  /**
+   * Stores if the protected badge should be shown.
+   */
+  private bool protected_visible = false;
+
 }
