@@ -8,7 +8,7 @@ option(
 option(
   'support_twitter',
   type:         'boolean',
-  value:         false,
+  value:         true,
   description:  'Builds the Twitter backend'
 )
 
