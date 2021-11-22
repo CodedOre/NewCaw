@@ -137,6 +137,11 @@ public class PostDisplay : Gtk.Box {
     // Set up the author avatar
     author_avatar.set_avatar (main_post.author.avatar);
 
+    // Set up badges for the author
+    author_badges.display_verified  = main_post.author.has_flag (VERIFIED);
+    author_badges.display_bot       = main_post.author.has_flag (BOT);
+    author_badges.display_protected = main_post.author.has_flag (PROTECTED);
+
     // Set up the post information area
     if (display_type == MAIN) {
       // Set up author side-by-side when main display
