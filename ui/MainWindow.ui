@@ -9,7 +9,7 @@
     <property name="default-height">450</property>
     <child>
       <object class="AdwLeaflet" id="leaflet">
-        <property name="can-swipe-back">true</property>
+        <property name="can-navigate-back">true</property>
         <property name="can-unfold">false</property>
       </object>
     </child>
