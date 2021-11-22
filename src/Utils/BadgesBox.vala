@@ -29,7 +29,7 @@ public class BadgesBox : Gtk.Box {
   /**
    * The size for all used icons.
    */
-  public int icon_size { get; set; default = 12; }
+  public int icon_size { get; set; default = 11; }
 
   /**
    * If the verified badge should be shown.

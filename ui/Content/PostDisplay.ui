@@ -38,6 +38,11 @@
               </object>
             </child>
             <child>
+              <object class="BadgesBox" id="repost_badges">
+                <property name="icon-size">8</property>
+              </object>
+            </child>
+            <child>
               <object class="GtkLabel" id="repost_name_label">
                 <property name="ellipsize">end</property>
                 <style>

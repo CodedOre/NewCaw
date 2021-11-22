@@ -52,6 +52,8 @@ public class PostDisplay : Gtk.Box {
   [GtkChild]
   private unowned Gtk.Label repost_display_label;
   [GtkChild]
+  private unowned BadgesBox repost_badges;
+  [GtkChild]
   private unowned Gtk.Label repost_name_label;
   [GtkChild]
   private unowned Gtk.Label repost_time_label;
@@ -124,11 +126,19 @@ public class PostDisplay : Gtk.Box {
 
     // Set up the repost display
     if (show_repost) {
+      // Display the repost status box
+      repost_status_box.visible  = true;
+
+      // Set up information about the reposting user
       repost_avatar.set_avatar (displayed_post.author.avatar);
       repost_display_label.label = displayed_post.author.display_name;
       repost_name_label.label    = "@" + displayed_post.author.username;
       repost_time_label.label    = DisplayUtils.display_time_delta (displayed_post.date);
-      repost_status_box.visible  = true;
+
+      // Set up badges for the author
+      repost_badges.display_verified  = displayed_post.author.has_flag (VERIFIED);
+      repost_badges.display_bot       = displayed_post.author.has_flag (BOT);
+      repost_badges.display_protected = displayed_post.author.has_flag (PROTECTED);
     }
 
     // Hint for the user where the post can be opened in the browser
