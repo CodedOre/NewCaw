@@ -16,7 +16,8 @@
           <lookup name="icon-size">BadgesBox</lookup>
         </binding>
         <property name="css_name">badge</property>
-        <property name="icon-name">object-select-symbolic</property>
+        <property name="icon-name">emblem-ok-symbolic</property>
+        <property name="tooltip-text" translatable="yes">Verified User</property>
         <style>
           <class name="verified"/>
         </style>
@@ -32,6 +33,7 @@
         </binding>
         <property name="css_name">badge</property>
         <property name="icon-name">bot-user-symbolic</property>
+        <property name="tooltip-text" translatable="yes">Bot Account</property>
         <style>
           <class name="bot"/>
         </style>
@@ -47,6 +49,7 @@
         </binding>
         <property name="css_name">badge</property>
         <property name="icon-name">protected-user-symbolic</property>
+        <property name="tooltip-text" translatable="yes">Protected User</property>
         <style>
           <class name="protected"/>
         </style>
