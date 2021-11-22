@@ -193,7 +193,8 @@ public class PostDisplay : Gtk.Box {
       post_text_label.set_css_classes ({ "caption" });
       post_time_label.set_css_classes ({ "caption" });
       author_display_label.set_css_classes ({ "caption-heading" });
-      author_avatar.size = 32;
+      author_avatar.size      = 32;
+      author_badges.icon_size =  8;
     }
 
     // Set up either metrics or action box
