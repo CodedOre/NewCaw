@@ -43,6 +43,6 @@
   "url":             "https://Twitter.com/CawbirdA/status/1444910017153470465",
   "source":          "Twitter Web App",
   "liked_count":     0,
-  "replied_count":   0,
+  "replied_count":   -1,
   "reposted_count":  0
 }
