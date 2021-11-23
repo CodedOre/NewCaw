@@ -28,17 +28,17 @@ public class Backend.Twitter.Post : Object, Backend.Post {
   /**
    * The unique identifier of this post.
    */
-  public string id { get; }
+  public string id { get; construct; }
 
   /**
    * The type of this post.
    */
-  public PostType post_type { get; }
+  public PostType post_type { get; construct; }
 
   /**
    * The time this post was posted.
    */
-  public DateTime date { get; }
+  public DateTime date { get; construct; }
 
   /**
    * The message of this post.
@@ -52,46 +52,42 @@ public class Backend.Twitter.Post : Object, Backend.Post {
   /**
    * The User who created this Post.
    */
-  public Backend.User author { get; }
+  public Backend.User author { get; construct; }
 
   /**
    * The website where this post originates from.
    */
-  public string domain {
-    get {
-      return "Twitter.com";
-    }
-  }
+  public string domain { get; construct; }
 
   /**
    * The url to visit this post on the original website.
    */
-  public string url { get; }
+  public string url { get; construct; }
 
   /**
    * The source application who created this Post.
    */
-  public string source { get; }
+  public string source { get; construct; }
 
   /**
    * If an post is an repost or quote, this stores the post reposted or quoted.
    */
-  public Backend.Post? referenced_post { get; }
+  public Backend.Post? referenced_post { get; construct; }
 
   /**
    * How often the post was liked.
    */
-  public int64 liked_count { get; }
+  public int liked_count { get; construct; }
 
   /**
    * How often the post was replied to.
    */
-  public int64 replied_count { get; }
+  public int replied_count { get; construct; }
 
   /**
    * How often this post was reposted or quoted.
    */
-  public int64 reposted_count { get; }
+  public int reposted_count { get; construct; }
 
   /**
    * Parses an given Json.Object and creates an Post object.
@@ -99,46 +95,117 @@ public class Backend.Twitter.Post : Object, Backend.Post {
    * @param data The Json.Object containing the specific Post.
    * @param includes A Json.Object including additional objects which may be related to this Post.
    */
-  public Post.from_json (Json.Object data, Json.Object? includes = null) {
-    // Get basic data
-    _id   = data.get_string_member ("id");
-    _date = new DateTime.from_iso8601 (
-      data.get_string_member ("created_at"),
-      new TimeZone.utc ()
-    );
-    _source = data.get_string_member ("source");
-
-    // Get metrics
+  public Post.from_json (Json.Object data, Json.Object includes) {
+    // Get metrics object
     Json.Object metrics = data.get_object_member ("public_metrics");
-    _liked_count        = metrics.get_int_member ("like_count");
-    _replied_count      = metrics.get_int_member ("reply_count");
-    _reposted_count     = (
-      metrics.get_int_member ("retweet_count") +
-      metrics.get_int_member ("quote_count")
+
+    // Get author and referenced json
+    Json.Object? referenced_obj;
+    Json.Object? author_obj    = parse_author (data, includes);
+    PostType     set_post_type = parse_reference (data, includes, out referenced_obj);
+
+    // Construct object with properties
+    Object (
+      // Set basic data
+      id:   data.get_string_member ("id"),
+      date: new DateTime.from_iso8601 (
+              data.get_string_member ("created_at"),
+              new TimeZone.utc ()
+            ),
+      source:    data.get_string_member ("source"),
+      post_type: set_post_type,
+
+      // Set public metrics
+      liked_count:    (int) metrics.get_int_member ("like_count"),
+      replied_count:  (int) metrics.get_int_member ("reply_count"),
+      reposted_count: (int) metrics.get_int_member ("retweet_count")
+                    + (int) metrics.get_int_member ("quote_count"),
+
+      // Set referenced objects
+      author:          author_obj     != null ? new User.from_json (author_obj) : null,
+      referenced_post: referenced_obj != null ? new Post.from_json (referenced_obj, includes) : null
     );
 
-    // Parse the text into modules
+    // Parse text into modules
     Json.Object? entities   = null;
     string       raw_text   = "";
-
     if (data.has_member ("text")) {
       raw_text = data.get_string_member ("text");
     }
     if (data.has_member ("entities")) {
       entities = data.get_object_member ("entities");
     }
-
     text_modules = TextUtils.parse_text (raw_text, entities);
 
+    // Retrieve the attached media for this Post
+    attached_media = parse_media (data, includes);
+  }
+
+  /**
+   * Run at object construction.
+   *
+   * Used to manually construct the url and domain properties,
+   * as these are not provided by the Twitter API.
+   */
+  construct {
+    // Set domain and url
+    domain =  "Twitter.com";
+    url    = @"https://$(domain)/$(author.username)/status/$(id)";
+  }
+
+  /**
+   * Parses the includes for the Json.Object for the author of this post.
+   *
+   * @param data The Json.Object containing the specific Post.
+   * @param includes A Json.Object including additional objects which may be related to this Post.
+   *
+   * @return A Json.Object with the json of the author, to be used to construct a User.
+   */
+  private static Json.Object? parse_author (Json.Object data, Json.Object includes) {
     // Get the author id from this post
     if (! data.has_member ("author_id")) {
-      warning ("Could not create author for this Post: Missing author_id!");
-      return;
+      error ("Could not create author for this Post: Missing author_id!");
     }
     string author_id = data.get_string_member ("author_id");
 
+    // Get the json object from the includes
+    Json.Object author_obj = null;
+    if (includes.has_member ("users")) {
+      Json.Array users_array = includes.get_array_member ("users");
+      // Look in included users for author id
+      users_array.foreach_element ((array, index, element) => {
+        if (element.get_node_type () == OBJECT) {
+          Json.Object obj = element.get_object ();
+          if (obj.get_string_member("id") == author_id) {
+            author_obj = obj;
+          }
+        }
+      });
+    }
+
+    if (author_obj != null) {
+      // Return the parsed object
+      return author_obj;
+    } else {
+      // Fail the parsing if author not found
+      error ("Could not create author for this Post: No object found in includes!");
+    }
+  }
+
+  /**
+   * Parses the includes for the Json.Object for the referenced post.
+   *
+   * @param data The Json.Object containing the specific Post.
+   * @param includes A Json.Object including additional objects which may be related to this Post.
+   * @param parsed_obj A parameter in which the referenced post will be returned.
+   *
+   * @return The PostType the parsed post should be assigned.
+   */
+  private static PostType parse_reference (Json.Object data, Json.Object includes, out Json.Object? parsed_obj = null) {
     // Check if Post is a quote or repost
-    string referenced_id = null;
+    PostType     returned_type = NORMAL;
+    Json.Object? returned_obj  = null;
+    string       referenced_id = null;
     if (data.has_member ("referenced_tweets")) {
       // Get all referenced posts
       Json.Array references = data.get_array_member ("referenced_tweets");
@@ -151,10 +218,10 @@ public class Backend.Twitter.Post : Object, Backend.Post {
           string obj_type = obj.get_string_member ("type");
           switch (obj_type) {
             case "quoted":
-              _post_type = QUOTE;
+              returned_type = QUOTE;
               break;
             case "retweeted":
-              _post_type = REPOST;
+              returned_type = REPOST;
               break;
             default:
               error ("Could not create referenced_post for this Post: Unknown object type!");
@@ -163,6 +230,34 @@ public class Backend.Twitter.Post : Object, Backend.Post {
       });
     }
 
+    // Check for referenced posts
+    if (referenced_id != null && includes.has_member ("tweets")) {
+      Json.Array tweets_array = includes.get_array_member ("tweets");
+      // Look in included posts for referenced id
+      tweets_array.foreach_element ((array, index, element) => {
+        if (element.get_node_type () == OBJECT) {
+          Json.Object obj = element.get_object ();
+          if (obj.get_string_member("id") == referenced_id) {
+            returned_obj = obj;
+          }
+        }
+      });
+    }
+
+    // Return the PostType
+    parsed_obj = returned_obj;
+    return returned_type;
+  }
+
+  /**
+   * Parses the includes for the Json.Object for attached media for this post.
+   *
+   * @param data The Json.Object containing the specific Post.
+   * @param includes A Json.Object including additional objects which may be related to this Post.
+   *
+   * @return A Json.Object with the Media objects for this post.
+   */
+  private static Backend.Media[] parse_media (Json.Object data, Json.Object includes) {
     // Look for attachments
     string[] media_keys = {};
     if (data.has_member ("attachments")) {
@@ -183,37 +278,9 @@ public class Backend.Twitter.Post : Object, Backend.Post {
     }
 
     // Look for specific objects in the includes
-    Json.Object author_obj       = null;
-    Json.Object reference_obj    = null;
     Backend.Media[] parsed_media = {};
 
     if (includes != null) {
-      // Check for users in the includes
-      if (includes.has_member ("users")) {
-        Json.Array users_array = includes.get_array_member ("users");
-        // Look in included users for author id
-        users_array.foreach_element ((array, index, element) => {
-          if (element.get_node_type () == OBJECT) {
-            Json.Object obj = element.get_object ();
-            if (obj.get_string_member("id") == author_id) {
-              author_obj = obj;
-            }
-          }
-        });
-      }
-      // Check for referenced posts
-      if (referenced_id != null && includes.has_member ("tweets")) {
-        Json.Array tweets_array = includes.get_array_member ("tweets");
-        // Look in included posts for referenced id
-        tweets_array.foreach_element ((array, index, element) => {
-          if (element.get_node_type () == OBJECT) {
-            Json.Object obj = element.get_object ();
-            if (obj.get_string_member("id") == referenced_id) {
-              reference_obj = obj;
-            }
-          }
-        });
-      }
       // Check for attached media
       if (media_keys.length != 0 && includes.has_member ("media")) {
         Json.Array media_jsons = includes.get_array_member ("media");
@@ -228,21 +295,8 @@ public class Backend.Twitter.Post : Object, Backend.Post {
       }
     }
 
-    // Create user object from found json
-    if (author_obj != null) {
-      _author = new User.from_json (author_obj);
-    }
-
-    // Create a referenced post from found json
-    if (reference_obj != null) {
-      _referenced_post = new Post.from_json (reference_obj, includes);
-    }
-
     // Store the attached media
-    attached_media = parsed_media;
-
-    // Create url from author username und post id
-    _url = @"https://$(domain)/$(author.username)/status/$(id)";
+    return parsed_media;
   }
 
   /**

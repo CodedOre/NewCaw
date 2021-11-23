@@ -28,17 +28,17 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
   /**
    * The unique identifier of this post.
    */
-  public string id { get; }
+  public string id { get; construct; }
 
   /**
    * The type of this post.
    */
-  public PostType post_type { get; }
+  public PostType post_type { get; construct; }
 
   /**
    * The time this post was posted.
    */
-  public DateTime date { get; }
+  public DateTime date { get; construct; }
 
   /**
    * The message of this post.
@@ -52,46 +52,42 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
   /**
    * The User who created this Post.
    */
-  public Backend.User author { get; }
+  public Backend.User author { get; construct; }
 
   /**
    * The website where this post originates from.
    */
-  public string domain {
-    get {
-      return "Twitter.com";
-    }
-  }
+  public string domain { get; construct; }
 
   /**
    * The url to visit this post on the original website.
    */
-  public string url { get; }
+  public string url { get; construct; }
 
   /**
    * The source application who created this Post.
    */
-  public string source { get; }
+  public string source { get; construct; }
 
   /**
    * If an post is an repost or quote, this stores the post reposted or quoted.
    */
-  public Backend.Post? referenced_post { get; }
+  public Backend.Post? referenced_post { get; construct; }
 
   /**
    * How often the post was liked.
    */
-  public int64 liked_count { get; }
+  public int liked_count { get; construct; }
 
   /**
    * How often the post was replied to.
    */
-  public int64 replied_count { get; }
+  public int replied_count { get; construct; }
 
   /**
    * How often this post was reposted or quoted.
    */
-  public int64 reposted_count { get; }
+  public int reposted_count { get; construct; }
 
   /**
    * Parses an given Json.Object and creates an Post object.
@@ -99,15 +95,11 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
    * @param json A Json.Object retrieved from the API.
    */
   public Post.from_json (Json.Object json) {
-    // Get basic data
-    _id   = json.get_string_member ("id_str");
-    _date = TextUtils.parse_time (json.get_string_member ("created_at"));
-
-    // Parse source
+    // Parse source name
+    string application  = json.get_string_member ("source");
     try {
-      string application  = json.get_string_member ("source");
       var    source_regex = new Regex ("<a.*?>(.*?)</a>");
-      _source = source_regex.replace (
+      application = source_regex.replace (
         application,
         application.length,
         0,
@@ -117,11 +109,37 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
       error (@"Error while parsing source: $(e.message)");
     }
 
-    // Get metrics
-    _liked_count    = json.get_int_member ("favorite_count");
-    _reposted_count = json.get_int_member ("retweet_count");
-    // Set replied_count to -1 as API don't return this data
-    _replied_count  = -1;
+    // Parse the referenced post and post_type
+    Json.Object? referenced_obj = null;
+    PostType     set_post_type  = NORMAL;
+
+    // If this is a quote or repost, create a referenced post
+    if (json.has_member ("quoted_status")) {
+      referenced_obj = json.get_object_member ("quoted_status");
+      set_post_type  = QUOTE;
+    } else if (json.has_member ("retweeted_status")) {
+      referenced_obj = json.get_object_member ("retweeted_status");
+      set_post_type  = REPOST;
+    }
+
+
+    // Construct object with properties
+    Object (
+      // Set basic data
+      id:        json.get_string_member ("id_str"),
+      date:      TextUtils.parse_time (json.get_string_member ("created_at")),
+      post_type: set_post_type,
+      source:    application,
+
+      // Set metrics
+      liked_count:    (int) json.get_int_member ("favorite_count"),
+      reposted_count: (int) json.get_int_member ("retweet_count"),
+      replied_count:  -1, // Set to -1 as no data from API
+
+      // Set referenced objects
+      author:          new User.from_json (json.get_object_member ("user")),
+      referenced_post: referenced_obj != null ? new Post.from_json (referenced_obj) : null
+    );
 
     // Parse the text into modules
     Json.Object? entities   = null;
@@ -132,36 +150,16 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
       Json.Array text_range = json.get_array_member ("display_text_range");
       text_start = (uint) text_range.get_int_element (0);
     }
-
     if (json.has_member ("full_text")) {
       raw_text = json.get_string_member ("full_text") [text_start:];
     } else {
       raw_text = json.get_string_member ("text") [text_start:];
     }
-
     if (json.has_member ("entities")) {
       entities = json.get_object_member ("entities");
     }
 
     text_modules = TextUtils.parse_text (raw_text, entities);
-
-    // Creates the a User object for the author
-    Json.Object author_obj = json.get_object_member ("user");
-    _author = new User.from_json (author_obj);
-
-    // If this is a quote or repost, create a referenced post
-    if (json.has_member ("quoted_status")) {
-      Json.Object original_post = json.get_object_member ("quoted_status");
-      _referenced_post = new Post.from_json (original_post);
-      _post_type       = QUOTE;
-    } else if (json.has_member ("retweeted_status")) {
-      Json.Object original_post = json.get_object_member ("retweeted_status");
-      _referenced_post = new Post.from_json (original_post);
-      _post_type       = REPOST;
-    }
-
-    // Create url from author username und post id
-    _url = @"https://$(domain)/$(author.username)/status/$(id)";
 
     // Check if a media array is present
     Json.Array media_array = null;
@@ -182,6 +180,18 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
       });
     }
     attached_media = parsed_media;
+  }
+
+  /**
+   * Run at object construction.
+   *
+   * Used to manually construct the url and domain properties,
+   * as these are not provided by the Twitter API.
+   */
+  construct {
+    // Set domain and url
+    domain =  "Twitter.com";
+    url    = @"https://$(domain)/$(author.username)/status/$(id)";
   }
 
   /**

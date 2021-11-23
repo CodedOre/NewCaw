@@ -25,7 +25,7 @@ public interface Backend.Picture : Backend.Media {
   /**
    * The ImageLoader to load the media.
    */
-  public abstract ImageLoader media { get; }
+  public abstract ImageLoader media { get; construct; }
 
 
 }

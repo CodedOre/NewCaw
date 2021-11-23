@@ -28,22 +28,22 @@ public interface Backend.User : Object {
   /**
    * The identifier of the user in the API.
    */
-  public abstract string id { get; }
+  public abstract string id { get; construct; }
 
   /**
    * The "name" of the user.
    */
-  public abstract string display_name { get; }
+  public abstract string display_name { get; construct; }
 
   /**
    * The unique handle of this user.
    */
-  public abstract string username { get; }
+  public abstract string username { get; construct; }
 
   /**
    * The avatar image from this user.
    */
-  public abstract ImageLoader avatar { get; }
+  public abstract ImageLoader avatar { get; construct; }
 
   /**
    * Checks if the User has a certain flag set.

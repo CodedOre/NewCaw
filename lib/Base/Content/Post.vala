@@ -28,17 +28,17 @@ public interface Backend.Post : Object {
   /**
    * The unique identifier of this post.
    */
-  public abstract string id { get; }
+  public abstract string id { get; construct; }
 
   /**
    * The type of this post.
    */
-  public abstract PostType post_type { get; }
+  public abstract PostType post_type { get; construct; }
 
   /**
    * The time this post was posted.
    */
-  public abstract DateTime date { get; }
+  public abstract DateTime date { get; construct; }
 
   /**
    * The message of this post.
@@ -48,12 +48,12 @@ public interface Backend.Post : Object {
   /**
    * The User who created this Post.
    */
-  public abstract Backend.User author { get; }
+  public abstract Backend.User author { get; construct; }
 
   /**
    * The source application who created this Post.
    */
-  public abstract string source { get; }
+  public abstract string source { get; construct; }
 
   /**
    * The website where this post originates from.
@@ -61,32 +61,32 @@ public interface Backend.Post : Object {
    * Mostly important for the Mastodon backend, where a post
    * can come from multiple site thanks to the federation.
    */
-  public abstract string domain { get; }
+  public abstract string domain { get; construct; }
 
   /**
    * The url to visit this post on the original website.
    */
-  public abstract string url { get; }
+  public abstract string url { get; construct; }
 
   /**
    * If an post is an repost or quote, this stores the post reposted or quoted.
    */
-  public abstract Post? referenced_post { get; }
+  public abstract Post? referenced_post { get; construct; }
 
   /**
    * How often the post was liked.
    */
-  public abstract int64 liked_count { get; }
+  public abstract int liked_count { get; construct; }
 
   /**
    * How often the post was replied to.
    */
-  public abstract int64 replied_count { get; }
+  public abstract int replied_count { get; construct; }
 
   /**
    * How often this post was reposted or quoted.
    */
-  public abstract int64 reposted_count { get; }
+  public abstract int reposted_count { get; construct; }
 
   /**
    * Returns media attached to this Post.

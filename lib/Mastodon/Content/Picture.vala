@@ -25,7 +25,7 @@ public class Backend.Mastodon.Picture : Backend.Picture, Backend.Mastodon.Media 
   /**
    * The ImageLoader to load the media.
    */
-  public ImageLoader media { get; }
+  public ImageLoader media { get; construct; }
 
   /**
    * Creates an Picture object from a given Json.Object.
@@ -33,11 +33,22 @@ public class Backend.Mastodon.Picture : Backend.Picture, Backend.Mastodon.Media 
    * @param json A Json.Object containing the data.
    */
   public Picture.from_json (Json.Object json) {
-    // Set base properties
-    base.from_json (json);
+    // Get size data
+    Json.Object meta     = json.get_object_member ("meta");
+    Json.Object org_meta = meta.get_object_member ("original");
 
-    // Create a ImageLoader for the media
-    _media = new ImageLoader (json.get_string_member ("url"));
+    // Constructs an Object from the json
+    Object (
+      // Set basic information
+      id:       json.get_string_member ("id"),
+      alt_text: json.get_string_member ("description"),
+      width:    (int) org_meta.get_int_member ("width"),
+      height:   (int) org_meta.get_int_member ("height"),
+
+      // Create MediaLoaders from urls
+      preview:  new ImageLoader (json.get_string_member ("preview_url")),
+      media:    new ImageLoader (json.get_string_member ("url"))
+    );
   }
 
 }

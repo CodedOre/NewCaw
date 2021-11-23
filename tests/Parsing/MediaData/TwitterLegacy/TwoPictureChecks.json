@@ -52,6 +52,6 @@
   "url":             "https://Twitter.com/CawbirdA/status/1448620764295483403",
   "source":          "Twitter Web App",
   "liked_count":     0,
-  "replied_count":   0,
+  "replied_count":   -1,
   "reposted_count":  0
 }

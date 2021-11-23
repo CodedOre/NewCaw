@@ -31,21 +31,26 @@ public interface Backend.Media : Object {
   /**
    * The unique identifier for this media.
    */
-  public abstract string id { get; }
+  public abstract string id { get; construct; }
 
   /**
    * An text description of the media.
    */
-  public abstract string alt_text { get; }
+  public abstract string alt_text { get; construct; }
+
+  /**
+   * The original width of this media.
+   */
+  public abstract int width { get; construct; }
+
+  /**
+   * The original height of this media.
+   */
+  public abstract int height { get; construct; }
 
   /**
    * The ImageLoader to load the preview.
    */
-  public abstract ImageLoader preview { get; protected set; }
-
-  /**
-   * Returns the size of the widget.
-   */
-  public abstract void get_dimensions (out int width, out int height);
+  public abstract ImageLoader preview { get; construct; }
 
 }

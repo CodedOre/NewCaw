@@ -28,7 +28,7 @@ public abstract class Backend.MediaLoader : Object {
   /**
    * The url to the media to be loaded.
    */
-  public string url { get; construct set; }
+  public string url { get; construct; }
 
   /**
    * Signals that the download is completed.

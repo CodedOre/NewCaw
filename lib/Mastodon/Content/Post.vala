@@ -28,17 +28,17 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
   /**
    * The unique identifier of this post.
    */
-  public string id { get; }
+  public string id { get; construct; }
 
   /**
    * The type of this post.
    */
-  public PostType post_type { get; default = NORMAL; }
+  public PostType post_type { get; construct; }
 
   /**
    * The time this post was posted.
    */
-  public DateTime date { get; }
+  public DateTime date { get; construct; }
 
   /**
    * The message of this post.
@@ -52,42 +52,42 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
   /**
    * The User who created this Post.
    */
-  public Backend.User author { get; }
+  public Backend.User author { get; construct; }
 
   /**
    * The website where this post originates from.
    */
-  public string domain { get; }
+  public string domain { get; construct; }
 
   /**
    * The url to visit this post on the original website.
    */
-  public string url { get; }
+  public string url { get; construct; }
 
   /**
    * The source application who created this Post.
    */
-  public string source { get; }
+  public string source { get; construct; }
 
   /**
    * If an post is an repost or quote, this stores the post reposted or quoted.
    */
-  public Backend.Post? referenced_post { get; }
+  public Backend.Post? referenced_post { get; construct; }
 
   /**
    * How often the post was liked.
    */
-  public int64 liked_count { get; }
+  public int liked_count { get; construct; }
 
   /**
    * How often the post was replied to.
    */
-  public int64 replied_count { get; }
+  public int replied_count { get; construct; }
 
   /**
    * How often this post was reposted or quoted.
    */
-  public int64 reposted_count { get; }
+  public int reposted_count { get; construct; }
 
   /**
    * Parses an given Json.Object and creates an Post object.
@@ -95,58 +95,61 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
    * @param json A Json.Object retrieved from the API.
    */
   public Post.from_json (Json.Object json) {
-    // Get basic data
-    _id   = json.get_string_member ("id");
-    _date = new DateTime.from_iso8601 (
-      json.get_string_member ("created_at"),
-      new TimeZone.utc ()
-    );
-
-    // Get the application name if available
-    if (! json.get_null_member ("application")) {
-      Json.Object application = json.get_object_member ("application");
-      _source = application.get_string_member ("name");
-    } else {
-      _source = "Undefined";
-    }
-
-    // Get metrics
-    _liked_count    = json.get_int_member ("favourites_count");
-    _replied_count  = json.get_int_member ("replies_count");
-    _reposted_count = json.get_int_member ("reblogs_count");
-
-    // Parse the text into modules
-    text_modules = TextUtils.parse_text (json.get_string_member ("content"));
-
-    // Get the creator of this Post
-    Json.Object user_obj = json.get_object_member ("account");
-    _author = new User.from_json (user_obj);
-
-    // If this is a boost, create a referenced post
-    if (! json.get_null_member ("reblog")) {
-      Json.Object original_post = json.get_object_member ("reblog");
-      _referenced_post = new Post.from_json (original_post);
-      _post_type       = REPOST;
-    }
-
     // Get url to html site if available
+    string post_url;
     if (! json.get_null_member ("url")) {
-      _url = json.get_string_member ("url");
+      post_url = json.get_string_member ("url");
     } else {
-      _url = json.get_string_member ("uri");
+      post_url = json.get_string_member ("uri");
     }
+
     // Get domain from the url
+    string post_domain;
     try {
       var domain_regex = new Regex ("https?://(.*?)/.*");
-      _domain = domain_regex.replace (
-        url,
-        url.length,
+      post_domain = domain_regex.replace (
+        post_url,
+        post_url.length,
         0,
         "\\1"
       );
     } catch (RegexError e) {
       error (@"Error while parsing domain: $(e.message)");
     }
+
+    // Construct object with properties
+    Object (
+      // Set basic data
+      id:   json.get_string_member ("id"),
+      date: new DateTime.from_iso8601 (
+              json.get_string_member ("created_at"),
+              new TimeZone.utc ()
+            ),
+      source: ! json.get_null_member ("application")
+                ? json.get_object_member ("application").get_string_member ("name")
+                : "Undefined",
+
+      // Set url and domain
+      url:    post_url,
+      domain: post_domain,
+
+      // Set metrics
+      liked_count:    (int) json.get_int_member ("favourites_count"),
+      replied_count:  (int) json.get_int_member ("replies_count"),
+      reposted_count: (int) json.get_int_member ("reblogs_count"),
+
+      // Set the author
+      author: new User.from_json (json.get_object_member ("account")),
+
+      // Set PostType and referenced post
+      post_type: json.get_null_member ("reblog") ? PostType.NORMAL : PostType.REPOST,
+      referenced_post: ! json.get_null_member ("reblog")
+                         ? new Post.from_json (json.get_object_member ("reblog"))
+                         : null
+    );
+
+    // Parse the text into modules
+    text_modules = TextUtils.parse_text (json.get_string_member ("content"));
 
     // Get media attachments
     Backend.Media[] parsed_media = {};
