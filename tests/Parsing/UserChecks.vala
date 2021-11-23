@@ -38,6 +38,15 @@ namespace UserChecks {
 
     // Check the avatar url for this user
     assert_true (user.avatar.url == check.get_string_member ("avatar_url"));
+
+    // Check the flags for this user
+    if (check.has_member ("flags")) {
+      Json.Object flags = check.get_object_member ("flags");
+      assert_true (user.has_flag (VERIFIED)  == flags.get_boolean_member ("verified"));
+      assert_true (user.has_flag (MODERATED) == flags.get_boolean_member ("moderated"));
+      assert_true (user.has_flag (PROTECTED) == flags.get_boolean_member ("protected"));
+      assert_true (user.has_flag (BOT)       == flags.get_boolean_member ("bot"));
+    }
   }
 
 }
