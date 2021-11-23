@@ -28,22 +28,22 @@ public class Backend.TwitterLegacy.User : Object, Backend.User {
   /**
    * The identifier of the user in the API.
    */
-  public string id { get; }
+  public string id { get; construct; }
 
   /**
    * The "name" of the user.
    */
-  public string display_name { get; }
+  public string display_name { get; construct; }
 
   /**
    * The unique handle of this user.
    */
-  public string username { get; }
+  public string username { get; construct; }
 
   /**
    * The avatar image from this user.
    */
-  public ImageLoader avatar { get; }
+  public ImageLoader avatar { get; construct; }
 
   /**
    * Parses an given Json.Object and creates an User object.
@@ -51,16 +51,21 @@ public class Backend.TwitterLegacy.User : Object, Backend.User {
    * @param json A Json.Object retrieved from the API.
    */
   public User.from_json (Json.Object json) {
-    // Parses the id from this User
-    _id = json.get_string_member ("id_str");
-
-    // Parses the names from this User
-    _display_name = json.get_string_member ("name");
-    _username     = json.get_string_member ("screen_name");
-
-    // Get the url for the avatar and create the ImageLoader
+    // Get the url for the avatar
     string avatar_url = json.get_string_member ("profile_image_url_https");
-    _avatar = new ImageLoader (avatar_url);
+
+    // Construct the object with properties
+    Object (
+      // Set the id of the user
+      id: json.get_string_member ("id_str"),
+
+      // Set the names of the user
+      display_name: json.get_string_member ("name"),
+      username:     json.get_string_member ("screen_name"),
+
+      // Set the ImageLoader for the avatar
+      avatar: new ImageLoader (avatar_url)
+    );
 
     // Get possible flags for this user
     if (json.get_boolean_member ("protected")) {
