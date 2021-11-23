@@ -28,22 +28,22 @@ public class Backend.Twitter.User : Object, Backend.User {
   /**
    * The identifier of the user in the API.
    */
-  public string id { get; }
+  public string id { get; construct; }
 
   /**
    * The "name" of the user.
    */
-  public string display_name { get; }
+  public string display_name { get; construct; }
 
   /**
    * The unique handle of this user.
    */
-  public string username { get; }
+  public string username { get; construct; }
 
   /**
    * The avatar image from this user.
    */
-  public ImageLoader avatar { get; }
+  public ImageLoader avatar { get; construct; }
 
   /**
    * Parses an given Json.Object and creates an User object.
@@ -52,18 +52,21 @@ public class Backend.Twitter.User : Object, Backend.User {
    * @param includes A Json.Object including additional objects which may be related to this Post.
    */
   public User.from_json (Json.Object data, Json.Object? includes = null) {
-    // Get id of this User
-    _id = data.get_string_member ("id");
+    // Get the url for the avatar
+    string avatar_url = data.get_string_member ("profile_image_url");
 
-    // Get the names from this User
-    _display_name = data.get_string_member ("name");
-    _username     = data.get_string_member ("username");
+    // Construct the object with properties
+    Object (
+      // Set the id of the user
+      id: data.get_string_member ("id"),
 
-    // Get the url for the avatar and create the ImageLoader
-    if (data.has_member ("profile_image_url")) {
-      string avatar_url = data.get_string_member ("profile_image_url");
-      _avatar = new ImageLoader (avatar_url);
-    }
+      // Set the names of the user
+      display_name: data.get_string_member ("name"),
+      username:     data.get_string_member ("username"),
+
+      // Set the ImageLoader for the avatar
+      avatar: new ImageLoader (avatar_url)
+    );
 
     // Get possible flags for this user
     if (data.get_boolean_member ("protected")) {
