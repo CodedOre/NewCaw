@@ -25,7 +25,7 @@ public class Backend.TwitterLegacy.Picture : Backend.Picture, Backend.TwitterLeg
   /**
    * The ImageLoader to load the media.
    */
-  public ImageLoader media { get; }
+  public ImageLoader media { get; construct; }
 
   /**
    * Creates an Picture object from a given Json.Object.
@@ -33,15 +33,25 @@ public class Backend.TwitterLegacy.Picture : Backend.Picture, Backend.TwitterLeg
    * @param json A Json.Object containing the data.
    */
   public Picture.from_json (Json.Object json) {
-    // Set base properties
-    base.from_json (json);
-
-    // Set urls for preview and media
+    // Get base url for preview and media
     string base_url = json.get_string_member ("media_url_https");
 
-    // Create a ImageLoader for the media
-    _media  = new ImageLoader (@"$(base_url)?name=large");
-    preview = new ImageLoader (@"$(base_url)?name=small");
+    // Get size object for media
+    Json.Object sizes_obj = json.get_object_member ("sizes");
+    Json.Object large_obj = sizes_obj.get_object_member ("large");
+
+    // Constructs an Object from the json
+    Object (
+      // Set basic information
+      id:       json.get_string_member ("id_str"),
+      alt_text: json.has_member ("ext_alt_text") ? json.get_string_member ("ext_alt_text") : "",
+      width:    (int) large_obj.get_int_member ("w"),
+      height:   (int) large_obj.get_int_member ("h"),
+
+      // Create MediaLoaders from base_url
+      preview:  new ImageLoader (@"$(base_url)?name=small"),
+      media:    new ImageLoader (@"$(base_url)?name=large")
+    );
   }
 
 }

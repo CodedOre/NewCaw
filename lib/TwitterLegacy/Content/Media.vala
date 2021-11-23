@@ -42,57 +42,26 @@ public abstract class Backend.TwitterLegacy.Media : Object, Backend.Media {
   /**
    * The unique identifier for this media.
    */
-  public string id { get; }
+  public string id { get; construct; }
 
   /**
    * An text description of the media.
    */
-  public string alt_text { get; }
+  public string alt_text { get; construct; }
 
   /**
    * The ImageLoader to load the preview.
    */
-  public ImageLoader preview { get; protected set; }
+  public ImageLoader preview { get; construct; }
 
   /**
-   * Creates an Media object from a given Json.Object.
-   *
-   * @param json A Json.Object containing the data.
+   * The original width of this media.
    */
-  protected Media.from_json (Json.Object json) {
-    // Get the id of this media
-    _id = json.get_string_member ("id_str");
-
-    // Get the alt text, if available
-    if (json.has_member ("ext_alt_text")) {
-      _alt_text = json.get_string_member ("ext_alt_text");
-    } else {
-      _alt_text = "";
-    }
-
-    // Get size of main media
-    Json.Object sizes_obj = json.get_object_member ("sizes");
-    Json.Object large_obj = sizes_obj.get_object_member ("large");
-    _width  = (int) large_obj.get_int_member ("w");
-    _height = (int) large_obj.get_int_member ("h");
-  }
+  public int width { get; construct; }
 
   /**
-   * Returns the size of the widget.
+   * The original height of this media.
    */
-  public void get_dimensions (out int width, out int height) {
-    width  = _width;
-    height = _height;
-  }
-
-  /**
-   * The width of this media.
-   */
-  private int _width;
-
-  /**
-   * The height of this media.
-   */
-  private int _height;
+  public int height { get; construct; }
 
 }
