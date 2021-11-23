@@ -66,10 +66,8 @@ namespace MediaChecks {
     }
 
     // Check media dimensions
-    int media_width, media_height;
-    media.get_dimensions (out media_width, out media_height);
-    assert_true (media_width  == check.get_int_member ("width"));
-    assert_true (media_height == check.get_int_member ("height"));
+    assert_true (media.width  == check.get_int_member ("width"));
+    assert_true (media.height == check.get_int_member ("height"));
 
     // Check preview url
     assert_true (media.preview.url == check.get_string_member ("preview_url"));
