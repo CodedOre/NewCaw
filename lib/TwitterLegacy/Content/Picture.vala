@@ -44,7 +44,7 @@ public class Backend.TwitterLegacy.Picture : Backend.Picture, Backend.TwitterLeg
     Object (
       // Set basic information
       id:       json.get_string_member ("id_str"),
-      alt_text: json.has_member ("ext_alt_text") ? json.get_string_member ("ext_alt_text") : "",
+      alt_text: json.has_member ("ext_alt_text") ? json.get_string_member ("ext_alt_text") : null,
       width:    (int) large_obj.get_int_member ("w"),
       height:   (int) large_obj.get_int_member ("h"),
 

@@ -42,53 +42,26 @@ public abstract class Backend.Twitter.Media : Object, Backend.Media {
   /**
    * The unique identifier for this media.
    */
-  public string id { get; }
+  public string id { get; construct; }
 
   /**
    * An text description of the media.
    */
-  public string alt_text { get; }
+  public string alt_text { get; construct; }
 
   /**
    * The ImageLoader to load the preview.
    */
-  public ImageLoader preview { get; protected set; }
+  public ImageLoader preview { get; construct; }
 
   /**
-   * Creates an Media object from a given Json.Object.
-   *
-   * @param json A Json.Object containing the data.
+   * The original width of this media.
    */
-  protected Media.from_json (Json.Object json) {
-    // Get the id of this media
-    _id = json.get_string_member ("media_key");
-
-    // Get the alt text
-    if (json.has_member ("alt_text")) {
-      _alt_text = json.get_string_member ("alt_text");
-    }
-
-    // Get size of main media
-    _width  = (int) json.get_int_member ("width");
-    _height = (int) json.get_int_member ("height");
-  }
+  public int width { get; construct; }
 
   /**
-   * Returns the size of the widget.
+   * The original height of this media.
    */
-  public void get_dimensions (out int width, out int height) {
-    width  = _width;
-    height = _height;
-  }
-
-  /**
-   * The width of this media.
-   */
-  private int _width;
-
-  /**
-   * The height of this media.
-   */
-  private int _height;
+  public int height { get; construct; }
 
 }
