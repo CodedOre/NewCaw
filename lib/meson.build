@@ -15,6 +15,7 @@ libfiles = [
   'Base/Content/Picture.vala',
   'Base/Content/Post.vala',
   'Base/Content/PostEnums.vala',
+  'Base/Content/Profile.vala',
   'Base/Content/TextModule.vala',
   'Base/Content/User.vala',
   'Base/Content/UserEnums.vala',
