@@ -38,65 +38,71 @@ internal class Backend.TwitterLegacy.TextUtils : Backend.TextUtils {
     TextModule [] final_modules = {};
 
     // Note all hashtags from entities
-    Json.Array hashtags = entities.get_array_member ("hashtags");
-    hashtags.foreach_element ((array, index, element) => {
-      if (element.get_node_type () == OBJECT) {
-        Json.Object obj    = element.get_object ();
-        Json.Array  length = obj.get_array_member ("indices");
-        var entity         = TextModule ();
-        entity.type        = TAG;
-        entity.display     = "#" + obj.get_string_member ("text");
-        entity.target      = "#" + obj.get_string_member ("text");
-        entity.text_start  = (uint) length.get_int_element (0);
-        entity.text_end    = (uint) length.get_int_element (1);
-        main_entities += entity;
-      }
-    });
+    if (entities.has_member ("hashtags")) {
+      Json.Array hashtags = entities.get_array_member ("hashtags");
+      hashtags.foreach_element ((array, index, element) => {
+        if (element.get_node_type () == OBJECT) {
+          Json.Object obj    = element.get_object ();
+          Json.Array  length = obj.get_array_member ("indices");
+          var entity         = TextModule ();
+          entity.type        = TAG;
+          entity.display     = "#" + obj.get_string_member ("text");
+          entity.target      = "#" + obj.get_string_member ("text");
+          entity.text_start  = (uint) length.get_int_element (0);
+          entity.text_end    = (uint) length.get_int_element (1);
+          main_entities += entity;
+        }
+      });
+    }
 
     // Note all mentions from entities
-    Json.Array mentions = entities.get_array_member ("user_mentions");
-    mentions.foreach_element ((array, index, element) => {
-      if (element.get_node_type () == OBJECT) {
-        Json.Object obj    = element.get_object ();
-        Json.Array  length = obj.get_array_member ("indices");
-        var entity         = TextModule ();
-        entity.type        = MENTION;
-        entity.display     = "@" + obj.get_string_member ("screen_name");
-        entity.target      = "@" + obj.get_string_member ("screen_name");
-        entity.text_start  = (uint) length.get_int_element (0);
-        entity.text_end    = (uint) length.get_int_element (1);
-        main_entities += entity;
-      }
-    });
+    if (entities.has_member ("user_mentions")) {
+      Json.Array mentions = entities.get_array_member ("user_mentions");
+      mentions.foreach_element ((array, index, element) => {
+        if (element.get_node_type () == OBJECT) {
+          Json.Object obj    = element.get_object ();
+          Json.Array  length = obj.get_array_member ("indices");
+          var entity         = TextModule ();
+          entity.type        = MENTION;
+          entity.display     = "@" + obj.get_string_member ("screen_name");
+          entity.target      = "@" + obj.get_string_member ("screen_name");
+          entity.text_start  = (uint) length.get_int_element (0);
+          entity.text_end    = (uint) length.get_int_element (1);
+          main_entities += entity;
+        }
+      });
+    }
 
     // Note all links from entities
-    Json.Array links = entities.get_array_member ("urls");
-    links.foreach_element ((array, index, element) => {
-      if (element.get_node_type () == OBJECT) {
-        Json.Object obj    = element.get_object ();
-        Json.Array  length = obj.get_array_member ("indices");
-        var entity         = TextModule ();
-        entity.type        = WEBLINK;
-        entity.display     = obj.get_string_member ("display_url");
-        entity.target      = obj.get_string_member ("expanded_url");
-        entity.text_start  = (uint) length.get_int_element (0);
-        entity.text_end    = (uint) length.get_int_element (1);
+    if (entities.has_member ("urls")) {
+      Json.Array links = entities.get_array_member ("urls");
+      links.foreach_element ((array, index, element) => {
+        if (element.get_node_type () == OBJECT) {
+          Json.Object obj    = element.get_object ();
+          Json.Array  length = obj.get_array_member ("indices");
+          var entity         = TextModule ();
+          entity.type        = WEBLINK;
+          entity.display     = obj.get_string_member ("display_url");
+          entity.target      = obj.get_string_member ("expanded_url");
+          entity.text_start  = (uint) length.get_int_element (0);
+          entity.text_end    = (uint) length.get_int_element (1);
 
-        // Check if link is a internal link
-        if (Regex.match_simple ("https://twitter.com/.*?/status/.*?", entity.target)) {
-          entity.type = QUOTELINK;
+          // Check if link is a internal link
+          if (Regex.match_simple ("https://twitter.com/.*?/status/.*?", entity.target)) {
+            entity.type = QUOTELINK;
+          }
+
+          main_entities += entity;
         }
-
-        main_entities += entity;
-      }
-    });
+      });
+    }
 
     // Note the first link for media
     if (entities.has_member ("media")) {
-    Json.Array media = entities.get_array_member ("media");
-    if (media.get_length () > 0) {
-      // As Twitter only places one media link, only get the first media
-      Json.Node element = media.get_element (0);
+      Json.Array media = entities.get_array_member ("media");
+      if (media.get_length () > 0) {
+        // As Twitter only places one media link, only get the first media
+        Json.Node element = media.get_element (0);
         if (element.get_node_type () == OBJECT) {
           Json.Object obj    = element.get_object ();
           Json.Array  length = obj.get_array_member ("indices");
