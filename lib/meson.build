@@ -31,6 +31,7 @@ if get_option('support_mastodon')
     'Mastodon/Content/Media.vala',
     'Mastodon/Content/Picture.vala',
     'Mastodon/Content/Post.vala',
+    'Mastodon/Content/Profile.vala',
     'Mastodon/Content/User.vala',
     'Mastodon/Utils/TextUtils.vala'
   ]

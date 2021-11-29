@@ -58,6 +58,19 @@ public interface Backend.Profile : Backend.User {
   public abstract int posts_count { get; construct; }
 
   /**
+   * The website where this post originates from.
+   *
+   * Mostly important for the Mastodon backend, where a post
+   * can come from multiple site thanks to the federation.
+   */
+  public abstract string domain { get; construct; }
+
+  /**
+   * The url to visit this post on the original website.
+   */
+  public abstract string url { get; construct; }
+
+  /**
    * Retrieves the UserDataFields for this Profile.
    */
   public abstract UserDataField[] get_data_fields ();
