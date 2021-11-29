@@ -28,6 +28,27 @@ public class Backend.TwitterLegacy.Picture : Backend.Picture, Backend.TwitterLeg
   public ImageLoader media { get; construct; }
 
   /**
+   * Creates an Picture object from a specific url.
+   *
+   * @param media_url The url to the full media.
+   * @param preview_url The url to the preview image, if available.
+   */
+  public Picture (string media_url, string? preview_url = null) {
+    // Constructs an Object from the json
+    Object (
+      // Don't set basic information
+      id:       null,
+      alt_text: null,
+      width:    -1,
+      height:   -1,
+
+      // Create MediaLoaders from urls
+      preview: preview_url != null ? new ImageLoader (preview_url) : null,
+      media:   new ImageLoader (media_url)
+    );
+  }
+
+  /**
    * Creates an Picture object from a given Json.Object.
    *
    * @param json A Json.Object containing the data.
