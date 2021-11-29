@@ -50,6 +50,7 @@ if get_option('support_twitter_legacy')
     'TwitterLegacy/Content/Media.vala',
     'TwitterLegacy/Content/Picture.vala',
     'TwitterLegacy/Content/Post.vala',
+    'TwitterLegacy/Content/Profile.vala',
     'TwitterLegacy/Content/User.vala',
     'TwitterLegacy/Utils/TextUtils.vala'
   ]
