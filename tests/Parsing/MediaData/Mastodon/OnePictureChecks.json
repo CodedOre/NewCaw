@@ -1,7 +1,7 @@
 {
-  "id":         "107041808020442008",
-  "post_type":  "BACKEND_POST_TYPE_NORMAL",
-  "date":       "2021-10-04T06:19:29.462Z",
+  "id":            "107041808020442008",
+  "post_type":     "BACKEND_POST_TYPE_NORMAL",
+  "creation_date": "2021-10-04T06:19:29.462Z",
   "text": {
     "no_flags": "A new post is there!\nLet&apos;s test one picture here:"
   },

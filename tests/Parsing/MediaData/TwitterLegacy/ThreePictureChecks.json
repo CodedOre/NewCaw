@@ -1,7 +1,7 @@
 {
-  "id":         "1448620997389783045",
-  "post_type":  "BACKEND_POST_TYPE_NORMAL",
-  "date":       "2021-10-14T12:05:34.000Z",
+  "id":            "1448620997389783045",
+  "post_type":     "BACKEND_POST_TYPE_NORMAL",
+  "creation_date": "2021-10-14T12:05:34.000Z",
   "text": {
     "no_flags":          "Now let's test three images!",
     "shown_media_links": "Now let's test three images! <a href=\"https://twitter.com/CawbirdA/status/1448620997389783045/photo/1\" title=\"https://twitter.com/CawbirdA/status/1448620997389783045/photo/1\" class=\"weblink\">pic.twitter.com/n1cheD908A</a>"

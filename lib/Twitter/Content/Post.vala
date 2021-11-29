@@ -38,7 +38,7 @@ public class Backend.Twitter.Post : Object, Backend.Post {
   /**
    * The time this post was posted.
    */
-  public DateTime date { get; construct; }
+  public DateTime creation_date { get; construct; }
 
   /**
    * The message of this post.
@@ -107,13 +107,13 @@ public class Backend.Twitter.Post : Object, Backend.Post {
     // Construct object with properties
     Object (
       // Set basic data
-      id:   data.get_string_member ("id"),
-      date: new DateTime.from_iso8601 (
-              data.get_string_member ("created_at"),
-              new TimeZone.utc ()
-            ),
+      id:        data.get_string_member ("id"),
       source:    data.get_string_member ("source"),
       post_type: set_post_type,
+      creation_date: new DateTime.from_iso8601 (
+                       data.get_string_member ("created_at"),
+                       new TimeZone.utc ()
+                     ),
 
       // Set public metrics
       liked_count:    (int) metrics.get_int_member ("like_count"),

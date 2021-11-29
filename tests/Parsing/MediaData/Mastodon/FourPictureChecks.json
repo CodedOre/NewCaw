@@ -1,7 +1,7 @@
 {
-  "id":         "107099829696203153",
-  "post_type":  "BACKEND_POST_TYPE_NORMAL",
-  "date":       "2021-10-14T12:15:09.966Z",
+  "id":            "107099829696203153",
+  "post_type":     "BACKEND_POST_TYPE_NORMAL",
+  "creation_date": "2021-10-14T12:15:09.966Z",
   "text": {
     "no_flags": "And at last, now to show the maximum number I will test: 4!"
   },

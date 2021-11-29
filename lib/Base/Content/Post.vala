@@ -38,7 +38,7 @@ public interface Backend.Post : Object {
   /**
    * The time this post was posted.
    */
-  public abstract DateTime date { get; construct; }
+  public abstract DateTime creation_date { get; construct; }
 
   /**
    * The message of this post.

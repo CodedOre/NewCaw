@@ -35,9 +35,9 @@ namespace PostChecks {
     // Check id, date and source
     assert_true (post.id == check.get_string_member ("id"));
     assert_true (post.post_type.to_string () == check.get_string_member ("post_type"));
-    assert_true (post.date.equal (
+    assert_true (post.creation_date.equal (
       new DateTime.from_iso8601 (
-        check.get_string_member ("date"),
+        check.get_string_member ("creation_date"),
         new TimeZone.utc ()
     )));
     assert_true (post.url    == check.get_string_member ("url"));
