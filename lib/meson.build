@@ -18,6 +18,7 @@ libfiles = [
   'Base/Content/Profile.vala',
   'Base/Content/TextModule.vala',
   'Base/Content/User.vala',
+  'Base/Content/UserDataField.vala',
   'Base/Content/UserEnums.vala',
   'Base/Utils/ImageLoader.vala',
   'Base/Utils/MediaLoader.vala',

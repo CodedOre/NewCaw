@@ -33,9 +33,14 @@ public interface Backend.Profile : Backend.User {
   public abstract DateTime creation_date { get; construct; }
 
   /**
-   * A formatted description set by the user.
+   * A formatted description set for the Profile.
    */
   public abstract string description { owned get; }
+
+  /**
+   * The header image for the detail page of this user.
+   */
+  public abstract Picture header { get; construct; }
 
   /**
    * How many people are following this Profile.
@@ -43,13 +48,18 @@ public interface Backend.Profile : Backend.User {
   public abstract int followers_count { get; construct; }
 
   /**
-   * How many people this User follows.
+   * How many people this Profile follows.
    */
   public abstract int following_count { get; construct; }
 
   /**
-   * How many posts this User wrote.
+   * How many posts this Profile wrote.
    */
   public abstract int posts_count { get; construct; }
+
+  /**
+   * Retrieves the UserDataFields for this Profile.
+   */
+  public abstract UserDataField[] get_data_fields ();
 
 }
