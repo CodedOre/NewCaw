@@ -118,8 +118,9 @@ public class Backend.Mastodon.Profile : Backend.Mastodon.User, Backend.Profile {
       following_count: (int) json.get_int_member ("following_count"),
       posts_count:     (int) json.get_int_member ("statuses_count"),
 
-      // Set the ImageLoader for the avatar
-      avatar: new ImageLoader (avatar_url)
+      // Set the images
+      avatar: new ImageLoader (avatar_url),
+      header: new Picture (header_url)
     );
 
     // Parse the description into modules
