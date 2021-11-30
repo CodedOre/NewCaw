@@ -126,6 +126,20 @@ public class Backend.Mastodon.Profile : Backend.Mastodon.User, Backend.Profile {
     // Parse the description into modules
     description_modules = TextUtils.parse_text (json.get_string_member ("note"));
 
+    // Parses all fields
+    UserDataField[] parsed_fields = {};
+    Json.Array profile_fields     = json.get_array_member ("fields");
+    profile_fields.foreach_element ((array, index, element) => {
+        if (element.get_node_type () == OBJECT) {
+          Json.Object obj = element.get_object ();
+          var new_field   = UserDataField ();
+          new_field.name  = obj.get_string_member ("name");
+          new_field.value = obj.get_string_member ("value");
+          parsed_fields  += new_field;
+        }
+    });
+    data_fields = parsed_fields;
+
     // Get possible flags for this user
     if (json.get_boolean_member ("locked")) {
       flags = flags | MODERATED;
