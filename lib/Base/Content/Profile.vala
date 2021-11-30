@@ -75,4 +75,13 @@ public interface Backend.Profile : Backend.User {
    */
   public abstract UserDataField[] get_data_fields ();
 
+#if DEBUG
+  /**
+   * Returns the text modules from the description.
+   *
+   * Only used in test cases and therefore only available in debug builds.
+   */
+  public abstract TextModule[] get_description_modules ();
+#endif
+
 }

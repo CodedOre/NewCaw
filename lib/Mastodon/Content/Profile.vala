@@ -142,6 +142,17 @@ public class Backend.Mastodon.Profile : Backend.Mastodon.User, Backend.Profile {
     return data_fields;
   }
 
+#if DEBUG
+  /**
+   * Returns the text modules from the description.
+   *
+   * Only used in test cases and therefore only available in debug builds.
+   */
+  public TextModule[] get_description_modules () {
+    return description_modules;
+  }
+#endif
+
   /**
    * All data fields attached to this post.
    */
