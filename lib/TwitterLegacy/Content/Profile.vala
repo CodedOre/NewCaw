@@ -120,15 +120,49 @@ public class Backend.TwitterLegacy.Profile : Backend.TwitterLegacy.User, Backend
     );
 
     // Parse the text into modules
-    Json.Object? entities   = null;
-    string       raw_text   = json.get_string_member ("description");
+    Json.Object? description_entities = null;
+    Json.Object? weblink_entity       = null;
+    string       raw_text             = json.get_string_member ("description");
 
+    // Parse entities
     if (json.has_member ("entities")) {
       Json.Object profile_entities = json.get_object_member ("entities");
-      entities = profile_entities.get_object_member ("description");
+      // Parse entities for the description
+      if (profile_entities.has_member ("description")) {
+        description_entities = profile_entities.get_object_member ("description");
+      }
+      // Parse entity for the linked url
+      if (profile_entities.has_member ("urls")) {
+        Json.Array profile_urls = profile_entities.get_array_member ("urls");
+        // It should only have one element, so assuming this to avoid an loop
+        Json.Node url_node = profile_urls.get_element (0);
+        if (url_node.get_node_type () == OBJECT) {
+          weblink_entity = url_node.get_object ();
+        }
+      }
     }
 
-    description_modules = TextUtils.parse_text (raw_text, entities);
+    description_modules = TextUtils.parse_text (raw_text, description_entities);
+
+    // Store additional information in data fields
+    UserDataField[] additional_fields = {};
+    if (json.has_member ("location")) {
+      if (json.get_string_member ("location") != "") {
+        var new_field      = UserDataField ();
+        new_field.type     = LOCATION;
+        new_field.name     = "Location";
+        new_field.value    = json.get_string_member ("location");
+        additional_fields += new_field;
+      }
+    }
+    if (weblink_entity != null) {
+      var new_field      = UserDataField ();
+      new_field.type     = WEBLINK;
+      new_field.name     = "Weblink";
+      new_field.value    = weblink_entity.get_string_member ("expanded_url");
+      additional_fields += new_field;
+    }
+    data_fields = additional_fields;
 
     // Get possible flags for this profile
     if (json.get_boolean_member ("protected")) {

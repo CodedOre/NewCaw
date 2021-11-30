@@ -20,7 +20,37 @@
 
 using GLib;
 
-public struct UserDataField {
+/**
+ * Specific types for an UserDataField.
+ */
+public enum Backend.UserDataFieldType {
+
+  /**
+   * A generic type with non-specific data.
+   */
+  GENERIC,
+
+  /**
+   * A location from where this User comes.
+   */
+  LOCATION,
+
+  /**
+   * A url to a website this user has set.
+   */
+  WEBLINK
+
+}
+
+/**
+ * A field storing specific information about a User.
+ */
+public struct Backend.UserDataField {
+
+  /**
+   * The type of data stored in this field.
+   */
+  public UserDataFieldType type;
 
   /**
    * The name for this field.

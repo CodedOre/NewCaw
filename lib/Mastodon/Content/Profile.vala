@@ -133,6 +133,7 @@ public class Backend.Mastodon.Profile : Backend.Mastodon.User, Backend.Profile {
         if (element.get_node_type () == OBJECT) {
           Json.Object obj = element.get_object ();
           var new_field   = UserDataField ();
+          new_field.type  = GENERIC;
           new_field.name  = obj.get_string_member ("name");
           new_field.value = obj.get_string_member ("value");
           parsed_fields  += new_field;
