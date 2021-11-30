@@ -50,7 +50,7 @@ namespace PostChecks {
     assert_true (post.reposted_count == check.get_int_member ("reposted_count"));
   }
 
-  #if DEBUG
+#if DEBUG
   /**
    * Test text_modules
    *
@@ -72,7 +72,7 @@ namespace PostChecks {
       assert_true (mod.text_end          == (uint) obj.get_int_member ("text_end"));
     });
   }
-  #endif
+#endif
 
   /**
    * Test text using different formatting settings.

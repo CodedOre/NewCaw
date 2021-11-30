@@ -14,10 +14,10 @@
   "avatar_static": "https://mastodon.social/avatars/original/missing.png",
   "header": "https://mastodon.social/headers/original/missing.png",
   "header_static": "https://mastodon.social/headers/original/missing.png",
-  "followers_count": 0,
+  "followers_count": 1,
   "following_count": 0,
-  "statuses_count": 3,
-  "last_status_at": "2021-09-20",
+  "statuses_count": 10,
+  "last_status_at": "2021-11-09",
   "emojis": [],
   "fields": []
 }

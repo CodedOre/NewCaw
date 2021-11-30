@@ -49,4 +49,10 @@ namespace UserChecks {
     }
   }
 
+  /**
+   * Checks additional information a Profile contains.
+   */
+  void check_profile_fields (Backend.User user, Json.Object check) {
+  }
+
 }

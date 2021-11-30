@@ -57,6 +57,43 @@ void run_user_test (string module, string user_json, string check_json) {
 }
 
 /**
+ * Tests creation of a specific user as a Profile and runs test on it.
+ */
+void run_profile_test (string module, string profile_json, string check_json) {
+  Json.Object     check_object;
+  Json.Object     profile_object;
+  Backend.Profile checked_profile;
+
+  // Creates a User object from the user json
+  check_object   = TestUtils.load_json (@"UserData/$(module)/$(check_json)");
+  profile_object = TestUtils.load_json (@"UserData/$(module)/$(profile_json)");
+  switch (module) {
+#if SUPPORT_MASTODON
+    case "Mastodon":
+      checked_profile = new Backend.Mastodon.Profile.from_json (profile_object);
+      break;
+#endif
+#if SUPPORT_TWITTER
+    case "Twitter":
+      Json.Object profile_data = profile_object.get_object_member ("data");
+      checked_profile = new Backend.Twitter.Profile.from_json (profile_data);
+      break;
+#endif
+#if SUPPORT_TWITTER_LEGACY
+    case "TwitterLegacy":
+      checked_profile = new Backend.TwitterLegacy.Profile.from_json (profile_object);
+      break;
+#endif
+    default:
+      error ("No valid Profile could be created!");
+  }
+
+  // Check parsed profile against check objects.
+  UserChecks.check_basic_fields (checked_profile, check_object);
+  UserChecks.check_profile_fields (checked_profile, check_object);
+}
+
+/**
  * Tests parsing of User content.
  */
 int main (string[] args) {
@@ -66,15 +103,24 @@ int main (string[] args) {
   Test.add_func ("/UserParsing/BasicUser/Mastodon", () => {
     run_user_test ("Mastodon", "BasicUser.json", "BasicChecks.json");
   });
+  Test.add_func ("/UserParsing/ProfileUser/Mastodon", () => {
+    run_profile_test ("Mastodon", "BasicUser.json", "ProfileChecks.json");
+  });
 #endif
 #if SUPPORT_TWITTER
   Test.add_func ("/UserParsing/BasicUser/Twitter", () => {
     run_user_test ("Twitter", "BasicUser.json", "BasicChecks.json");
   });
+  Test.add_func ("/UserParsing/ProfileUser/Twitter", () => {
+    run_profile_test ("Twitter", "BasicUser.json", "ProfileChecks.json");
+  });
 #endif
 #if SUPPORT_TWITTER_LEGACY
   Test.add_func ("/UserParsing/BasicUser/TwitterLegacy", () => {
     run_user_test ("TwitterLegacy", "BasicUser.json", "BasicChecks.json");
+  });
+  Test.add_func ("/UserParsing/ProfileUser/TwitterLegacy", () => {
+    run_profile_test ("TwitterLegacy", "BasicUser.json", "ProfileChecks.json");
   });
 #endif
 

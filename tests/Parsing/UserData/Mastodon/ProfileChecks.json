@@ -1,0 +1,12 @@
+{
+  "id":           "106866867257179166",
+  "display_name": "CawbirdTestAccount",
+  "username":     "cawbird_test_account",
+  "avatar_url":   "https://mastodon.social/avatars/original/missing.png",
+  "flags": {
+    "verified":  false,
+    "moderated": false,
+    "protected": false,
+    "bot":       false
+  }
+}
