@@ -77,8 +77,10 @@ public class Backend.TwitterLegacy.Profile : Backend.TwitterLegacy.User, Backend
   public Profile.from_json (Json.Object json) {
     // Parse the url for avatar and header
     string avatar_url         = json.get_string_member ("profile_image_url_https");
-    string header_preview_url = json.get_string_member ("profile_banner_url");
-    string header_media_url;
+    string header_preview_url = json.has_member ("profile_banner_url") ?
+                                  json.get_string_member ("profile_banner_url")
+                                  : null;
+    string header_media_url = "";
     try {
       var image_regex = new Regex ("(https://pbs.twimg.com/.*?)_normal(\\..*)");
       avatar_url = image_regex.replace (
@@ -87,12 +89,14 @@ public class Backend.TwitterLegacy.Profile : Backend.TwitterLegacy.User, Backend
         0,
         "\\1_bigger\\2"
       );
-      header_media_url = image_regex.replace (
-        header_preview_url,
-        header_preview_url.length,
-        0,
-        "\\1\\2"
-      );
+      if (header_preview_url != null) {
+        header_media_url = image_regex.replace (
+          header_preview_url,
+          header_preview_url.length,
+          0,
+          "\\1\\2"
+        );
+      }
     } catch (RegexError e) {
       error (@"Error while parsing source: $(e.message)");
     }
@@ -116,7 +120,9 @@ public class Backend.TwitterLegacy.Profile : Backend.TwitterLegacy.User, Backend
 
       // Set the ImageLoader for the avatar
       avatar: new ImageLoader (avatar_url),
-      header: new Picture (header_media_url, header_preview_url)
+      header: header_preview_url != null
+                ? new Picture (header_media_url, header_preview_url)
+                : null
     );
 
     // Parse the text into modules
