@@ -27,6 +27,9 @@ namespace UserChecks {
 
   /**
    * Checks the basic information for this user.
+   *
+   * @param user The User to be checked.
+   * @param check A Json.Object containing fields to check against.
    */
   void check_basic_fields (Backend.User user, Json.Object check) {
     // Check id from the user
@@ -51,8 +54,40 @@ namespace UserChecks {
 
   /**
    * Checks additional information a Profile contains.
+   *
+   * @param profile The Profile to be checked.
+   * @param check A Json.Object containing fields to check against.
    */
-  void check_profile_fields (Backend.User user, Json.Object check) {
+  void check_profile_fields (Backend.Profile profile, Json.Object check) {
+    // Check description without format flags
+    Backend.TextUtils.set_format_flag (HIDE_TRAILING_TAGS, false);
+    Backend.TextUtils.set_format_flag (SHOW_QUOTE_LINKS,   false);
+    Backend.TextUtils.set_format_flag (SHOW_MEDIA_LINKS,   false);
+    assert_true (profile.description == check.get_string_member ("description"));
   }
+
+#if DEBUG
+  /**
+   * Test text_modules
+   *
+   * @param profile The Profile to be checked.
+   * @param check A Json.Object containing fields to check against.
+   */
+  void check_description_parsing (Backend.Profile profile, Json.Object check) {
+    Json.Array modules = check.get_array_member ("description_modules");
+    Backend.TextModule[] profile_modules = profile.get_description_modules ();
+    assert_true (modules.get_length () == profile_modules.length);
+
+    modules.foreach_element ((array, index, element) => {
+      Json.Object obj         = element.get_object ();
+      Backend.TextModule  mod = profile_modules [index];
+      assert_true (mod.type.to_string () == obj.get_string_member     ("type"));
+      assert_true (mod.display           == obj.get_string_member     ("display"));
+      assert_true (mod.target            == obj.get_string_member     ("target"));
+      assert_true (mod.text_start        == (uint) obj.get_int_member ("text_start"));
+      assert_true (mod.text_end          == (uint) obj.get_int_member ("text_end"));
+    });
+  }
+#endif
 
 }

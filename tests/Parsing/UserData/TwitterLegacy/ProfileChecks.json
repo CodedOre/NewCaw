@@ -8,5 +8,15 @@
     "moderated": false,
     "protected": false,
     "bot":       false
-  }
+  },
+  "description": "This may or may not be a account from @CodedOre for testing some API's for a certain Client.",
+  "description_modules": [
+    {
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+      "display":    "This may or may not be a account from @CodedOre for testing some API's for a certain Client.",
+      "target":     null,
+      "text_start": 0,
+      "text_end":   91
+    }
+  ]
 }

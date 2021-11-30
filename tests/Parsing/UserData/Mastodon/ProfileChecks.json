@@ -8,5 +8,29 @@
     "moderated": false,
     "protected": false,
     "bot":       false
-  }
+  },
+  "description": "This may or may not be a account from <a href=\"@CodedOre@mastodon.online\" title=\"@CodedOre@mastodon.online\" class=\"mention\">@CodedOre</a> for testing some API&apos;s for a certain Client.",
+  "description_modules": [
+    {
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+      "display":    "This may or may not be a account from ",
+      "target":     null,
+      "text_start": 0,
+      "text_end":   38
+    },
+    {
+      "type":       "BACKEND_TEXT_MODULE_TYPE_MENTION",
+      "display":    "@CodedOre",
+      "target":     "@CodedOre@mastodon.online",
+      "text_start": 38,
+      "text_end":   47
+    },
+    {
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+      "display":    " for testing some API&apos;s for a certain Client.",
+      "target":     null,
+      "text_start": 47,
+      "text_end":   97
+    }
+  ]
 }
