@@ -41,6 +41,7 @@ if get_option('support_twitter')
     'Twitter/Content/Media.vala',
     'Twitter/Content/Picture.vala',
     'Twitter/Content/Post.vala',
+    'Twitter/Content/Profile.vala',
     'Twitter/Content/User.vala',
     'Twitter/Utils/TextUtils.vala'
   ]

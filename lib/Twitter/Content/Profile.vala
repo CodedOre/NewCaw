@@ -20,7 +20,7 @@
 
 using GLib;
 
-public class Backend.TwitterLegacy.Profile : Backend.TwitterLegacy.User, Backend.Profile {
+public class Backend.Twitter.Profile : Backend.Twitter.User, Backend.Profile {
 
   /**
    * When this Profile was created on the platform.
@@ -74,24 +74,19 @@ public class Backend.TwitterLegacy.Profile : Backend.TwitterLegacy.User, Backend
    *
    * @param json A Json.Object retrieved from the API.
    */
-  public Profile.from_json (Json.Object json) {
-    // Parse the url for avatar and header
-    string avatar_url         = json.get_string_member ("profile_image_url_https");
-    string header_preview_url = json.get_string_member ("profile_banner_url");
-    string header_media_url;
+  public Profile.from_json (Json.Object data, Json.Object? includes = null) {
+    // Get metrics object
+    Json.Object metrics = data.get_object_member ("public_metrics");
+
+    // Parse the avatar image url
+    string avatar_url = data.get_string_member ("profile_image_url");
     try {
-      var image_regex = new Regex ("(https://pbs.twimg.com/.*?)_normal(\\..*)");
-      avatar_url = image_regex.replace (
+      var source_regex = new Regex ("(https://pbs.twimg.com/.*?)_normal(\\..*)");
+      avatar_url = source_regex.replace (
         avatar_url,
         avatar_url.length,
         0,
         "\\1_bigger\\2"
-      );
-      header_media_url = image_regex.replace (
-        header_preview_url,
-        header_preview_url.length,
-        0,
-        "\\1\\2"
       );
     } catch (RegexError e) {
       error (@"Error while parsing source: $(e.message)");
@@ -99,42 +94,46 @@ public class Backend.TwitterLegacy.Profile : Backend.TwitterLegacy.User, Backend
 
     // Construct the object with properties
     Object (
-      // Set the id of the profile
-      id: json.get_string_member ("id_str"),
+      // Set the id of the user
+      id: data.get_string_member ("id"),
 
       // Set the creation data
-      creation_date: TextUtils.parse_time (json.get_string_member ("created_at")),
+      creation_date: new DateTime.from_iso8601 (
+                       data.get_string_member ("created_at"),
+                       new TimeZone.utc ()
+                     ),
 
-      // Set the names of the profile
-      display_name: json.get_string_member ("name"),
-      username:     json.get_string_member ("screen_name"),
+      // Set the names of the user
+      display_name: data.get_string_member ("name"),
+      username:     data.get_string_member ("username"),
 
       // Set metrics
-      followers_count: (int) json.get_int_member ("followers_count"),
-      following_count: (int) json.get_int_member ("friends_count"),
-      posts_count:     (int) json.get_int_member ("statuses_count"),
+      followers_count: (int) metrics.get_int_member ("followers_count"),
+      following_count: (int) metrics.get_int_member ("following_count"),
+      posts_count:     (int) metrics.get_int_member ("tweet_count"),
 
       // Set the ImageLoader for the avatar
       avatar: new ImageLoader (avatar_url),
-      header: new Picture (header_media_url, header_preview_url)
+      header: null
     );
 
-    // Parse the text into modules
-    Json.Object? entities   = null;
-    string       raw_text   = json.get_string_member ("description");
-
-    if (json.has_member ("entities")) {
-      Json.Object profile_entities = json.get_object_member ("entities");
+    // Parse text into modules
+    Json.Object? entities = null;
+    string       raw_text = "";
+    if (data.has_member ("description")) {
+      raw_text = data.get_string_member ("description");
+    }
+    if (data.has_member ("entities")) {
+      Json.Object profile_entities = data.get_object_member ("entities");
       entities = profile_entities.get_object_member ("description");
     }
-
     description_modules = TextUtils.parse_text (raw_text, entities);
 
-    // Get possible flags for this profile
-    if (json.get_boolean_member ("protected")) {
+    // Get possible flags for this user
+    if (data.get_boolean_member ("protected")) {
       flags = flags | MODERATED | PROTECTED;
     }
-    if (json.get_boolean_member ("verified")) {
+    if (data.get_boolean_member ("verified")) {
       flags = flags | VERIFIED;
     }
   }

@@ -98,6 +98,6 @@ public class Backend.Twitter.User : Object, Backend.User {
   /**
    * Stores the flags for this user.
    */
-  private UserFlag flags;
+  protected UserFlag flags;
 
 }
