@@ -104,4 +104,24 @@ namespace UserChecks {
   }
 #endif
 
+  /**
+   * Test the data fields
+   *
+   * @param profile The Profile to be checked.
+   * @param check A Json.Object containing fields to check against.
+   */
+  void check_data_fields (Backend.Profile profile, Json.Object check) {
+    Json.Array check_fields = check.get_array_member ("data_fields");
+    Backend.UserDataField[] profile_fields = profile.get_data_fields ();
+    assert_true (check_fields.get_length () == profile_fields.length);
+
+    check_fields.foreach_element ((array, index, element) => {
+      Json.Object obj             = element.get_object ();
+      Backend.UserDataField field = profile_fields [index];
+      assert_true (field.type.to_string () == obj.get_string_member     ("type"));
+      assert_true (field.name              == obj.get_string_member     ("name"));
+      assert_true (field.value             == obj.get_string_member     ("value"));
+    });
+  }
+
 }

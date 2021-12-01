@@ -24,5 +24,17 @@
       "text_start": 0,
       "text_end":   91
     }
+  ],
+  "data_fields": [
+    {
+      "type":  "BACKEND_USER_DATA_FIELD_TYPE_LOCATION",
+      "name":  "Location",
+      "value": "org.gnome.Sdk"
+    },
+    {
+      "type":  "BACKEND_USER_DATA_FIELD_TYPE_WEBLINK",
+      "name":  "Weblink",
+      "value": "https://example.com"
+    }
   ]
 }

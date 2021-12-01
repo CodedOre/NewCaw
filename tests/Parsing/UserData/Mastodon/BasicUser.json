@@ -19,5 +19,16 @@
   "statuses_count": 10,
   "last_status_at": "2021-11-09",
   "emojis": [],
-  "fields": []
+  "fields": [
+    {
+      "name": "Lives in",
+      "value": "org.gnome.Sdk",
+      "verified_at": null
+    },
+    {
+      "name": "Example Weblink",
+      "value": "<a href=\"https://example.com\" rel=\"me nofollow noopener noreferrer\" target=\"_blank\"><span class=\"invisible\">https://</span><span class=\"\">example.com</span><span class=\"invisible\"></span></a>",
+      "verified_at": null
+    }
+  ]
 }

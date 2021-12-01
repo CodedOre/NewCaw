@@ -92,6 +92,7 @@ void run_profile_test (string module, string profile_json, string check_json) {
   UserChecks.check_basic_fields (checked_profile, check_object);
   UserChecks.check_profile_fields (checked_profile, check_object);
   UserChecks.check_description_parsing (checked_profile, check_object);
+  UserChecks.check_data_fields (checked_profile, check_object);
 }
 
 /**
