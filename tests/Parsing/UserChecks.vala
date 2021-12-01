@@ -59,6 +59,20 @@ namespace UserChecks {
    * @param check A Json.Object containing fields to check against.
    */
   void check_profile_fields (Backend.Profile profile, Json.Object check) {
+    // Check creation date and urls
+    assert_true (profile.creation_date.equal (
+      new DateTime.from_iso8601 (
+        check.get_string_member ("creation_date"),
+        new TimeZone.utc ()
+    )));
+    assert_true (profile.url    == check.get_string_member ("url"));
+    assert_true (profile.domain == check.get_string_member ("domain"));
+
+    // Check public metrics
+    assert_true (profile.followers_count == check.get_int_member ("followers_count"));
+    assert_true (profile.following_count == check.get_int_member ("following_count"));
+    assert_true (profile.posts_count     == check.get_int_member ("posts_count"));
+
     // Check description without format flags
     Backend.TextUtils.set_format_flag (HIDE_TRAILING_TAGS, false);
     Backend.TextUtils.set_format_flag (SHOW_QUOTE_LINKS,   false);

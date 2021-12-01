@@ -9,7 +9,13 @@
     "protected": false,
     "bot":       false
   },
-  "description": "This may or may not be a account from <a href=\"@CodedOre@mastodon.online\" title=\"@CodedOre@mastodon.online\" class=\"mention\">@CodedOre</a> for testing some API&apos;s for a certain Client.",
+  "creation_date":  "2021-09-03T00:00:00.000Z",
+  "url":            "https://mastodon.social/@cawbird_test_account",
+  "domain":         "mastodon.social",
+  "followers_count": 1,
+  "following_count": 0,
+  "posts_count":     10,
+  "description":    "This may or may not be a account from <a href=\"@CodedOre@mastodon.online\" title=\"@CodedOre@mastodon.online\" class=\"mention\">@CodedOre</a> for testing some API&apos;s for a certain Client.",
   "description_modules": [
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",

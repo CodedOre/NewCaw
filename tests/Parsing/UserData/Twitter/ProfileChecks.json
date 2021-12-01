@@ -9,7 +9,13 @@
     "protected": false,
     "bot":       false
   },
-  "description": "This may or may not be a account from <a href=\"@CodedOre\" title=\"@CodedOre\" class=\"mention\">@CodedOre</a> for testing some API's for a certain Client.",
+  "creation_date":  "2020-09-09T10:11:27.000Z",
+  "url":            "https://Twitter.com/CawbirdA",
+  "domain":         "Twitter.com",
+  "followers_count": 1,
+  "following_count": 1,
+  "posts_count":     12,
+  "description":    "This may or may not be a account from <a href=\"@CodedOre\" title=\"@CodedOre\" class=\"mention\">@CodedOre</a> for testing some API's for a certain Client.",
   "description_modules": [
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
