@@ -133,10 +133,11 @@ public class Backend.Twitter.Profile : Backend.Twitter.User, Backend.Profile {
         description_entities = profile_entities.get_object_member ("description");
       }
       // Parse entity for the linked url
-      if (profile_entities.has_member ("urls")) {
-        Json.Array profile_urls = profile_entities.get_array_member ("urls");
+      if (profile_entities.has_member ("url")) {
+        Json.Object profile_urls = profile_entities.get_object_member ("url");
+        Json.Array  urls_array   = profile_urls.get_array_member ("urls");
         // It should only have one element, so assuming this to avoid an loop
-        Json.Node url_node = profile_urls.get_element (0);
+        Json.Node url_node = urls_array.get_element (0);
         if (url_node.get_node_type () == OBJECT) {
           weblink_entity = url_node.get_object ();
         }

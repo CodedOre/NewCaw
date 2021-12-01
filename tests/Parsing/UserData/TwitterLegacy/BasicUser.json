@@ -6,13 +6,13 @@
   "location": "org.gnome.Sdk",
   "profile_location": null,
   "description": "This may or may not be a account from @CodedOre for testing some API's for a certain Client.",
-  "url": "https://t.co/3HjMT7tHah",
+  "url": "https://t.co/nJBBsO2cRV",
   "entities": {
     "url": {
       "urls": [
         {
-          "url": "https://t.co/3HjMT7tHah",
-          "expanded_url": "http://example.com/",
+          "url": "https://t.co/nJBBsO2cRV",
+          "expanded_url": "https://example.com",
           "display_url": "example.com",
           "indices": [
             0,
