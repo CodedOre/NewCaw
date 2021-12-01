@@ -1,7 +1,7 @@
 {
-  "id":         "1444910017153470465",
-  "post_type":  "BACKEND_POST_TYPE_NORMAL",
-  "date":       "2021-10-04T06:19:27.000Z",
+  "id":            "1444910017153470465",
+  "post_type":     "BACKEND_POST_TYPE_NORMAL",
+  "creation_date": "2021-10-04T06:19:27.000Z",
   "text": {
     "no_flags":          "A new post is there!\nLet's test one picture here:",
     "shown_media_links": "A new post is there!\nLet's test one picture here: <a href=\"https://twitter.com/CawbirdA/status/1444910017153470465/photo/1\" title=\"https://twitter.com/CawbirdA/status/1444910017153470465/photo/1\" class=\"weblink\">pic.twitter.com/YnfnQob2nZ</a>"

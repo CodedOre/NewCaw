@@ -1,4 +1,4 @@
-/* Post.vala
+/* Profile.vala
  *
  * Copyright 2021 Frederick Schenk
  *
@@ -21,39 +21,41 @@
 using GLib;
 
 /**
- * Represents one posted status message.
+ * Extends User with additional information not contained there.
+ *
+ * Used when displaying a User in detail.
  */
-public interface Backend.Post : Object {
+public interface Backend.Profile : Backend.User {
 
   /**
-   * The unique identifier of this post.
-   */
-  public abstract string id { get; construct; }
-
-  /**
-   * The type of this post.
-   */
-  public abstract PostType post_type { get; construct; }
-
-  /**
-   * The time this post was posted.
+   * When this Profile was created on the platform.
    */
   public abstract DateTime creation_date { get; construct; }
 
   /**
-   * The message of this post.
+   * A formatted description set for the Profile.
    */
-  public abstract string text { owned get; }
+  public abstract string description { owned get; }
 
   /**
-   * The User who created this Post.
+   * The header image for the detail page of this user.
    */
-  public abstract Backend.User author { get; construct; }
+  public abstract Picture header { get; construct; }
 
   /**
-   * The source application who created this Post.
+   * How many people are following this Profile.
    */
-  public abstract string source { get; construct; }
+  public abstract int followers_count { get; construct; }
+
+  /**
+   * How many people this Profile follows.
+   */
+  public abstract int following_count { get; construct; }
+
+  /**
+   * How many posts this Profile wrote.
+   */
+  public abstract int posts_count { get; construct; }
 
   /**
    * The website where this post originates from.
@@ -69,37 +71,17 @@ public interface Backend.Post : Object {
   public abstract string url { get; construct; }
 
   /**
-   * If an post is an repost or quote, this stores the post reposted or quoted.
+   * Retrieves the UserDataFields for this Profile.
    */
-  public abstract Post? referenced_post { get; construct; }
-
-  /**
-   * How often the post was liked.
-   */
-  public abstract int liked_count { get; construct; }
-
-  /**
-   * How often the post was replied to.
-   */
-  public abstract int replied_count { get; construct; }
-
-  /**
-   * How often this post was reposted or quoted.
-   */
-  public abstract int reposted_count { get; construct; }
-
-  /**
-   * Returns media attached to this Post.
-   */
-  public abstract Media[] get_media ();
+  public abstract UserDataField[] get_data_fields ();
 
 #if DEBUG
   /**
-   * Returns the text modules.
+   * Returns the text modules from the description.
    *
    * Only used in test cases and therefore only available in debug builds.
    */
-  public abstract TextModule[] get_text_modules ();
+  public abstract TextModule[] get_description_modules ();
 #endif
 
 }

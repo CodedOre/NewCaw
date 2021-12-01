@@ -3,11 +3,24 @@
   "id_str": "1303637097803382786",
   "name": "CawbirdTestAccount",
   "screen_name": "CawbirdA",
-  "location": "",
+  "location": "org.gnome.Sdk",
   "profile_location": null,
   "description": "This may or may not be a account from @CodedOre for testing some API's for a certain Client.",
-  "url": null,
+  "url": "https://t.co/nJBBsO2cRV",
   "entities": {
+    "url": {
+      "urls": [
+        {
+          "url": "https://t.co/nJBBsO2cRV",
+          "expanded_url": "https://example.com",
+          "display_url": "example.com",
+          "indices": [
+            0,
+            23
+          ]
+        }
+      ]
+    },
     "description": {
       "urls": []
     }
@@ -22,48 +35,128 @@
   "time_zone": null,
   "geo_enabled": false,
   "verified": false,
-  "statuses_count": 6,
+  "statuses_count": 12,
   "lang": null,
   "status": {
-    "created_at": "Mon Sep 20 08:09:46 +0000 2021",
-    "id": 1439864347640139776,
-    "id_str": "1439864347640139776",
-    "text": "New post, new test!\nNow, let's test for a #hashtag, but also for some at the end: #hashtag2 #hashtag3 #hashtag4",
+    "created_at": "Tue Nov 09 11:32:12 +0000 2021",
+    "id": 1458034683434999818,
+    "id_str": "1458034683434999818",
+    "text": "Next up: A test with an video file. https://t.co/94WA47M95h",
     "truncated": false,
     "entities": {
-      "hashtags": [
-        {
-          "text": "hashtag",
-          "indices": [
-            42,
-            50
-          ]
-        },
-        {
-          "text": "hashtag2",
-          "indices": [
-            82,
-            91
-          ]
-        },
-        {
-          "text": "hashtag3",
-          "indices": [
-            92,
-            101
-          ]
-        },
-        {
-          "text": "hashtag4",
-          "indices": [
-            102,
-            111
-          ]
-        }
-      ],
+      "hashtags": [],
       "symbols": [],
       "user_mentions": [],
-      "urls": []
+      "urls": [],
+      "media": [
+        {
+          "id": 1458034079518035972,
+          "id_str": "1458034079518035972",
+          "indices": [
+            36,
+            59
+          ],
+          "media_url": "http://pbs.twimg.com/ext_tw_video_thumb/1458034079518035972/pu/img/uRFUsCqB9ykGzm3O.jpg",
+          "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/1458034079518035972/pu/img/uRFUsCqB9ykGzm3O.jpg",
+          "url": "https://t.co/94WA47M95h",
+          "display_url": "pic.twitter.com/94WA47M95h",
+          "expanded_url": "https://twitter.com/CawbirdA/status/1458034683434999818/video/1",
+          "type": "photo",
+          "sizes": {
+            "thumb": {
+              "w": 150,
+              "h": 150,
+              "resize": "crop"
+            },
+            "medium": {
+              "w": 1200,
+              "h": 675,
+              "resize": "fit"
+            },
+            "small": {
+              "w": 680,
+              "h": 383,
+              "resize": "fit"
+            },
+            "large": {
+              "w": 1280,
+              "h": 720,
+              "resize": "fit"
+            }
+          }
+        }
+      ]
+    },
+    "extended_entities": {
+      "media": [
+        {
+          "id": 1458034079518035972,
+          "id_str": "1458034079518035972",
+          "indices": [
+            36,
+            59
+          ],
+          "media_url": "http://pbs.twimg.com/ext_tw_video_thumb/1458034079518035972/pu/img/uRFUsCqB9ykGzm3O.jpg",
+          "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/1458034079518035972/pu/img/uRFUsCqB9ykGzm3O.jpg",
+          "url": "https://t.co/94WA47M95h",
+          "display_url": "pic.twitter.com/94WA47M95h",
+          "expanded_url": "https://twitter.com/CawbirdA/status/1458034683434999818/video/1",
+          "type": "video",
+          "sizes": {
+            "thumb": {
+              "w": 150,
+              "h": 150,
+              "resize": "crop"
+            },
+            "medium": {
+              "w": 1200,
+              "h": 675,
+              "resize": "fit"
+            },
+            "small": {
+              "w": 680,
+              "h": 383,
+              "resize": "fit"
+            },
+            "large": {
+              "w": 1280,
+              "h": 720,
+              "resize": "fit"
+            }
+          },
+          "video_info": {
+            "aspect_ratio": [
+              16,
+              9
+            ],
+            "duration_millis": 56866,
+            "variants": [
+              {
+                "bitrate": 256000,
+                "content_type": "video/mp4",
+                "url": "https://video.twimg.com/ext_tw_video/1458034079518035972/pu/vid/480x270/7eWxUgu3Txmgeedx.mp4?tag=12"
+              },
+              {
+                "content_type": "application/x-mpegURL",
+                "url": "https://video.twimg.com/ext_tw_video/1458034079518035972/pu/pl/m0FccVBmhV8Hf8wt.m3u8?tag=12&container=fmp4"
+              },
+              {
+                "bitrate": 2176000,
+                "content_type": "video/mp4",
+                "url": "https://video.twimg.com/ext_tw_video/1458034079518035972/pu/vid/1280x720/4-aPKUxmc-2YBi2U.mp4?tag=12"
+              },
+              {
+                "bitrate": 832000,
+                "content_type": "video/mp4",
+                "url": "https://video.twimg.com/ext_tw_video/1458034079518035972/pu/vid/640x360/bmlmiwlqGqdNHRsz.mp4?tag=12"
+              }
+            ]
+          },
+          "additional_media_info": {
+            "monetizable": false
+          }
+        }
+      ]
     },
     "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
     "in_reply_to_status_id": null,
@@ -80,6 +173,7 @@
     "favorite_count": 0,
     "favorited": false,
     "retweeted": false,
+    "possibly_sensitive": false,
     "lang": "en"
   },
   "contributors_enabled": false,

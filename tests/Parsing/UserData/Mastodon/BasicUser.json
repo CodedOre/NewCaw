@@ -14,10 +14,21 @@
   "avatar_static": "https://mastodon.social/avatars/original/missing.png",
   "header": "https://mastodon.social/headers/original/missing.png",
   "header_static": "https://mastodon.social/headers/original/missing.png",
-  "followers_count": 0,
+  "followers_count": 1,
   "following_count": 0,
-  "statuses_count": 3,
-  "last_status_at": "2021-09-20",
+  "statuses_count": 10,
+  "last_status_at": "2021-11-09",
   "emojis": [],
-  "fields": []
+  "fields": [
+    {
+      "name": "Lives in",
+      "value": "org.gnome.Sdk",
+      "verified_at": null
+    },
+    {
+      "name": "Example Weblink",
+      "value": "<a href=\"https://example.com\" rel=\"me nofollow noopener noreferrer\" target=\"_blank\"><span class=\"invisible\">https://</span><span class=\"\">example.com</span><span class=\"invisible\"></span></a>",
+      "verified_at": null
+    }
+  ]
 }

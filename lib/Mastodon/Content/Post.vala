@@ -38,7 +38,7 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
   /**
    * The time this post was posted.
    */
-  public DateTime date { get; construct; }
+  public DateTime creation_date { get; construct; }
 
   /**
    * The message of this post.
@@ -120,14 +120,14 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
     // Construct object with properties
     Object (
       // Set basic data
-      id:   json.get_string_member ("id"),
-      date: new DateTime.from_iso8601 (
-              json.get_string_member ("created_at"),
-              new TimeZone.utc ()
-            ),
+      id:       json.get_string_member ("id"),
       source: ! json.get_null_member ("application")
                 ? json.get_object_member ("application").get_string_member ("name")
                 : "Undefined",
+      creation_date: new DateTime.from_iso8601 (
+                       json.get_string_member ("created_at"),
+                       new TimeZone.utc ()
+                     ),
 
       // Set url and domain
       url:    post_url,

@@ -1,7 +1,7 @@
 {
-  "id":         "107099818747124648",
-  "post_type":  "BACKEND_POST_TYPE_NORMAL",
-  "date":       "2021-10-14T12:12:22.895Z",
+  "id":            "107099818747124648",
+  "post_type":     "BACKEND_POST_TYPE_NORMAL",
+  "creation_date": "2021-10-14T12:12:22.895Z",
   "text": {
     "no_flags": "Now let&apos;s test three images!"
   },

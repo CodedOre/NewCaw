@@ -52,8 +52,19 @@ public class Backend.Twitter.User : Object, Backend.User {
    * @param includes A Json.Object including additional objects which may be related to this Post.
    */
   public User.from_json (Json.Object data, Json.Object? includes = null) {
-    // Get the url for the avatar
+    // Parse the avatar image url
     string avatar_url = data.get_string_member ("profile_image_url");
+    try {
+      var source_regex = new Regex ("(https://pbs.twimg.com/.*?)_normal(\\..*)");
+      avatar_url = source_regex.replace (
+        avatar_url,
+        avatar_url.length,
+        0,
+        "\\1_bigger\\2"
+      );
+    } catch (RegexError e) {
+      error (@"Error while parsing source: $(e.message)");
+    }
 
     // Construct the object with properties
     Object (
@@ -87,6 +98,6 @@ public class Backend.Twitter.User : Object, Backend.User {
   /**
    * Stores the flags for this user.
    */
-  private UserFlag flags;
+  protected UserFlag flags;
 
 }

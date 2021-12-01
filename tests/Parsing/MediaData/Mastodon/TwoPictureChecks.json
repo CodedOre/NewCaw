@@ -1,7 +1,7 @@
 {
-  "id":         "107099804533083877",
-  "post_type":  "BACKEND_POST_TYPE_NORMAL",
-  "date":       "2021-10-14T12:08:46.015Z",
+  "id":            "107099804533083877",
+  "post_type":     "BACKEND_POST_TYPE_NORMAL",
+  "creation_date": "2021-10-14T12:08:46.015Z",
   "text": {
     "no_flags": "Image test numero two:\nTwo images."
   },

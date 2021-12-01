@@ -133,7 +133,7 @@ public class PostDisplay : Gtk.Box {
       repost_avatar.set_avatar (displayed_post.author.avatar);
       repost_display_label.label = displayed_post.author.display_name;
       repost_name_label.label    = "@" + displayed_post.author.username;
-      repost_time_label.label    = DisplayUtils.display_time_delta (displayed_post.date);
+      repost_time_label.label    = DisplayUtils.display_time_delta (displayed_post.creation_date);
 
       // Set up badges for the author
       repost_badges.display_verified  = displayed_post.author.has_flag (VERIFIED);
@@ -159,7 +159,7 @@ public class PostDisplay : Gtk.Box {
       author_name_label.label    = "@" + main_post.author.username;
 
       // Add date and source to info label
-      string date_text      = main_post.date.format ("%x, %X");
+      string date_text      = main_post.creation_date.format ("%x, %X");
       post_info_label.label = _("%s using %s").printf (date_text, main_post.source);
     } else {
       // Set up author top-and-bottom when list display
@@ -167,7 +167,7 @@ public class PostDisplay : Gtk.Box {
       post_info_label.label      = "@" + main_post.author.username;
 
       // Add relative date and link to page in corner
-      string post_time_text = DisplayUtils.display_time_delta (main_post.date);
+      string post_time_text = DisplayUtils.display_time_delta (main_post.creation_date);
       post_time_label.label = @"<a href=\"$(main_post.url)\" title=\"$(open_link_label)\" class=\"weblink\">$(post_time_text)</a>";
     }
 

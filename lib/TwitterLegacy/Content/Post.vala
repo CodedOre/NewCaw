@@ -38,7 +38,7 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
   /**
    * The time this post was posted.
    */
-  public DateTime date { get; construct; }
+  public DateTime creation_date { get; construct; }
 
   /**
    * The message of this post.
@@ -126,10 +126,10 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
     // Construct object with properties
     Object (
       // Set basic data
-      id:        json.get_string_member ("id_str"),
-      date:      TextUtils.parse_time (json.get_string_member ("created_at")),
-      post_type: set_post_type,
-      source:    application,
+      id:            json.get_string_member ("id_str"),
+      creation_date: TextUtils.parse_time (json.get_string_member ("created_at")),
+      post_type:     set_post_type,
+      source:        application,
 
       // Set metrics
       liked_count:    (int) json.get_int_member ("favorite_count"),
