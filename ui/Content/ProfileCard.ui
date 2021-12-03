@@ -2,6 +2,6 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
-  <template class="ProfileDisplay" parent="GtkBox">
+  <template class="ProfileCard" parent="GtkWidget">
   </template>
 </interface>
