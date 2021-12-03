@@ -24,7 +24,7 @@ using GLib;
  * Displays an overview over an Profile.
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/ProfileDisplay.ui")]
-public class ProfileDisplay : Gtk.Widget {
+public class ProfileDisplay : Gtk.Box {
 
   /**
    * The Profile which is displayed.
