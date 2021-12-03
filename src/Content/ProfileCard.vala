@@ -26,9 +26,24 @@ using GLib;
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/ProfileCard.ui")]
 public class ProfileCard : Gtk.Widget {
 
+  // UI-Elements of ProfileCard
+  [GtkChild]
+  private unowned Gtk.Picture profile_banner;
+  [GtkChild]
+  private unowned Adw.Bin card_header;
+
   /**
    * The Profile which is displayed.
    */
   public Backend.Profile profile { get; set; }
+
+  /**
+   * Deconstructs ProfileCard and it's childrens.
+   */
+  public override void dispose () {
+    // Destructs children of MediaDisplay
+    profile_banner.unparent ();
+    card_header.unparent ();
+  }
 
 }

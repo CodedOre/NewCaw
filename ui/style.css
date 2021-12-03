@@ -70,6 +70,21 @@ widget.squared > avatar {
 }
 
 /**
+ * Displays a gradient from black to transparent.
+ */
+.scrim {
+  background: linear-gradient(alpha(black, 0.25), transparent);
+  color: white;
+}
+
+/**
+ * Displays a grey background before a picture is shown.
+ */
+picture.placeholder {
+  background: @dark_1;
+}
+
+/**
  * An animated gradient, used to display a loading media.
  */
 .loading-media {
