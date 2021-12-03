@@ -2,6 +2,22 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
-  <template class="ProfileDisplay" parent="GtkBox">
+  <template class="ProfileDisplay" parent="GtkWidget">
+    <property name="layout-manager">
+      <object class="GtkBinLayout"/>
+    </property>
+    <child>
+      <object class="GtkScrolledWindow">
+        <property name="hscrollbar-policy">never</property>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="ProfileCard" id="profile_card"/>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
   </template>
 </interface>

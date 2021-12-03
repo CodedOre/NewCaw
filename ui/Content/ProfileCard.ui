@@ -3,5 +3,11 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
   <template class="ProfileCard" parent="GtkWidget">
+    <property name="layout-manager">
+      <object class="GtkConstraintLayout">
+        <constraints>
+        </constraints>
+      </object>
+    </property>
   </template>
 </interface>
