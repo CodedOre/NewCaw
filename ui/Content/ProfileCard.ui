@@ -6,6 +6,7 @@
     <property name="layout-manager">
       <object class="GtkConstraintLayout">
         <constraints>
+          <guide name="avatar_size" min-height="96" max-height="96"/>
           <guide name="banner_height" min-height="200"/>
 
           <constraint target="profile_banner" target-attribute="width"
@@ -13,6 +14,23 @@
                       source="super" source-attribute="width"
                       strength="required"/>
           <constraint target="profile_banner" target-attribute="height"
+                      relation="eq"
+                      source="banner_height" source-attribute="height"
+                      strength="required"/>
+
+          <constraint target="profile_avatar" target-attribute="width"
+                      relation="eq"
+                      source="avatar_size" source-attribute="height"
+                      strength="required"/>
+          <constraint target="profile_avatar" target-attribute="height"
+                      relation="eq"
+                      source="avatar_size" source-attribute="height"
+                      strength="required"/>
+          <constraint target="profile_avatar" target-attribute="start"
+                      relation="eq"
+                      source="super" source-attribute="start"
+                      constant="20" strength="required"/>
+          <constraint target="profile_avatar" target-attribute="center-y"
                       relation="eq"
                       source="banner_height" source-attribute="height"
                       strength="required"/>
@@ -36,7 +54,12 @@
       </object>
     </child>
     <child>
-      <object class="AdwBin" id="card_header">
+      <object class="UserAvatar" id="profile_avatar">
+        <property name="size">96</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkWindowHandle" id="card_header">
         <child>
           <object class="AdwHeaderBar">
             <property name="valign">start</property>
