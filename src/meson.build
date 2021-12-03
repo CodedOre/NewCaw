@@ -20,6 +20,7 @@ cawfiles = [
   'Cawbird.vala',
   'MainWindow.vala',
   'Content/PostDisplay.vala',
+  'Content/ProfileCard.vala',
   'Content/ProfileDisplay.vala',
   'Media/MediaDisplay.vala',
   'Media/MediaDisplayItem.vala',

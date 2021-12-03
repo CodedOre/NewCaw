@@ -9,6 +9,7 @@
   <gresource prefix="/uk/co/ibboard/Cawbird/ui">
     <file>MainWindow.ui</file>
     <file>Content/PostDisplay.ui</file>
+    <file>Content/ProfileCard.ui</file>
     <file>Content/ProfileDisplay.ui</file>
     <file>Media/MediaDisplay.ui</file>
     <file>Media/MediaDisplayItem.ui</file>
