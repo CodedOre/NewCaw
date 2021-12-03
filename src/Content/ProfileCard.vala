@@ -27,11 +27,8 @@ using GLib;
 public class ProfileCard : Gtk.Widget {
 
   /**
-   * Creates a new ProfileCard widget displaying a specific Profile.
-   *
-   * @param profile The Profile which is to be displayed in this widget.
+   * The Profile which is displayed.
    */
-  public ProfileCard (Backend.Profile profile) {
-  }
+  public Backend.Profile profile { get; set; }
 
 }

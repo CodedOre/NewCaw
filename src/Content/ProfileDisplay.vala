@@ -27,11 +27,21 @@ using GLib;
 public class ProfileDisplay : Gtk.Widget {
 
   /**
+   * The Profile which is displayed.
+   */
+  public Backend.Profile displayed_profile { get; construct; }
+
+  /**
    * Creates a new ProfileDisplay widget displaying a specific Profile.
    *
    * @param profile The Profile which is to be displayed in this widget.
    */
   public ProfileDisplay (Backend.Profile profile) {
+    // Create widget with properties
+    Object (
+      // Set the displayed profile
+      displayed_profile: profile
+    );
   }
 
 }

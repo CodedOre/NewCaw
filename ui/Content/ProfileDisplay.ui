@@ -13,7 +13,11 @@
           <object class="GtkBox">
             <property name="orientation">vertical</property>
             <child>
-              <object class="ProfileCard" id="profile_card"/>
+              <object class="ProfileCard" id="profile_card">
+                <binding name="profile">
+                  <lookup name="displayed_profile">ProfileDisplay</lookup>
+                </binding>
+              </object>
             </child>
           </object>
         </child>
