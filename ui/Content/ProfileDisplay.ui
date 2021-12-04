@@ -15,44 +15,51 @@
       <object class="GtkBox">
         <property name="margin-start">20</property>
         <property name="margin-end">20</property>
-        <property name="spacing">8</property>
+        <property name="margin-bottom">16</property>
+        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel" id="profile_display_label">
+          <object class="GtkBox">
+            <property name="spacing">8</property>
+            <child>
+              <object class="GtkLabel" id="profile_display_label">
+                <property name="xalign">0.0</property>
+                <property name="ellipsize">end</property>
+                <style>
+                  <class name="title-1"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="BadgesBox" id="profile_badges">
+                <property name="icon-size">16</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="profile_username_label">
+            <property name="xalign">0.0</property>
             <property name="ellipsize">end</property>
+            <property name="margin-bottom">8</property>
             <style>
-              <class name="title-1"/>
+              <class name="caption"/>
+              <class name="dim-label"/>
             </style>
           </object>
         </child>
         <child>
-          <object class="BadgesBox" id="profile_badges">
-            <property name="icon-size">16</property>
+          <object class="GtkLabel" id="profile_description_label">
+            <property name="xalign">0.0</property>
+            <property name="wrap">true</property>
+            <property name="margin-bottom">8</property>
           </object>
         </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkLabel" id="profile_username_label">
-        <property name="margin-start">20</property>
-        <property name="margin-end">20</property>
-        <property name="ellipsize">end</property>
-        <style>
-          <class name="caption"/>
-          <class name="dim-label"/>
-        </style>
-      </object>
-    </child>
-    <child>
-      <object class="GtkLabel" id="profile_description_label">
-        <property name="margin-start">20</property>
-        <property name="margin-end">20</property>
-        <property name="wrap">true</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkGrid" id="profile_fields_grid">
-        <property name="column-spacing">8</property>
-        <property name="row-spacing">8</property>
+        <child>
+          <object class="GtkGrid" id="profile_fields_grid">
+            <property name="column-spacing">8</property>
+            <property name="row-spacing">8</property>
+          </object>
+        </child>
       </object>
     </child>
     <style>
