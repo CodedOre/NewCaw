@@ -49,6 +49,12 @@
         <property name="wrap">true</property>
       </object>
     </child>
+    <child>
+      <object class="GtkGrid" id="profile_fields_grid">
+        <property name="column-spacing">8</property>
+        <property name="row-spacing">8</property>
+      </object>
+    </child>
     <style>
       <class name="card"/>
     </style>
