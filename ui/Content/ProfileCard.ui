@@ -6,8 +6,14 @@
     <property name="layout-manager">
       <object class="GtkConstraintLayout">
         <constraints>
-          <guide name="avatar_size" min-height="96" max-height="96"/>
-          <guide name="banner_height" min-height="200"/>
+          <guide name="banner-height" min-height="200"/>
+          <guide name="follow-width" min-width="120"/>
+          <guide name="avatar-size" min-height="96" max-height="96"/>
+
+          <constraint target="super" target-attribute="height"
+                      relation="eq"
+                      source="banner-height" source-attribute="height"
+                      constant="60" strength="required"/>
 
           <constraint target="profile_banner" target-attribute="width"
                       relation="eq"
@@ -15,16 +21,16 @@
                       strength="required"/>
           <constraint target="profile_banner" target-attribute="height"
                       relation="eq"
-                      source="banner_height" source-attribute="height"
+                      source="banner-height" source-attribute="height"
                       strength="required"/>
 
           <constraint target="profile_avatar" target-attribute="width"
                       relation="eq"
-                      source="avatar_size" source-attribute="height"
+                      source="avatar-size" source-attribute="height"
                       strength="required"/>
           <constraint target="profile_avatar" target-attribute="height"
                       relation="eq"
-                      source="avatar_size" source-attribute="height"
+                      source="avatar-size" source-attribute="height"
                       strength="required"/>
           <constraint target="profile_avatar" target-attribute="start"
                       relation="eq"
@@ -32,7 +38,7 @@
                       constant="20" strength="required"/>
           <constraint target="profile_avatar" target-attribute="center-y"
                       relation="eq"
-                      source="banner_height" source-attribute="height"
+                      source="banner-height" source-attribute="height"
                       strength="required"/>
 
           <constraint target="card_header" target-attribute="width"
@@ -41,8 +47,30 @@
                       strength="required"/>
           <constraint target="card_header" target-attribute="height"
                       relation="eq"
-                      source="banner_height" source-attribute="height"
+                      source="banner-height" source-attribute="height"
                       strength="required"/>
+
+          <constraint target="follow_button" target-attribute="end"
+                      relation="eq"
+                      source="option_button" source-attribute="start"
+                      constant="-12" strength="required"/>
+          <constraint target="follow_button" target-attribute="center-y"
+                      relation="eq"
+                      source="banner-height" source-attribute="height"
+                      constant="30" strength="required"/>
+          <constraint target="follow_button" target-attribute="width"
+                      relation="eq"
+                      source="follow-width" source-attribute="width"
+                      strength="required" />
+
+          <constraint target="option_button" target-attribute="end"
+                      relation="eq"
+                      source="super" source-attribute="end"
+                      constant="-20" strength="required"/>
+          <constraint target="option_button" target-attribute="center-y"
+                      relation="eq"
+                      source="banner-height" source-attribute="height"
+                      constant="30" strength="required"/>
         </constraints>
       </object>
     </property>
@@ -80,6 +108,14 @@
         <style>
           <class name="scrim"/>
         </style>
+      </object>
+    </child>
+    <child>
+      <object class="GtkButton" id="follow_button"/>
+    </child>
+    <child>
+      <object class="GtkMenuButton" id="option_button">
+        <property name="icon-name">view-more-symbolic</property>
       </object>
     </child>
   </template>
