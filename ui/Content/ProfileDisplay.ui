@@ -11,6 +11,44 @@
         </binding>
       </object>
     </child>
+    <child>
+      <object class="GtkBox">
+        <property name="margin-start">20</property>
+        <property name="margin-end">20</property>
+        <property name="spacing">8</property>
+        <child>
+          <object class="GtkLabel" id="profile_display_label">
+            <property name="ellipsize">end</property>
+            <style>
+              <class name="title-1"/>
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="BadgesBox" id="profile_badges">
+            <property name="icon-size">16</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkLabel" id="profile_username_label">
+        <property name="margin-start">20</property>
+        <property name="margin-end">20</property>
+        <property name="ellipsize">end</property>
+        <style>
+          <class name="caption"/>
+          <class name="dim-label"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="GtkLabel" id="profile_description_label">
+        <property name="margin-start">20</property>
+        <property name="margin-end">20</property>
+        <property name="wrap">true</property>
+      </object>
+    </child>
     <style>
       <class name="card"/>
     </style>
