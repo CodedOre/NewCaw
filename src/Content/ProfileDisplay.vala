@@ -26,22 +26,43 @@ using GLib;
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/ProfileDisplay.ui")]
 public class ProfileDisplay : Gtk.Box {
 
+  // UI-Elements of ProfileDisplay
+  [GtkChild]
+  private unowned Gtk.Label profile_display_label;
+  [GtkChild]
+  private unowned BadgesBox profile_badges;
+  [GtkChild]
+  private unowned Gtk.Label profile_username_label;
+  [GtkChild]
+  private unowned Gtk.Label profile_description_label;
+
   /**
    * The Profile which is displayed.
    */
-  public Backend.Profile displayed_profile { get; construct; }
+  public Backend.Profile profile {
+    get {
+      return displayed_profile;
+    }
+    set {
+      displayed_profile = value;
+      // Set's the UI for the new profile
+      if (displayed_profile != null) {
+        // Set names and description
+        profile_display_label.label     = displayed_profile.display_name;
+        profile_username_label.label    = @"@$(displayed_profile.username)";
+        profile_description_label.label = displayed_profile.description;
+
+        // Set up badges for the profile
+        profile_badges.display_verified  = displayed_profile.has_flag (VERIFIED);
+        profile_badges.display_bot       = displayed_profile.has_flag (BOT);
+        profile_badges.display_protected = displayed_profile.has_flag (PROTECTED);
+      }
+    }
+  }
 
   /**
-   * Creates a new ProfileDisplay widget displaying a specific Profile.
-   *
-   * @param profile The Profile which is to be displayed in this widget.
+   * Stores the displayed profile.
    */
-  public ProfileDisplay (Backend.Profile profile) {
-    // Create widget with properties
-    Object (
-      // Set the displayed profile
-      displayed_profile: profile
-    );
-  }
+  private Backend.Profile displayed_profile;
 
 }

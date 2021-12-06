@@ -7,7 +7,7 @@
     <child>
       <object class="ProfileCard" id="profile_card">
         <binding name="profile">
-          <lookup name="displayed_profile">ProfileDisplay</lookup>
+          <lookup name="profile">ProfileDisplay</lookup>
         </binding>
       </object>
     </child>
@@ -19,7 +19,7 @@
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkBox">
-            <property name="spacing">8</property>
+            <property name="spacing">4</property>
             <child>
               <object class="GtkLabel" id="profile_display_label">
                 <property name="xalign">0.0</property>
@@ -31,7 +31,8 @@
             </child>
             <child>
               <object class="BadgesBox" id="profile_badges">
-                <property name="icon-size">16</property>
+                <property name="icon-size">12</property>
+                <property name="valign">start</property>
               </object>
             </child>
           </object>
