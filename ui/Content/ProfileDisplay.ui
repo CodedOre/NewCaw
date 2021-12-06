@@ -56,6 +56,41 @@
           </object>
         </child>
         <child>
+          <object class="GtkBox">
+            <property name="spacing">12</property>
+            <child>
+              <object class="GtkLinkButton">
+                <child>
+                  <object class="GtkLabel" id="following_counter">
+                    <property name="use-markup">true</property>
+                    <style>
+                      <class name="body"/>
+                    </style>
+                  </object>
+                </child>
+                <style>
+                  <class name="inline"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLinkButton">
+                <child>
+                  <object class="GtkLabel" id="followers_counter">
+                    <property name="use-markup">true</property>
+                    <style>
+                      <class name="body"/>
+                    </style>
+                  </object>
+                </child>
+                <style>
+                  <class name="inline"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
           <object class="GtkGrid" id="profile_fields_grid">
             <property name="column-spacing">8</property>
             <property name="row-spacing">8</property>

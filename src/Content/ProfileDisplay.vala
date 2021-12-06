@@ -26,7 +26,7 @@ using GLib;
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/ProfileDisplay.ui")]
 public class ProfileDisplay : Gtk.Box {
 
-  // UI-Elements of ProfileDisplay
+  // UI-Elements for text information
   [GtkChild]
   private unowned Gtk.Label profile_display_label;
   [GtkChild]
@@ -35,6 +35,12 @@ public class ProfileDisplay : Gtk.Box {
   private unowned Gtk.Label profile_username_label;
   [GtkChild]
   private unowned Gtk.Label profile_description_label;
+
+  // UI-Elements for metrics
+  [GtkChild]
+  private unowned Gtk.Label following_counter;
+  [GtkChild]
+  private unowned Gtk.Label followers_counter;
 
   /**
    * The Profile which is displayed.
@@ -56,6 +62,10 @@ public class ProfileDisplay : Gtk.Box {
         profile_badges.display_verified  = displayed_profile.has_flag (VERIFIED);
         profile_badges.display_bot       = displayed_profile.has_flag (BOT);
         profile_badges.display_protected = displayed_profile.has_flag (PROTECTED);
+
+        // Set the labels for metrics
+        following_counter.label = _("<b>%i</b>  Following").printf (displayed_profile.following_count);
+        followers_counter.label = _("<b>%i</b>  Followers").printf (displayed_profile.followers_count);
       }
     }
   }

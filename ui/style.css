@@ -22,14 +22,28 @@
  * Custom styles used by Cawbird.
  */
 
-/*
+/**
  * Removes the underline from selected links.
  */
 link.hashtag, link.mention, link.weblink {
   text-decoration: none;
 }
 
-/*
+/**
+ * Colors the link in the normal color and only use a line on hover.
+ */
+button.link.inline {
+  padding: 0px;
+  color: @card_fg_color;
+}
+button.link.inline > label {
+  text-decoration: none;
+}
+button.link.inline:hover > label {
+  text-decoration: underline;
+}
+
+/**
  * Styles for the indicator box, using a pill.
  */
 box.indicator {
@@ -82,6 +96,14 @@ widget.squared > avatar {
  */
 picture.placeholder {
   background: @dark_1;
+}
+
+/**
+ * A smaller button used inside of content.
+ */
+button.inline-button {
+  min-height: 0px;
+  border-radius: 50px;
 }
 
 /**
