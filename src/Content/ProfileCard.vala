@@ -41,7 +41,19 @@ public class ProfileCard : Gtk.Widget {
   /**
    * The Profile which is displayed.
    */
-  public Backend.Profile profile { get; set; }
+  public Backend.Profile profile {
+    get {
+      return displayed_profile;
+    }
+    set {
+      displayed_profile = value;
+      // Set's the UI for the new profile
+      if (displayed_profile != null) {
+        // Set the profile images
+        profile_avatar.set_avatar (displayed_profile.avatar);
+      }
+    }
+  }
 
   /**
    * Deconstructs ProfileCard and it's childrens.
@@ -54,5 +66,10 @@ public class ProfileCard : Gtk.Widget {
     follow_button.unparent ();
     option_button.unparent ();
   }
+
+  /**
+   * Stores the displayed profile.
+   */
+  private Backend.Profile displayed_profile;
 
 }
