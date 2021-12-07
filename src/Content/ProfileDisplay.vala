@@ -26,6 +26,12 @@ using GLib;
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/ProfileDisplay.ui")]
 public class ProfileDisplay : Gtk.Widget {
 
+  // General UI-Elements of ProfileDisplay
+  [GtkChild]
+  private unowned ProfileCard profile_card;
+  [GtkChild]
+  private unowned Adw.Clamp content_clamp;
+
   // UI-Elements for text information
   [GtkChild]
   private unowned Gtk.Label profile_display_label;
@@ -68,6 +74,15 @@ public class ProfileDisplay : Gtk.Widget {
         followers_counter.label = _("<b>%i</b>  Followers").printf (displayed_profile.followers_count);
       }
     }
+  }
+
+  /**
+   * Deconstructs ProfileCard and it's childrens.
+   */
+  public override void dispose () {
+    // Destructs children of MediaDisplay
+    profile_card.unparent ();
+    content_clamp.unparent ();
   }
 
   /**

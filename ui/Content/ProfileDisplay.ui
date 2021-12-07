@@ -17,7 +17,7 @@
       </object>
     </child>
     <child>
-      <object class="AdwClamp">
+      <object class="AdwClamp" id="content_clamp">
         <property name="maximum-size">1024</property>
         <property name="tightening-threshold">512</property>
         <child>

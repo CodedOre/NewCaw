@@ -34,9 +34,7 @@ public class ProfileCard : Gtk.Widget {
   [GtkChild]
   private unowned Gtk.WindowHandle card_header;
   [GtkChild]
-  private unowned Gtk.Button follow_button;
-  [GtkChild]
-  private unowned Gtk.MenuButton option_button;
+  private unowned Adw.Clamp content_clamp;
 
   /**
    * The Profile which is displayed.
@@ -61,10 +59,8 @@ public class ProfileCard : Gtk.Widget {
   public override void dispose () {
     // Destructs children of MediaDisplay
     profile_banner.unparent ();
-    profile_avatar.unparent ();
     card_header.unparent ();
-    follow_button.unparent ();
-    option_button.unparent ();
+    content_clamp.unparent ();
   }
 
   /**
