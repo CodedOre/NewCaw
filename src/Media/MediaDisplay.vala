@@ -77,7 +77,7 @@ public class MediaDisplay : Gtk.Widget {
 
       // Scroll to the previous widget
       if (i > 0) {
-        display.media_carousel.scroll_to (display.media_items [i-1]);
+        display.media_carousel.scroll_to (display.media_items [i-1], true);
       }
     });
     this.install_action ("media_display.select_next", null, (widget, action) => {
@@ -89,7 +89,7 @@ public class MediaDisplay : Gtk.Widget {
 
       // Scroll to the next widget
       if (i < display.media_items.length - 1) {
-        display.media_carousel.scroll_to (display.media_items [i+1]);
+        display.media_carousel.scroll_to (display.media_items [i+1], true);
       }
     });
 
