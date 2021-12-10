@@ -107,10 +107,7 @@ public class ProfileDisplay : Gtk.Widget {
           }
 
           // Create an label for the field value, optional with activatable link
-          string value_string = field.value.has_prefix ("https://") || field.value.has_prefix ("http://")
-                                ? @"<a href=\"$(field.value)\" class=\"weblink\">$(field.value)</a>"
-                                : field.value;
-          var field_value        = new Gtk.Label (value_string);
+          var field_value        = new Gtk.Label (field.value);
           field_value.use_markup = true;
 
           // Add the widgets to the profile_fields box
