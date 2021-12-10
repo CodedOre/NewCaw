@@ -29,6 +29,7 @@ namespace DisplayUtils {
    * Create a string representing the timespan from a certain date.
    *
    * @param datetime A GLib.DateTime which is used as reference point.
+   * @param long_format Set's the output to be in a long format or not.
    *
    * @return A string showing the relative time passed since datetime.
    */

@@ -66,6 +66,7 @@
             </child>
             <child>
               <object class="GtkBox">
+                <property name="margin-bottom">8</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLinkButton">
@@ -100,9 +101,8 @@
               </object>
             </child>
             <child>
-              <object class="GtkGrid" id="profile_fields_grid">
-                <property name="column-spacing">8</property>
-                <property name="row-spacing">8</property>
+              <object class="GtkBox" id="profile_fields">
+                <property name="spacing">8</property>
               </object>
             </child>
           </object>

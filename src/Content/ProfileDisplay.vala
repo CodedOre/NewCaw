@@ -47,6 +47,8 @@ public class ProfileDisplay : Gtk.Widget {
   private unowned Gtk.Label following_counter;
   [GtkChild]
   private unowned Gtk.Label followers_counter;
+  [GtkChild]
+  private unowned Gtk.Box profile_fields;
 
   /**
    * The Profile which is displayed.
@@ -72,6 +74,50 @@ public class ProfileDisplay : Gtk.Widget {
         // Set the labels for metrics
         following_counter.label = _("<b>%i</b>  Following").printf (displayed_profile.following_count);
         followers_counter.label = _("<b>%i</b>  Followers").printf (displayed_profile.followers_count);
+
+        // Create a special creation date field
+        var creation_field         = new Gtk.Box (HORIZONTAL, 4);
+        var creation_icon          = new Gtk.Image.from_icon_name ("x-office-calendar-symbolic");
+        creation_icon.tooltip_text = _("Joined %s").printf (displayed_profile.domain);
+        var creation_value         = new Gtk.Label (DisplayUtils.display_time_delta (
+                                                      displayed_profile.creation_date, true));
+        creation_field.append (creation_icon);
+        creation_field.append (creation_value);
+        profile_fields.append (creation_field);
+
+        // Set up the fields for the profile
+        foreach (Backend.UserDataField field in displayed_profile.get_data_fields ()) {
+          var field_box   = new Gtk.Box (HORIZONTAL, 4);
+
+          // Create either an icon or an label for the field name
+          Gtk.Widget field_desc;
+          switch (field.type) {
+            case WEBLINK:
+              field_desc              = new Gtk.Image.from_icon_name ("web-browser-symbolic");
+              field_desc.tooltip_text = _("Website");
+              break;
+            case LOCATION:
+              field_desc              = new Gtk.Image.from_icon_name ("mark-location-symbolic");
+              field_desc.tooltip_text = _("Location");
+              break;
+            default:
+              field_desc = new Gtk.Label (field.name);
+              field_desc.add_css_class ("heading");
+              break;
+          }
+
+          // Create an label for the field value, optional with activatable link
+          string value_string = field.value.has_prefix ("https://") || field.value.has_prefix ("http://")
+                                ? @"<a href=\"$(field.value)\" class=\"weblink\">$(field.value)</a>"
+                                : field.value;
+          var field_value        = new Gtk.Label (value_string);
+          field_value.use_markup = true;
+
+          // Add the widgets to the profile_fields box
+          field_box.append (field_desc);
+          field_box.append (field_value);
+          profile_fields.append (field_box);
+        }
       }
     }
   }
