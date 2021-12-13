@@ -120,7 +120,8 @@ namespace UserChecks {
       Backend.UserDataField field = profile_fields [index];
       assert_true (field.type.to_string () == obj.get_string_member     ("type"));
       assert_true (field.name              == obj.get_string_member     ("name"));
-      assert_true (field.value             == obj.get_string_member     ("value"));
+      assert_true (field.display           == obj.get_string_member     ("display"));
+      assert_true (field.target            == obj.get_string_member     ("target"));
     });
   }
 

@@ -41,14 +41,16 @@
   ],
   "data_fields": [
     {
-      "type":  "BACKEND_USER_DATA_FIELD_TYPE_LOCATION",
-      "name":  "Location",
-      "value": "org.gnome.Sdk"
+      "type":    "BACKEND_USER_DATA_FIELD_TYPE_LOCATION",
+      "name":    "Location",
+      "display": "org.gnome.Sdk",
+      "target":  null
     },
     {
-      "type":  "BACKEND_USER_DATA_FIELD_TYPE_WEBLINK",
-      "name":  "Weblink",
-      "value": "https://example.com"
+      "type":    "BACKEND_USER_DATA_FIELD_TYPE_WEBLINK",
+      "name":    "Weblink",
+      "display": "example.com",
+      "target":  "https://example.com"
     }
   ]
 }

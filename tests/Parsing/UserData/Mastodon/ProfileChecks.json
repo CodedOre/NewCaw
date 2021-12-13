@@ -41,14 +41,16 @@
   ],
   "data_fields": [
     {
-      "type":  "BACKEND_USER_DATA_FIELD_TYPE_GENERIC",
-      "name":  "Lives in",
-      "value": "org.gnome.Sdk"
+      "type":    "BACKEND_USER_DATA_FIELD_TYPE_GENERIC",
+      "name":    "Lives in",
+      "display": "org.gnome.Sdk",
+      "target":  null
     },
     {
-      "type":  "BACKEND_USER_DATA_FIELD_TYPE_GENERIC",
-      "name":  "Example Weblink",
-      "value": "<a href=\"https://example.com\" rel=\"me nofollow noopener noreferrer\" target=\"_blank\"><span class=\"invisible\">https://</span><span class=\"\">example.com</span><span class=\"invisible\"></span></a>"
+      "type":    "BACKEND_USER_DATA_FIELD_TYPE_GENERIC",
+      "name":    "Example Weblink",
+      "display": "example.com",
+      "target":  "https://example.com"
     }
   ]
 }
