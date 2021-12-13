@@ -48,7 +48,7 @@ public class ProfileDisplay : Gtk.Widget {
   [GtkChild]
   private unowned Gtk.Label followers_counter;
   [GtkChild]
-  private unowned Gtk.Box profile_fields;
+  private unowned Gtk.FlowBox profile_fields;
 
   /**
    * The Profile which is displayed.
@@ -83,7 +83,7 @@ public class ProfileDisplay : Gtk.Widget {
                                                       displayed_profile.creation_date, true));
         creation_field.append (creation_icon);
         creation_field.append (creation_value);
-        profile_fields.append (creation_field);
+        profile_fields.insert (creation_field, -1);
 
         // Set up the fields for the profile
         foreach (Backend.UserDataField field in displayed_profile.get_data_fields ()) {
@@ -120,7 +120,7 @@ public class ProfileDisplay : Gtk.Widget {
           // Add the widgets to the profile_fields box
           field_box.append (field_desc);
           field_box.append (field_value);
-          profile_fields.append (field_box);
+          profile_fields.insert (field_box, -1);
         }
       }
     }
