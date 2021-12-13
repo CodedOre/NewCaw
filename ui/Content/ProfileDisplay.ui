@@ -72,31 +72,53 @@
                 <property name="max-children-per-line">42</property>
                 <property name="selection-mode">none</property>
                 <child>
-                  <object class="GtkLinkButton">
+                  <object class="GtkButton">
                     <child>
-                      <object class="GtkLabel" id="following_counter">
-                        <property name="use-markup">true</property>
-                        <style>
-                          <class name="body"/>
-                        </style>
+                      <object class="GtkBox">
+                        <property name="spacing">2</property>
+                        <child>
+                          <object class="GtkLabel" id="following_counter">
+                            <property name="use-markup">true</property>
+                            <style>
+                              <class name="body"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="icon-name">go-next-symbolic</property>
+                          </object>
+                        </child>
                       </object>
                     </child>
                     <style>
+                      <class name="flat"/>
                       <class name="inline"/>
                     </style>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkLinkButton">
+                  <object class="GtkButton">
                     <child>
-                      <object class="GtkLabel" id="followers_counter">
-                        <property name="use-markup">true</property>
-                        <style>
-                          <class name="body"/>
-                        </style>
+                      <object class="GtkBox">
+                        <property name="spacing">2</property>
+                        <child>
+                          <object class="GtkLabel" id="followers_counter">
+                            <property name="use-markup">true</property>
+                            <style>
+                              <class name="body"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="icon-name">go-next-symbolic</property>
+                          </object>
+                        </child>
                       </object>
                     </child>
                     <style>
+                      <class name="flat"/>
                       <class name="inline"/>
                     </style>
                   </object>

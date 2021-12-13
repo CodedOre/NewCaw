@@ -32,15 +32,15 @@ link.hashtag, link.mention, link.weblink {
 /**
  * Colors the link in the normal color and only use a line on hover.
  */
-button.link.inline {
-  padding: 0px;
-  color: @card_fg_color;
+button.inline {
+  padding: 1px 0px;
+  border-radius: 50px;
 }
-button.link.inline > label {
-  text-decoration: none;
+button.inline image {
+  opacity: 0.15;
 }
-button.link.inline:hover > label {
-  text-decoration: underline;
+button.inline:hover {
+  padding: 1px 12px;
 }
 
 /**
