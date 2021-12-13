@@ -9,5 +9,5 @@ Type=Application
 Icon=uk.co.ibboard.Cawbird
 Categories=Network;GTK;
 # DBusActivatable=true
-StartupWMClass=cawbird
+StartupNotify=true
 X-Purism-FormFactor=Workstation;Mobile;
