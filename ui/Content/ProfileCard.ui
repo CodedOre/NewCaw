@@ -8,7 +8,7 @@
       <object class="GtkBinLayout"/>
     </property>
     <child>
-      <object class="GtkPicture" id="profile_banner">
+      <object class="CroppedPicture" id="profile_banner">
         <property name="height-request">200</property>
         <property name="valign">start</property>
         <style>

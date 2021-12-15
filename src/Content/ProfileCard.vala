@@ -28,7 +28,7 @@ public class ProfileCard : Gtk.Widget {
 
   // UI-Elements of ProfileCard
   [GtkChild]
-  private unowned Gtk.Picture profile_banner;
+  private unowned CroppedPicture profile_banner;
   [GtkChild]
   private unowned UserAvatar profile_avatar;
   [GtkChild]
