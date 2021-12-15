@@ -54,6 +54,15 @@ public class ProfileCard : Gtk.Widget {
   }
 
   /**
+   * Bind settings to this widget on construction.
+   */
+  construct {
+    var settings = new Settings ("uk.co.ibboard.Cawbird.experimental");
+    settings.bind ("profile-inline-header", card_header, "visible",
+                    GLib.SettingsBindFlags.DEFAULT);
+  }
+
+  /**
    * Deconstructs ProfileCard and it's childrens.
    */
   public override void dispose () {

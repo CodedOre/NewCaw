@@ -18,6 +18,7 @@
     </child>
     <child>
       <object class="GtkWindowHandle" id="card_header">
+        <property name="visible">false</property>
         <property name="height-request">200</property>
         <property name="valign">start</property>
         <child>
