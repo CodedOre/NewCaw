@@ -62,10 +62,12 @@ public class CroppedPicture : Gtk.Widget {
     int y = (int) (Math.floor(height - Math.ceil (h)) / 2);
 
     // Snapshot the paintable
+    snapshot.push_clip (Graphene.Rect ().init (0, 0, width, height));
     snapshot.save ();
     snapshot.translate (Graphene.Point ().init (x, y));
     paintable.snapshot (snapshot, w, h);
     snapshot.restore ();
+    snapshot.pop ();
   }
 
 }
