@@ -53,6 +53,19 @@ public class ProfileCard : Gtk.Widget {
       if (displayed_profile != null) {
         // Set the profile images
         profile_avatar.set_avatar (displayed_profile.avatar);
+
+        // Load and set the Header
+        var header = displayed_profile.header.media;
+        if (header.is_loaded ()) {
+          blurred_banner.paintable = header.get_media ();
+          profile_banner.paintable = header.get_media ();
+        } else {
+          header.begin_loading ();
+          header.load_completed.connect (() => {
+            blurred_banner.paintable = header.get_media ();
+            profile_banner.paintable = header.get_media ();
+          });
+        }
       }
     }
   }
