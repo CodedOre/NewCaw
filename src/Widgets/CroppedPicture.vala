@@ -28,14 +28,35 @@ public class CroppedPicture : Gtk.Widget {
   /**
    * The paintable which will be displayed.
    */
-  public Gdk.Paintable paintable { get; set; }
+  public Gdk.Paintable paintable {
+    get {
+      return displayed_paintable;
+    }
+    set {
+      displayed_paintable = value;
+      this.queue_draw ();
+    }
+  }
+
+  /**
+   * If the paintable should be blurred.
+   */
+  public bool blur_paintable {
+    get {
+      return blurred;
+    }
+    set {
+      blurred = value;
+      this.queue_draw ();
+    }
+  }
 
   /**
    * Snapshots the widget for display.
    */
   public override void snapshot (Gtk.Snapshot snapshot) {
     // Stop early when no paintable was given
-    if (paintable == null) {
+    if (displayed_paintable == null) {
       return;
     }
 
@@ -45,7 +66,7 @@ public class CroppedPicture : Gtk.Widget {
 
     // Get aspect ratios
     double widget_ratio = (double) width / height;
-    double paint_ratio  = paintable.get_intrinsic_aspect_ratio ();
+    double paint_ratio  = displayed_paintable.get_intrinsic_aspect_ratio ();
 
     // Calculate paintable size
     double w, h;
@@ -61,23 +82,35 @@ public class CroppedPicture : Gtk.Widget {
     int x = (int) ((width - Math.ceil (w)) / 2);
     int y = (int) (Math.floor(height - Math.ceil (h)) / 2);
 
-    // Snapshot the size clip
+    // Append the size clip
     snapshot.push_clip (Graphene.Rect ().init (0, 0, width, height));
 
-    // Snapshot the blurred background
-    snapshot.push_blur (64.0);
-    snapshot.save ();
-    snapshot.translate (Graphene.Point ().init (x, y));
-    paintable.snapshot (snapshot, w, h);
-    snapshot.restore ();
-    snapshot.pop ();
+    // Apply the blur
+    if (blurred) {
+      snapshot.push_blur (64.0);
+    }
 
     // Snapshot the paintable
     snapshot.save ();
     snapshot.translate (Graphene.Point ().init (x, y));
-    paintable.snapshot (snapshot, w, h);
+    displayed_paintable.snapshot (snapshot, w, h);
     snapshot.restore ();
+
+    // Position the pushed effects
     snapshot.pop ();
+    if (blurred) {
+      snapshot.pop ();
+    }
   }
+
+  /**
+   * Stores the displayed paintable.
+   */
+  private Gdk.Paintable? displayed_paintable = null;
+
+  /**
+   * Stores if paintable should be blurred.
+   */
+  private bool blurred = false;
 
 }
