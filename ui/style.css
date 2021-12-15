@@ -87,14 +87,14 @@ widget.squared > avatar {
  * Displays a gradient from black to transparent.
  */
 .scrim {
-  background: linear-gradient(alpha(black, 0.25), transparent);
+  background: linear-gradient(alpha(black, 0.4), transparent);
   color: white;
 }
 
 /**
  * Displays a grey background before a picture is shown.
  */
-picture.placeholder {
+.placeholder {
   background: @dark_1;
 }
 

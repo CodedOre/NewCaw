@@ -34,6 +34,38 @@ public class CroppedPicture : Gtk.Widget {
    * Snapshots the widget for display.
    */
   public override void snapshot (Gtk.Snapshot snapshot) {
+    // Stop early when no paintable was given
+    if (paintable == null) {
+      return;
+    }
+
+    // Get the size of the widget
+    int width  = this.get_width ();
+    int height = this.get_height ();
+
+    // Get aspect ratios
+    double widget_ratio = (double) width / height;
+    double paint_ratio  = paintable.get_intrinsic_aspect_ratio ();
+
+    // Calculate paintable size
+    double w, h;
+    if (paint_ratio < widget_ratio) {
+      w = width;
+      h = width / paint_ratio;
+    } else {
+      w = height * paint_ratio;
+      h = height;
+    }
+
+    // Calculate paintable translation
+    int x = (int) ((width - Math.ceil (w)) / 2);
+    int y = (int) (Math.floor(height - Math.ceil (h)) / 2);
+
+    // Snapshot the paintable
+    snapshot.save ();
+    snapshot.translate (Graphene.Point ().init (x, y));
+    paintable.snapshot (snapshot, w, h);
+    snapshot.restore ();
   }
 
 }
