@@ -27,8 +27,9 @@ cawfiles = [
   'Media/MediaPreview.vala',
   'Media/MediaPreviewItem.vala',
   'Utils/DisplayUtils.vala',
-  'Widgets/UserAvatar.vala',
-  'Widgets/BadgesBox.vala'
+  'Widgets/BadgesBox.vala',
+  'Widgets/CroppedPicture.vala',
+  'Widgets/UserAvatar.vala'
 ]
 
 # Add build configurations
