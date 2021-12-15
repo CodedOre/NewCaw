@@ -50,5 +50,8 @@
         </style>
       </object>
     </child>
+    <style>
+      <class name="card"/>
+    </style>
   </template>
 </interface>
