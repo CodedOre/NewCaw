@@ -34,11 +34,11 @@ public class MediaPreviewItem : Gtk.Widget {
   /**
    * The ratio between height and width.
    */
-  private const double WIDTH_TO_HEIGHT = 0.5;
+  private const double WIDTH_TO_HEIGHT = 0.45;
 
   // UI-Elements of MediaPreviewItem
   [GtkChild]
-  private unowned Gtk.Picture preview;
+  private unowned CroppedPicture preview;
   [GtkChild]
   private unowned Gtk.Button selector;
   [GtkChild]
@@ -70,13 +70,13 @@ public class MediaPreviewItem : Gtk.Widget {
     // Load and set the Paintable
     if (displayed_media.preview.is_loaded ()) {
       displayed_texture = displayed_media.preview.get_media ();
-      preview.set_paintable (displayed_texture);
+      preview.paintable = displayed_texture;
     } else {
       displayed_media.preview.begin_loading ();
       displayed_media.preview.load_completed.connect (() => {
         displayed_texture = displayed_media.preview.get_media ();
         if (displayed_texture != null) {
-          preview.set_paintable (displayed_texture);
+          preview.paintable = displayed_texture;
           preview.remove_css_class ("loading-media");
         }
       });
@@ -93,48 +93,10 @@ public class MediaPreviewItem : Gtk.Widget {
   }
 
   public override void size_allocate (int width, int height, int baseline) {
-    // Allocate selector and alt_text_indicator
+    // Allocate the sizes
     selector.allocate (width, height, baseline, null);
     media_indicator_box.allocate (width, height, baseline, null);
-
-    // Create Gsk.Transform when preview texture is found
-    Gsk.Transform preview_format = null;
-    int           preview_height = height;
-    int           preview_width  = width;
-    if (displayed_texture != null) {
-      // Get the sizes of the item and the texture
-      int text_height = displayed_texture.height;
-      int text_width  = displayed_texture.width;
-      int item_height = this.get_allocated_height ();
-      int item_width  = this.get_allocated_width ();
-
-      // Determine the longer sides of item and texture
-      bool horizontal_item = item_width > item_height;
-      bool horizontal_text = text_width > text_height;
-
-      // Modify the picture constraint for display
-      int translate_x, translate_y;
-      if ((horizontal_item && horizontal_text) || (! horizontal_item && ! horizontal_text)) {
-        // Clip top and bottom
-        translate_x     = 0;
-        translate_y     = -1 * (item_height / 2);
-        preview_height *= 2;
-      } else {
-        // Clip start and end
-        translate_x    = -1 * (item_width / 2);
-        translate_y    = 0;
-        preview_width *= 2;
-      }
-
-      // Apply calculated transform
-      string transform_command = @"translate($(translate_x),$(translate_y))";
-      if (! Gsk.Transform.parse (transform_command, out preview_format)) {
-        error ("MediaPreviewItem: Could not transform preview!");
-      }
-    }
-
-    // Allocate preview picture
-    preview.allocate (preview_width, preview_height, baseline, preview_format);
+    preview.allocate (width, height, baseline, null);
   }
 
   /**
