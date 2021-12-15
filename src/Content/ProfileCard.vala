@@ -30,15 +30,11 @@ public class ProfileCard : Gtk.Widget {
   [GtkChild]
   private unowned CroppedPicture blurred_banner;
   [GtkChild]
-  private unowned Adw.Clamp banner_clamp;
-  [GtkChild]
   private unowned CroppedPicture profile_banner;
   [GtkChild]
   private unowned UserAvatar profile_avatar;
   [GtkChild]
   private unowned Gtk.WindowHandle card_header;
-  [GtkChild]
-  private unowned Adw.Clamp content_clamp;
 
   /**
    * The Profile which is displayed.
