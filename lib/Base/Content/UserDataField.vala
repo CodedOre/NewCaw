@@ -53,13 +53,18 @@ public struct Backend.UserDataField {
   public UserDataFieldType type;
 
   /**
-   * The name for this field.
+   * A description for this field.
    */
   public string name;
 
   /**
-   * The value this field is assigned.
+   * A value that should be displayed.
    */
-  public string value;
+  public string display;
+
+  /**
+   * A optional value for an target of this field.
+   */
+  public string? target;
 
 }

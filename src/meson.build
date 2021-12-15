@@ -5,7 +5,8 @@ cawdepends = [
   dependency('gio-2.0',       version: '>= 2.50'),
   dependency('glib-2.0',      version: '>= 2.50'),
   dependency('gtk4',          version: '>= 4.0'),
-  dependency('libadwaita-1',  version: '>= 1.0')
+  dependency('libadwaita-1',  version: '>= 1.0'),
+  meson.get_compiler('c').find_library('m', required: false)
 ]
 
 cawdepends += declare_dependency(
@@ -20,13 +21,16 @@ cawfiles = [
   'Cawbird.vala',
   'MainWindow.vala',
   'Content/PostDisplay.vala',
+  'Content/ProfileCard.vala',
+  'Content/ProfileDisplay.vala',
   'Media/MediaDisplay.vala',
   'Media/MediaDisplayItem.vala',
   'Media/MediaPreview.vala',
   'Media/MediaPreviewItem.vala',
   'Utils/DisplayUtils.vala',
-  'Widgets/UserAvatar.vala',
-  'Widgets/BadgesBox.vala'
+  'Widgets/BadgesBox.vala',
+  'Widgets/CroppedPicture.vala',
+  'Widgets/UserAvatar.vala'
 ]
 
 # Add build configurations

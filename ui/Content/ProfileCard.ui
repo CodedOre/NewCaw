@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="ProfileCard" parent="GtkWidget">
+    <property name="height-request">280</property>
+    <property name="layout-manager">
+      <object class="GtkBinLayout"/>
+    </property>
+    <child>
+      <object class="CroppedPicture" id="blurred_banner">
+        <property name="blur-paintable">true</property>
+        <property name="height-request">220</property>
+        <property name="valign">start</property>
+        <style>
+          <class name="placeholder"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="AdwClamp" id="banner_clamp">
+        <property name="maximum-size">1024</property>
+        <property name="tightening-threshold">512</property>
+        <child>
+          <object class="CroppedPicture" id="profile_banner">
+            <property name="height-request">220</property>
+            <property name="valign">start</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkWindowHandle" id="card_header">
+        <property name="visible">false</property>
+        <property name="height-request">220</property>
+        <property name="valign">start</property>
+        <child>
+          <object class="AdwHeaderBar">
+            <property name="valign">start</property>
+            <child type="start">
+              <object class="GtkButton">
+                <child>
+                  <object class="AdwButtonContent">
+                    <property name="icon-name">go-previous-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <style>
+              <class name="flat"/>
+            </style>
+          </object>
+        </child>
+        <style>
+          <class name="scrim"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="AdwClamp" id="content_clamp">
+        <property name="maximum-size">1024</property>
+        <property name="tightening-threshold">512</property>
+        <property name="valign">end</property>
+        <child>
+          <object class="GtkBox">
+            <property name="margin-start">20</property>
+            <property name="margin-end">20</property>
+            <property name="spacing">8</property>
+            <child>
+              <object class="UserAvatar" id="profile_avatar">
+                <property name="size">96</property>
+                <property name="hexpand">true</property>
+                <property name="halign">start</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="follow_button">
+                <property name="width-request">120</property>
+                <property name="margin-bottom">12</property>
+                <property name="valign">end</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuButton" id="option_button">
+                <property name="margin-bottom">12</property>
+                <property name="valign">end</property>
+                <property name="icon-name">view-more-symbolic</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

@@ -33,7 +33,7 @@ public class MainWindow : Adw.ApplicationWindow {
    */
   public MainWindow (Gtk.Application app) {
     // Initializes the Object
-		Object (application: app);
+    Object (application: app);
 
     // Add development style in debug
 #if DEBUG

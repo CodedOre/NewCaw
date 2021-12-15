@@ -4,23 +4,7 @@
   <requires lib="libadwaita" version="1.0"/>
   <template class="UserAvatar" parent="GtkWidget">
     <property name="layout-manager">
-      <object class="GtkConstraintLayout">
-        <constraints>
-          <constraint target="super" target-attribute="height"
-                      relation="eq"
-                      source="super" source-attribute="width"
-                      strength="required"/>
-
-          <constraint target="avatar_holder" target-attribute="height"
-                      relation="eq"
-                      source="super" source-attribute="height"
-                      strength="required"/>
-          <constraint target="avatar_holder" target-attribute="width"
-                      relation="eq"
-                      source="super" source-attribute="width"
-                      strength="required"/>
-        </constraints>
-      </object>
+      <object class="GtkBinLayout"/>
     </property>
     <child>
       <object class="AdwAvatar" id="avatar_holder">

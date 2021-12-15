@@ -158,7 +158,8 @@ public class Backend.TwitterLegacy.Profile : Backend.TwitterLegacy.User, Backend
         var new_field      = UserDataField ();
         new_field.type     = LOCATION;
         new_field.name     = "Location";
-        new_field.value    = json.get_string_member ("location");
+        new_field.display  = json.get_string_member ("location");
+        new_field.target   = null;
         additional_fields += new_field;
       }
     }
@@ -166,7 +167,8 @@ public class Backend.TwitterLegacy.Profile : Backend.TwitterLegacy.User, Backend
       var new_field      = UserDataField ();
       new_field.type     = WEBLINK;
       new_field.name     = "Weblink";
-      new_field.value    = weblink_entity.get_string_member ("expanded_url");
+      new_field.display  = weblink_entity.get_string_member ("display_url");
+      new_field.target   = weblink_entity.get_string_member ("expanded_url");
       additional_fields += new_field;
     }
     data_fields = additional_fields;
