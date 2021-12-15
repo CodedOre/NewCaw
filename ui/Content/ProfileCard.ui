@@ -3,13 +3,14 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
   <template class="ProfileCard" parent="GtkWidget">
-    <property name="height-request">260</property>
+    <property name="height-request">280</property>
     <property name="layout-manager">
       <object class="GtkBinLayout"/>
     </property>
     <child>
-      <object class="CroppedPicture" id="profile_banner">
-        <property name="height-request">200</property>
+      <object class="CroppedPicture" id="blurred_banner">
+        <property name="blur-paintable">true</property>
+        <property name="height-request">220</property>
         <property name="valign">start</property>
         <style>
           <class name="placeholder"/>
@@ -17,9 +18,21 @@
       </object>
     </child>
     <child>
+      <object class="AdwClamp" id="banner_clamp">
+        <property name="maximum-size">1024</property>
+        <property name="tightening-threshold">512</property>
+        <child>
+          <object class="CroppedPicture" id="profile_banner">
+            <property name="height-request">220</property>
+            <property name="valign">start</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
       <object class="GtkWindowHandle" id="card_header">
         <property name="visible">false</property>
-        <property name="height-request">200</property>
+        <property name="height-request">220</property>
         <property name="valign">start</property>
         <child>
           <object class="AdwHeaderBar">

@@ -28,6 +28,10 @@ public class ProfileCard : Gtk.Widget {
 
   // UI-Elements of ProfileCard
   [GtkChild]
+  private unowned CroppedPicture blurred_banner;
+  [GtkChild]
+  private unowned Adw.Clamp banner_clamp;
+  [GtkChild]
   private unowned CroppedPicture profile_banner;
   [GtkChild]
   private unowned UserAvatar profile_avatar;
@@ -60,16 +64,6 @@ public class ProfileCard : Gtk.Widget {
     var settings = new Settings ("uk.co.ibboard.Cawbird.experimental");
     settings.bind ("profile-inline-header", card_header, "visible",
                     GLib.SettingsBindFlags.DEFAULT);
-  }
-
-  /**
-   * Deconstructs ProfileCard and it's childrens.
-   */
-  public override void dispose () {
-    // Destructs children of MediaDisplay
-    profile_banner.unparent ();
-    card_header.unparent ();
-    content_clamp.unparent ();
   }
 
   /**
