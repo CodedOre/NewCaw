@@ -61,8 +61,18 @@ public class CroppedPicture : Gtk.Widget {
     int x = (int) ((width - Math.ceil (w)) / 2);
     int y = (int) (Math.floor(height - Math.ceil (h)) / 2);
 
-    // Snapshot the paintable
+    // Snapshot the size clip
     snapshot.push_clip (Graphene.Rect ().init (0, 0, width, height));
+
+    // Snapshot the blurred background
+    snapshot.push_blur (64.0);
+    snapshot.save ();
+    snapshot.translate (Graphene.Point ().init (x, y));
+    paintable.snapshot (snapshot, w, h);
+    snapshot.restore ();
+    snapshot.pop ();
+
+    // Snapshot the paintable
     snapshot.save ();
     snapshot.translate (Graphene.Point ().init (x, y));
     paintable.snapshot (snapshot, w, h);
