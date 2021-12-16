@@ -58,7 +58,7 @@ public class MediaDisplay : Gtk.Widget {
   /**
    * Creates a new instance of MediaDisplay.
    */
-  public MediaDisplay (Backend.Media[] media, int focus) {
+  public MediaDisplay (Backend.Media[] media, int focus = 0) {
     // Create a display for all media
     foreach (Backend.Media item in media) {
       var item_display = new MediaDisplayItem (item);
@@ -101,6 +101,7 @@ public class MediaDisplay : Gtk.Widget {
     media_carousel.add_controller (click_controller);
 
     // Launch changed_page to setup the first item
+    media_carousel.scroll_to (media_items [focus], false);
     changed_page ();
   }
 
