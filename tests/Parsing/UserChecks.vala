@@ -40,7 +40,7 @@ namespace UserChecks {
     assert_true (user.username     == check.get_string_member ("username"));
 
     // Check the avatar url for this user
-    assert_true (user.avatar.url == check.get_string_member ("avatar_url"));
+    assert_true (user.avatar.media.url == check.get_string_member ("avatar_url"));
 
     // Check the flags for this user
     if (check.has_member ("flags")) {

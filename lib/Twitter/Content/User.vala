@@ -43,7 +43,7 @@ public class Backend.Twitter.User : Object, Backend.User {
   /**
    * The avatar image from this user.
    */
-  public ImageLoader avatar { get; construct; }
+  public Backend.Picture avatar { get; construct; }
 
   /**
    * Parses an given Json.Object and creates an User object.
@@ -55,8 +55,8 @@ public class Backend.Twitter.User : Object, Backend.User {
     // Parse the avatar image url
     string avatar_url = data.get_string_member ("profile_image_url");
     try {
-      var source_regex = new Regex ("(https://pbs.twimg.com/.*?)_normal(\\..*)");
-      avatar_url = source_regex.replace (
+      var image_regex = new Regex ("(https://pbs.twimg.com/.*?)_normal(\\..*)");
+      avatar_url = image_regex.replace (
         avatar_url,
         avatar_url.length,
         0,
@@ -76,7 +76,7 @@ public class Backend.Twitter.User : Object, Backend.User {
       username:     data.get_string_member ("username"),
 
       // Set the ImageLoader for the avatar
-      avatar: new ImageLoader (avatar_url)
+      avatar: new Picture (avatar_url)
     );
 
     // Get possible flags for this user

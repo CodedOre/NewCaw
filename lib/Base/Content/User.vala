@@ -43,7 +43,7 @@ public interface Backend.User : Object {
   /**
    * The avatar image from this user.
    */
-  public abstract ImageLoader avatar { get; construct; }
+  public abstract Picture avatar { get; construct; }
 
   /**
    * Checks if the User has a certain flag set.

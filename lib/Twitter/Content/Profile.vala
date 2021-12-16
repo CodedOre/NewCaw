@@ -81,8 +81,8 @@ public class Backend.Twitter.Profile : Backend.Twitter.User, Backend.Profile {
     // Parse the avatar image url
     string avatar_url = data.get_string_member ("profile_image_url");
     try {
-      var source_regex = new Regex ("(https://pbs.twimg.com/.*?)_normal(\\..*)");
-      avatar_url = source_regex.replace (
+      var image_regex = new Regex ("(https://pbs.twimg.com/.*?)_normal(\\..*)");
+      avatar_url = image_regex.replace (
         avatar_url,
         avatar_url.length,
         0,
@@ -113,7 +113,7 @@ public class Backend.Twitter.Profile : Backend.Twitter.User, Backend.Profile {
       posts_count:     (int) metrics.get_int_member ("tweet_count"),
 
       // Set the ImageLoader for the avatar
-      avatar: new ImageLoader (avatar_url),
+      avatar: new Picture (avatar_url),
       header: null
     );
 

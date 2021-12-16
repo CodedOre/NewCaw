@@ -43,7 +43,7 @@ public class Backend.Mastodon.User : Object, Backend.User {
   /**
    * The avatar image from this user.
    */
-  public ImageLoader avatar { get; construct; }
+  public Backend.Picture avatar { get; construct; }
 
   /**
    * Parses an given Json.Object and creates an User object.
@@ -63,8 +63,8 @@ public class Backend.Mastodon.User : Object, Backend.User {
       display_name: json.get_string_member ("display_name"),
       username:     json.get_string_member ("username"),
 
-      // Set the ImageLoader for the avatar
-      avatar: new ImageLoader (avatar_url)
+      // Set the Picture for the avatar
+      avatar: new Picture (avatar_url)
     );
 
     // Get possible flags for this user

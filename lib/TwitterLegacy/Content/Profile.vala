@@ -119,7 +119,7 @@ public class Backend.TwitterLegacy.Profile : Backend.TwitterLegacy.User, Backend
       posts_count:     (int) json.get_int_member ("statuses_count"),
 
       // Set the ImageLoader for the avatar
-      avatar: new ImageLoader (avatar_url),
+      avatar: new Picture (avatar_url),
       header: header_preview_url != null
                 ? new Picture (header_media_url, header_preview_url)
                 : null
