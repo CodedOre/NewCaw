@@ -84,15 +84,15 @@ public class UserAvatar : Gtk.Widget {
   /**
    * Sets and load the avatar.
    */
-  public void set_avatar (Backend.ImageLoader avatar) {
+  public void set_avatar (Backend.Picture avatar) {
     // Load and set the Avatar
-    if (avatar.is_loaded ()) {
-      displayed_texture = avatar.get_media ();
+    if (avatar.media.is_loaded ()) {
+      displayed_texture = avatar.media.get_media ();
       avatar_holder.set_custom_image (displayed_texture);
     } else {
-      avatar.begin_loading ();
-      avatar.load_completed.connect (() => {
-        displayed_texture = avatar.get_media ();
+      avatar.media.begin_loading ();
+      avatar.media.load_completed.connect (() => {
+        displayed_texture = avatar.media.get_media ();
         if (displayed_texture != null) {
           avatar_holder.set_custom_image (displayed_texture);
         }
