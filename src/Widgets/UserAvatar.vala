@@ -38,6 +38,12 @@ public class UserAvatar : Gtk.Widget {
   public int size { get; set; default = 48; }
 
   /**
+   * If the widget should load the full-res avatar
+   * and if this can be selected.
+   */
+  public bool main_mode { get; construct; }
+
+  /**
    * If this avatar is rounded.
    */
   public bool rounded {
@@ -67,6 +73,16 @@ public class UserAvatar : Gtk.Widget {
   }
 
   /**
+   * Creates a new object of this widget.
+   */
+  public UserAvatar (bool main_avatar = false) {
+    // Constructs the object
+    Object (
+      main_mode: main_avatar
+    );
+  }
+
+  /**
    * Set's the widget up on construction.
    */
   construct {
@@ -85,14 +101,22 @@ public class UserAvatar : Gtk.Widget {
    * Sets and load the avatar.
    */
   public void set_avatar (Backend.Picture avatar) {
+    // Get the ImageLoader to be used
+    Backend.ImageLoader loader;
+    if (! main_mode && avatar.preview != null) {
+      loader = avatar.preview;
+    } else {
+      loader = avatar.media;
+    }
+
     // Load and set the Avatar
-    if (avatar.media.is_loaded ()) {
-      displayed_texture = avatar.media.get_media ();
+    if (loader.is_loaded ()) {
+      displayed_texture = loader.get_media ();
       avatar_holder.set_custom_image (displayed_texture);
     } else {
-      avatar.media.begin_loading ();
-      avatar.media.load_completed.connect (() => {
-        displayed_texture = avatar.media.get_media ();
+      loader.begin_loading ();
+      loader.load_completed.connect (() => {
+        displayed_texture = loader.get_media ();
         if (displayed_texture != null) {
           avatar_holder.set_custom_image (displayed_texture);
         }
@@ -108,6 +132,7 @@ public class UserAvatar : Gtk.Widget {
     load_cancellable.cancel ();
     // Destructs children of UserAvatar
     avatar_holder.unparent ();
+    avatar_selector.unparent ();
   }
 
   /**

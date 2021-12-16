@@ -15,6 +15,9 @@
     </child>
     <child>
       <object class="GtkButton" id="avatar_selector">
+        <binding name="visible">
+          <lookup name="main-mode">UserAvatar</lookup>
+        </binding>
         <property name="action-name">avatar.display_media</property>
         <style>
           <class name="avatar-button"/>
