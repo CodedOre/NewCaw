@@ -52,14 +52,15 @@ public class Backend.TwitterLegacy.User : Object, Backend.User {
    */
   public User.from_json (Json.Object json) {
     // Parse the avatar image url
-    string avatar_url = json.get_string_member ("profile_image_url_https");
+    string avatar_preview_url = json.get_string_member ("profile_image_url_https");
+    string avatar_media_url;
     try {
       var image_regex = new Regex ("(https://pbs.twimg.com/.*?)_normal(\\..*)");
-      avatar_url = image_regex.replace (
-        avatar_url,
-        avatar_url.length,
+      avatar_media_url = image_regex.replace (
+        avatar_preview_url,
+        avatar_preview_url.length,
         0,
-        "\\1_bigger\\2"
+        "\\1\\2"
       );
     } catch (RegexError e) {
       error (@"Error while parsing source: $(e.message)");
@@ -75,7 +76,7 @@ public class Backend.TwitterLegacy.User : Object, Backend.User {
       username:     json.get_string_member ("screen_name"),
 
       // Set the Picture for the avatar
-      avatar: new Picture (avatar_url)
+      avatar: new Picture (avatar_media_url, avatar_preview_url)
     );
 
     // Get possible flags for this user

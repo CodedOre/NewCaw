@@ -79,14 +79,15 @@ public class Backend.Twitter.Profile : Backend.Twitter.User, Backend.Profile {
     Json.Object metrics = data.get_object_member ("public_metrics");
 
     // Parse the avatar image url
-    string avatar_url = data.get_string_member ("profile_image_url");
+    string avatar_preview_url = data.get_string_member ("profile_image_url");
+    string avatar_media_url;
     try {
       var image_regex = new Regex ("(https://pbs.twimg.com/.*?)_normal(\\..*)");
-      avatar_url = image_regex.replace (
-        avatar_url,
-        avatar_url.length,
+      avatar_media_url = image_regex.replace (
+        avatar_preview_url,
+        avatar_preview_url.length,
         0,
-        "\\1_bigger\\2"
+        "\\1\\2"
       );
     } catch (RegexError e) {
       error (@"Error while parsing source: $(e.message)");
@@ -113,7 +114,7 @@ public class Backend.Twitter.Profile : Backend.Twitter.User, Backend.Profile {
       posts_count:     (int) metrics.get_int_member ("tweet_count"),
 
       // Set the ImageLoader for the avatar
-      avatar: new Picture (avatar_url),
+      avatar: new Picture (avatar_media_url, avatar_preview_url),
       header: null
     );
 

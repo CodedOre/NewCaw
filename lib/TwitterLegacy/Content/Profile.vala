@@ -76,18 +76,18 @@ public class Backend.TwitterLegacy.Profile : Backend.TwitterLegacy.User, Backend
    */
   public Profile.from_json (Json.Object json) {
     // Parse the url for avatar and header
-    string avatar_url         = json.get_string_member ("profile_image_url_https");
+    string avatar_preview_url = json.get_string_member ("profile_image_url_https");
     string header_preview_url = json.has_member ("profile_banner_url") ?
                                   json.get_string_member ("profile_banner_url")
                                   : null;
-    string header_media_url = "";
+    string header_media_url = "", avatar_media_url;
     try {
       var image_regex = new Regex ("(https://pbs.twimg.com/.*?)_normal(\\..*)");
-      avatar_url = image_regex.replace (
-        avatar_url,
-        avatar_url.length,
+      avatar_media_url = image_regex.replace (
+        avatar_preview_url,
+        avatar_preview_url.length,
         0,
-        "\\1_bigger\\2"
+        "\\1\\2"
       );
       if (header_preview_url != null) {
         header_media_url = image_regex.replace (
@@ -119,7 +119,7 @@ public class Backend.TwitterLegacy.Profile : Backend.TwitterLegacy.User, Backend
       posts_count:     (int) json.get_int_member ("statuses_count"),
 
       // Set the ImageLoader for the avatar
-      avatar: new Picture (avatar_url),
+      avatar: new Picture (avatar_media_url, avatar_preview_url),
       header: header_preview_url != null
                 ? new Picture (header_media_url, header_preview_url)
                 : null
