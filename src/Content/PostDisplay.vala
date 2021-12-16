@@ -242,15 +242,15 @@ public class PostDisplay : Gtk.Box {
       // Get the instance for this
       PostDisplay display = (PostDisplay) widget;
 
-      // Create the MediaDisplay
-      int focused_media = (int) arg.get_int32 ();
-      var media_display = new MediaDisplay (display.main_post.get_media (), focused_media);
+      // Get the parameters
+      int             focus = (int) arg.get_int32 ();
+      Backend.Media[] media = display.main_post.get_media ();
 
       // Get the MainWindow for this PostDisplay
       Gtk.Root display_root = display.get_root ();
       if (display_root is MainWindow) {
         var main_window = (MainWindow) display_root;
-        main_window.show_media_display (media_display);
+        main_window.show_media_display (media, focus);
       } else {
         error ("PostDisplay: Can not display MediaDisplay without MainWindow!");
       }

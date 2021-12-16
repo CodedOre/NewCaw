@@ -43,8 +43,14 @@ public class MainWindow : Adw.ApplicationWindow {
 
   /**
    * Displays a MediaDisplay as an sub-window.
+   *
+   * @param media The media to be displayed in the new display.
+   * @param focus The index of the media which should get the focus.
    */
-  public void show_media_display (MediaDisplay display) {
+  public void show_media_display (Backend.Media[] media, int focus = 0) {
+    // Create a MediaDisplay for the media
+    var display = new MediaDisplay (media, focus);
+
     // Create a window holding the MediaDisplay
     var display_window   = new Adw.Window ();
     display_window.modal = true;

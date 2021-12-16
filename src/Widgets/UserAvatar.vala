@@ -93,7 +93,22 @@ public class UserAvatar : Gtk.Widget {
 
     // Installs the media display action
     this.install_action ("avatar.display_media", null, (widget, action) => {
-      // Display the avatar in MediaDisplay
+      // Get the instance for this
+      UserAvatar display = (UserAvatar) widget;
+
+      // Return if no avatar is set
+      if (display.shown_avatar == null) {
+        return;
+      }
+
+      // Display the avatar in a MediaDisplay
+      Backend.Media[] media  = { display.shown_avatar };
+      MainWindow main_window = display.get_root () as MainWindow;
+      if (main_window != null) {
+        main_window.show_media_display (media);
+      } else {
+        error ("PostDisplay: Can not display MediaDisplay without MainWindow!");
+      }
     });
   }
 
@@ -101,25 +116,24 @@ public class UserAvatar : Gtk.Widget {
    * Sets and load the avatar.
    */
   public void set_avatar (Backend.Picture avatar) {
+    // Store the displayed avatar
+    shown_avatar = avatar;
+
     // Get the ImageLoader to be used
     Backend.ImageLoader loader;
     if (! main_mode && avatar.preview != null) {
-      loader = avatar.preview;
+      loader = shown_avatar.preview;
     } else {
-      loader = avatar.media;
+      loader = shown_avatar.media;
     }
 
     // Load and set the Avatar
     if (loader.is_loaded ()) {
-      displayed_texture = loader.get_media ();
-      avatar_holder.set_custom_image (displayed_texture);
+      avatar_holder.set_custom_image (loader.get_media ());
     } else {
       loader.begin_loading ();
       loader.load_completed.connect (() => {
-        displayed_texture = loader.get_media ();
-        if (displayed_texture != null) {
-          avatar_holder.set_custom_image (displayed_texture);
-        }
+        avatar_holder.set_custom_image (loader.get_media ());
       });
     }
   }
@@ -136,9 +150,9 @@ public class UserAvatar : Gtk.Widget {
   }
 
   /**
-   * The displayed Gdk.Texture.
+   * The displayed avatar.
    */
-  private Gdk.Texture? displayed_texture = null;
+  private Backend.Picture? shown_avatar = null;
 
   /**
    * A GLib.Cancellable to cancel loads when closing the item.
