@@ -29,6 +29,8 @@ public class UserAvatar : Gtk.Widget {
   // UI-Elements of UserAvatar
   [GtkChild]
   private unowned Adw.Avatar avatar_holder;
+  [GtkChild]
+  private unowned Gtk.Button avatar_selector;
 
   /**
    * The size of this widget.
@@ -44,22 +46,39 @@ public class UserAvatar : Gtk.Widget {
     }
     set {
       is_rounded = value;
-      if (is_rounded && avatar_holder.has_css_class ("squared")) {
-        avatar_holder.remove_css_class ("squared");
-      }
-      if (! is_rounded && ! avatar_holder.has_css_class ("squared")) {
-        avatar_holder.add_css_class ("squared");
+      if (is_rounded) {
+        if (avatar_holder.has_css_class ("squared")) {
+          avatar_holder.remove_css_class ("squared");
+        }
+        if (avatar_selector.has_css_class ("squared")) {
+          avatar_selector.remove_css_class ("squared");
+          avatar_selector.add_css_class ("avatar-button");
+        }
+      } else {
+        if (! avatar_holder.has_css_class ("squared")) {
+          avatar_holder.add_css_class ("squared");
+        }
+        if (! avatar_selector.has_css_class ("squared")) {
+          avatar_selector.remove_css_class ("avatar-button");
+          avatar_selector.add_css_class ("squared");
+        }
       }
     }
   }
 
   /**
-   * Bind settings to this widget.
+   * Set's the widget up on construction.
    */
   construct {
+    // Bind the settings to widget properties
     var settings = new Settings ("uk.co.ibboard.Cawbird");
     settings.bind ("round-avatars", this, "rounded",
                     GLib.SettingsBindFlags.DEFAULT);
+
+    // Installs the media display action
+    this.install_action ("avatar.display_media", null, (widget, action) => {
+      // Display the avatar in MediaDisplay
+    });
   }
 
   /**

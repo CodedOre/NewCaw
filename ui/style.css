@@ -30,7 +30,7 @@ link.hashtag, link.mention, link.weblink {
 }
 
 /**
- * Colors the link in the normal color and only use a line on hover.
+ * A smaller button used inside of content.
  */
 button.inline {
   padding: 1px 0px;
@@ -41,6 +41,13 @@ button.inline image {
 }
 button.inline:hover {
   padding: 1px 12px;
+}
+
+/**
+ * A button used to select a avatar.
+ */
+button.avatar-button {
+  border-radius: 9999px;
 }
 
 /**
@@ -96,14 +103,6 @@ widget.squared > avatar {
  */
 .placeholder {
   background: @dark_1;
-}
-
-/**
- * A smaller button used inside of content.
- */
-button.inline-button {
-  min-height: 0px;
-  border-radius: 50px;
 }
 
 /**

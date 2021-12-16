@@ -13,5 +13,14 @@
         </binding>
       </object>
     </child>
+    <child>
+      <object class="GtkButton" id="avatar_selector">
+        <property name="action-name">avatar.display_media</property>
+        <style>
+          <class name="avatar-button"/>
+          <class name="flat"/>
+        </style>
+      </object>
+    </child>
   </template>
 </interface>
