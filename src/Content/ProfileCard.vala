@@ -34,7 +34,9 @@ public class ProfileCard : Gtk.Widget {
   [GtkChild]
   private unowned UserAvatar profile_avatar;
   [GtkChild]
-  private unowned Gtk.WindowHandle card_header;
+  private unowned Adw.Bin card_scrim;
+  [GtkChild]
+  private unowned Adw.HeaderBar card_header;
 
   /**
    * The Profile which is displayed.
@@ -67,12 +69,35 @@ public class ProfileCard : Gtk.Widget {
   }
 
   /**
-   * Bind settings to this widget on construction.
+   * Set's the widget up on construction.
    */
   construct {
+    // Bind the settings to widget properties
     var settings = new Settings ("uk.co.ibboard.Cawbird.experimental");
+    settings.bind ("profile-inline-header", card_scrim, "visible",
+                    GLib.SettingsBindFlags.DEFAULT);
     settings.bind ("profile-inline-header", card_header, "visible",
                     GLib.SettingsBindFlags.DEFAULT);
+
+    // Installs the header display action
+    this.install_action ("profile.display_header", null, (widget, action) => {
+      // Get the instance for this
+      ProfileCard display = (ProfileCard) widget;
+
+      // Return if no profile is set
+      if (display.displayed_profile == null) {
+        return;
+      }
+
+      // Display the header in a MediaDisplay
+      Backend.Media[] media  = { display.displayed_profile.header };
+      MainWindow main_window = display.get_root () as MainWindow;
+      if (main_window != null) {
+        main_window.show_media_display (media);
+      } else {
+        error ("ProfileCard: Can not display MediaDisplay without MainWindow!");
+      }
+    });
   }
 
   /**

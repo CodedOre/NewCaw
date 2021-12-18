@@ -93,8 +93,10 @@ widget.squared > avatar {
 /**
  * Displays a gradient from black to transparent.
  */
-.scrim {
+widget.scrim {
   background: linear-gradient(alpha(black, 0.4), transparent);
+}
+headerbar.scrim {
   color: white;
 }
 

@@ -107,7 +107,7 @@ public class UserAvatar : Gtk.Widget {
       if (main_window != null) {
         main_window.show_media_display (media);
       } else {
-        error ("PostDisplay: Can not display MediaDisplay without MainWindow!");
+        error ("UserAvatar: Can not display MediaDisplay without MainWindow!");
       }
     });
   }

@@ -21,38 +21,52 @@
       <object class="AdwClamp" id="banner_clamp">
         <property name="maximum-size">1024</property>
         <property name="tightening-threshold">512</property>
+        <property name="height-request">220</property>
+        <property name="valign">start</property>
         <child>
-          <object class="CroppedPicture" id="profile_banner">
-            <property name="height-request">220</property>
-            <property name="valign">start</property>
+          <object class="GtkOverlay">
+            <child>
+              <object class="CroppedPicture" id="profile_banner">
+              </object>
+            </child>
+            <child type="overlay">
+              <object class="GtkButton">
+                <property name="action-name">profile.display_header</property>
+                <style>
+                  <class name="flat"/>
+                </style>
+              </object>
+            </child>
           </object>
         </child>
       </object>
     </child>
     <child>
-      <object class="GtkWindowHandle" id="card_header">
-        <property name="visible">false</property>
+      <object class="AdwBin" id="card_scrim">
+        <property name="can-focus">false</property>
+        <property name="can-target">false</property>
         <property name="height-request">220</property>
         <property name="valign">start</property>
-        <child>
-          <object class="AdwHeaderBar">
-            <property name="valign">start</property>
-            <child type="start">
-              <object class="GtkButton">
-                <child>
-                  <object class="AdwButtonContent">
-                    <property name="icon-name">go-previous-symbolic</property>
-                  </object>
-                </child>
+        <style>
+          <class name="scrim"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="AdwHeaderBar" id="card_header">
+        <property name="valign">start</property>
+        <child type="start">
+          <object class="GtkButton">
+            <child>
+              <object class="AdwButtonContent">
+                <property name="icon-name">go-previous-symbolic</property>
               </object>
             </child>
-            <style>
-              <class name="flat"/>
-            </style>
           </object>
         </child>
         <style>
           <class name="scrim"/>
+          <class name="flat"/>
         </style>
       </object>
     </child>
