@@ -107,7 +107,7 @@ public class Backend.Mastodon.Profile : Backend.Mastodon.User, Backend.Profile {
 
       // Set the names of the profile
       display_name: json.get_string_member ("display_name"),
-      username:     json.get_string_member ("username"),
+      username:     json.get_string_member ("acct"),
 
       // Set the url and domain
       url:    profile_url,

@@ -61,7 +61,7 @@ public class Backend.Mastodon.User : Object, Backend.User {
 
       // Set the names of the user
       display_name: json.get_string_member ("display_name"),
-      username:     json.get_string_member ("username"),
+      username:     json.get_string_member ("acct"),
 
       // Set the Picture for the avatar
       avatar: new Picture (avatar_url)
