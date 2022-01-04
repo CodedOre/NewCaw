@@ -12,6 +12,7 @@ libdepends = [
 # Base files
 libfiles = [
   'Base/Content/Media.vala',
+  'Base/Content/MediaEnums.vala',
   'Base/Content/Post.vala',
   'Base/Content/PostEnums.vala',
   'Base/Content/Profile.vala',

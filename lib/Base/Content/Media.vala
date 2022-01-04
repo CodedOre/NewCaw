@@ -21,27 +21,6 @@
 using GLib;
 
 /**
- * Stores the type for this media.
- */
-public enum Backend.MediaType {
-
-  /**
-   * A static image.
-   */
-  PICTURE,
-
-  /**
-   * An image with looped animation.
-   */
-  ANIMATED,
-
-  /**
-   * A video with sound.
-   */
-  VIDEO
-}
-
-/**
  * Stores an media for loading and display.
  */
 public abstract class Backend.Media : Object {
@@ -50,6 +29,11 @@ public abstract class Backend.Media : Object {
    * The unique identifier for this media.
    */
   public abstract string id { get; construct; }
+
+  /**
+   * The type for this media.
+   */
+  public abstract MediaType type { get; construct; }
 
   /**
    * An text description of the media.
