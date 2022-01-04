@@ -67,6 +67,7 @@ public class MediaPreviewItem : Gtk.Widget {
     cell_height  = height;
     grid_spacing = spacing;
 
+/* FIXME: Implement new loader
     // Load and set the Paintable
     if (displayed_media.preview.is_loaded ()) {
       displayed_texture = displayed_media.preview.get_media ();
@@ -87,6 +88,7 @@ public class MediaPreviewItem : Gtk.Widget {
       alt_text_indicator.set_tooltip_text (displayed_media.alt_text);
       alt_text_indicator.visible = true;
     }
+*/
 
     // Make media_indicator_box visible when a indicator is set
     media_indicator_box.visible = animated_type_indicator.visible || video_type_indicator.visible || alt_text_indicator.visible;

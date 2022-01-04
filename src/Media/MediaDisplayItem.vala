@@ -52,6 +52,7 @@ public class MediaDisplayItem : Gtk.Widget {
     displayed_media  = media;
     load_cancellable = new Cancellable ();
 
+/* FIXME: Implement new loader
     // Load the preview image
     if (displayed_media.preview.is_loaded ()) {
       displayed_paintable = displayed_media.preview.get_media ();
@@ -91,10 +92,11 @@ public class MediaDisplayItem : Gtk.Widget {
         });
       }
     }
+*/
   }
 
   /**
-   * Deconstructs MediaPreviewItem and it's childrens.
+   * Deconstructs MediaDisplayItem and it's childrens.
    */
   public override void dispose () {
     // Cancel possible loads

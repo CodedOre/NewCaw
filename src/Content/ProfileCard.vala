@@ -52,6 +52,7 @@ public class ProfileCard : Gtk.Widget {
         // Set the profile images
         profile_avatar.set_avatar (displayed_profile.avatar);
 
+/* FIXME: Implement new loader
         // Load and set the Header
         var header = displayed_profile.header.media;
         if (header.is_loaded ()) {
@@ -64,6 +65,7 @@ public class ProfileCard : Gtk.Widget {
             profile_banner.paintable = header.get_media ();
           });
         }
+*/
       }
     }
   }

@@ -115,10 +115,11 @@ public class UserAvatar : Gtk.Widget {
   /**
    * Sets and load the avatar.
    */
-  public void set_avatar (Backend.Picture avatar) {
+  public void set_avatar (Backend.Media avatar) {
     // Store the displayed avatar
     shown_avatar = avatar;
 
+/* FIXME: Implement new loader
     // Get the ImageLoader to be used
     Backend.ImageLoader loader;
     if (! main_mode && avatar.preview != null) {
@@ -136,6 +137,7 @@ public class UserAvatar : Gtk.Widget {
         avatar_holder.set_custom_image (loader.get_media ());
       });
     }
+*/
   }
 
   /**
@@ -152,7 +154,7 @@ public class UserAvatar : Gtk.Widget {
   /**
    * The displayed avatar.
    */
-  private Backend.Picture? shown_avatar = null;
+  private Backend.Media? shown_avatar = null;
 
   /**
    * A GLib.Cancellable to cancel loads when closing the item.
