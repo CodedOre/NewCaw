@@ -23,5 +23,18 @@ using GLib;
 /**
  * An helper class holding code for loading media from a server.
  */
-internal class MediaLoader : Object {
+internal class Backend.MediaLoader : Object {
+
+  /**
+   * Load a media asynchronously.
+   *
+   * @param media_type The type to be loaded.
+   * @param url The url to load from.
+   *
+   * @return A Gdk.Paintable for the media, or null if failed.
+   */
+  internal static async Gdk.Paintable? load_media (MediaType media_type, string url) {
+    return null;
+  }
+
 }

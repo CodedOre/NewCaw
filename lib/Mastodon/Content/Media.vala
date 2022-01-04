@@ -112,6 +112,12 @@ public class Backend.Mastodon.Media : Backend.Media {
    * @return A Gdk.Paintable with the preview.
    */
   public override async Gdk.Paintable? get_preview () {
+    // Load the preview if not stored already
+    if (preview == null && preview_url != null) {
+      preview = yield MediaLoader.load_media (PICTURE, preview_url);
+    }
+
+    // Return the loaded preview
     return preview;
   }
 
@@ -124,6 +130,12 @@ public class Backend.Mastodon.Media : Backend.Media {
    * @return A Gdk.Paintable with the media, or null should it fail.
    */
   public override async Gdk.Paintable? get_media () {
+    // Load the media if not stored already
+    if (media == null && media_url != null) {
+      media = yield MediaLoader.load_media (media_type, media_url);
+    }
+
+    // Return the loaded media
     return media;
   }
 
