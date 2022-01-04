@@ -56,18 +56,18 @@ public abstract class Backend.Media : Object {
    * Loads the preview from the web asynchronously and
    * returns the Gdk.Paintable when it is loaded.
    *
-   * @return A Gdk.Paintable with the preview.
+   * @return A Gdk.Paintable with the preview, or null should it fail.
    */
-  public abstract async Gdk.Paintable get_preview ();
+  public abstract async Gdk.Paintable? get_preview ();
 
   /**
-   * Retrieves the preview as a Gdk.Paintable.
+   * Retrieves the media as a Gdk.Paintable.
    *
-   * Loads the preview from the web asynchronously and
+   * Loads the media from the web asynchronously and
    * returns the Gdk.Paintable when it is loaded.
    *
-   * @return A Gdk.Paintable with the preview.
+   * @return A Gdk.Paintable with the media, or null should it fail.
    */
-  public abstract async Gdk.Paintable get_media ();
+  public abstract async Gdk.Paintable? get_media ();
 
 }

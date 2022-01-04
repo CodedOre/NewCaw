@@ -114,20 +114,30 @@ public class Backend.TwitterLegacy.Media : Backend.Media {
    *
    * @return A Gdk.Paintable with the preview.
    */
-  public override async Gdk.Paintable get_preview () {
-    return null;
+  public override async Gdk.Paintable? get_preview () {
+    return preview;
   }
 
   /**
-   * Retrieves the preview as a Gdk.Paintable.
+   * Retrieves the media as a Gdk.Paintable.
    *
-   * Loads the preview from the web asynchronously and
+   * Loads the media from the web asynchronously and
    * returns the Gdk.Paintable when it is loaded.
    *
-   * @return A Gdk.Paintable with the preview.
+   * @return A Gdk.Paintable with the media, or null should it fail.
    */
-  public override async Gdk.Paintable get_media () {
-    return null;
+  public override async Gdk.Paintable? get_media () {
+    return media;
   }
+
+  /**
+   * The stored preview paintable.
+   */
+  private Gdk.Paintable? preview = null;
+
+  /**
+   * The stored media paintable.
+   */
+  private Gdk.Paintable? media = null;
 
 }
