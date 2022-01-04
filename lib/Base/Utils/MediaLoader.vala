@@ -1,6 +1,6 @@
 /* MediaLoader.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,78 +21,7 @@
 using GLib;
 
 /**
- * An interface containing basic utilities for downloading media.
+ * An helper class holding code for loading media from a server.
  */
-public abstract class Backend.MediaLoader : Object {
-
-  /**
-   * The url to the media to be loaded.
-   */
-  public string url { get; construct; }
-
-  /**
-   * Signals that the download is completed.
-   */
-  public signal void load_completed ();
-
-  /**
-   * Creates an MediaLoader and prepares it for loading the image.
-   *
-   * @param url The url of the image to be loaded.
-   */
-  internal MediaLoader (string url) {
-    Object (url: url);
-  }
-
-  /**
-   * Returns if the media is loaded.
-   *
-   * @return True if the media is loaded.
-   */
-  public abstract bool is_loaded ();
-
-  /**
-   * Initiates the download.
-   */
-  public abstract void begin_loading (Cancellable? cancellable = null);
-
-  /**
-   * Returns the download progress.
-   *
-   * @return A double representing the progress of the load.
-   */
-  public double load_progress () {
-    return 0.0;
-  }
-
-  /**
-   * Loads an GLib.MemoryInputStream from a given url.
-   *
-   * @param url The url with the content.
-   * @param session The Soup.Session to use.
-   * @param cancellable A GLib.Cancellable.
-   *
-   * @throws GLib.Error Errors that resulted while Soup downloaded the stream.
-   *
-   * @return The content loaded in an GLib.MemoryInputStream, or null if failed.
-   */
-  protected static InputStream download_stream (string       url,
-                                                      Soup.Session session,
-                                                      Cancellable? cancellable)
-                                                      throws Error {
-    // Init call
-    InputStream result;
-    var         message = new Soup.Message ("GET", url);
-
-    // Load the data
-    try {
-      result = session.send (message, cancellable);
-    } catch (Error e) {
-      throw e;
-    }
-
-    // Return the loaded data
-    return result;
-  }
-
+internal class MediaLoader : Object {
 }
