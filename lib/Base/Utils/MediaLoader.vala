@@ -34,7 +34,55 @@ internal class Backend.MediaLoader : Object {
    * @return A Gdk.Paintable for the media, or null if failed.
    */
   internal static async Gdk.Paintable? load_media (MediaType media_type, string url) {
-    return null;
+    // Init function
+    InputStream   stream;
+    Gdk.Paintable paintable = null;
+
+    // Create loading message
+    var message = new Soup.Message ("GET", url);
+
+    // Load media from url
+    try {
+      stream = yield soup_session.send_async (message, 0, null);
+    } catch (Error e) {
+      error (e.message);
+    }
+
+    // Create the paintable according to media_type
+    try {
+      switch (media_type) {
+        case PICTURE:
+          var pixbuf = new Gdk.Pixbuf.from_stream (stream);
+          paintable  = Gdk.Texture.for_pixbuf (pixbuf);
+          break;
+        default:
+          error ("MediaLoader: No valid media type to convert to!");
+      }
+    } catch (Error e) {
+      error (e.message);
+    }
+
+    // Return the result
+    return paintable;
   }
+
+  /**
+   * A global Soup.Session for loading.
+   */
+  internal static Soup.Session soup_session {
+    get {
+      if (soup_session_store != null) {
+        soup_session_store = new Soup.Session ();
+      }
+      return soup_session_store;
+    }
+  }
+
+  /**
+   * Stores the global Soup.Session.
+   *
+   * Only to be loaded from the property!
+   */
+  private static Soup.Session? soup_session_store;
 
 }
