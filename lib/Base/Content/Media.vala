@@ -33,7 +33,7 @@ public abstract class Backend.Media : Object {
   /**
    * The type for this media.
    */
-  public abstract MediaType type { get; construct; }
+  public abstract MediaType media_type { get; construct; }
 
   /**
    * An text description of the media.

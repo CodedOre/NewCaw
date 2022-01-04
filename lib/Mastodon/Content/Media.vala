@@ -28,27 +28,27 @@ public class Backend.Mastodon.Media : Backend.Media {
   /**
    * The unique identifier for this media.
    */
-  public string id { get; construct; }
+  public override string id { get; construct; }
 
   /**
    * The type for this media.
    */
-  public MediaType type { get; construct; }
+  public override MediaType media_type { get; construct; }
 
   /**
    * An text description of the media.
    */
-  public string alt_text { get; construct; }
+  public override string alt_text { get; construct; }
 
   /**
    * The url leading to the preview.
    */
-  public string preview_url { get; construct; }
+  public override string preview_url { get; construct; }
 
   /**
    * The url leading to the media.
    */
-  public string media_url { get; construct; }
+  public override string media_url { get; construct; }
 
   /**
    * Retrieves the preview as a Gdk.Paintable.
@@ -58,7 +58,8 @@ public class Backend.Mastodon.Media : Backend.Media {
    *
    * @return A Gdk.Paintable with the preview.
    */
-  public async Gdk.Paintable get_preview () {
+  public override async Gdk.Paintable get_preview () {
+    return null;
   }
 
   /**
@@ -69,7 +70,8 @@ public class Backend.Mastodon.Media : Backend.Media {
    *
    * @return A Gdk.Paintable with the preview.
    */
-  public async Gdk.Paintable get_media () {
+  public override async Gdk.Paintable get_media () {
+    return null;
   }
 
 }
