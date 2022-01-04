@@ -52,20 +52,17 @@ public class ProfileCard : Gtk.Widget {
         // Set the profile images
         profile_avatar.set_avatar (displayed_profile.avatar);
 
-/* FIXME: Implement new loader
-        // Load and set the Header
-        var header = displayed_profile.header.media;
-        if (header.is_loaded ()) {
-          blurred_banner.paintable = header.get_media ();
-          profile_banner.paintable = header.get_media ();
-        } else {
-          header.begin_loading ();
-          header.load_completed.connect (() => {
-            blurred_banner.paintable = header.get_media ();
-            profile_banner.paintable = header.get_media ();
-          });
-        }
-*/
+        // Load and set the header
+        Backend.Media header = displayed_profile.header;
+        header.get_media.begin ((obj, res) => {
+          try {
+            var paintable = header.get_media.end (res) as Gdk.Paintable;
+            blurred_banner.paintable = paintable;
+            profile_banner.paintable = paintable;
+          } catch (Error e) {
+            warning (@"Could not load header: $(e.message)");
+          }
+        });
       }
     }
   }
