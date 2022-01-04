@@ -57,7 +57,7 @@ public class Backend.TwitterLegacy.Media : Backend.Media {
    * @param media_url The url to the full media.
    * @param preview_url The url to the preview image, if available.
    */
-  public Media (MediaType type, string media_url, string? preview_url) {
+  public Media (MediaType type, string media_url, string? preview_url = null) {
     // Constructs the object
     Object (
       // Don't set id and alt_text
