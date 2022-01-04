@@ -119,25 +119,26 @@ public class UserAvatar : Gtk.Widget {
     // Store the displayed avatar
     shown_avatar = avatar;
 
-/* FIXME: Implement new loader
-    // Get the ImageLoader to be used
-    Backend.ImageLoader loader;
-    if (! main_mode && avatar.preview != null) {
-      loader = shown_avatar.preview;
+    // Load and set the avatar
+    if (! main_mode && shown_avatar.preview_url != null) {
+      shown_avatar.get_preview.begin (load_cancellable, (obj, res) => {
+        try {
+          var paintable = shown_avatar.get_preview.end (res) as Gdk.Paintable;
+          avatar_holder.custom_image = paintable;
+        } catch (Error e) {
+          warning (@"Could not load the avatar: $(e.message)");
+        }
+      });
     } else {
-      loader = shown_avatar.media;
-    }
-
-    // Load and set the Avatar
-    if (loader.is_loaded ()) {
-      avatar_holder.set_custom_image (loader.get_media ());
-    } else {
-      loader.begin_loading ();
-      loader.load_completed.connect (() => {
-        avatar_holder.set_custom_image (loader.get_media ());
+      shown_avatar.get_media.begin (load_cancellable, (obj, res) => {
+        try {
+          var paintable = shown_avatar.get_media.end (res) as Gdk.Paintable;
+          avatar_holder.custom_image = paintable;
+        } catch (Error e) {
+          warning (@"Could not load the avatar: $(e.message)");
+        }
       });
     }
-*/
   }
 
   /**
