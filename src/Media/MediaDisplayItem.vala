@@ -52,47 +52,28 @@ public class MediaDisplayItem : Gtk.Widget {
     displayed_media  = media;
     load_cancellable = new Cancellable ();
 
-/* FIXME: Implement new loader
-    // Load the preview image
-    if (displayed_media.preview.is_loaded ()) {
-      displayed_paintable = displayed_media.preview.get_media ();
-      content.set_paintable (displayed_paintable);
-    } else {
-      displayed_media.preview.begin_loading (load_cancellable);
-      displayed_media.preview.load_completed.connect (() => {
-        // Set displayed texture to preview if media is not yet loaded
+    // Load the preview
+    displayed_media.get_preview.begin (load_cancellable, (obj, res) => {
+      try {
         if (displayed_paintable == null) {
-          displayed_paintable = displayed_media.preview.get_media ();
+          displayed_paintable = displayed_media.get_preview.end (res) as Gdk.Paintable;
+          content.paintable   = displayed_paintable;
         }
-        // Displays the to displayed texture
-        if (displayed_paintable != null) {
-          content.set_paintable (displayed_paintable);
-        }
-      });
-    }
-
-    // Load the actual media depending on the media type
-    if (displayed_media is Backend.Picture) {
-      var picture = (Backend.Picture) displayed_media;
-      // Load the high-res image
-      if (picture.media.is_loaded ()) {
-        displayed_paintable = picture.media.get_media ();
-        content.set_paintable (displayed_paintable);
-        media_loaded = true;
-      } else {
-        picture.media.begin_loading (load_cancellable);
-        picture.media.load_completed.connect (() => {
-          Gdk.Texture image = picture.media.get_media ();
-          // Displays the image
-          if (image != null) {
-            displayed_paintable = image;
-            content.set_paintable (displayed_paintable);
-            media_loaded = true;
-          }
-        });
+      } catch (Error e) {
+        warning (@"Could not load the avatar: $(e.message)");
       }
-    }
-*/
+    });
+
+    // Load the media
+    displayed_media.get_media.begin (load_cancellable, (obj, res) => {
+      try {
+        displayed_paintable = displayed_media.get_media.end (res) as Gdk.Paintable;
+        content.paintable   = displayed_paintable;
+        media_loaded        = true;
+      } catch (Error e) {
+        warning (@"Could not load the avatar: $(e.message)");
+      }
+    });
   }
 
   /**
