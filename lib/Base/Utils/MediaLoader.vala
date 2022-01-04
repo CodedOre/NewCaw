@@ -83,7 +83,7 @@ internal class Backend.MediaLoader : Object {
    */
   internal static Soup.Session soup_session {
     get {
-      if (soup_session_store != null) {
+      if (soup_session_store == null) {
         soup_session_store = new Soup.Session ();
       }
       return soup_session_store;
@@ -95,6 +95,6 @@ internal class Backend.MediaLoader : Object {
    *
    * Only to be loaded from the property!
    */
-  private static Soup.Session? soup_session_store;
+  private static Soup.Session? soup_session_store = null;
 
 }
