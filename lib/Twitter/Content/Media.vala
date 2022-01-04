@@ -41,6 +41,16 @@ public class Backend.Twitter.Media : Backend.Media {
   public string alt_text { get; construct; }
 
   /**
+   * The url leading to the preview.
+   */
+  public string preview_url { get; construct; }
+
+  /**
+   * The url leading to the media.
+   */
+  public string media_url { get; construct; }
+
+  /**
    * Retrieves the preview as a Gdk.Paintable.
    *
    * Loads the preview from the web asynchronously and
