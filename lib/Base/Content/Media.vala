@@ -56,9 +56,19 @@ public abstract class Backend.Media : Object {
    * Loads the preview from the web asynchronously and
    * returns the Gdk.Paintable when it is loaded.
    *
-   * @return A Gdk.Paintable with the preview, or null should it fail.
+   * @return A Gdk.Paintable with the preview.
+   *
+   * @throws Error Any error that happens on loading.
    */
-  public abstract async Gdk.Paintable? get_preview ();
+  public async Gdk.Paintable get_preview () throws Error {
+    // Load the preview if not stored already
+    if (preview == null && preview_url != null) {
+      preview = yield MediaLoader.load_media (PICTURE, preview_url);
+    }
+
+    // Return the loaded preview
+    return preview;
+  }
 
   /**
    * Retrieves the media as a Gdk.Paintable.
@@ -66,8 +76,32 @@ public abstract class Backend.Media : Object {
    * Loads the media from the web asynchronously and
    * returns the Gdk.Paintable when it is loaded.
    *
-   * @return A Gdk.Paintable with the media, or null should it fail.
+   * @return A Gdk.Paintable with the media.
+   *
+   * @throws Error Any error that happens on loading.
    */
-  public abstract async Gdk.Paintable? get_media ();
+  public async Gdk.Paintable get_media () throws Error  {
+    // Load the media if not stored already
+    if (media == null && media_url != null) {
+      try {
+        media = yield MediaLoader.load_media (media_type, media_url);
+      } catch (Error e) {
+        throw e;
+      }
+    }
+
+    // Return the loaded media
+    return media;
+  }
+
+  /**
+   * The stored preview paintable.
+   */
+  private Gdk.Paintable? preview = null;
+
+  /**
+   * The stored media paintable.
+   */
+  private Gdk.Paintable? media = null;
 
 }

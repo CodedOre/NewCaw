@@ -21,6 +21,13 @@
 using GLib;
 
 /**
+ * Error domain for errors in MediaLoader.
+ */
+errordomain MediaLoaderError {
+  INVALID_CONVERT
+}
+
+/**
  * An helper class holding code for loading media from a server.
  */
 internal class Backend.MediaLoader : Object {
@@ -31,12 +38,17 @@ internal class Backend.MediaLoader : Object {
    * @param media_type The type to be loaded.
    * @param url The url to load from.
    *
-   * @return A Gdk.Paintable for the media, or null if failed.
+   * @return A Gdk.Paintable for the media.
+   *
+   * @throws Error Any error that occurs while loading or converting.
    */
-  internal static async Gdk.Paintable? load_media (MediaType media_type, string url) {
+  internal static async Gdk.Paintable load_media (MediaType media_type,
+                                                     string url,
+                                               Cancellable? cancellable = null
+  ) throws Error {
     // Init function
     InputStream   stream;
-    Gdk.Paintable paintable = null;
+    Gdk.Paintable paintable;
 
     // Create loading message
     var message = new Soup.Message ("GET", url);
@@ -45,7 +57,7 @@ internal class Backend.MediaLoader : Object {
     try {
       stream = yield soup_session.send_async (message, 0, null);
     } catch (Error e) {
-      error (e.message);
+      throw e;
     }
 
     // Create the paintable according to media_type
@@ -56,10 +68,10 @@ internal class Backend.MediaLoader : Object {
           paintable  = Gdk.Texture.for_pixbuf (pixbuf);
           break;
         default:
-          error ("MediaLoader: No valid media type to convert to!");
+          throw new MediaLoaderError.INVALID_CONVERT ("Could not create paintable");
       }
     } catch (Error e) {
-      error (e.message);
+      throw e;
     }
 
     // Return the result
