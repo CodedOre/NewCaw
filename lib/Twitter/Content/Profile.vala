@@ -39,7 +39,7 @@ public class Backend.Twitter.Profile : Backend.Twitter.User, Backend.Profile {
   /**
    * The header image for the detail page of this user.
    */
-  public Backend.Picture header { get; construct; }
+  public Backend.Media header { get; construct; }
 
   /**
    * How many people are following this Profile.
@@ -114,7 +114,7 @@ public class Backend.Twitter.Profile : Backend.Twitter.User, Backend.Profile {
       posts_count:     (int) metrics.get_int_member ("tweet_count"),
 
       // Set the ImageLoader for the avatar
-      avatar: new Picture (avatar_media_url, avatar_preview_url),
+      avatar: new Media (PICTURE, avatar_media_url, avatar_preview_url),
       header: null
     );
 

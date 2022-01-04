@@ -39,7 +39,7 @@ public class Backend.Mastodon.Profile : Backend.Mastodon.User, Backend.Profile {
   /**
    * The header image for the detail page of this user.
    */
-  public Backend.Picture header { get; construct; }
+  public Backend.Media header { get; construct; }
 
   /**
    * How many people are following this Profile.
@@ -119,8 +119,8 @@ public class Backend.Mastodon.Profile : Backend.Mastodon.User, Backend.Profile {
       posts_count:     (int) json.get_int_member ("statuses_count"),
 
       // Set the images
-      avatar: new Picture (avatar_url),
-      header: new Picture (header_url)
+      avatar: new Media (PICTURE, avatar_url),
+      header: new Media (PICTURE, header_url)
     );
 
     // Parse the description into modules
