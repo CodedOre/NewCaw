@@ -55,28 +55,15 @@ namespace MediaChecks {
    */
   void check_basic_fields (Backend.Media media, Json.Object check) {
     // Check id and alt_text
-    assert_true (media.id       == check.get_string_member ("id"));
+    assert_true (media.id == check.get_string_member ("id"));
     assert_true (media.alt_text == check.get_string_member ("alt_text"));
 
-    // Check the type of this media
-    switch (check.get_string_member ("type")) {
-      case "BACKEND_MEDIA_TYPE_PICTURE":
-        assert_true (media is Backend.Picture);
-        break;
-    }
+    // Check type
+    assert_true (media.media_type.to_string () == check.get_string_member ("type"));
 
-    // Check media dimensions
-    assert_true (media.width  == check.get_int_member ("width"));
-    assert_true (media.height == check.get_int_member ("height"));
-
-    // Check preview url
-    assert_true (media.preview.url == check.get_string_member ("preview_url"));
-
-    // Check picture specific things
-    if (media is Backend.Picture) {
-      Backend.Picture picture = media as Backend.Picture;
-      assert_true (picture.media.url   == check.get_string_member ("media_url"));
-    }
+    // Check urls
+    assert_true (media.preview_url == check.get_string_member ("preview_url"));
+    assert_true (media.media_url   == check.get_string_member ("media_url"));
   }
 
 }
