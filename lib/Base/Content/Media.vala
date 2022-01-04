@@ -56,14 +56,16 @@ public abstract class Backend.Media : Object {
    * Loads the preview from the web asynchronously and
    * returns the Gdk.Paintable when it is loaded.
    *
+   * @param cancellable A GLib.Cancellable to cancel the load.
+   *
    * @return A Gdk.Paintable with the preview.
    *
    * @throws Error Any error that happens on loading.
    */
-  public async Gdk.Paintable get_preview () throws Error {
+  public async Gdk.Paintable get_preview (Cancellable? cancellable = null) throws Error {
     // Load the preview if not stored already
     if (preview == null && preview_url != null) {
-      preview = yield MediaLoader.load_media (PICTURE, preview_url);
+      preview = yield MediaLoader.load_media (PICTURE, preview_url, cancellable);
     }
 
     // Return the loaded preview
@@ -76,15 +78,17 @@ public abstract class Backend.Media : Object {
    * Loads the media from the web asynchronously and
    * returns the Gdk.Paintable when it is loaded.
    *
+   * @param cancellable A GLib.Cancellable to cancel the load.
+   *
    * @return A Gdk.Paintable with the media.
    *
    * @throws Error Any error that happens on loading.
    */
-  public async Gdk.Paintable get_media () throws Error  {
+  public async Gdk.Paintable get_media (Cancellable? cancellable = null) throws Error  {
     // Load the media if not stored already
     if (media == null && media_url != null) {
       try {
-        media = yield MediaLoader.load_media (media_type, media_url);
+        media = yield MediaLoader.load_media (media_type, media_url, cancellable);
       } catch (Error e) {
         throw e;
       }
