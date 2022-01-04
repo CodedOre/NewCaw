@@ -73,28 +73,30 @@
       <object class="GtkBox">
         <property name="spacing">4</property>
         <child>
-          <object class="UserAvatar" id="author_avatar">
-            <property name="margin-end">6</property>
-          </object>
+          <object class="UserAvatar" id="author_avatar"/>
         </child>
         <child>
-          <object class="GtkBox">
+          <object class="GtkButton">
             <property name="valign">center</property>
-            <property name="orientation">vertical</property>
             <child>
               <object class="GtkBox">
-                <property name="spacing">4</property>
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkLabel" id="author_display_label">
-                    <property name="halign">start</property>
-                    <property name="ellipsize">end</property>
-                    <style>
-                      <class name="heading"/>
-                    </style>
+                  <object class="GtkBox">
+                    <property name="spacing">4</property>
+                    <child>
+                      <object class="GtkLabel" id="author_display_label">
+                        <property name="halign">start</property>
+                        <property name="ellipsize">end</property>
+                        <style>
+                          <class name="heading"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="BadgesBox" id="author_badges"/>
+                    </child>
                   </object>
-                </child>
-                <child>
-                  <object class="BadgesBox" id="author_badges"/>
                 </child>
                 <child>
                   <object class="GtkLabel" id="author_name_label">
@@ -107,28 +109,33 @@
                     </style>
                   </object>
                 </child>
-                <child>
-                  <object class="GtkLabel" id="post_time_label">
-                    <property name="hexpand">true</property>
-                    <property name="halign">end</property>
-                    <property name="valign">start</property>
-                    <property name="use-markup">true</property>
-                  </object>
-                </child>
               </object>
             </child>
-            <child>
-              <object class="GtkLabel" id="post_info_label">
-                <property name="halign">start</property>
-                <property name="use-markup">True</property>
-                <style>
-                  <class name="dim-label"/>
-                  <class name="caption"/>
-                </style>
-              </object>
-            </child>
+            <style>
+              <class name="flat"/>
+            </style>
           </object>
         </child>
+        <child>
+          <object class="GtkLabel" id="post_time_label">
+            <property name="margin-top">4</property>
+            <property name="hexpand">true</property>
+            <property name="halign">end</property>
+            <property name="valign">start</property>
+            <property name="use-markup">true</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkLabel" id="post_info_label">
+        <property name="halign">start</property>
+        <property name="use-markup">True</property>
+        <property name="visible">false</property>
+        <style>
+          <class name="dim-label"/>
+          <class name="caption"/>
+        </style>
       </object>
     </child>
     <child>

@@ -153,19 +153,14 @@ public class PostDisplay : Gtk.Box {
     author_badges.display_protected = main_post.author.has_flag (PROTECTED);
 
     // Set up the post information area
+    author_display_label.label = main_post.author.display_name;
+    author_name_label.label    = "@" + main_post.author.username;
     if (display_type == MAIN) {
-      // Set up author side-by-side when main display
-      author_display_label.label = main_post.author.display_name;
-      author_name_label.label    = "@" + main_post.author.username;
-
       // Add date and source to info label
-      string date_text      = main_post.creation_date.format ("%x, %X");
-      post_info_label.label = _("%s using %s").printf (date_text, main_post.source);
+      string date_text        = main_post.creation_date.format ("%x, %X");
+      post_info_label.label   = _("%s using %s").printf (date_text, main_post.source);
+      post_info_label.visible = true;
     } else {
-      // Set up author top-and-bottom when list display
-      author_display_label.label = main_post.author.display_name;
-      post_info_label.label      = "@" + main_post.author.username;
-
       // Add relative date and link to page in corner
       string post_time_text = DisplayUtils.display_time_delta (main_post.creation_date);
       post_time_label.label = @"<a href=\"$(main_post.url)\" title=\"$(open_link_label)\" class=\"weblink\">$(post_time_text)</a>";
