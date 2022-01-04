@@ -12,7 +12,6 @@ libdepends = [
 # Base files
 libfiles = [
   'Base/Content/Media.vala',
-  'Base/Content/Picture.vala',
   'Base/Content/Post.vala',
   'Base/Content/PostEnums.vala',
   'Base/Content/Profile.vala',
@@ -29,7 +28,6 @@ libfiles = [
 if get_option('support_mastodon')
   libfiles += [
     'Mastodon/Content/Media.vala',
-    'Mastodon/Content/Picture.vala',
     'Mastodon/Content/Post.vala',
     'Mastodon/Content/Profile.vala',
     'Mastodon/Content/User.vala',
@@ -39,7 +37,6 @@ endif
 if get_option('support_twitter')
   libfiles += [
     'Twitter/Content/Media.vala',
-    'Twitter/Content/Picture.vala',
     'Twitter/Content/Post.vala',
     'Twitter/Content/Profile.vala',
     'Twitter/Content/User.vala',
@@ -49,7 +46,6 @@ endif
 if get_option('support_twitter_legacy')
   libfiles += [
     'TwitterLegacy/Content/Media.vala',
-    'TwitterLegacy/Content/Picture.vala',
     'TwitterLegacy/Content/Post.vala',
     'TwitterLegacy/Content/Profile.vala',
     'TwitterLegacy/Content/User.vala',

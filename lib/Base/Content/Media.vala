@@ -1,6 +1,6 @@
 /* Media.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,30 @@
 using GLib;
 
 /**
- * A generic interface for media from a platform.
- *
- * This contains shared properties and
- * methods for the specialized media classes.
+ * Stores the type for this media.
  */
-public interface Backend.Media : Object {
+public enum Backend.MediaType {
+
+  /**
+   * A static image.
+   */
+  PICTURE,
+
+  /**
+   * An image with looped animation.
+   */
+  ANIMATED,
+
+  /**
+   * A video with sound.
+   */
+  VIDEO
+}
+
+/**
+ * Stores an media for loading and display.
+ */
+public abstract class Backend.Media : Object {
 
   /**
    * The unique identifier for this media.
@@ -39,18 +57,23 @@ public interface Backend.Media : Object {
   public abstract string alt_text { get; construct; }
 
   /**
-   * The original width of this media.
+   * Retrieves the preview as a Gdk.Paintable.
+   *
+   * Loads the preview from the web asynchronously and
+   * returns the Gdk.Paintable when it is loaded.
+   *
+   * @return A Gdk.Paintable with the preview.
    */
-  public abstract int width { get; construct; }
+  public abstract async Gdk.Paintable get_preview ();
 
   /**
-   * The original height of this media.
+   * Retrieves the preview as a Gdk.Paintable.
+   *
+   * Loads the preview from the web asynchronously and
+   * returns the Gdk.Paintable when it is loaded.
+   *
+   * @return A Gdk.Paintable with the preview.
    */
-  public abstract int height { get; construct; }
-
-  /**
-   * The ImageLoader to load the preview.
-   */
-  public abstract ImageLoader preview { get; construct; }
+  public abstract async Gdk.Paintable get_media ();
 
 }
