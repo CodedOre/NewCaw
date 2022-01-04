@@ -1,6 +1,6 @@
 /* MediaLoader.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,78 +21,80 @@
 using GLib;
 
 /**
- * An interface containing basic utilities for downloading media.
+ * Error domain for errors in MediaLoader.
  */
-public abstract class Backend.MediaLoader : Object {
+errordomain MediaLoaderError {
+  INVALID_CONVERT
+}
+
+/**
+ * An helper class holding code for loading media from a server.
+ */
+internal class Backend.MediaLoader : Object {
 
   /**
-   * The url to the media to be loaded.
-   */
-  public string url { get; construct; }
-
-  /**
-   * Signals that the download is completed.
-   */
-  public signal void load_completed ();
-
-  /**
-   * Creates an MediaLoader and prepares it for loading the image.
+   * Load a media asynchronously.
    *
-   * @param url The url of the image to be loaded.
-   */
-  internal MediaLoader (string url) {
-    Object (url: url);
-  }
-
-  /**
-   * Returns if the media is loaded.
+   * @param media_type The type to be loaded.
+   * @param url The url to load from.
    *
-   * @return True if the media is loaded.
-   */
-  public abstract bool is_loaded ();
-
-  /**
-   * Initiates the download.
-   */
-  public abstract void begin_loading (Cancellable? cancellable = null);
-
-  /**
-   * Returns the download progress.
+   * @return A Gdk.Paintable for the media.
    *
-   * @return A double representing the progress of the load.
+   * @throws Error Any error that occurs while loading or converting.
    */
-  public double load_progress () {
-    return 0.0;
-  }
+  internal static async Gdk.Paintable load_media (MediaType media_type,
+                                                     string url,
+                                               Cancellable? cancellable = null
+  ) throws Error {
+    // Init function
+    InputStream   stream;
+    Gdk.Paintable paintable;
 
-  /**
-   * Loads an GLib.MemoryInputStream from a given url.
-   *
-   * @param url The url with the content.
-   * @param session The Soup.Session to use.
-   * @param cancellable A GLib.Cancellable.
-   *
-   * @throws GLib.Error Errors that resulted while Soup downloaded the stream.
-   *
-   * @return The content loaded in an GLib.MemoryInputStream, or null if failed.
-   */
-  protected static InputStream download_stream (string       url,
-                                                      Soup.Session session,
-                                                      Cancellable? cancellable)
-                                                      throws Error {
-    // Init call
-    InputStream result;
-    var         message = new Soup.Message ("GET", url);
+    // Create loading message
+    var message = new Soup.Message ("GET", url);
 
-    // Load the data
+    // Load media from url
     try {
-      result = session.send (message, cancellable);
+      stream = yield soup_session.send_async (message, 0, null);
     } catch (Error e) {
       throw e;
     }
 
-    // Return the loaded data
-    return result;
+    // Create the paintable according to media_type
+    try {
+      switch (media_type) {
+        case PICTURE:
+          var pixbuf = new Gdk.Pixbuf.from_stream (stream);
+          paintable  = Gdk.Texture.for_pixbuf (pixbuf);
+          break;
+        default:
+          throw new MediaLoaderError.INVALID_CONVERT ("Could not create paintable");
+      }
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Return the result
+    return paintable;
   }
+
+  /**
+   * A global Soup.Session for loading.
+   */
+  internal static Soup.Session soup_session {
+    get {
+      if (soup_session_store == null) {
+        soup_session_store = new Soup.Session ();
+      }
+      return soup_session_store;
+    }
+  }
+
+  /**
+   * Stores the global Soup.Session.
+   *
+   * Only to be loaded from the property!
+   */
+  private static Soup.Session? soup_session_store = null;
 
 }

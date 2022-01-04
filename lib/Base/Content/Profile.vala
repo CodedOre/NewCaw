@@ -40,7 +40,7 @@ public interface Backend.Profile : Backend.User {
   /**
    * The header image for the detail page of this user.
    */
-  public abstract Picture header { get; construct; }
+  public abstract Media header { get; construct; }
 
   /**
    * How many people are following this Profile.

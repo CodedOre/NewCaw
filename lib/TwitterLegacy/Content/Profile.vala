@@ -39,7 +39,7 @@ public class Backend.TwitterLegacy.Profile : Backend.TwitterLegacy.User, Backend
   /**
    * The header image for the detail page of this user.
    */
-  public Backend.Picture header { get; construct; }
+  public Backend.Media header { get; construct; }
 
   /**
    * How many people are following this Profile.
@@ -119,9 +119,9 @@ public class Backend.TwitterLegacy.Profile : Backend.TwitterLegacy.User, Backend
       posts_count:     (int) json.get_int_member ("statuses_count"),
 
       // Set the ImageLoader for the avatar
-      avatar: new Picture (avatar_media_url, avatar_preview_url),
+      avatar: new Media (PICTURE, avatar_media_url, avatar_preview_url),
       header: header_preview_url != null
-                ? new Picture (header_media_url, header_preview_url)
+                ? new Media (PICTURE, header_media_url, header_preview_url)
                 : null
     );
 

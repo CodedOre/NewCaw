@@ -1,6 +1,6 @@
-/* Picture.vala
+/* MediaEnums.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,12 +20,23 @@
 
 using GLib;
 
-public interface Backend.Picture : Backend.Media {
+/**
+ * Stores the type for this media.
+ */
+public enum Backend.MediaType {
 
   /**
-   * The ImageLoader to load the media.
+   * A static image.
    */
-  public abstract ImageLoader media { get; construct; }
+  PICTURE,
 
+  /**
+   * An image with looped animation.
+   */
+  ANIMATED,
 
+  /**
+   * A video with sound.
+   */
+  VIDEO
 }

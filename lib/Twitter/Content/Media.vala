@@ -1,6 +1,6 @@
 /* Media.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,48 +20,90 @@
 
 using GLib;
 
-public abstract class Backend.Twitter.Media : Object, Backend.Media {
-
-  /**
-   * Creates the right sub-class of Media for a given Json.Object.
-   *
-   * @param json A Json.Object containing the media.
-   *
-   * @return A sub-class of Backend.Media suitable for the contained media.
-   */
-  public static Backend.Media create_media_from_json (Json.Object json) {
-    string media_type = json.get_string_member ("type");
-    switch (media_type) {
-      case "photo":
-        return new Picture.from_json (json);
-      default:
-        error ("Failed to create a Media object: Unknown media type!");
-    }
-  }
+/**
+ * Stores an media for loading and display.
+ */
+public class Backend.Twitter.Media : Backend.Media {
 
   /**
    * The unique identifier for this media.
    */
-  public string id { get; construct; }
+  public override string id { get; construct; }
+
+  /**
+   * The type for this media.
+   */
+  public override MediaType media_type { get; construct; }
 
   /**
    * An text description of the media.
    */
-  public string alt_text { get; construct; }
+  public override string alt_text { get; construct; }
 
   /**
-   * The ImageLoader to load the preview.
+   * The url leading to the preview.
    */
-  public ImageLoader preview { get; construct; }
+  public override string preview_url { get; construct; }
 
   /**
-   * The original width of this media.
+   * The url leading to the media.
    */
-  public int width { get; construct; }
+  public override string media_url { get; construct; }
 
   /**
-   * The original height of this media.
+   * Creates a Media object from a specific url.
+   *
+   * @param type The type for the media
+   * @param media_url The url to the full media.
+   * @param preview_url The url to the preview image, if available.
    */
-  public int height { get; construct; }
+  public Media (MediaType type, string media_url, string? preview_url = null) {
+    // Constructs the object
+    Object (
+      // Don't set id and alt_text
+      id:       null,
+      alt_text: null,
+
+      // Set the type
+      media_type: type,
+
+      // Create MediaLoaders from urls
+      preview_url: preview_url,
+      media_url:   media_url
+    );
+  }
+
+  /**
+   * Creates a Media object from a given Json.Object.
+   *
+   * @param json A Json.Object containing the data.
+   */
+  public Media.from_json (Json.Object json) {
+    // Determine the type of this media
+    string    type_string = json.get_string_member ("type");
+    MediaType type_enum;
+    switch (type_string) {
+      case "photo":
+        type_enum = PICTURE;
+        break;
+      default:
+        error ("Failed to create a Media object: Unknown media type!");
+    }
+
+    // Get base url for preview and media
+    string base_url = json.get_string_member ("url");
+
+    // Constructs an Object from the json
+    Object (
+      // Set basic information
+      id:         json.get_string_member ("media_key"),
+      media_type:  type_enum,
+      alt_text:   json.has_member ("alt_text") ? json.get_string_member ("alt_text") : null,
+
+      // Create MediaLoaders from base_url
+      preview_url: @"$(base_url)?name=small",
+      media_url:   @"$(base_url)?name=large"
+    );
+  }
 
 }

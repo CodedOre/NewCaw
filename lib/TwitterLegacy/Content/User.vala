@@ -43,7 +43,7 @@ public class Backend.TwitterLegacy.User : Object, Backend.User {
   /**
    * The avatar image from this user.
    */
-  public Backend.Picture avatar { get; construct; }
+  public Backend.Media avatar { get; construct; }
 
   /**
    * Parses an given Json.Object and creates an User object.
@@ -75,8 +75,8 @@ public class Backend.TwitterLegacy.User : Object, Backend.User {
       display_name: json.get_string_member ("name"),
       username:     json.get_string_member ("screen_name"),
 
-      // Set the Picture for the avatar
-      avatar: new Picture (avatar_media_url, avatar_preview_url)
+      // Set the Media for the avatar
+      avatar: new Media (PICTURE, avatar_media_url, avatar_preview_url)
     );
 
     // Get possible flags for this user

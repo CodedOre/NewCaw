@@ -67,20 +67,16 @@ public class MediaPreviewItem : Gtk.Widget {
     cell_height  = height;
     grid_spacing = spacing;
 
-    // Load and set the Paintable
-    if (displayed_media.preview.is_loaded ()) {
-      displayed_texture = displayed_media.preview.get_media ();
-      preview.paintable = displayed_texture;
-    } else {
-      displayed_media.preview.begin_loading ();
-      displayed_media.preview.load_completed.connect (() => {
-        displayed_texture = displayed_media.preview.get_media ();
-        if (displayed_texture != null) {
-          preview.paintable = displayed_texture;
-          preview.remove_css_class ("loading-media");
-        }
-      });
-    }
+    // Load the preview image
+    displayed_media.get_preview.begin (load_cancellable, (obj, res) => {
+      try {
+        var paintable = displayed_media.get_preview.end (res) as Gdk.Paintable;
+        preview.paintable = paintable;
+        preview.remove_css_class ("loading-media");
+      } catch (Error e) {
+        warning (@"Could not load the avatar: $(e.message)");
+      }
+    });
 
     // Set alt-text if available
     if (displayed_media.alt_text != null) {

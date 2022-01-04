@@ -30,13 +30,17 @@ public class ProfileCard : Gtk.Widget {
   [GtkChild]
   private unowned CroppedPicture blurred_banner;
   [GtkChild]
-  private unowned CroppedPicture profile_banner;
+  private unowned Adw.Clamp banner_clamp;
   [GtkChild]
-  private unowned UserAvatar profile_avatar;
+  private unowned CroppedPicture profile_banner;
   [GtkChild]
   private unowned Adw.Bin card_scrim;
   [GtkChild]
   private unowned Adw.HeaderBar card_header;
+  [GtkChild]
+  private unowned Adw.Clamp content_clamp;
+  [GtkChild]
+  private unowned UserAvatar profile_avatar;
 
   /**
    * The Profile which is displayed.
@@ -52,18 +56,17 @@ public class ProfileCard : Gtk.Widget {
         // Set the profile images
         profile_avatar.set_avatar (displayed_profile.avatar);
 
-        // Load and set the Header
-        var header = displayed_profile.header.media;
-        if (header.is_loaded ()) {
-          blurred_banner.paintable = header.get_media ();
-          profile_banner.paintable = header.get_media ();
-        } else {
-          header.begin_loading ();
-          header.load_completed.connect (() => {
-            blurred_banner.paintable = header.get_media ();
-            profile_banner.paintable = header.get_media ();
-          });
-        }
+        // Load and set the header
+        Backend.Media header = displayed_profile.header;
+        header.get_media.begin (load_cancellable, (obj, res) => {
+          try {
+            var paintable = header.get_media.end (res) as Gdk.Paintable;
+            blurred_banner.paintable = paintable;
+            profile_banner.paintable = paintable;
+          } catch (Error e) {
+            warning (@"Could not load header: $(e.message)");
+          }
+        });
       }
     }
   }
@@ -78,6 +81,9 @@ public class ProfileCard : Gtk.Widget {
                     GLib.SettingsBindFlags.DEFAULT);
     settings.bind ("profile-inline-header", card_header, "visible",
                     GLib.SettingsBindFlags.DEFAULT);
+
+    // Create a cancellable
+    load_cancellable = new Cancellable ();
 
     // Installs the header display action
     this.install_action ("profile.display_header", null, (widget, action) => {
@@ -99,6 +105,25 @@ public class ProfileCard : Gtk.Widget {
       }
     });
   }
+
+  /**
+   * Deconstructs ProfileCard and it's childrens.
+   */
+  public override void dispose () {
+    // Cancel possible loads
+    load_cancellable.cancel ();
+    // Destructs children of UserAvatar
+    blurred_banner.unparent ();
+    banner_clamp.unparent ();
+    card_scrim.unparent ();
+    card_header.unparent ();
+    content_clamp.unparent ();
+  }
+
+  /**
+   * A GLib.Cancellable to cancel loads when closing the item.
+   */
+  private Cancellable load_cancellable;
 
   /**
    * Stores the displayed profile.

@@ -157,7 +157,7 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
     media_jsons.foreach_element ((array, index, element) => {
       if (element.get_node_type () == OBJECT) {
         Json.Object obj    = element.get_object ();
-        parsed_media += Backend.Mastodon.Media.create_media_from_json (obj);
+        parsed_media += new Backend.Mastodon.Media.from_json (obj);
       }
     });
     attached_media = parsed_media;

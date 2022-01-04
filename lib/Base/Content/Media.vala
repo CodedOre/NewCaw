@@ -1,6 +1,6 @@
 /* Media.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,9 @@
 using GLib;
 
 /**
- * A generic interface for media from a platform.
- *
- * This contains shared properties and
- * methods for the specialized media classes.
+ * Stores an media for loading and display.
  */
-public interface Backend.Media : Object {
+public abstract class Backend.Media : Object {
 
   /**
    * The unique identifier for this media.
@@ -34,23 +31,81 @@ public interface Backend.Media : Object {
   public abstract string id { get; construct; }
 
   /**
+   * The type for this media.
+   */
+  public abstract MediaType media_type { get; construct; }
+
+  /**
    * An text description of the media.
    */
   public abstract string alt_text { get; construct; }
 
   /**
-   * The original width of this media.
+   * The url leading to the preview.
    */
-  public abstract int width { get; construct; }
+  public abstract string preview_url { get; construct; }
 
   /**
-   * The original height of this media.
+   * The url leading to the media.
    */
-  public abstract int height { get; construct; }
+  public abstract string media_url { get; construct; }
 
   /**
-   * The ImageLoader to load the preview.
+   * Retrieves the preview as a Gdk.Paintable.
+   *
+   * Loads the preview from the web asynchronously and
+   * returns the Gdk.Paintable when it is loaded.
+   *
+   * @param cancellable A GLib.Cancellable to cancel the load.
+   *
+   * @return A Gdk.Paintable with the preview.
+   *
+   * @throws Error Any error that happens on loading.
    */
-  public abstract ImageLoader preview { get; construct; }
+  public async Gdk.Paintable get_preview (Cancellable? cancellable = null) throws Error {
+    // Load the preview if not stored already
+    if (preview == null && preview_url != null) {
+      preview = yield MediaLoader.load_media (PICTURE, preview_url, cancellable);
+    }
+
+    // Return the loaded preview
+    return preview;
+  }
+
+  /**
+   * Retrieves the media as a Gdk.Paintable.
+   *
+   * Loads the media from the web asynchronously and
+   * returns the Gdk.Paintable when it is loaded.
+   *
+   * @param cancellable A GLib.Cancellable to cancel the load.
+   *
+   * @return A Gdk.Paintable with the media.
+   *
+   * @throws Error Any error that happens on loading.
+   */
+  public async Gdk.Paintable get_media (Cancellable? cancellable = null) throws Error  {
+    // Load the media if not stored already
+    if (media == null && media_url != null) {
+      try {
+        media = yield MediaLoader.load_media (media_type, media_url, cancellable);
+      } catch (Error e) {
+        throw e;
+      }
+    }
+
+    // Return the loaded media
+    return media;
+  }
+
+  /**
+   * The stored preview paintable.
+   */
+  private Gdk.Paintable? preview = null;
+
+  /**
+   * The stored media paintable.
+   */
+  private Gdk.Paintable? media = null;
 
 }
