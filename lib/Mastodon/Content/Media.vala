@@ -51,6 +51,59 @@ public class Backend.Mastodon.Media : Backend.Media {
   public override string media_url { get; construct; }
 
   /**
+   * Creates a Media object from a specific url.
+   *
+   * @param type The type for the media
+   * @param media_url The url to the full media.
+   * @param preview_url The url to the preview image, if available.
+   */
+  public Media (MediaType type, string media_url, string? preview_url) {
+    // Constructs the object
+    Object (
+      // Don't set id and alt_text
+      id:       null,
+      alt_text: null,
+
+      // Set the type
+      media_type: type,
+
+      // Create MediaLoaders from urls
+      preview_url: preview_url,
+      media_url:   media_url
+    );
+  }
+
+  /**
+   * Creates a Media object from a given Json.Object.
+   *
+   * @param json A Json.Object containing the data.
+   */
+  public Media.from_json (Json.Object json) {
+    // Determine the type of this media
+    string    type_string = json.get_string_member ("type");
+    MediaType type_enum;
+    switch (type_string) {
+      case "image":
+        type_enum = PICTURE;
+        break;
+      default:
+        error ("Failed to create a Media object: Unknown media type!");
+    }
+
+    // Constructs an Object from the json
+    Object (
+      // Set basic information
+      id:         json.get_string_member ("id"),
+      media_type: type_enum,
+      alt_text:   json.get_string_member ("description"),
+
+      // Create MediaLoaders from urls
+      preview_url:  json.get_string_member ("preview_url"),
+      media_url:    json.get_string_member ("url")
+    );
+  }
+
+  /**
    * Retrieves the preview as a Gdk.Paintable.
    *
    * Loads the preview from the web asynchronously and
