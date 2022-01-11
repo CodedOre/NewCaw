@@ -72,7 +72,8 @@ public class Backend.Twitter.Profile : Backend.Twitter.User, Backend.Profile {
   /**
    * Parses an given Json.Object and creates an Profile object.
    *
-   * @param json A Json.Object retrieved from the API.
+   * @param data The Json.Object containing the specific Post.
+   * @param includes A Json.Object including additional objects which may be related to this Post.
    */
   public Profile.from_json (Json.Object data, Json.Object? includes = null) {
     // Get metrics object

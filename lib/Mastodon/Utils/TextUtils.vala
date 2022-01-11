@@ -29,7 +29,6 @@ internal class Backend.Mastodon.TextUtils : Backend.TextUtils {
    * Parses the text into a list of TextEntities.
    *
    * @param raw_text The text as given by the API.
-   * @param entities A Json.Object containing API-provided entities.
    *
    * @return A array of TextModules for format_text.
    */

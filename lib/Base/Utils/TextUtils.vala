@@ -97,7 +97,7 @@ public class Backend.TextUtils : Object {
   /**
    * Set trailing tags to the right type, allowing them to be hidden with format_text.
    *
-   * @param text_modules An array of all modules of the text.
+   * @param modules An array of all modules of the text.
    */
   internal static void mark_trailing_tags (TextModule[] modules) {
     bool   search_trail_tags = true;
