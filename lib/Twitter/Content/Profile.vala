@@ -105,7 +105,10 @@ public class Backend.Twitter.Profile : Backend.Profile {
         }
       }
     }
-    description_modules = TextUtils.parse_text (raw_text, description_entities);
+    description_modules = Utils.parse_text (raw_text, description_entities);
+
+    // First format of the description.
+    description = Backend.Utils.format_text (description_modules);
 
     // Store additional information in data fields
     UserDataField[] additional_fields = {};

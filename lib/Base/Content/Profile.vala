@@ -35,11 +35,7 @@ public abstract class Backend.Profile : Backend.User {
   /**
    * A formatted description set for the Profile.
    */
-  public string description {
-    owned get {
-      return Backend.TextUtils.format_text (description_modules);
-    }
-  }
+  public string description { get; protected set; }
 
   /**
    * The header image for the detail page of this user.
@@ -73,6 +69,16 @@ public abstract class Backend.Profile : Backend.User {
    * The url to visit this post on the original website.
    */
   public string url { get; construct; }
+
+  /**
+   * Run while an object is constructed.
+   */
+  construct {
+    // Reformat the description when flags were changed.
+    Utils.TextFormats.instance.update_formatting.connect (() => {
+      description = Utils.format_text (description_modules);
+    });
+  }
 
   /**
    * Retrieves the UserDataFields for this Profile.

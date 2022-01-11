@@ -77,7 +77,10 @@ public class Backend.Mastodon.Profile : Backend.Profile {
     );
 
     // Parse the description into modules
-    description_modules = TextUtils.parse_text (json.get_string_member ("note"));
+    description_modules = Utils.parse_text (json.get_string_member ("note"));
+
+    // First format of the description.
+    description = Backend.Utils.format_text (description_modules);
 
     // Parses all fields
     UserDataField[] parsed_fields = {};
