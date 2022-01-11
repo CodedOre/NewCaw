@@ -23,7 +23,7 @@ using GLib;
 /**
  * Represents one posted status message.
  */
-public interface Backend.Post : Object {
+public abstract class Backend.Post : Object {
 
   /**
    * The unique identifier of this post.

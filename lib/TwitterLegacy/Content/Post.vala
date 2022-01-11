@@ -23,27 +23,27 @@ using GLib;
 /**
  * Represents one posted status message.
  */
-public class Backend.TwitterLegacy.Post : Object, Backend.Post {
+public class Backend.TwitterLegacy.Post : Backend.Post {
 
   /**
    * The unique identifier of this post.
    */
-  public string id { get; construct; }
+  public override string id { get; construct; }
 
   /**
    * The type of this post.
    */
-  public PostType post_type { get; construct; }
+  public override PostType post_type { get; construct; }
 
   /**
    * The time this post was posted.
    */
-  public DateTime creation_date { get; construct; }
+  public override DateTime creation_date { get; construct; }
 
   /**
    * The message of this post.
    */
-  public string text {
+  public override string text {
     owned get {
       return Backend.TextUtils.format_text (text_modules);
     }
@@ -52,42 +52,42 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
   /**
    * The User who created this Post.
    */
-  public Backend.User author { get; construct; }
+  public override Backend.User author { get; construct; }
 
   /**
    * The website where this post originates from.
    */
-  public string domain { get; construct; }
+  public override string domain { get; construct; }
 
   /**
    * The url to visit this post on the original website.
    */
-  public string url { get; construct; }
+  public override string url { get; construct; }
 
   /**
    * The source application who created this Post.
    */
-  public string source { get; construct; }
+  public override string source { get; construct; }
 
   /**
    * If an post is an repost or quote, this stores the post reposted or quoted.
    */
-  public Backend.Post? referenced_post { get; construct; }
+  public override Backend.Post? referenced_post { get; construct; }
 
   /**
    * How often the post was liked.
    */
-  public int liked_count { get; construct; }
+  public override int liked_count { get; construct; }
 
   /**
    * How often the post was replied to.
    */
-  public int replied_count { get; construct; }
+  public override int replied_count { get; construct; }
 
   /**
    * How often this post was reposted or quoted.
    */
-  public int reposted_count { get; construct; }
+  public override int reposted_count { get; construct; }
 
   /**
    * Parses an given Json.Object and creates an Post object.
@@ -197,7 +197,7 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
   /**
    * Returns media attached to this Post.
    */
-  public Backend.Media[] get_media () {
+  public override Backend.Media[] get_media () {
     return attached_media;
   }
 
@@ -207,7 +207,7 @@ public class Backend.TwitterLegacy.Post : Object, Backend.Post {
    *
    * Only used in test cases and therefore only available in debug builds.
    */
-  public TextModule[] get_text_modules () {
+  public override TextModule[] get_text_modules () {
     return text_modules;
   }
 #endif
