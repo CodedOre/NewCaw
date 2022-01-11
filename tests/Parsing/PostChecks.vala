@@ -1,6 +1,6 @@
 /* PostChecks.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -84,32 +84,32 @@ namespace PostChecks {
     Json.Object text_obj = check.get_object_member ("text");
 
     // Check without format flags
-    Backend.TextUtils.set_format_flag (HIDE_TRAILING_TAGS, false);
-    Backend.TextUtils.set_format_flag (SHOW_QUOTE_LINKS,   false);
-    Backend.TextUtils.set_format_flag (SHOW_MEDIA_LINKS,   false);
+    Backend.Utils.TextFormats.set_format_flag (HIDE_TRAILING_TAGS, false);
+    Backend.Utils.TextFormats.set_format_flag (SHOW_QUOTE_LINKS,   false);
+    Backend.Utils.TextFormats.set_format_flag (SHOW_MEDIA_LINKS,   false);
     assert_true (post.text == text_obj.get_string_member ("no_flags"));
 
     // Check with no trailing tags set
     if (text_obj.has_member ("no_trail_tags")) {
-      Backend.TextUtils.set_format_flag (HIDE_TRAILING_TAGS, true);
-      Backend.TextUtils.set_format_flag (SHOW_QUOTE_LINKS,   false);
-      Backend.TextUtils.set_format_flag (SHOW_MEDIA_LINKS,   false);
+      Backend.Utils.TextFormats.set_format_flag (HIDE_TRAILING_TAGS, true);
+      Backend.Utils.TextFormats.set_format_flag (SHOW_QUOTE_LINKS,   false);
+      Backend.Utils.TextFormats.set_format_flag (SHOW_MEDIA_LINKS,   false);
       assert_true (post.text == text_obj.get_string_member ("no_trail_tags"));
     }
 
     if (text_obj.has_member ("shown_quote_links")) {
       // Check with displayed quote links
-      Backend.TextUtils.set_format_flag (HIDE_TRAILING_TAGS, false);
-      Backend.TextUtils.set_format_flag (SHOW_QUOTE_LINKS,   true);
-      Backend.TextUtils.set_format_flag (SHOW_MEDIA_LINKS,   false);
+      Backend.Utils.TextFormats.set_format_flag (HIDE_TRAILING_TAGS, false);
+      Backend.Utils.TextFormats.set_format_flag (SHOW_QUOTE_LINKS,   true);
+      Backend.Utils.TextFormats.set_format_flag (SHOW_MEDIA_LINKS,   false);
       assert_true (post.text == text_obj.get_string_member ("shown_quote_links"));
     }
 
     if (text_obj.has_member ("shown_media_links")) {
       // Check with displayed quote links
-      Backend.TextUtils.set_format_flag (HIDE_TRAILING_TAGS, false);
-      Backend.TextUtils.set_format_flag (SHOW_QUOTE_LINKS,   false);
-      Backend.TextUtils.set_format_flag (SHOW_MEDIA_LINKS,   true);
+      Backend.Utils.TextFormats.set_format_flag (HIDE_TRAILING_TAGS, false);
+      Backend.Utils.TextFormats.set_format_flag (SHOW_QUOTE_LINKS,   false);
+      Backend.Utils.TextFormats.set_format_flag (SHOW_MEDIA_LINKS,   true);
       assert_true (post.text == text_obj.get_string_member ("shown_media_links"));
     }
   }

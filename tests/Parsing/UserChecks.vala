@@ -1,6 +1,6 @@
 /* UserChecks.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,9 +74,9 @@ namespace UserChecks {
     assert_true (profile.posts_count     == check.get_int_member ("posts_count"));
 
     // Check description without format flags
-    Backend.TextUtils.set_format_flag (HIDE_TRAILING_TAGS, false);
-    Backend.TextUtils.set_format_flag (SHOW_QUOTE_LINKS,   false);
-    Backend.TextUtils.set_format_flag (SHOW_MEDIA_LINKS,   false);
+    Backend.Utils.TextFormats.set_format_flag (HIDE_TRAILING_TAGS, false);
+    Backend.Utils.TextFormats.set_format_flag (SHOW_QUOTE_LINKS,   false);
+    Backend.Utils.TextFormats.set_format_flag (SHOW_MEDIA_LINKS,   false);
     assert_true (profile.description == check.get_string_member ("description"));
   }
 
