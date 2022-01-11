@@ -23,31 +23,38 @@ using GLib;
 /**
  * Stores information about one user of a platform.
  */
-public interface Backend.User : Object {
+public abstract class Backend.User : Object {
 
   /**
    * The identifier of the user in the API.
    */
-  public abstract string id { get; construct; }
+  public string id { get; construct; }
 
   /**
    * The "name" of the user.
    */
-  public abstract string display_name { get; construct; }
+  public string display_name { get; construct; }
 
   /**
    * The unique handle of this user.
    */
-  public abstract string username { get; construct; }
+  public string username { get; construct; }
 
   /**
    * The avatar image from this user.
    */
-  public abstract Media avatar { get; construct; }
+  public Media avatar { get; construct; }
 
   /**
    * Checks if the User has a certain flag set.
    */
-  public abstract bool has_flag (UserFlag flag);
+  public bool has_flag (UserFlag flag) {
+    return flag in flags;
+  }
+
+  /**
+   * Stores the flags for this user.
+   */
+  protected UserFlag flags;
 
 }
