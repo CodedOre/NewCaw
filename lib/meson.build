@@ -21,6 +21,7 @@ libfiles = [
   'Base/Content/UserDataField.vala',
   'Base/Content/UserEnums.vala',
   'Base/Utils/MediaLoader.vala',
+  'Base/Utils/TextFormats.vala',
   'Base/Utils/TextUtils.vala'
 ]
 

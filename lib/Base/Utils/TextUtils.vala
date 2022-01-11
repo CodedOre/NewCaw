@@ -1,6 +1,6 @@
 /* TextUtils.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,28 +21,9 @@
 using GLib;
 
 /**
- * Provides utilities for parsing and formatting text.
+ * Provides various utilities used by all platforms.
  */
-public class Backend.TextUtils : Object {
-
-  /**
-   * Various settings for text formatting.
-   */
-  [Flags]
-  public enum FormatFlag {
-    /**
-     * Hide hashtags after the text.
-     */
-    HIDE_TRAILING_TAGS,
-    /**
-     * Display links leading to quotes.
-     */
-    SHOW_QUOTE_LINKS,
-    /**
-     * Display links leading to media.
-     */
-    SHOW_MEDIA_LINKS
-  }
+namespace Backend.Utils {
 
   /**
    * Formats a text from a set of TextModules.
@@ -51,14 +32,14 @@ public class Backend.TextUtils : Object {
    *
    * @return A formatted string for display in a Pango capable text field.
    */
-  internal static string format_text (TextModule[] text_modules) {
+  private string format_text (TextModule[] text_modules) {
     var builder = new StringBuilder ();
 
     // Iterates through all TextModules
     foreach (TextModule module in text_modules) {
       switch (module.type) {
         case TRAIL_TAG:
-          if (get_format_flag (HIDE_TRAILING_TAGS)) {
+          if (Backend.Utils.TextFormats.get_format_flag (HIDE_TRAILING_TAGS)) {
             break;
           }
           builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"hashtag\">$(module.display)</a>");
@@ -70,13 +51,13 @@ public class Backend.TextUtils : Object {
           builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"mention\">$(module.display)</a>");
           break;
         case MEDIALINK:
-          if (! get_format_flag (SHOW_MEDIA_LINKS)) {
+          if (! Backend.Utils.TextFormats.get_format_flag (SHOW_MEDIA_LINKS)) {
             break;
           }
           builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"weblink\">$(module.display)</a>");
           break;
         case QUOTELINK:
-          if (! get_format_flag (SHOW_QUOTE_LINKS)) {
+          if (! Backend.Utils.TextFormats.get_format_flag (SHOW_QUOTE_LINKS)) {
             break;
           }
           builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"weblink\">$(module.display)</a>");
@@ -99,7 +80,7 @@ public class Backend.TextUtils : Object {
    *
    * @param modules An array of all modules of the text.
    */
-  internal static void mark_trailing_tags (TextModule[] modules) {
+  private void mark_trailing_tags (TextModule[] modules) {
     bool   search_trail_tags = true;
     bool   mark_trail_tags   = false;
     size_t module_index      = modules.length - 1;
@@ -138,35 +119,5 @@ public class Backend.TextUtils : Object {
       }
     }
   }
-
-  /**
-   * Checks if a certain flag for text formatting is set.
-   *
-   * @param flag The flag to be checked.
-   *
-   * @return A boolean if the flag is set.
-   */
-  public static bool get_format_flag (FormatFlag flag) {
-    return flag in format_flags;
-  }
-
-  /**
-   * Sets a flag for text formatting to a certain value.
-   *
-   * @param flag The flag to be set.
-   * @param setting If the flag should be enabled or not.
-   */
-  public static void set_format_flag (FormatFlag flag, bool setting) {
-    if (setting) {
-      format_flags = format_flags | flag;
-    } else {
-      format_flags = format_flags & ~flag;
-    }
-  }
-
-  /**
-   * Settings for the formatting of text.
-   */
-  private static FormatFlag format_flags = 0;
 
 }

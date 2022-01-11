@@ -1,6 +1,6 @@
 /* TextUtils.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,9 @@
 using GLib;
 
 /**
- * Provides utilities for parsing and formatting text.
+ * Provides utilities for the TwitterLegacy platform.
  */
-internal class Backend.TwitterLegacy.TextUtils : Backend.TextUtils {
+namespace Backend.TwitterLegacy.Utils {
 
   /**
    * Parses the text into a list of TextEntities.
@@ -33,7 +33,7 @@ internal class Backend.TwitterLegacy.TextUtils : Backend.TextUtils {
    *
    * @return A array of TextModules for format_text.
    */
-  public static TextModule[] parse_text (string raw_text, Json.Object? entities) {
+  private TextModule[] parse_text (string raw_text, Json.Object? entities) {
     TextModule?[] main_entities = {};
     TextModule [] final_modules = {};
 
@@ -179,7 +179,7 @@ internal class Backend.TwitterLegacy.TextUtils : Backend.TextUtils {
       }
     }
 
-    Backend.TextUtils.mark_trailing_tags (final_modules);
+    Backend.Utils.mark_trailing_tags (final_modules);
 
     return final_modules;
   }
@@ -191,7 +191,7 @@ internal class Backend.TwitterLegacy.TextUtils : Backend.TextUtils {
    *
    * @return A GLib.DateTime with the date from the string.
    */
-  public static DateTime parse_time (string text) {
+  private DateTime parse_time (string text) {
     // Initialize variables
     var zone = new TimeZone.utc ();
     int year, month, day, hour, minute;

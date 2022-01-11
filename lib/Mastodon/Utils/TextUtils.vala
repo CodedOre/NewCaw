@@ -1,6 +1,6 @@
 /* TextUtils.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,9 @@
 using GLib;
 
 /**
- * Provides utilities for parsing and formatting text.
+ * Provides utilities for the Mastodon Platform.
  */
-internal class Backend.Mastodon.TextUtils : Backend.TextUtils {
+namespace Backend.Mastodon.Utils {
 
   /**
    * Parses the text into a list of TextEntities.
@@ -32,7 +32,7 @@ internal class Backend.Mastodon.TextUtils : Backend.TextUtils {
    *
    * @return A array of TextModules for format_text.
    */
-  public static TextModule[] parse_text (string raw_text) {
+  private TextModule[] parse_text (string raw_text) {
     string       parsed_text   = raw_text;
     string[]     module_text   = {};
     TextModule[] final_modules = {};
@@ -145,7 +145,7 @@ internal class Backend.Mastodon.TextUtils : Backend.TextUtils {
       final_modules         += text_module;
     }
 
-    Backend.TextUtils.mark_trailing_tags (final_modules);
+    Backend.Utils.mark_trailing_tags (final_modules);
 
     return final_modules;
   }
