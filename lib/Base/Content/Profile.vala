@@ -25,37 +25,41 @@ using GLib;
  *
  * Used when displaying a User in detail.
  */
-public interface Backend.Profile : Backend.User {
+public abstract class Backend.Profile : Backend.User {
 
   /**
    * When this Profile was created on the platform.
    */
-  public abstract DateTime creation_date { get; construct; }
+  public DateTime creation_date { get; construct; }
 
   /**
    * A formatted description set for the Profile.
    */
-  public abstract string description { owned get; }
+  public string description {
+    owned get {
+      return Backend.TextUtils.format_text (description_modules);
+    }
+  }
 
   /**
    * The header image for the detail page of this user.
    */
-  public abstract Media header { get; construct; }
+  public Media header { get; construct; }
 
   /**
    * How many people are following this Profile.
    */
-  public abstract int followers_count { get; construct; }
+  public int followers_count { get; construct; }
 
   /**
    * How many people this Profile follows.
    */
-  public abstract int following_count { get; construct; }
+  public int following_count { get; construct; }
 
   /**
    * How many posts this Profile wrote.
    */
-  public abstract int posts_count { get; construct; }
+  public int posts_count { get; construct; }
 
   /**
    * The website where this post originates from.
@@ -63,17 +67,19 @@ public interface Backend.Profile : Backend.User {
    * Mostly important for the Mastodon backend, where a post
    * can come from multiple site thanks to the federation.
    */
-  public abstract string domain { get; construct; }
+  public string domain { get; construct; }
 
   /**
    * The url to visit this post on the original website.
    */
-  public abstract string url { get; construct; }
+  public string url { get; construct; }
 
   /**
    * Retrieves the UserDataFields for this Profile.
    */
-  public abstract UserDataField[] get_data_fields ();
+  public UserDataField[] get_data_fields () {
+    return data_fields;
+  }
 
 #if DEBUG
   /**
@@ -81,7 +87,19 @@ public interface Backend.Profile : Backend.User {
    *
    * Only used in test cases and therefore only available in debug builds.
    */
-  public abstract TextModule[] get_description_modules ();
+  public TextModule[] get_description_modules () {
+    return description_modules;
+  }
 #endif
+
+  /**
+   * All data fields attached to this post.
+   */
+  protected UserDataField[] data_fields;
+
+  /**
+   * The description split into modules for formatting.
+   */
+  protected TextModule[] description_modules;
 
 }

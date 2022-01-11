@@ -20,54 +20,7 @@
 
 using GLib;
 
-public class Backend.Twitter.Profile : Backend.Twitter.User, Backend.Profile {
-
-  /**
-   * When this Profile was created on the platform.
-   */
-  public DateTime creation_date { get; construct; }
-
-  /**
-   * A formatted description set for the Profile.
-   */
-  public string description {
-    owned get {
-      return Backend.TextUtils.format_text (description_modules);
-    }
-  }
-
-  /**
-   * The header image for the detail page of this user.
-   */
-  public Backend.Media header { get; construct; }
-
-  /**
-   * How many people are following this Profile.
-   */
-  public int followers_count { get; construct; }
-
-  /**
-   * How many people this Profile follows.
-   */
-  public int following_count { get; construct; }
-
-  /**
-   * How many posts this Profile wrote.
-   */
-  public int posts_count { get; construct; }
-
-  /**
-   * The website where this post originates from.
-   *
-   * Mostly important for the Mastodon backend, where a post
-   * can come from multiple site thanks to the federation.
-   */
-  public string domain { get; construct; }
-
-  /**
-   * The url to visit this post on the original website.
-   */
-  public string url { get; construct; }
+public class Backend.Twitter.Profile : Backend.Profile {
 
   /**
    * Parses an given Json.Object and creates an Profile object.
@@ -94,6 +47,9 @@ public class Backend.Twitter.Profile : Backend.Twitter.User, Backend.Profile {
       error (@"Error while parsing source: $(e.message)");
     }
 
+    // Get strings used to compose the url.
+    string profile_name = data.get_string_member ("username");
+
     // Construct the object with properties
     Object (
       // Set the id of the user
@@ -107,7 +63,11 @@ public class Backend.Twitter.Profile : Backend.Twitter.User, Backend.Profile {
 
       // Set the names of the user
       display_name: data.get_string_member ("name"),
-      username:     data.get_string_member ("username"),
+      username:     profile_name,
+
+      // Set url and domain
+      domain: PLATFORM_DOMAIN,
+      url:    @"https://$(PLATFORM_DOMAIN)/$(profile_name)",
 
       // Set metrics
       followers_count: (int) metrics.get_int_member ("followers_count"),
@@ -177,45 +137,5 @@ public class Backend.Twitter.Profile : Backend.Twitter.User, Backend.Profile {
       flags = flags | VERIFIED;
     }
   }
-
-  /**
-   * Run at object construction.
-   *
-   * Used to manually construct the url and domain properties,
-   * as these are not provided by the Twitter API.
-   */
-  construct {
-    // Set domain and url
-    domain =  "Twitter.com";
-    url    = @"https://$(domain)/$(username)";
-  }
-
-  /**
-   * Retrieves the UserDataFields for this Profile.
-   */
-  public UserDataField[] get_data_fields () {
-    return data_fields;
-  }
-
-#if DEBUG
-  /**
-   * Returns the text modules from the description.
-   *
-   * Only used in test cases and therefore only available in debug builds.
-   */
-  public TextModule[] get_description_modules () {
-    return description_modules;
-  }
-#endif
-
-  /**
-   * All data fields attached to this post.
-   */
-  public UserDataField[] data_fields;
-
-  /**
-   * The description split into modules for formatting.
-   */
-  private TextModule[] description_modules;
 
 }
