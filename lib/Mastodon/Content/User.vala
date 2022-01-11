@@ -1,6 +1,6 @@
 /* User.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,27 +23,7 @@ using GLib;
 /**
  * Stores information about one user of a platform.
  */
-public class Backend.Mastodon.User : Object, Backend.User {
-
-  /**
-   * The identifier of the user in the API.
-   */
-  public string id { get; construct; }
-
-  /**
-   * The "name" of the user.
-   */
-  public string display_name { get; construct; }
-
-  /**
-   * The unique handle of this user.
-   */
-  public string username { get; construct; }
-
-  /**
-   * The avatar image from this user.
-   */
-  public Backend.Media avatar { get; construct; }
+public class Backend.Mastodon.User : Backend.User {
 
   /**
    * Parses an given Json.Object and creates an User object.
@@ -75,17 +55,5 @@ public class Backend.Mastodon.User : Object, Backend.User {
       flags = flags | BOT;
     }
   }
-
-  /**
-   * Checks if the User has a certain flag set.
-   */
-  public bool has_flag (UserFlag flag) {
-    return flag in flags;
-  }
-
-  /**
-   * Stores the flags for this user.
-   */
-  protected UserFlag flags;
 
 }

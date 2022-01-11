@@ -28,27 +28,27 @@ public abstract class Backend.Media : Object {
   /**
    * The unique identifier for this media.
    */
-  public abstract string id { get; construct; }
+  public string id { get; construct; }
 
   /**
    * The type for this media.
    */
-  public abstract MediaType media_type { get; construct; }
+  public MediaType media_type { get; construct; }
 
   /**
    * An text description of the media.
    */
-  public abstract string alt_text { get; construct; }
+  public string alt_text { get; construct; }
 
   /**
    * The url leading to the preview.
    */
-  public abstract string preview_url { get; construct; }
+  public string preview_url { get; construct; }
 
   /**
    * The url leading to the media.
    */
-  public abstract string media_url { get; construct; }
+  public string media_url { get; construct; }
 
   /**
    * Retrieves the preview as a Gdk.Paintable.

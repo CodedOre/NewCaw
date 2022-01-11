@@ -1,6 +1,6 @@
 /* Post.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,37 +23,41 @@ using GLib;
 /**
  * Represents one posted status message.
  */
-public interface Backend.Post : Object {
+public abstract class Backend.Post : Object {
 
   /**
    * The unique identifier of this post.
    */
-  public abstract string id { get; construct; }
+  public string id { get; construct; }
 
   /**
    * The type of this post.
    */
-  public abstract PostType post_type { get; construct; }
+  public PostType post_type { get; construct; }
 
   /**
    * The time this post was posted.
    */
-  public abstract DateTime creation_date { get; construct; }
+  public DateTime creation_date { get; construct; }
 
   /**
    * The message of this post.
    */
-  public abstract string text { owned get; }
+  public string text {
+    owned get {
+      return Backend.TextUtils.format_text (text_modules);
+    }
+  }
 
   /**
    * The User who created this Post.
    */
-  public abstract Backend.User author { get; construct; }
+  public Backend.User author { get; construct; }
 
   /**
    * The source application who created this Post.
    */
-  public abstract string source { get; construct; }
+  public string source { get; construct; }
 
   /**
    * The website where this post originates from.
@@ -61,37 +65,39 @@ public interface Backend.Post : Object {
    * Mostly important for the Mastodon backend, where a post
    * can come from multiple site thanks to the federation.
    */
-  public abstract string domain { get; construct; }
+  public string domain { get; construct; }
 
   /**
    * The url to visit this post on the original website.
    */
-  public abstract string url { get; construct; }
+  public string url { get; construct; }
 
   /**
    * If an post is an repost or quote, this stores the post reposted or quoted.
    */
-  public abstract Post? referenced_post { get; construct; }
+  public Post? referenced_post { get; construct; }
 
   /**
    * How often the post was liked.
    */
-  public abstract int liked_count { get; construct; }
+  public int liked_count { get; construct; }
 
   /**
    * How often the post was replied to.
    */
-  public abstract int replied_count { get; construct; }
+  public int replied_count { get; construct; }
 
   /**
    * How often this post was reposted or quoted.
    */
-  public abstract int reposted_count { get; construct; }
+  public int reposted_count { get; construct; }
 
   /**
    * Returns media attached to this Post.
    */
-  public abstract Media[] get_media ();
+  public Backend.Media[] get_media () {
+    return attached_media;
+  }
 
 #if DEBUG
   /**
@@ -99,7 +105,19 @@ public interface Backend.Post : Object {
    *
    * Only used in test cases and therefore only available in debug builds.
    */
-  public abstract TextModule[] get_text_modules ();
+  public TextModule[] get_text_modules () {
+    return text_modules;
+  }
 #endif
+
+  /**
+   * All media attached to this post.
+   */
+  protected Backend.Media[] attached_media;
+
+  /**
+   * The text split into modules for formatting.
+   */
+  protected TextModule[] text_modules;
 
 }

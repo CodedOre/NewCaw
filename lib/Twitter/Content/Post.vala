@@ -1,6 +1,6 @@
 /* Post.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,71 +23,7 @@ using GLib;
 /**
  * Represents one posted status message.
  */
-public class Backend.Twitter.Post : Object, Backend.Post {
-
-  /**
-   * The unique identifier of this post.
-   */
-  public string id { get; construct; }
-
-  /**
-   * The type of this post.
-   */
-  public PostType post_type { get; construct; }
-
-  /**
-   * The time this post was posted.
-   */
-  public DateTime creation_date { get; construct; }
-
-  /**
-   * The message of this post.
-   */
-  public string text {
-    owned get {
-      return Backend.TextUtils.format_text (text_modules);
-    }
-  }
-
-  /**
-   * The User who created this Post.
-   */
-  public Backend.User author { get; construct; }
-
-  /**
-   * The website where this post originates from.
-   */
-  public string domain { get; construct; }
-
-  /**
-   * The url to visit this post on the original website.
-   */
-  public string url { get; construct; }
-
-  /**
-   * The source application who created this Post.
-   */
-  public string source { get; construct; }
-
-  /**
-   * If an post is an repost or quote, this stores the post reposted or quoted.
-   */
-  public Backend.Post? referenced_post { get; construct; }
-
-  /**
-   * How often the post was liked.
-   */
-  public int liked_count { get; construct; }
-
-  /**
-   * How often the post was replied to.
-   */
-  public int replied_count { get; construct; }
-
-  /**
-   * How often this post was reposted or quoted.
-   */
-  public int reposted_count { get; construct; }
+public class Backend.Twitter.Post : Backend.Post {
 
   /**
    * Parses an given Json.Object and creates an Post object.
@@ -104,16 +40,25 @@ public class Backend.Twitter.Post : Object, Backend.Post {
     Json.Object? author_obj    = parse_author (data, includes);
     PostType     set_post_type = parse_reference (data, includes, out referenced_obj);
 
+    // Get strings used to compose the url.
+    var    post_author = author_obj  != null ? new User.from_json (author_obj) : null;
+    string author_name = post_author != null ? post_author.username : "";
+    string post_id     = data.get_string_member ("id");
+
     // Construct object with properties
     Object (
       // Set basic data
-      id:        data.get_string_member ("id"),
+      id:        post_id,
       source:    data.get_string_member ("source"),
       post_type: set_post_type,
       creation_date: new DateTime.from_iso8601 (
                        data.get_string_member ("created_at"),
                        new TimeZone.utc ()
                      ),
+
+      // Set url and domain
+      domain: PLATFORM_DOMAIN,
+      url:    @"https://$(PLATFORM_DOMAIN)/$(author_name)/status/$(post_id)",
 
       // Set public metrics
       liked_count:    (int) metrics.get_int_member ("like_count"),
@@ -122,7 +67,7 @@ public class Backend.Twitter.Post : Object, Backend.Post {
                     + (int) metrics.get_int_member ("quote_count"),
 
       // Set referenced objects
-      author:          author_obj     != null ? new User.from_json (author_obj) : null,
+      author:          post_author,
       referenced_post: referenced_obj != null ? new Post.from_json (referenced_obj, includes) : null
     );
 
@@ -139,18 +84,6 @@ public class Backend.Twitter.Post : Object, Backend.Post {
 
     // Retrieve the attached media for this Post
     attached_media = parse_media (data, includes);
-  }
-
-  /**
-   * Run at object construction.
-   *
-   * Used to manually construct the url and domain properties,
-   * as these are not provided by the Twitter API.
-   */
-  construct {
-    // Set domain and url
-    domain =  "Twitter.com";
-    url    = @"https://$(domain)/$(author.username)/status/$(id)";
   }
 
   /**
@@ -298,33 +231,5 @@ public class Backend.Twitter.Post : Object, Backend.Post {
     // Store the attached media
     return parsed_media;
   }
-
-  /**
-   * Returns media attached to this Post.
-   */
-  public Backend.Media[] get_media () {
-    return attached_media;
-  }
-
-#if DEBUG
-  /**
-   * Returns the text modules.
-   *
-   * Only used in test cases and therefore only available in debug builds.
-   */
-  public TextModule[] get_text_modules () {
-    return text_modules;
-  }
-#endif
-
-  /**
-   * All media attached to this post.
-   */
-  public Backend.Media[] attached_media;
-
-  /**
-   * The text split into modules for formatting.
-   */
-  private TextModule[] text_modules;
 
 }

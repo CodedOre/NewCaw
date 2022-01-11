@@ -1,6 +1,6 @@
-/* User.vala
+/* Platform.vala
  *
- * Copyright 2021-2022 Frederick Schenk
+ * Copyright 2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,40 +21,13 @@
 using GLib;
 
 /**
- * Stores information about one user of a platform.
+ * Namespace containing constants for this platform.
  */
-public abstract class Backend.User : Object {
+namespace Backend.TwitterLegacy {
 
   /**
-   * The identifier of the user in the API.
+   * The fixed domain for this platform.
    */
-  public string id { get; construct; }
-
-  /**
-   * The "name" of the user.
-   */
-  public string display_name { get; construct; }
-
-  /**
-   * The unique handle of this user.
-   */
-  public string username { get; construct; }
-
-  /**
-   * The avatar image from this user.
-   */
-  public Media avatar { get; construct; }
-
-  /**
-   * Checks if the User has a certain flag set.
-   */
-  public bool has_flag (UserFlag flag) {
-    return flag in flags;
-  }
-
-  /**
-   * Stores the flags for this user.
-   */
-  protected UserFlag flags;
+  private const string PLATFORM_DOMAIN = "Twitter.com";
 
 }

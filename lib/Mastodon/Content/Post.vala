@@ -1,6 +1,6 @@
 /* Post.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,71 +23,7 @@ using GLib;
 /**
  * Represents one posted status message.
  */
-public class Backend.Mastodon.Post : Object, Backend.Post {
-
-  /**
-   * The unique identifier of this post.
-   */
-  public string id { get; construct; }
-
-  /**
-   * The type of this post.
-   */
-  public PostType post_type { get; construct; }
-
-  /**
-   * The time this post was posted.
-   */
-  public DateTime creation_date { get; construct; }
-
-  /**
-   * The message of this post.
-   */
-  public string text {
-    owned get {
-      return Backend.TextUtils.format_text (text_modules);
-    }
-  }
-
-  /**
-   * The User who created this Post.
-   */
-  public Backend.User author { get; construct; }
-
-  /**
-   * The website where this post originates from.
-   */
-  public string domain { get; construct; }
-
-  /**
-   * The url to visit this post on the original website.
-   */
-  public string url { get; construct; }
-
-  /**
-   * The source application who created this Post.
-   */
-  public string source { get; construct; }
-
-  /**
-   * If an post is an repost or quote, this stores the post reposted or quoted.
-   */
-  public Backend.Post? referenced_post { get; construct; }
-
-  /**
-   * How often the post was liked.
-   */
-  public int liked_count { get; construct; }
-
-  /**
-   * How often the post was replied to.
-   */
-  public int replied_count { get; construct; }
-
-  /**
-   * How often this post was reposted or quoted.
-   */
-  public int reposted_count { get; construct; }
+public class Backend.Mastodon.Post : Backend.Post {
 
   /**
    * Parses an given Json.Object and creates an Post object.
@@ -162,33 +98,5 @@ public class Backend.Mastodon.Post : Object, Backend.Post {
     });
     attached_media = parsed_media;
   }
-
-  /**
-   * Returns media attached to this Post.
-   */
-  public Backend.Media[] get_media () {
-    return attached_media;
-  }
-
-#if DEBUG
-  /**
-   * Returns the text modules.
-   *
-   * Only used in test cases and therefore only available in debug builds.
-   */
-  public TextModule[] get_text_modules () {
-    return text_modules;
-  }
-#endif
-
-  /**
-   * All media attached to this post.
-   */
-  public Backend.Media[] attached_media;
-
-  /**
-   * The text split into modules for formatting.
-   */
-  private TextModule[] text_modules;
 
 }
