@@ -26,70 +26,6 @@ using GLib;
 public class Backend.TwitterLegacy.Post : Backend.Post {
 
   /**
-   * The unique identifier of this post.
-   */
-  public override string id { get; construct; }
-
-  /**
-   * The type of this post.
-   */
-  public override PostType post_type { get; construct; }
-
-  /**
-   * The time this post was posted.
-   */
-  public override DateTime creation_date { get; construct; }
-
-  /**
-   * The message of this post.
-   */
-  public override string text {
-    owned get {
-      return Backend.TextUtils.format_text (text_modules);
-    }
-  }
-
-  /**
-   * The User who created this Post.
-   */
-  public override Backend.User author { get; construct; }
-
-  /**
-   * The website where this post originates from.
-   */
-  public override string domain { get; construct; }
-
-  /**
-   * The url to visit this post on the original website.
-   */
-  public override string url { get; construct; }
-
-  /**
-   * The source application who created this Post.
-   */
-  public override string source { get; construct; }
-
-  /**
-   * If an post is an repost or quote, this stores the post reposted or quoted.
-   */
-  public override Backend.Post? referenced_post { get; construct; }
-
-  /**
-   * How often the post was liked.
-   */
-  public override int liked_count { get; construct; }
-
-  /**
-   * How often the post was replied to.
-   */
-  public override int replied_count { get; construct; }
-
-  /**
-   * How often this post was reposted or quoted.
-   */
-  public override int reposted_count { get; construct; }
-
-  /**
    * Parses an given Json.Object and creates an Post object.
    *
    * @param json A Json.Object retrieved from the API.
@@ -122,14 +58,22 @@ public class Backend.TwitterLegacy.Post : Backend.Post {
       set_post_type  = REPOST;
     }
 
+    // Get strings used to compose the url.
+    var    post_author = new User.from_json (json.get_object_member ("user"));
+    string author_name = post_author != null ? post_author.username : "";
+    string post_id     = json.get_string_member ("id_str");
 
     // Construct object with properties
     Object (
       // Set basic data
-      id:            json.get_string_member ("id_str"),
+      id:            post_id,
       creation_date: TextUtils.parse_time (json.get_string_member ("created_at")),
       post_type:     set_post_type,
       source:        application,
+
+      // Set url and domain
+      domain: PLATFORM_DOMAIN,
+      url:    @"https://$(PLATFORM_DOMAIN)/$(author_name)/status/$(post_id)",
 
       // Set metrics
       liked_count:    (int) json.get_int_member ("favorite_count"),
@@ -137,7 +81,7 @@ public class Backend.TwitterLegacy.Post : Backend.Post {
       replied_count:  -1, // Set to -1 as no data from API
 
       // Set referenced objects
-      author:          new User.from_json (json.get_object_member ("user")),
+      author:          post_author,
       referenced_post: referenced_obj != null ? new Post.from_json (referenced_obj) : null
     );
 
@@ -181,45 +125,5 @@ public class Backend.TwitterLegacy.Post : Backend.Post {
     }
     attached_media = parsed_media;
   }
-
-  /**
-   * Run at object construction.
-   *
-   * Used to manually construct the url and domain properties,
-   * as these are not provided by the Twitter API.
-   */
-  construct {
-    // Set domain and url
-    domain =  "Twitter.com";
-    url    = @"https://$(domain)/$(author.username)/status/$(id)";
-  }
-
-  /**
-   * Returns media attached to this Post.
-   */
-  public override Backend.Media[] get_media () {
-    return attached_media;
-  }
-
-#if DEBUG
-  /**
-   * Returns the text modules.
-   *
-   * Only used in test cases and therefore only available in debug builds.
-   */
-  public override TextModule[] get_text_modules () {
-    return text_modules;
-  }
-#endif
-
-  /**
-   * All media attached to this post.
-   */
-  public Backend.Media[] attached_media;
-
-  /**
-   * The text split into modules for formatting.
-   */
-  private TextModule[] text_modules;
 
 }

@@ -36,6 +36,7 @@ if get_option('support_mastodon')
 endif
 if get_option('support_twitter')
   libfiles += [
+    'Twitter/Platform.vala',
     'Twitter/Content/Media.vala',
     'Twitter/Content/Post.vala',
     'Twitter/Content/Profile.vala',
@@ -45,6 +46,7 @@ if get_option('support_twitter')
 endif
 if get_option('support_twitter_legacy')
   libfiles += [
+    'TwitterLegacy/Platform.vala',
     'TwitterLegacy/Content/Media.vala',
     'TwitterLegacy/Content/Post.vala',
     'TwitterLegacy/Content/Profile.vala',

@@ -26,70 +26,6 @@ using GLib;
 public class Backend.Mastodon.Post : Backend.Post {
 
   /**
-   * The unique identifier of this post.
-   */
-  public override string id { get; construct; }
-
-  /**
-   * The type of this post.
-   */
-  public override PostType post_type { get; construct; }
-
-  /**
-   * The time this post was posted.
-   */
-  public override DateTime creation_date { get; construct; }
-
-  /**
-   * The message of this post.
-   */
-  public override string text {
-    owned get {
-      return Backend.TextUtils.format_text (text_modules);
-    }
-  }
-
-  /**
-   * The User who created this Post.
-   */
-  public override Backend.User author { get; construct; }
-
-  /**
-   * The website where this post originates from.
-   */
-  public override string domain { get; construct; }
-
-  /**
-   * The url to visit this post on the original website.
-   */
-  public override string url { get; construct; }
-
-  /**
-   * The source application who created this Post.
-   */
-  public override string source { get; construct; }
-
-  /**
-   * If an post is an repost or quote, this stores the post reposted or quoted.
-   */
-  public override Backend.Post? referenced_post { get; construct; }
-
-  /**
-   * How often the post was liked.
-   */
-  public override int liked_count { get; construct; }
-
-  /**
-   * How often the post was replied to.
-   */
-  public override int replied_count { get; construct; }
-
-  /**
-   * How often this post was reposted or quoted.
-   */
-  public override int reposted_count { get; construct; }
-
-  /**
    * Parses an given Json.Object and creates an Post object.
    *
    * @param json A Json.Object retrieved from the API.
@@ -162,33 +98,5 @@ public class Backend.Mastodon.Post : Backend.Post {
     });
     attached_media = parsed_media;
   }
-
-  /**
-   * Returns media attached to this Post.
-   */
-  public override Backend.Media[] get_media () {
-    return attached_media;
-  }
-
-#if DEBUG
-  /**
-   * Returns the text modules.
-   *
-   * Only used in test cases and therefore only available in debug builds.
-   */
-  public override TextModule[] get_text_modules () {
-    return text_modules;
-  }
-#endif
-
-  /**
-   * All media attached to this post.
-   */
-  public Backend.Media[] attached_media;
-
-  /**
-   * The text split into modules for formatting.
-   */
-  private TextModule[] text_modules;
 
 }
