@@ -43,11 +43,7 @@ public abstract class Backend.Post : Object {
   /**
    * The message of this post.
    */
-  public string text {
-    owned get {
-      return Backend.TextUtils.format_text (text_modules);
-    }
-  }
+  public string text { get; protected set; }
 
   /**
    * The User who created this Post.
@@ -91,6 +87,16 @@ public abstract class Backend.Post : Object {
    * How often this post was reposted or quoted.
    */
   public int reposted_count { get; construct; }
+
+  /**
+   * Run while an object is constructed.
+   */
+  construct {
+    // Reformat the text when flags were changed.
+    Utils.TextFormats.instance.update_formatting.connect (() => {
+      text = Utils.format_text (text_modules);
+    });
+  }
 
   /**
    * Returns media attached to this Post.

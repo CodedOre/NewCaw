@@ -80,7 +80,10 @@ public class Backend.Twitter.Post : Backend.Post {
     if (data.has_member ("entities")) {
       entities = data.get_object_member ("entities");
     }
-    text_modules = TextUtils.parse_text (raw_text, entities);
+    text_modules = Utils.parse_text (raw_text, entities);
+
+    // First format of the text.
+    text = Backend.Utils.format_text (text_modules);
 
     // Retrieve the attached media for this Post
     attached_media = parse_media (data, includes);
