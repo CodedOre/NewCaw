@@ -26,31 +26,6 @@ using GLib;
 public class Backend.Twitter.Media : Backend.Media {
 
   /**
-   * The unique identifier for this media.
-   */
-  public override string id { get; construct; }
-
-  /**
-   * The type for this media.
-   */
-  public override MediaType media_type { get; construct; }
-
-  /**
-   * An text description of the media.
-   */
-  public override string alt_text { get; construct; }
-
-  /**
-   * The url leading to the preview.
-   */
-  public override string preview_url { get; construct; }
-
-  /**
-   * The url leading to the media.
-   */
-  public override string media_url { get; construct; }
-
-  /**
    * Creates a Media object from a specific url.
    *
    * @param type The type for the media
