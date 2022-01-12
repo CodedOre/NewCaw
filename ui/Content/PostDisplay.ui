@@ -16,38 +16,50 @@
         <property name="spacing">8</property>
         <child>
           <object class="GtkBox">
-            <property name="spacing">4</property>
+            <property name="spacing">8</property>
             <child>
               <object class="UserAvatar" id="repost_avatar">
                 <property name="size">24</property>
-                <property name="margin-end">4</property>
               </object>
             </child>
             <child>
-              <object class="GtkImage">
-                <property name="icon-name">repost-symbolic</property>
-                <property name="margin-end">4</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkLabel" id="repost_display_label">
-                <property name="ellipsize">end</property>
+              <object class="GtkButton">
+                <child>
+                  <object class="GtkBox">
+                    <property name="spacing">4</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">repost-symbolic</property>
+                        <property name="margin-end">4</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="repost_display_label">
+                        <property name="ellipsize">end</property>
+                        <style>
+                          <class name="caption-heading"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="BadgesBox" id="repost_badges">
+                        <property name="icon-size">8</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="repost_name_label">
+                        <property name="ellipsize">end</property>
+                        <style>
+                          <class name="caption"/>
+                          <class name="dim-label"/>
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </child>
                 <style>
-                  <class name="caption-heading"/>
-                </style>
-              </object>
-            </child>
-            <child>
-              <object class="BadgesBox" id="repost_badges">
-                <property name="icon-size">8</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkLabel" id="repost_name_label">
-                <property name="ellipsize">end</property>
-                <style>
-                  <class name="caption"/>
-                  <class name="dim-label"/>
+                  <class name="flat"/>
+                  <class name="inline"/>
                 </style>
               </object>
             </child>
@@ -55,7 +67,6 @@
               <object class="GtkLabel" id="repost_time_label">
                 <property name="halign">end</property>
                 <property name="hexpand">True</property>
-                <property name="margin-start">8</property>
                 <style>
                   <class name="caption"/>
                   <class name="dim-label"/>
