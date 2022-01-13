@@ -6,9 +6,11 @@ cawdepends = [
   dependency('glib-2.0',      version: '>= 2.50'),
   dependency('gtk4',          version: '>= 4.0'),
   dependency('libadwaita-1',  version: '>= 1.0'),
+  # Compile with GLib Math support.
   meson.get_compiler('c').find_library('m', required: false)
 ]
 
+# Link backend to client
 cawdepends += declare_dependency(
   link_with:            backendlib,
   include_directories:  backendsrc,

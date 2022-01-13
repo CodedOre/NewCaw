@@ -6,7 +6,8 @@ libdepends = [
   dependency('gtk4',           version: '>= 4.0'),
   dependency('gdk-pixbuf-2.0', version: '>= 2.0'),
   dependency('json-glib-1.0',  version: '>= 1.2'),
-  dependency('libsoup-3.0',    version: '>= 3.0')
+  dependency('libsoup-3.0',    version: '>= 3.0'),
+  dependency('rest-1.0',       version: '>= 0.9')
 ]
 
 # Base files

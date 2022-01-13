@@ -26,13 +26,30 @@
   "modules":
   [
     {
-      "name":         "Cawbird",
-      "buildsystem":  "meson",
-      "builddir":      true,
+      "name":        "Rest",
+      "buildsystem": "meson",
+      "config-opts": [
+        "-Dexamples=false",
+        "-Dgtk_doc=false",
+        "-Dsoup2=false",
+        "-Dvapi=true"
+      ],
       "sources": [
         {
-          "type":"dir",
-          "path":"."
+          "type":   "git",
+          "url":    "https://gitlab.gnome.org/gnome/librest.git",
+          "branch": "master"
+        }
+      ]
+    },
+    {
+      "name":        "Cawbird",
+      "buildsystem": "meson",
+      "builddir":     true,
+      "sources": [
+        {
+          "type": "dir",
+          "path": "."
         }
       ]
     }
