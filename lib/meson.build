@@ -28,7 +28,7 @@ libfiles = [
 ]
 
 # Add files for active backends
-if get_option('support_mastodon')
+if get_option('mastodon_backend').enabled()
   libfiles += [
     'Mastodon/Content/Media.vala',
     'Mastodon/Content/Post.vala',
@@ -37,7 +37,7 @@ if get_option('support_mastodon')
     'Mastodon/Utils/TextUtils.vala'
   ]
 endif
-if get_option('support_twitter')
+if get_option('twitter_backend').enabled()
   libfiles += [
     'Twitter/Platform.vala',
     'Twitter/Content/Media.vala',
@@ -47,7 +47,7 @@ if get_option('support_twitter')
     'Twitter/Utils/TextUtils.vala'
   ]
 endif
-if get_option('support_twitter_legacy')
+if get_option('twitter_legacy_backend').enabled()
   libfiles += [
     'TwitterLegacy/Platform.vala',
     'TwitterLegacy/Content/Media.vala',

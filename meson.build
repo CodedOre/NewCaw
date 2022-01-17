@@ -35,14 +35,21 @@ endif
 message('Building ' + meson.project_name () + ' ' + version)
 
 # Configure supported platforms
-if get_option('support_mastodon')
+if get_option('mastodon_backend').enabled()
   add_project_arguments('-D', 'SUPPORT_MASTODON', language: 'vala')
 endif
-if get_option('support_twitter')
+if get_option('twitter_backend').enabled()
   add_project_arguments('-D', 'SUPPORT_TWITTER', language: 'vala')
 endif
-if get_option('support_twitter_legacy')
+if get_option('twitter_legacy_backend').enabled()
   add_project_arguments('-D', 'SUPPORT_TWITTER_LEGACY', language: 'vala')
+endif
+
+# Check if client key and secret are provided
+if get_option('twitter_backend').enabled() or get_option('twitter_legacy_backend').enabled()
+  if get_option('twitter_client_key') == '' or get_option('twitter_client_secret') == ''
+    error('No client key and/or secret provided for the Twitter backend.')
+  endif
 endif
 
 # Build and test the backend from subdirectories
