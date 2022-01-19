@@ -1,6 +1,6 @@
 /* Cawbird.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,30 @@ public class Cawbird : Adw.Application {
   }
 
   protected override void activate () {
+#if SUPPORT_MASTODON
+    // Initializes the Mastodon backend
+#endif
+#if SUPPORT_TWITTER || SUPPORT_TWITTER_LEGACY
+    // Get client key and secret
+    string client_key    = Config.TWITTER_CLIENT_KEY;
+    string client_secret = Config.TWITTER_CLIENT_SECRET;
+
+    // Get possible key and secret override
+    var settings         = new Settings ("uk.co.ibboard.Cawbird.experimental");
+    string custom_key    = settings.get_string ("twitter-client-key-override");
+    string custom_secret = settings.get_string ("twitter-client-secret-override");
+#endif
+#if SUPPORT_TWITTER
+#endif
+#if SUPPORT_TWITTER_LEGACY
+    // Initiate TwitterLegacy backend with either build or override keys
+    if (custom_key != "" && custom_secret != "") {
+      Backend.TwitterLegacy.Platform.init (custom_key, custom_secret);
+    } else {
+      Backend.TwitterLegacy.Platform.init (client_key, client_secret);
+    }
+#endif
+
     // Open the MainWindow
     var win = this.active_window;
     if (win == null) {

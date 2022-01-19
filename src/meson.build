@@ -40,6 +40,8 @@ cdata = configuration_data()
 cdata.set_quoted ('LOCALEDIR', join_paths(get_option('prefix'), get_option('localedir')))
 cdata.set_quoted ('GETTEXT_PACKAGE', meson.project_name())
 cdata.set_quoted ('PROJECT_VERSION', version)
+cdata.set_quoted ('TWITTER_CLIENT_KEY', get_option ('twitter_client_key'))
+cdata.set_quoted ('TWITTER_CLIENT_SECRET', get_option ('twitter_client_secret'))
 configure_file(
   output: 'config.h',
   configuration: cdata
