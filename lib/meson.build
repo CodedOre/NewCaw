@@ -34,6 +34,7 @@ if get_option('mastodon_backend').enabled()
     'Mastodon/Content/Post.vala',
     'Mastodon/Content/Profile.vala',
     'Mastodon/Content/User.vala',
+    'Mastodon/Organization/Account.vala',
     'Mastodon/Utils/TextUtils.vala'
   ]
 endif
@@ -44,6 +45,7 @@ if get_option('twitter_backend').enabled()
     'Twitter/Content/Post.vala',
     'Twitter/Content/Profile.vala',
     'Twitter/Content/User.vala',
+    'Twitter/Organization/Account.vala',
     'Twitter/Utils/TextUtils.vala'
   ]
 endif
@@ -54,6 +56,7 @@ if get_option('twitter_legacy_backend').enabled()
     'TwitterLegacy/Content/Post.vala',
     'TwitterLegacy/Content/Profile.vala',
     'TwitterLegacy/Content/User.vala',
+    'TwitterLegacy/Organization/Account.vala',
     'TwitterLegacy/Utils/TextUtils.vala'
   ]
 endif
