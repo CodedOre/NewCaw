@@ -30,11 +30,27 @@ using GLib;
 public class Backend.TwitterLegacy.Account : Backend.Account {
 
   /**
-   * Creates a Rest.ProxyCall to perform an API call.
+   * Creates an Account with existing access token.
+   *
+   * @param token The access token for the account.
+   * @param secret The secret for the access token.
    */
-  internal override Rest.ProxyCall create_call () {
-    assert (proxy != null);
-    return proxy.new_call ();
+  public Account (string token, string secret) {
+  }
+
+  /**
+   * Finalizes a Account-authentication and creates the object.
+   *
+   * This constructor should be run after
+   * init_authentication and use the code retrieved
+   * from the site where the user authenticated himself.
+   *
+   * After construction, you should save the access token retrieved
+   * from the platform so you can use the normal constructor.
+   *
+   * @param auth_code The authentication code for the user.
+   */
+  public Account.authenticate (string auth_code) {
   }
 
   /**
@@ -63,6 +79,14 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
 
     // Return authentication link
     return @"$(token_proxy.url_format)/oauth/authorize?oauth_token=$(token_proxy.token)";
+  }
+
+  /**
+   * Creates a Rest.ProxyCall to perform an API call.
+   */
+  internal override Rest.ProxyCall create_call () {
+    assert (proxy != null);
+    return proxy.new_call ();
   }
 
   /**

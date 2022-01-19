@@ -37,6 +37,16 @@ errordomain AccountError {
 public abstract class Backend.Account : Backend.Profile {
 
   /**
+   * The access token for this specific Account.
+   */
+  public string access_token { get; construct; }
+
+  /**
+   * The access secret for this specific Account.
+   */
+  public string access_secret { get; construct; }
+
+  /**
    * Creates a Rest.ProxyCall to perform an API call.
    */
   internal abstract Rest.ProxyCall create_call ();
