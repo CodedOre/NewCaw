@@ -60,7 +60,7 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
    *
    * @throws Error Any error occurring while requesting the token.
    */
-  public async static string init_authentication () throws Error {
+  public static string init_authentication () throws Error {
     // Create call proxy
     var token_proxy = new Rest.OAuthProxy (Platform.client_key,
                                            Platform.client_secret,
@@ -69,10 +69,12 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
 
     // Get temporary token
     try {
-      bool token_request = yield token_proxy.request_token_async ("oauth/request_token", "oob", null);
-      if (!token_request) {
-        throw new AccountError.FAILED_TOKEN_REQUEST ("No token retrieved from API");
-      }
+      token_proxy.request_token_async.begin ("oauth/request_token", "oob", null, (obj, res) => {
+        bool token_request = token_proxy.request_token_async.end (res);
+        if (!token_request) {
+          throw new AccountError.FAILED_TOKEN_REQUEST ("No token retrieved from API");
+        }
+      });
     } catch (Error e) {
       throw e;
     }
