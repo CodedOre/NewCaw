@@ -21,9 +21,81 @@
 using GLib;
 
 /**
- * Namespace containing constants for this platform.
+ * The backend for the Twitter 1.0 API.
  */
 namespace Backend.TwitterLegacy {
+
+  /**
+   * Base information about the platform used by the backend.
+   */
+  public class Platform : Object {
+
+    /**
+     * The key to authenticate the client to the platform.
+     */
+    public static string client_key {
+      get {
+        return instance.stored_client_key;
+      }
+    }
+
+    /**
+     * The secret to authenticate the client to the platform.
+     */
+    public static string client_secret {
+      get {
+        return instance.stored_client_secret;
+      }
+    }
+
+    /**
+     * The global instance for the platform.
+     */
+    private static Platform instance {
+      get {
+        if (stored_instance != null) {
+          critical ("TwitterLegacy platform was not initialized!");
+        }
+        return stored_instance;
+      }
+    }
+
+    /**
+     * Initializes the platform for use.
+     *
+     * @param key The oauth key for the app.
+     * @param secret The oauth secret for the app.
+     */
+    public static void init (string key, string secret) {
+      // Check if no instance was already initialized
+      if (stored_instance != null) {
+        error ("TwitterLegacy platform already initialized!");
+      }
+
+      // Create the instance for the singleton
+      stored_instance = new Platform ();
+
+      // Set the key and secret
+      stored_instance.stored_client_key    = key;
+      stored_instance.stored_client_secret = secret;
+    }
+
+    /**
+     * Stores the client_key inside the instance.
+     */
+    private string stored_client_key;
+
+    /**
+     * Stores the client_secret inside the instance.
+     */
+    private string stored_client_secret;
+
+    /**
+     * Stores the global instance for the platform.
+     */
+    private static Platform? stored_instance = null;
+
+  }
 
   /**
    * The fixed domain for this platform.
