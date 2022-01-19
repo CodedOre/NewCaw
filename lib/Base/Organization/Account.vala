@@ -21,6 +21,13 @@
 using GLib;
 
 /**
+ * Error domain for errors in Account.
+ */
+errordomain AccountError {
+  FAILED_TOKEN_REQUEST
+}
+
+/**
  * Represents an Profile that uses this library.
  *
  * Account extends Profile to add the

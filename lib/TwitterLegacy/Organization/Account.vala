@@ -38,6 +38,34 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
   }
 
   /**
+   * Prepares the link to launch the authentication of a new Account.
+   *
+   * @return The link with the site to authenticate the user.
+   *
+   * @throws Error Any error occurring while requesting the token.
+   */
+  public async static string init_authentication () throws Error {
+    // Create call proxy
+    var token_proxy = new Rest.OAuthProxy (Platform.client_key,
+                                           Platform.client_secret,
+                                           "https://api.twitter.com",
+                                           false);
+
+    // Get temporary token
+    try {
+      bool token_request = yield token_proxy.request_token_async ("oauth/request_token", "oob", null);
+      if (!token_request) {
+        throw new AccountError.FAILED_TOKEN_REQUEST ("No token retrieved from API");
+      }
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Return authentication link
+    return @"$(token_proxy.url_format)/oauth/authorize?oauth_token=$(token_proxy.token)";
+  }
+
+  /**
    * The proxy used to authorize the API calls.
    */
   private Rest.OAuthProxy proxy;
