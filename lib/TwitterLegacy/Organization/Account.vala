@@ -30,21 +30,169 @@ using GLib;
 public class Backend.TwitterLegacy.Account : Backend.Account {
 
   /**
+   * Constructs an object for an Account.
+   *
+   * Not to be called directly, but from the static methods
+   * Account.authenticate and Account.login.
+   *
+   * @param json The Json.Object with the account data.
+   * @param call_proxy The Rest.Proxy for making calls.
+   */
+  private Account (Json.Object json, Rest.OAuthProxy call_proxy) {
+    // Store the proxy in it's variable
+    proxy = call_proxy;
+
+    // Parse the url for avatar and header
+    string avatar_preview_url = json.get_string_member ("profile_image_url_https");
+    string header_preview_url = json.has_member ("profile_banner_url") ?
+                                  json.get_string_member ("profile_banner_url")
+                                  : null;
+    string header_media_url = "", avatar_media_url;
+    try {
+      var image_regex = new Regex ("(https://pbs.twimg.com/.*?)_normal(\\..*)");
+      avatar_media_url = image_regex.replace (
+        avatar_preview_url,
+        avatar_preview_url.length,
+        0,
+        "\\1\\2"
+      );
+      if (header_preview_url != null) {
+        header_media_url = image_regex.replace (
+          header_preview_url,
+          header_preview_url.length,
+          0,
+          "\\1\\2"
+        );
+      }
+    } catch (RegexError e) {
+      error (@"Error while parsing source: $(e.message)");
+    }
+
+    // Get strings used to compose the url.
+    string account_name = json.get_string_member ("screen_name");
+
+    // Construct the object with properties
+    Object (
+      // Set the id of the account
+      id: json.get_string_member ("id_str"),
+
+      // Set the account access
+      access_token:  proxy.token,
+      access_secret: proxy.token_secret,
+
+      // Set the creation data
+      creation_date: Utils.parse_time (json.get_string_member ("created_at")),
+
+      // Set the names of the account
+      display_name: json.get_string_member ("name"),
+      username:     account_name,
+
+      // Set url and domain
+      domain: PLATFORM_DOMAIN,
+      url:    @"https://$(PLATFORM_DOMAIN)/$(account_name)",
+
+      // Set metrics
+      followers_count: (int) json.get_int_member ("followers_count"),
+      following_count: (int) json.get_int_member ("friends_count"),
+      posts_count:     (int) json.get_int_member ("statuses_count"),
+
+      // Set the ImageLoader for the avatar
+      avatar: new Media (PICTURE, avatar_media_url, avatar_preview_url),
+      header: header_preview_url != null
+                ? new Media (PICTURE, header_media_url, header_preview_url)
+                : null
+    );
+
+    // Parse the text into modules
+    Json.Object? description_entities = null;
+    Json.Object? weblink_entity       = null;
+    string       raw_text             = json.get_string_member ("description");
+
+    // Parse entities
+    if (json.has_member ("entities")) {
+      Json.Object profile_entities = json.get_object_member ("entities");
+      // Parse entities for the description
+      if (profile_entities.has_member ("description")) {
+        description_entities = profile_entities.get_object_member ("description");
+      }
+      // Parse entity for the linked url
+      if (profile_entities.has_member ("url")) {
+        Json.Object profile_urls = profile_entities.get_object_member ("url");
+        Json.Array  urls_array   = profile_urls.get_array_member ("urls");
+        // It should only have one element, so assuming this to avoid an loop
+        Json.Node url_node = urls_array.get_element (0);
+        if (url_node.get_node_type () == OBJECT) {
+          weblink_entity = url_node.get_object ();
+        }
+      }
+    }
+    description_modules = Utils.parse_text (raw_text, description_entities);
+
+    // First format of the description.
+    description = Backend.Utils.format_text (description_modules);
+
+    // Store additional information in data fields
+    UserDataField[] additional_fields = {};
+    if (json.has_member ("location")) {
+      if (json.get_string_member ("location") != "") {
+        var new_field      = UserDataField ();
+        new_field.type     = LOCATION;
+        new_field.name     = "Location";
+        new_field.display  = json.get_string_member ("location");
+        new_field.target   = null;
+        additional_fields += new_field;
+      }
+    }
+    if (weblink_entity != null) {
+      var new_field      = UserDataField ();
+      new_field.type     = WEBLINK;
+      new_field.name     = "Weblink";
+      new_field.display  = weblink_entity.get_string_member ("display_url");
+      new_field.target   = weblink_entity.get_string_member ("expanded_url");
+      additional_fields += new_field;
+    }
+    data_fields = additional_fields;
+
+    // Get possible flags for this account
+    if (json.get_boolean_member ("protected")) {
+      flags = flags | MODERATED | PROTECTED;
+    }
+    if (json.get_boolean_member ("verified")) {
+      flags = flags | VERIFIED;
+    }
+  }
+
+  /**
    * Creates an Account with existing access token.
    *
    * @param token The access token for the account.
    * @param secret The secret for the access token.
    *
+   * @return The constructed Account.
+   *
    * @throws Error Any error occurring while requesting the token.
    */
-  public Account (string token, string secret) throws Error {
+  public static async Account login (string token, string secret) throws Error {
     // Create the proxy for this Account
-    proxy = new Rest.OAuthProxy.with_token (Platform.client_key,
-                                            Platform.client_secret,
-                                            token,
-                                            secret,
-                                            "https://api.twitter.com",
-                                            false);
+    var acc_proxy = new Rest.OAuthProxy.with_token (Platform.client_key,
+                                                    Platform.client_secret,
+                                                    token,
+                                                    secret,
+                                                    "https://api.twitter.com",
+                                                    false);
+
+    // Verify access and load profile data
+    Rest.ProxyCall verify_call = acc_proxy.new_call ();
+    verify_call.set_method ("GET");
+    verify_call.set_function ("1.1/account/verify_credentials");
+
+    // Load the Json and create the Account
+    try {
+      Json.Object json = yield APICalls.get_data (verify_call);
+      return new Account (json, acc_proxy);
+    } catch (Error e) {
+      throw e;
+    }
   }
 
   /**
@@ -59,21 +207,36 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
    *
    * @param auth_code The authentication code for the user.
    *
+   * @return The constructed Account.
+   *
    * @throws Error Any error occurring while requesting the token.
    */
-  public async Account.authenticate (string auth_code) throws Error {
+  public static async Account authenticate (string auth_code) throws Error {
     // Create the proxy for this Account
-    proxy = new Rest.OAuthProxy (Platform.client_key,
-                                 Platform.client_secret,
-                                 "https://api.twitter.com",
-                                 false);
+    var acc_proxy = new Rest.OAuthProxy (Platform.client_key,
+                                         Platform.client_secret,
+                                         "https://api.twitter.com",
+                                         false);
 
     // Retrieve the account key and secret
     try {
-      bool token_request = yield proxy.access_token_async ("oauth/access_token", auth_code, null);
+      bool token_request = yield acc_proxy.access_token_async ("oauth/access_token", auth_code, null);
       if (!token_request) {
         throw new AccountError.FAILED_TOKEN_REQUEST ("No token retrieved from API");
       }
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Verify access and load profile data
+    Rest.ProxyCall verify_call = acc_proxy.new_call ();
+    verify_call.set_method ("GET");
+    verify_call.set_function ("1.1/account/verify_credentials");
+
+    // Load the Json and create the Account
+    try {
+      Json.Object json = yield APICalls.get_data (verify_call);
+      return new Account (json, acc_proxy);
     } catch (Error e) {
       throw e;
     }
