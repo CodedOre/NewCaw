@@ -31,6 +31,11 @@ namespace Backend.TwitterLegacy {
   public class Platform : Object {
 
     /**
+     * The fixed domain for this platform.
+     */
+    internal const string DOMAIN = "Twitter.com";
+
+    /**
      * The key to authenticate the client to the platform.
      */
     public static string client_key {
@@ -96,10 +101,5 @@ namespace Backend.TwitterLegacy {
     private static Platform? stored_instance = null;
 
   }
-
-  /**
-   * The fixed domain for this platform.
-   */
-  private const string PLATFORM_DOMAIN = "Twitter.com";
 
 }

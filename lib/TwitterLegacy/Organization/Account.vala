@@ -88,8 +88,8 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
       username:     account_name,
 
       // Set url and domain
-      domain: PLATFORM_DOMAIN,
-      url:    @"https://$(PLATFORM_DOMAIN)/$(account_name)",
+      domain: Platform.DOMAIN,
+      url:    @"https://$(Platform.DOMAIN)/$(account_name)",
 
       // Set metrics
       followers_count: (int) json.get_int_member ("followers_count"),

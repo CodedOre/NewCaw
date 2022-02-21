@@ -66,8 +66,8 @@ public class Backend.Twitter.Profile : Backend.Profile {
       username:     profile_name,
 
       // Set url and domain
-      domain: PLATFORM_DOMAIN,
-      url:    @"https://$(PLATFORM_DOMAIN)/$(profile_name)",
+      domain: Platform.DOMAIN,
+      url:    @"https://$(Platform.DOMAIN)/$(profile_name)",
 
       // Set metrics
       followers_count: (int) metrics.get_int_member ("followers_count"),
