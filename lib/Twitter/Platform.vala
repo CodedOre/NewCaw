@@ -36,24 +36,6 @@ namespace Backend.Twitter {
     internal const string DOMAIN = "Twitter.com";
 
     /**
-     * The key to authenticate the client to the platform.
-     */
-    public static string client_key {
-      get {
-        return instance.stored_client_key;
-      }
-    }
-
-    /**
-     * The secret to authenticate the client to the platform.
-     */
-    public static string client_secret {
-      get {
-        return instance.stored_client_secret;
-      }
-    }
-
-    /**
      * The global instance for the platform.
      */
     private static Platform instance {
@@ -66,10 +48,31 @@ namespace Backend.Twitter {
     }
 
     /**
-     * Initializes the platform for use.
+     * Retrieve the client key used with the API.
      *
-     * @param key The oauth key for the app.
-     * @param secret The oauth secret for the app.
+     * @return The client key used to communicate with the server.
+     */
+    public static string get_client_key () {
+      return instance.stored_client_key;
+    }
+
+    /**
+     * Retrieve the client secret used with the API.
+     *
+     * @return The client secret used to communicate with the server.
+     */
+    public static string get_client_secret () {
+      return instance.stored_client_secret;
+    }
+
+    /**
+     * Creates a connection with the server.
+     *
+     * This should be the first method before using any API from the server,
+     * as this sets up the clients key and secrets.
+     *
+     * @param key The key to authenticate the client, or null if not set.
+     * @param secret The secret the authenticate the client, or null if not set.
      */
     public static void init (string key, string secret) {
       // Check if no instance was already initialized

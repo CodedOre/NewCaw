@@ -171,8 +171,8 @@ public class Backend.Twitter.Account : Backend.Account {
    */
   public static async Account login (string token, string secret) throws Error {
     // Create the proxy for this Account
-    var acc_proxy = new Rest.OAuthProxy.with_token (Platform.client_key,
-                                                    Platform.client_secret,
+    var acc_proxy = new Rest.OAuthProxy.with_token (Platform.get_client_key (),
+                                                    Platform.get_client_secret (),
                                                     token,
                                                     secret,
                                                     "https://api.twitter.com",
@@ -212,8 +212,8 @@ public class Backend.Twitter.Account : Backend.Account {
    */
   public static async Account authenticate (string auth_code) throws Error {
     // Create the proxy for this Account
-    var acc_proxy = new Rest.OAuthProxy (Platform.client_key,
-                                         Platform.client_secret,
+    var acc_proxy = new Rest.OAuthProxy (Platform.get_client_key (),
+                                         Platform.get_client_secret (),
                                          "https://api.twitter.com",
                                          false);
 
@@ -253,8 +253,8 @@ public class Backend.Twitter.Account : Backend.Account {
    */
   public static async string init_authentication () throws Error {
     // Create call proxy
-    var token_proxy = new Rest.OAuthProxy (Platform.client_key,
-                                           Platform.client_secret,
+    var token_proxy = new Rest.OAuthProxy (Platform.get_client_key (),
+                                           Platform.get_client_secret (),
                                            "https://api.twitter.com",
                                            false);
 
