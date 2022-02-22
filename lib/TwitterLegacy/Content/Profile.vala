@@ -20,6 +20,12 @@
 
 using GLib;
 
+
+/**
+ * Extends User with additional information not contained there.
+ *
+ * Used when displaying a User in detail.
+ */
 public class Backend.TwitterLegacy.Profile : Backend.Profile {
 
   /**
