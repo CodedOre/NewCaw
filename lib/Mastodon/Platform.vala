@@ -26,42 +26,14 @@ using GLib;
 namespace Backend.Mastodon {
 
   /**
-   * Initializes the platform and provides basic data.
+   * Base information about the platform used by the backend.
    */
-  public class Platform : Object {
+  namespace Platform {
 
     /**
-     * Retrieve the client key used with the API.
-     *
-     * @param server The server to be used with the API.
-     *
-     * @return The client key used to communicate with the server.
+     * The URI for "out-of-band" authentication.
      */
-    public static string get_client_key (string server) {
-    }
-
-    /**
-     * Retrieve the client secret used with the API.
-     *
-     * @param server The server to be used with the API.
-     *
-     * @return The client secret used to communicate with the server.
-     */
-    public static string get_client_secret (string server) {
-    }
-
-    /**
-     * Creates a connection with the server.
-     *
-     * This should be the first method before using any API from the server,
-     * as this sets up the clients key and secrets.
-     *
-     * @param server The server to be used with the API.
-     * @param key The key to authenticate the client, or null if not set.
-     * @param secret The secret the authenticate the client, or null if not set.
-     */
-    public static void init (string server, string key, string secret) {
-    }
+    private const string OOB_URI = "urn:ietf:wg:oauth:2.0:oob";
 
   }
 

@@ -46,14 +46,10 @@ public class Cawbird : Adw.Application {
     string custom_secret = settings.get_string ("twitter-client-secret-override");
 #endif
 #if SUPPORT_TWITTER
+    // Initializes the Twitter backend
 #endif
 #if SUPPORT_TWITTER_LEGACY
-    // Initiate TwitterLegacy backend with either build or override keys
-    if (custom_key != "" && custom_secret != "") {
-      Backend.TwitterLegacy.Platform.init (custom_key, custom_secret);
-    } else {
-      Backend.TwitterLegacy.Platform.init (client_key, client_secret);
-    }
+    // Initializes the TwitterLegacy backend
 #endif
 
     // Open the MainWindow
