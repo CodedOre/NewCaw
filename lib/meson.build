@@ -23,6 +23,7 @@ libfiles = [
   'Base/Content/UserEnums.vala',
   'Base/Organization/Account.vala',
   'Base/Organization/Client.vala',
+  'Base/Organization/Server.vala',
   'Base/Utils/APICalls.vala',
   'Base/Utils/MediaLoader.vala',
   'Base/Utils/TextFormats.vala',
