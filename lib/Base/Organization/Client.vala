@@ -22,6 +22,12 @@ using GLib;
 
 /**
  * Stores basic information representing the client.
+ *
+ * This provides information used to identify the
+ * application using the backend in certain classes
+ * such as Server.
+ *
+ * As such, it needs to be the first to be initialized.
  */
 [SingleInstance]
 public class Backend.Client : Object {
@@ -29,7 +35,14 @@ public class Backend.Client : Object {
   /**
    * The global instance of Client.
    */
-  public static Client? instance { get; private set; default = null; }
+  public static Client? instance {
+    get {
+      if (_instance == null) {
+        critical ("Client was not initialized!");
+      }
+      return _instance;
+    }
+  }
 
   /**
    * The name of the client.
@@ -72,7 +85,12 @@ public class Backend.Client : Object {
     );
 
     // Set the global instance
-    instance = this;
+    _instance = this;
   }
+
+  /**
+   * Stores the global instance of Client.
+   */
+  private static Client? _instance = null;
 
 }

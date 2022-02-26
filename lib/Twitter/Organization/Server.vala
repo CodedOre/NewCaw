@@ -26,11 +26,24 @@ using GLib;
 public class Backend.Twitter.Server : Backend.Server {
 
   /**
+   * The "Out-of-Band" redirect for Twitter.
+   */
+  internal override string oob_redirect {
+    get {
+      return "oob";
+    }
+  }
+
+  /**
    * Creates a new connection to the Twitter server.
    *
-   * Creates a connection to the Twitter instances and checks that the connection is working properly.
-   * As Twitter requires the creation of client keys and secrets beforehand,
+   * Creates a connection to the Twitter instances and checks that the
+   * connection is working properly. As Twitter requires the creation of
+   * client keys and secrets beforehand,
    * these have to be given to the constructor.
+   *
+   * Please note that due to the lack of an API point
+   * the credentials are not checked in this step.
    *
    * @param client_key The key to authenticate the client.
    * @param client_secret The secret to authenticate the client.

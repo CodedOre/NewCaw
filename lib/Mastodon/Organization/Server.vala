@@ -26,6 +26,15 @@ using GLib;
 public class Backend.Mastodon.Server : Backend.Server {
 
   /**
+   * The "Out-of-Band" redirect for Mastodon.
+   */
+  internal override string oob_redirect {
+    get {
+      return "urn:ietf:wg:oauth:2.0:oob";
+    }
+  }
+
+  /**
    * Creates a new connection to a Mastodon server.
    *
    * Creates a connection to a Mastodon instances and checks that the connection is working properly.

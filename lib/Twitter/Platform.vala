@@ -35,11 +35,6 @@ namespace Backend.Twitter {
      */
     private const string DOMAIN = "Twitter.com";
 
-    /**
-     * The URI for "out-of-band" authentication.
-     */
-    private const string OOB_URI = "oob";
-
   }
 
 }

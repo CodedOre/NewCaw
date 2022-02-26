@@ -33,7 +33,6 @@ libfiles = [
 # Add files for active backends
 if get_option('mastodon_backend').enabled()
   libfiles += [
-    'Mastodon/Platform.vala',
     'Mastodon/Content/Media.vala',
     'Mastodon/Content/Post.vala',
     'Mastodon/Content/Profile.vala',
