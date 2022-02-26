@@ -52,11 +52,6 @@ public abstract class Backend.Server : Object {
   public string domain { get; construct; }
 
   /**
-   * The uri to which API calls are made.
-   */
-  public string api_uri { get; construct; }
-
-  /**
    * The key used to identify the client to the server.
    */
   public string client_key { get; construct; }

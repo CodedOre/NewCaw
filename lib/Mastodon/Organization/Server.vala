@@ -47,6 +47,12 @@ public class Backend.Mastodon.Server : Backend.Server {
    * @param client_secret The secret to authenticate the client if available.
    */
   public Server (string domain, string client_key, string client_secret) {
+    // Create the Server instance
+    Object (
+      domain:        domain,
+      client_key:    client_key,
+      client_secret: client_secret
+    );
   }
 
   /**
@@ -61,7 +67,7 @@ public class Backend.Mastodon.Server : Backend.Server {
    */
   public async Server.authenticate (string domain) throws Error {
     // Create Rest Proxy and Call
-    var client_proxy = new Rest.Proxy (@"https://$(domain)/", false);
+    var client_proxy = new Rest.Proxy (domain, false);
     var client_call  = client_proxy.new_call ();
 
     // Get Client instance and determine used redirect uri
@@ -83,6 +89,17 @@ public class Backend.Mastodon.Server : Backend.Server {
     } catch (Error e) {
       throw e;
     }
+
+    // Retrieve the client key and secret
+    string key    = client.get_string_member ("client_id");
+    string secret = client.get_string_member ("client_secret");
+
+    // Create the Server instance
+    Object (
+      domain:        domain,
+      client_key:    key,
+      client_secret: secret
+    );
   }
 
   /**

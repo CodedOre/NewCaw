@@ -47,6 +47,12 @@ public class Backend.Twitter.Server : Backend.Server {
    * @param client_secret The secret to authenticate the client.
    */
   public Server (string client_key, string client_secret) {
+    // Create the Server instance
+    Object (
+      domain:        "https://twitter.com",
+      client_key:    client_key,
+      client_secret: client_secret
+    );
   }
 
   /**
