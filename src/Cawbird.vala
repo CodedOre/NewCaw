@@ -33,7 +33,7 @@ public class Cawbird : Adw.Application {
 
   protected override void activate () {
     // Initializes the backend client
-    new Backend.Client ("Cawbird", "https://ibboard.co.uk/cawbird", "");
+    new Backend.Client ("Cawbird", "https://ibboard.co.uk/cawbird");
 
 #if SUPPORT_MASTODON
     // Initializes the Mastodon backend
