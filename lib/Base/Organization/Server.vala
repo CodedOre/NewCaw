@@ -21,6 +21,18 @@
 using GLib;
 
 /**
+ * Errors that happened while making an API Call.
+ */
+public errordomain Backend.CallError {
+
+  /**
+   * An (to this backend) unknown error.
+   */
+  UNDEFINED
+
+}
+
+/**
  * Stores the information to connect to a specific server.
  */
 public abstract class Backend.Server : Object {
@@ -53,5 +65,56 @@ public abstract class Backend.Server : Object {
    * The secret used to identify the client to the server.
    */
   public string client_secret { get; private construct; }
+
+  /**
+   * Runs the given Rest.ProxyCall and returns the result in a Json.Object.
+   *
+   * @param call The call to be run, create it with Account.create_call.
+   *
+   * @return A Json.Object with the response of the call.
+   *
+   * @throws Error Errors that happened either while loading or parsing.
+   */
+  internal async Json.Object call (Rest.ProxyCall call) throws Error {
+    // Run the call
+    try {
+      yield call.invoke_async (null);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Check for errors in the response
+    try {
+      check_call (call);
+    } catch (CallError e) {
+      throw e;
+    }
+
+    // Get the result and converts it to a json object
+    string result = call.get_payload ();
+    var    parser = new Json.Parser ();
+
+    try {
+      parser.load_from_data (result);
+    } catch (Error e) {
+      throw e;
+    }
+
+    Json.Node root = parser.get_root ();
+    return root.get_object ();
+  }
+
+  /**
+   * Checks an finished Rest.ProxyCall for occurred errors.
+   *
+   * Called by the call method, this is to be implemented by
+   * sub-classes to read possible errors that happened
+   * on a call and returns an CallError for it.
+   *
+   * @param call The call as run by call.
+   *
+   * @throws CallError Possible detected errors.
+   */
+  protected abstract void check_call (Rest.ProxyCall call) throws CallError;
 
 }

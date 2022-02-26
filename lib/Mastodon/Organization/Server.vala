@@ -79,10 +79,20 @@ public class Backend.Mastodon.Server : Backend.Server {
     // Authenticate client
     Json.Object client;
     try {
-      client = yield APICalls.get_data (client_call);
+      client = yield call (client_call);
     } catch (Error e) {
       throw e;
     }
+  }
+
+  /**
+   * Checks an finished Rest.ProxyCall for occurred errors.
+   *
+   * @param call The call as run by call.
+   *
+   * @throws CallError Possible detected errors.
+   */
+  protected override void check_call (Rest.ProxyCall call) throws CallError {
   }
 
 }

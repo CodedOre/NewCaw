@@ -49,4 +49,14 @@ public class Backend.TwitterLegacy.Server : Backend.Server {
   public Server (string client_key, string client_secret) {
   }
 
+  /**
+   * Checks an finished Rest.ProxyCall for occurred errors.
+   *
+   * @param call The call as run by call.
+   *
+   * @throws CallError Possible detected errors.
+   */
+  protected override void check_call (Rest.ProxyCall call) throws CallError {
+  }
+
 }
