@@ -35,17 +35,29 @@ public class Backend.Mastodon.Server : Backend.Server {
   }
 
   /**
-   * Creates a new connection to a Mastodon server.
+   * Creates an connection with established client authentication.
    *
-   * Creates a connection to a Mastodon instances and checks that the connection is working properly.
-   * If client_key and client_secret are not provided, it also automatically creates a client application
-   * on the Mastodon instance to be used for authentication and API calls.
+   * This constructor requires existing and valid client
+   * keys and secrets to build the connection.
+   *
+   * If no keys are provided, use the Server.authenticate instead.
    *
    * @param domain The domain of the server to connect to.
    * @param client_key The key to authenticate the client if available.
    * @param client_secret The secret to authenticate the client if available.
    */
-  public Server (string domain, string? client_key = null, string? client_secret = null) {
+  public Server (string domain, string client_key, string client_secret) {
+  }
+
+  /**
+   * Authenticates the client and creates a connection.
+   *
+   * This will register a new oauth app on the server and
+   * will request new keys and secrets for the client to use.
+   *
+   * @param domain The domain of the server to connect to.
+   */
+  public Server.authenticate (string domain) {
   }
 
 }

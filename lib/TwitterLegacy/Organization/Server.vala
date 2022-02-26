@@ -35,15 +35,13 @@ public class Backend.TwitterLegacy.Server : Backend.Server {
   }
 
   /**
-   * Creates a new connection to the Twitter server.
+   * Creates an connection with established client authentication.
    *
-   * Creates a connection to the Twitter instances and checks that the
-   * connection is working properly. As Twitter requires the creation of
-   * client keys and secrets beforehand,
-   * these have to be given to the constructor.
+   * This constructor requires existing and valid client
+   * keys and secrets to build the connection.
    *
-   * Please note that due to the lack of an API point
-   * the credentials are not checked in this step.
+   * If you do not have a key to provide, you need to generate
+   * them on Twitter's Developer Portal to use here.
    *
    * @param client_key The key to authenticate the client.
    * @param client_secret The secret to authenticate the client.
