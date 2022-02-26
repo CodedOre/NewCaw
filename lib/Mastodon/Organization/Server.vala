@@ -56,8 +56,33 @@ public class Backend.Mastodon.Server : Backend.Server {
    * will request new keys and secrets for the client to use.
    *
    * @param domain The domain of the server to connect to.
+   *
+   * @throws Error Any error that occurs while creating the client application.
    */
-  public Server.authenticate (string domain) {
+  public async Server.authenticate (string domain) throws Error {
+    // Create Rest Proxy and Call
+    var client_proxy = new Rest.Proxy (@"https://$(domain)/", false);
+    var client_call  = client_proxy.new_call ();
+
+    // Get Client instance and determine used redirect uri
+    Client application    = Client.instance;
+    string used_redirects = application.redirect_uri == null ? application.redirect_uri : oob_redirect;
+
+    // Set up authentication
+    client_call.set_method ("POST");
+    client_call.set_function ("api/v1/apps");
+    client_call.add_param ("client_name", application.name);
+    client_call.add_param ("redirect_uris", used_redirects);
+    client_call.add_param ("scopes", "read write follow push");
+    client_call.add_param ("website", application.website);
+
+    // Authenticate client
+    Json.Object client;
+    try {
+      client = yield APICalls.get_data (client_call);
+    } catch (Error e) {
+      throw e;
+    }
   }
 
 }

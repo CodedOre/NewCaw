@@ -35,6 +35,8 @@ errordomain Backend.APICallError {
  */
 namespace Backend.APICalls {
 
+  // TODO: Move APICalls into the Server class.
+
   /**
    * Runs the given Rest.ProxyCall and returns the result in a Json.Object.
    *
