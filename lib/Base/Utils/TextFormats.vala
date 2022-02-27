@@ -48,6 +48,7 @@ public enum Backend.Utils.FormatFlag {
  * the flags that determine the formatting of
  * text from Post and description from Profile.
  */
+[SingleInstance]
 public class Backend.Utils.TextFormats : Object {
 
   /**
@@ -77,7 +78,7 @@ public class Backend.Utils.TextFormats : Object {
    * @return A boolean if the flag is set.
    */
   public static bool get_format_flag (FormatFlag flag) {
-    return instance.get_instance_flag (flag);
+    return flag in instance.format_flags;
   }
 
   /**
@@ -87,45 +88,20 @@ public class Backend.Utils.TextFormats : Object {
    * @param setting If the flag should be enabled or not.
    */
   public static void set_format_flag (FormatFlag flag, bool setting) {
-    instance.set_instance_flag (flag, setting);
-  }
-
-  /**
-   * Checks if a certain flag for text formatting is set.
-   *
-   * Internal function called from the static method get_format_flag.
-   *
-   * @param flag The flag to be checked.
-   *
-   * @return A boolean if the flag is set.
-   */
-  private bool get_instance_flag (FormatFlag flag) {
-    return flag in format_flags;
-  }
-
-  /**
-   * Sets a flag for text formatting to a certain value.
-   *
-   * Internal function called from the static method set_format_flag.
-   *
-   * @param flag The flag to be set.
-   * @param setting If the flag should be enabled or not.
-   */
-  private void set_instance_flag (FormatFlag flag, bool setting) {
     // Return if setting wouldn't change
-    if (setting == get_instance_flag (flag)) {
+    if (setting == get_format_flag (flag)) {
       return;
     }
 
     // Apply the flag
     if (setting) {
-      format_flags = format_flags | flag;
+      instance.format_flags = instance.format_flags | flag;
     } else {
-      format_flags = format_flags & ~flag;
+      instance.format_flags = instance.format_flags & ~flag;
     }
 
     // Signalize the update
-    update_formatting ();
+    instance.update_formatting ();
   }
 
   /**
