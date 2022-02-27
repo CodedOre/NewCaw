@@ -57,8 +57,8 @@ public class Backend.Twitter.Post : Backend.Post {
                      ),
 
       // Set url and domain
-      domain: Platform.DOMAIN,
-      url:    @"https://$(Platform.DOMAIN)/$(author_name)/status/$(post_id)",
+      domain: "Twitter.com",
+      url:    @"https://twitter.com/$(author_name)/status/$(post_id)",
 
       // Set public metrics
       liked_count:    (int) metrics.get_int_member ("like_count"),

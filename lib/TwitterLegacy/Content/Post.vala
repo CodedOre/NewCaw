@@ -72,8 +72,8 @@ public class Backend.TwitterLegacy.Post : Backend.Post {
       source:        application,
 
       // Set url and domain
-      domain: Platform.DOMAIN,
-      url:    @"https://$(Platform.DOMAIN)/$(author_name)/status/$(post_id)",
+      domain: "Twitter.com",
+      url:    @"https://twitter.com/$(author_name)/status/$(post_id)",
 
       // Set metrics
       liked_count:    (int) json.get_int_member ("favorite_count"),

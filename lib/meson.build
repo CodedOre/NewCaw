@@ -43,7 +43,6 @@ if get_option('mastodon_backend').enabled()
 endif
 if get_option('twitter_backend').enabled()
   libfiles += [
-    'Twitter/Platform.vala',
     'Twitter/Content/Media.vala',
     'Twitter/Content/Post.vala',
     'Twitter/Content/Profile.vala',
@@ -55,7 +54,6 @@ if get_option('twitter_backend').enabled()
 endif
 if get_option('twitter_legacy_backend').enabled()
   libfiles += [
-    'TwitterLegacy/Platform.vala',
     'TwitterLegacy/Content/Media.vala',
     'TwitterLegacy/Content/Post.vala',
     'TwitterLegacy/Content/Profile.vala',

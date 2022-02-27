@@ -76,8 +76,8 @@ public class Backend.TwitterLegacy.Profile : Backend.Profile {
       username:     profile_name,
 
       // Set url and domain
-      domain: Platform.DOMAIN,
-      url:    @"https://$(Platform.DOMAIN)/$(profile_name)",
+      domain: "Twitter.com",
+      url:    @"https://twitter.com/$(profile_name)",
 
       // Set metrics
       followers_count: (int) json.get_int_member ("followers_count"),
