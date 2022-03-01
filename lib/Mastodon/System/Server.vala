@@ -66,13 +66,18 @@ public class Backend.Mastodon.Server : Backend.Server {
    * @throws Error Any error that occurs while creating the client application.
    */
   public async Server.authenticate (string domain) throws Error {
+    // Create the Server instance
+    Object (
+      domain:        domain
+    );
+
     // Create Rest Proxy and Call
     var client_proxy = new Rest.Proxy (domain, false);
     var client_call  = client_proxy.new_call ();
 
     // Get Client instance and determine used redirect uri
     Client application    = Client.instance;
-    string used_redirects = application.redirect_uri == null ? application.redirect_uri : OOB_REDIRECT;
+    string used_redirects = application.redirect_uri != null ? application.redirect_uri : OOB_REDIRECT;
 
     // Set up authentication
     client_call.set_method ("POST");
@@ -91,15 +96,8 @@ public class Backend.Mastodon.Server : Backend.Server {
     }
 
     // Retrieve the client key and secret
-    string key    = client.get_string_member ("client_id");
-    string secret = client.get_string_member ("client_secret");
-
-    // Create the Server instance
-    Object (
-      domain:        domain,
-      client_key:    key,
-      client_secret: secret
-    );
+    client_key    = client.get_string_member ("client_id");
+    client_secret = client.get_string_member ("client_secret");
   }
 
   /**

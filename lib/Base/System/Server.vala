@@ -45,12 +45,12 @@ public abstract class Backend.Server : Object {
   /**
    * The key used to identify the client to the server.
    */
-  public string client_key { get; construct; }
+  public string client_key { get; protected set; }
 
   /**
    * The secret used to identify the client to the server.
    */
-  public string client_secret { get; construct; }
+  public string client_secret { get; protected set; }
 
   /**
    * Runs the given Rest.ProxyCall and returns the result in a Json.Object.
