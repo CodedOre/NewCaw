@@ -78,33 +78,7 @@ public class Backend.Mastodon.Profile : Backend.Profile {
     description = Backend.Utils.TextUtils.format_text (description_modules);
 
     // Parses all fields
-    UserDataField[] parsed_fields = {};
-    Json.Array profile_fields     = json.get_array_member ("fields");
-    profile_fields.foreach_element ((array, index, element) => {
-      if (element.get_node_type () == OBJECT) {
-        // Create an data field object
-        Json.Object obj = element.get_object ();
-        var new_field   = UserDataField ();
-        new_field.type  = GENERIC;
-        new_field.name  = obj.get_string_member ("name");
-        // Check if field contains weblink
-        try {
-          var link_regex = new Regex ("<a href=\"(.*?)\" rel=\".*?\" target=\"_blank\"><span class=\"invisible\">.*?</span><span class=\"\">(.*?)</span><span class=\"invisible\"></span></a>");
-          if (link_regex.match (obj.get_string_member ("value"))) {
-            new_field.display = link_regex.replace (obj.get_string_member ("value"), obj.get_string_member ("value").length, 0, "\\2");
-            new_field.target  = link_regex.replace (obj.get_string_member ("value"), obj.get_string_member ("value").length, 0, "\\1");
-          } else {
-            new_field.display = obj.get_string_member ("value");
-            new_field.target  = null;
-          }
-        } catch (RegexError e) {
-          error (@"Error while parsing data fields: $(e.message)");
-        }
-        // Append field to the array
-        parsed_fields  += new_field;
-      }
-    });
-    data_fields = parsed_fields;
+    data_fields = Utils.ParseUtils.parse_data_fields (json.get_array_member ("fields"));
 
     // Get possible flags for this user
     if (json.get_boolean_member ("locked")) {
