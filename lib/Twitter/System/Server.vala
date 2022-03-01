@@ -26,13 +26,13 @@ using GLib;
 public class Backend.Twitter.Server : Backend.Server {
 
   /**
-   * The "Out-of-Band" redirect for Twitter.
+   * The "Out-of-Band" redirect uri for Twitter.
+   *
+   * This uri is used when the Client does not specify an redirect url
+   * to identify the API to display an authentication code
+   * the user needs to manually input to authenticate the client.
    */
-  internal override string oob_redirect {
-    get {
-      return "oob";
-    }
-  }
+  internal const string OOB_REDIRECT = "oob";
 
   /**
    * Creates an connection with established client authentication.

@@ -38,15 +38,6 @@ public errordomain Backend.CallError {
 public abstract class Backend.Server : Object {
 
   /**
-   * The "Out-of-Band" redirect uri.
-   *
-   * This uri is used when the Client does not specify an redirect url
-   * to identify the API to display an authentication code
-   * the user needs to manually input to authenticate the client.
-   */
-  internal abstract string oob_redirect { get; }
-
-  /**
    * The domain of the server.
    */
   public string domain { get; construct; }

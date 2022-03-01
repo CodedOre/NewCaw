@@ -26,13 +26,13 @@ using GLib;
 public class Backend.Mastodon.Server : Backend.Server {
 
   /**
-   * The "Out-of-Band" redirect for Mastodon.
+   * The "Out-of-Band" redirect uri for Mastodon.
+   *
+   * This uri is used when the Client does not specify an redirect url
+   * to identify the API to display an authentication code
+   * the user needs to manually input to authenticate the client.
    */
-  internal override string oob_redirect {
-    get {
-      return "urn:ietf:wg:oauth:2.0:oob";
-    }
-  }
+  internal const string OOB_REDIRECT = "urn:ietf:wg:oauth:2.0:oob";
 
   /**
    * Creates an connection with established client authentication.
@@ -72,7 +72,7 @@ public class Backend.Mastodon.Server : Backend.Server {
 
     // Get Client instance and determine used redirect uri
     Client application    = Client.instance;
-    string used_redirects = application.redirect_uri == null ? application.redirect_uri : oob_redirect;
+    string used_redirects = application.redirect_uri == null ? application.redirect_uri : OOB_REDIRECT;
 
     // Set up authentication
     client_call.set_method ("POST");
