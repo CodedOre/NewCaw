@@ -29,7 +29,7 @@
     "avatar_url":   "https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png"
   },
   "domain":  "Twitter.com",
-  "url":     "https://Twitter.com/CawbirdA/status/1443530055058173953",
+  "url":     "https://twitter.com/CawbirdA/status/1443530055058173953",
   "source":  "Twitter Web App",
   "referenced_post": {
     "id":            "1437660432987271168",
@@ -104,7 +104,7 @@
       }
     ],
     "domain":          "Twitter.com",
-    "url":             "https://Twitter.com/CawbirdA/status/1437660432987271168",
+    "url":             "https://twitter.com/CawbirdA/status/1437660432987271168",
     "author": {
       "id":           "1303637097803382786",
       "display_name": "CawbirdTestAccount",
