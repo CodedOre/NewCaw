@@ -40,18 +40,7 @@ public class Backend.Mastodon.Profile : Backend.Profile {
 
     // Get url and domain to this profile
     string profile_url = json.get_string_member ("url");
-    string profile_domain;
-    try {
-      var domain_regex = new Regex ("https?://(.*?)/.*");
-      profile_domain = domain_regex.replace (
-        profile_url,
-        profile_url.length,
-        0,
-        "\\1"
-      );
-    } catch (RegexError e) {
-      error (@"Error while parsing domain: $(e.message)");
-    }
+    string profile_domain = Utils.ParseUtils.strip_domain (profile_url);
 
     // Construct the object with properties
     Object (

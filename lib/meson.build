@@ -38,6 +38,7 @@ if get_option('mastodon_backend').enabled()
     'Mastodon/Content/User.vala',
     'Mastodon/System/Account.vala',
     'Mastodon/System/Server.vala',
+    'Mastodon/Utils/ParseUtils.vala',
     'Mastodon/Utils/TextUtils.vala'
   ]
 endif
