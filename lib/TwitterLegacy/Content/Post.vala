@@ -67,7 +67,7 @@ public class Backend.TwitterLegacy.Post : Backend.Post {
     Object (
       // Set basic data
       id:            post_id,
-      creation_date: Utils.parse_time (json.get_string_member ("created_at")),
+      creation_date: Utils.TextUtils.parse_time (json.get_string_member ("created_at")),
       post_type:     set_post_type,
       source:        application,
 
@@ -103,10 +103,10 @@ public class Backend.TwitterLegacy.Post : Backend.Post {
       entities = json.get_object_member ("entities");
     }
 
-    text_modules = Utils.parse_text (raw_text, entities);
+    text_modules = Utils.TextUtils.parse_text (raw_text, entities);
 
     // First format of the text.
-    text = Backend.Utils.format_text (text_modules);
+    text = Backend.Utils.TextUtils.format_text (text_modules);
 
     // Check if a media array is present
     Json.Array media_array = null;

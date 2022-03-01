@@ -21,9 +21,9 @@
 using GLib;
 
 /**
- * Provides various utilities used by all platforms.
+ * Contains methods used to format text with TextModules.
  */
-namespace Backend.Utils {
+namespace Backend.Utils.TextUtils {
 
   /**
    * Formats a text from a set of TextModules.

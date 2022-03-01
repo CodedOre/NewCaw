@@ -21,9 +21,9 @@
 using GLib;
 
 /**
- * Provides utilities for the Twitter Platform.
+ * Contains methods used to parse text to TextModules.
  */
-namespace Backend.Twitter.Utils {
+namespace Backend.Twitter.Utils.TextUtils {
 
   /**
    * Parses the text into a list of TextEntities.
@@ -169,7 +169,7 @@ namespace Backend.Twitter.Utils {
       }
     }
 
-    Backend.Utils.mark_trailing_tags (final_modules);
+    Backend.Utils.TextUtils.mark_trailing_tags (final_modules);
 
     return final_modules;
   }

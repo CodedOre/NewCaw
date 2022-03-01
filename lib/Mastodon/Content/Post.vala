@@ -85,10 +85,10 @@ public class Backend.Mastodon.Post : Backend.Post {
     );
 
     // Parse the text into modules
-    text_modules = Utils.parse_text (json.get_string_member ("content"));
+    text_modules = Utils.TextUtils.parse_text (json.get_string_member ("content"));
 
     // First format of the text.
-    text = Backend.Utils.format_text (text_modules);
+    text = Backend.Utils.TextUtils.format_text (text_modules);
 
     // Get media attachments
     Backend.Media[] parsed_media = {};

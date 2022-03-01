@@ -69,7 +69,7 @@ public class Backend.TwitterLegacy.Profile : Backend.Profile {
       id: json.get_string_member ("id_str"),
 
       // Set the creation data
-      creation_date: Utils.parse_time (json.get_string_member ("created_at")),
+      creation_date: Utils.TextUtils.parse_time (json.get_string_member ("created_at")),
 
       // Set the names of the profile
       display_name: json.get_string_member ("name"),
@@ -114,10 +114,10 @@ public class Backend.TwitterLegacy.Profile : Backend.Profile {
         }
       }
     }
-    description_modules = Utils.parse_text (raw_text, description_entities);
+    description_modules = Utils.TextUtils.parse_text (raw_text, description_entities);
 
     // First format of the description.
-    description = Backend.Utils.format_text (description_modules);
+    description = Backend.Utils.TextUtils.format_text (description_modules);
 
     // Store additional information in data fields
     UserDataField[] additional_fields = {};

@@ -76,7 +76,7 @@ public abstract class Backend.Profile : Backend.User {
   construct {
     // Reformat the description when flags were changed.
     Utils.TextFormats.instance.update_formatting.connect (() => {
-      description = Utils.format_text (description_modules);
+      description = Utils.TextUtils.format_text (description_modules);
     });
   }
 
