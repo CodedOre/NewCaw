@@ -101,6 +101,40 @@ public class Backend.Mastodon.Account : Backend.Account {
 
 
   /**
+   * Prepares the link to launch the authentication of a new Account.
+   *
+   * @param server The server to connect to with the account.
+   *
+   * @return The link with the site to authenticate the user.
+   *
+   * @throws Error Any error occurring while requesting the token.
+   */
+  public static async string init_authentication (Server server) throws Error {
+    // Get Client instance and determine used redirect uri
+    Client application    = Client.instance;
+    string used_redirects = application.redirect_uri != null
+                              ? application.redirect_uri
+                              : Server.OOB_REDIRECT;
+
+    // Create call proxy
+    var auth_proxy = new Rest.OAuth2Proxy (@"$(server.domain)/oauth/authorize",
+                                           @"$(server.domain)/oauth/token",
+                                           used_redirects,
+                                           server.client_key,
+                                           server.client_secret,
+                                           server.domain);
+
+    // Create code challenge
+    var auth_challenge = new Rest.PkceCodeChallenge.random ();
+
+    // Build authorization url
+    string output = auth_proxy.build_authorization_url (auth_challenge.get_challenge (),
+                                                        "read write follow push",
+                                                        null);
+    return output;
+  }
+
+  /**
    * Creates a Rest.ProxyCall to perform an API call.
    */
   internal override Rest.ProxyCall create_call () {
