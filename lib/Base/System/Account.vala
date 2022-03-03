@@ -47,6 +47,11 @@ public abstract class Backend.Account : Backend.Profile {
   public string access_secret { get; construct; }
 
   /**
+   * The server this account is connected to.
+   */
+  public Server server { get; construct; }
+
+  /**
    * Creates a Rest.ProxyCall to perform an API call.
    */
   internal abstract Rest.ProxyCall create_call ();
