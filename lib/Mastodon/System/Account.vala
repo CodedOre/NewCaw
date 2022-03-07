@@ -166,4 +166,17 @@ public class Backend.Mastodon.Account : Backend.Account {
   public override async void login (string token, string secret) throws Error {
   }
 
+  /**
+   * Creates a Rest.ProxyCall to perform an API call.
+   */
+  internal override Rest.ProxyCall create_call () {
+    assert (proxy != null);
+    return proxy.new_call ();
+  }
+
+  /**
+   * The proxy used to authorize the API calls.
+   */
+  private Rest.OAuth2Proxy proxy;
+
 }

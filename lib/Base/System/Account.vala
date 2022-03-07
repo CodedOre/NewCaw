@@ -99,14 +99,6 @@ public abstract class Backend.Account : Backend.Profile {
    *
    * @return A Rest.ProxyCall that can be then called with Server.call.
    */
-  internal Rest.ProxyCall create_call () {
-    assert (proxy != null);
-    return proxy.new_call ();
-  }
-
-  /**
-   * The proxy used to authorize the API calls.
-   */
-  private Rest.Proxy? proxy = null;
+  internal abstract Rest.ProxyCall create_call ();
 
 }
