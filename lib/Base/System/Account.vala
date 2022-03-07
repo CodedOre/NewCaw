@@ -39,17 +39,17 @@ public abstract class Backend.Account : Backend.Profile {
   /**
    * The access token for this specific Account.
    */
-  public string access_token { get; private set; }
+  public string access_token { get; protected set; }
 
   /**
    * The access secret for this specific Account.
    */
-  public string access_secret { get; private set; }
+  public string access_secret { get; protected set; }
 
   /**
    * If the account was successfully authenticated at the server.
    */
-  public bool authenticated { get; private set; }
+  public bool authenticated { get; protected set; }
 
   /**
    * The server this account is connected to.

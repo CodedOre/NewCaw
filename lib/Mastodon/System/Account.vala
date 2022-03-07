@@ -97,8 +97,12 @@ public class Backend.Mastodon.Account : Backend.Account {
   public Account (Server server) {
     // Construct the object with server information
     Object (
+      // Set server and non-authenticated
       server:        server,
-      authenticated: false
+      authenticated: false,
+
+      // Set access_secret to null as there is none
+      access_secret: null
     );
   }
 
@@ -121,22 +125,21 @@ public class Backend.Mastodon.Account : Backend.Account {
                               ? application.redirect_uri
                               : Server.OOB_REDIRECT;
 
-    // Create call proxy
-    var auth_proxy = new Rest.OAuth2Proxy (@"$(server.domain)/oauth/authorize",
-                                           @"$(server.domain)/oauth/token",
-                                           used_redirects,
-                                           server.client_key,
-                                           server.client_secret,
-                                           server.domain);
+    // Create proxy
+    proxy = new Rest.OAuth2Proxy (@"$(server.domain)/oauth/authorize",
+                                  @"$(server.domain)/oauth/token",
+                                   used_redirects,
+                                   server.client_key,
+                                   server.client_secret,
+                                   server.domain);
 
     // Create code challenge
-    var auth_challenge = new Rest.PkceCodeChallenge.random ();
+    auth_challenge = new Rest.PkceCodeChallenge.random ();
 
     // Build authorization url
-    string output = auth_proxy.build_authorization_url (auth_challenge.get_challenge (),
-                                                        "read write follow push",
-                                                        null);
-    return output;
+    return proxy.build_authorization_url (auth_challenge.get_challenge (),
+                                          "read write follow push",
+                                          null);
   }
 
   /**
@@ -167,6 +170,11 @@ public class Backend.Mastodon.Account : Backend.Account {
   }
 
   /**
+   * A CodeChallenge used to verify the authentication process.
+   */
+  private Rest.PkceCodeChallenge? auth_challenge = null;
+
+  /**
    * Creates a Rest.ProxyCall to perform an API call.
    */
   internal override Rest.ProxyCall create_call () {
@@ -177,6 +185,6 @@ public class Backend.Mastodon.Account : Backend.Account {
   /**
    * The proxy used to authorize the API calls.
    */
-  private Rest.OAuth2Proxy proxy;
+  private Rest.OAuth2Proxy? proxy = null;
 
 }
