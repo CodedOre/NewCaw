@@ -156,6 +156,42 @@ public class Backend.Mastodon.Account : Backend.Account {
    * @throws Error Any error occurring while requesting the token.
    */
   public override async void authenticate (string auth_code) throws Error {
+    // Check if authentication is necessary
+    if (authenticated) {
+      error ("Already authenticated!");
+    }
+
+    // Check if init_authenticate was run beforehand
+    if (auth_challenge == null) {
+      critical ("No code challenge available!");
+    }
+
+    // Get the access token using the proxy
+    yield proxy.fetch_access_token_async (auth_code, auth_challenge.get_verifier (), null);
+
+    // Check if we retrieved a valid access token
+    if (proxy.access_token == null || proxy.access_token == "") {
+      error ("Could not retrieve access token!");
+    } else {
+      // Store the access token in the property
+      access_token = proxy.access_token;
+    }
+
+    // Retrieve the account profile data
+    var auth_call = create_call ();
+    auth_call.set_method ("GET");
+    auth_call.set_function ("/api/v1/accounts/verify_credentials");
+
+    Json.Object data;
+    try {
+      data = yield server.call (auth_call);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Populate data with retrieved json
+    set_profile_data (data);
+    authenticated = true;
   }
 
   /**
