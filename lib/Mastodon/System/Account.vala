@@ -109,7 +109,7 @@ public class Backend.Mastodon.Account : Backend.Account {
    *
    * @throws Error Any error occurring while requesting the token.
    */
-  public async string init_authentication () throws Error {
+  public override async string init_authentication () throws Error {
     // Check if authentication is necessary
     if (authenticated) {
       error ("Already authenticated!");
@@ -137,6 +137,33 @@ public class Backend.Mastodon.Account : Backend.Account {
                                                         "read write follow push",
                                                         null);
     return output;
+  }
+
+  /**
+   * Authenticates the account with an code.
+   *
+   * This method should be run after init_authentication and use
+   * the code retrieved from the site where the user authenticated himself.
+   *
+   * After completion, you should save the access token retrieved
+   * from the platform so you can use the login method on following runs.
+   *
+   * @param auth_code The authentication code for the user.
+   *
+   * @throws Error Any error occurring while requesting the token.
+   */
+  public override async void authenticate (string auth_code) throws Error {
+  }
+
+  /**
+   * Creates an Account with existing access token.
+   *
+   * @param token The access token for the account.
+   * @param secret The secret for the access token.
+   *
+   * @throws Error Any error occurring while requesting the token.
+   */
+  public override async void login (string token, string secret) throws Error {
   }
 
 }
