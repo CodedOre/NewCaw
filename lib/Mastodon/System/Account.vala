@@ -30,16 +30,11 @@ using GLib;
 public class Backend.Mastodon.Account : Backend.Account {
 
   /**
-   * Constructs an object for an Account.
+   * Sets the Profile data for this Account.
    *
-   * Not to be called directly, but from the static methods
-   * Account.authenticate and Account.login.
-   *
-   * @param server The server to connect to with the account.
-   * @param json The Json.Object with the account data.
-   * @param call_proxy The Rest.Proxy for making calls.
+   * @param json A Json.Object retrieved from the API.
    */
-  private Account (Server server, Json.Object json, Rest.OAuth2Proxy call_proxy) {
+  private void set_profile_data (Json.Object json) {
     // Get the url for avatar and header
     string avatar_url = json.get_string_member ("avatar_static");
     string header_url = json.get_string_member ("header_static");
@@ -48,40 +43,31 @@ public class Backend.Mastodon.Account : Backend.Account {
     string account_url = json.get_string_member ("url");
     string account_domain = Utils.ParseUtils.strip_domain (account_url);
 
-    // Construct the object with properties
-    Object (
-      // Set Account-specific properties
-      server: server,
+    // Set the id of the account
+    id = json.get_string_member ("id");
 
-      // Set the id of the account
-      id: json.get_string_member ("id"),
+    // Set the creation date for the account
+    creation_date = new DateTime.from_iso8601 (
+                      json.get_string_member ("created_at"),
+                      new TimeZone.utc ()
+                    );
 
-      // Set the creation date for the account
-      creation_date: new DateTime.from_iso8601 (
-                       json.get_string_member ("created_at"),
-                       new TimeZone.utc ()
-                     ),
+    // Set the names of the account
+    display_name = json.get_string_member ("display_name");
+    username     = json.get_string_member ("acct");
 
-      // Set the names of the account
-      display_name: json.get_string_member ("display_name"),
-      username:     json.get_string_member ("acct"),
+    // Set the url and domain
+    url    = account_url;
+    domain = account_domain;
 
-      // Set the url and domain
-      url:    account_url,
-      domain: account_domain,
+    // Set metrics
+    followers_count = (int) json.get_int_member ("followers_count");
+    following_count = (int) json.get_int_member ("following_count");
+    posts_count     = (int) json.get_int_member ("statuses_count");
 
-      // Set metrics
-      followers_count: (int) json.get_int_member ("followers_count"),
-      following_count: (int) json.get_int_member ("following_count"),
-      posts_count:     (int) json.get_int_member ("statuses_count"),
-
-      // Set the images
-      avatar: new Media (PICTURE, avatar_url),
-      header: new Media (PICTURE, header_url)
-    );
-
-    // Set the proxy
-    proxy = call_proxy;
+    // Set the images
+    avatar = new Media (PICTURE, avatar_url);
+    header = new Media (PICTURE, header_url);
 
     // Parse the description into modules and create a formatted version
     description_modules = Utils.TextUtils.parse_text (json.get_string_member ("note"));
@@ -99,17 +85,36 @@ public class Backend.Mastodon.Account : Backend.Account {
     }
   }
 
+  /**
+   * Creates an unauthenticated Account for a server.
+   *
+   * After construction, it is required to either authenticate the account,
+   * using the methods init_authentication and authenticate,
+   * or to login with the method login.
+   *
+   * @param server The server to connect to with the account.
+   */
+  public Account (Server server) {
+    // Construct the object with server information
+    Object (
+      server:        server,
+      authenticated: false
+    );
+  }
 
   /**
    * Prepares the link to launch the authentication of a new Account.
-   *
-   * @param server The server to connect to with the account.
    *
    * @return The link with the site to authenticate the user.
    *
    * @throws Error Any error occurring while requesting the token.
    */
-  public static async string init_authentication (Server server) throws Error {
+  public async string init_authentication () throws Error {
+    // Check if authentication is necessary
+    if (authenticated) {
+      error ("Already authenticated!");
+    }
+
     // Get Client instance and determine used redirect uri
     Client application    = Client.instance;
     string used_redirects = application.redirect_uri != null
@@ -133,18 +138,5 @@ public class Backend.Mastodon.Account : Backend.Account {
                                                         null);
     return output;
   }
-
-  /**
-   * Creates a Rest.ProxyCall to perform an API call.
-   */
-  internal override Rest.ProxyCall create_call () {
-    assert (proxy != null);
-    return proxy.new_call ();
-  }
-
-  /**
-   * The proxy used to authorize the API calls.
-   */
-  private Rest.OAuth2Proxy proxy;
 
 }
