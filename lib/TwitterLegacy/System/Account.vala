@@ -28,18 +28,4 @@ using GLib;
  * interact with the API provided by the platform.
  */
 public class Backend.TwitterLegacy.Account : Backend.Account {
-
-  /**
-   * Creates a Rest.ProxyCall to perform an API call.
-   */
-  internal override Rest.ProxyCall create_call () {
-    assert (proxy != null);
-    return proxy.new_call ();
-  }
-
-  /**
-   * The proxy used to authorize the API calls.
-   */
-  private Rest.OAuthProxy proxy;
-
 }

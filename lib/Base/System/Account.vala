@@ -39,12 +39,17 @@ public abstract class Backend.Account : Backend.Profile {
   /**
    * The access token for this specific Account.
    */
-  public string access_token { get; construct; }
+  public string access_token { get; private set; }
 
   /**
    * The access secret for this specific Account.
    */
-  public string access_secret { get; construct; }
+  public string access_secret { get; private set; }
+
+  /**
+   * If the account was successfully authenticated at the server.
+   */
+  public bool authenticated { get; private set; }
 
   /**
    * The server this account is connected to.
@@ -53,7 +58,17 @@ public abstract class Backend.Account : Backend.Profile {
 
   /**
    * Creates a Rest.ProxyCall to perform an API call.
+   *
+   * @return A Rest.ProxyCall that can be then called with Server.call.
    */
-  internal abstract Rest.ProxyCall create_call ();
+  internal Rest.ProxyCall create_call () {
+    assert (proxy != null);
+    return proxy.new_call ();
+  }
+
+  /**
+   * The proxy used to authorize the API calls.
+   */
+  private Rest.Proxy? proxy = null;
 
 }
