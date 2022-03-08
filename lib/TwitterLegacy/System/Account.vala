@@ -168,6 +168,28 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
     if (authenticated) {
       error ("Already authenticated!");
     }
+
+    // Set the access token on the proxy
+    access_token       = token;
+    access_secret      = secret;
+    proxy.token        = access_token;
+    proxy.token_secret = access_secret;
+
+    // Retrieve the account profile data
+    var auth_call = create_call ();
+    auth_call.set_method ("GET");
+    auth_call.set_function ("1.1/account/verify_credentials.json");
+
+    Json.Object data;
+    try {
+      data = yield server.call (auth_call);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Populate data with retrieved json
+    set_profile_data (data);
+    authenticated = true;
   }
 
   /**
@@ -182,7 +204,7 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
     string? header_preview_url = json.has_member ("profile_banner_url")
                                   ? json.get_string_member ("profile_banner_url")
                                   : null;
-    string? header_media_url   = header_preview_url == null
+    string? header_media_url   = header_preview_url != null
                                   ? Utils.ParseUtils.parse_profile_image (header_preview_url)
                                   : null;
 

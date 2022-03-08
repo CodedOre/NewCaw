@@ -40,7 +40,7 @@ public class Backend.TwitterLegacy.Profile : Backend.Profile {
     string? header_preview_url = json.has_member ("profile_banner_url")
                                   ? json.get_string_member ("profile_banner_url")
                                   : null;
-    string? header_media_url   = header_preview_url == null
+    string? header_media_url   = header_preview_url != null
                                   ? Utils.ParseUtils.parse_profile_image (header_preview_url)
                                   : null;
 
