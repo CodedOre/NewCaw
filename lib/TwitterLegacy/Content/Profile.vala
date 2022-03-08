@@ -35,30 +35,14 @@ public class Backend.TwitterLegacy.Profile : Backend.Profile {
    */
   public Profile.from_json (Json.Object json) {
     // Parse the url for avatar and header
-    string avatar_preview_url = json.get_string_member ("profile_image_url_https");
-    string header_preview_url = json.has_member ("profile_banner_url") ?
-                                  json.get_string_member ("profile_banner_url")
+    string  avatar_preview_url = json.get_string_member ("profile_image_url_https");
+    string  avatar_media_url   = Utils.ParseUtils.parse_profile_image (avatar_preview_url);
+    string? header_preview_url = json.has_member ("profile_banner_url")
+                                  ? json.get_string_member ("profile_banner_url")
                                   : null;
-    string header_media_url = "", avatar_media_url;
-    try {
-      var image_regex = new Regex ("(https://pbs.twimg.com/.*?)_normal(\\..*)");
-      avatar_media_url = image_regex.replace (
-        avatar_preview_url,
-        avatar_preview_url.length,
-        0,
-        "\\1\\2"
-      );
-      if (header_preview_url != null) {
-        header_media_url = image_regex.replace (
-          header_preview_url,
-          header_preview_url.length,
-          0,
-          "\\1\\2"
-        );
-      }
-    } catch (RegexError e) {
-      error (@"Error while parsing source: $(e.message)");
-    }
+    string? header_media_url   = header_preview_url == null
+                                  ? Utils.ParseUtils.parse_profile_image (header_preview_url)
+                                  : null;
 
     // Get strings used to compose the url.
     string profile_name = json.get_string_member ("screen_name");
@@ -93,7 +77,6 @@ public class Backend.TwitterLegacy.Profile : Backend.Profile {
 
     // Parse the text into modules
     Json.Object? description_entities = null;
-    Json.Object? weblink_entity       = null;
     string       raw_text             = json.get_string_member ("description");
 
     // Parse entities
@@ -103,16 +86,6 @@ public class Backend.TwitterLegacy.Profile : Backend.Profile {
       if (profile_entities.has_member ("description")) {
         description_entities = profile_entities.get_object_member ("description");
       }
-      // Parse entity for the linked url
-      if (profile_entities.has_member ("url")) {
-        Json.Object profile_urls = profile_entities.get_object_member ("url");
-        Json.Array  urls_array   = profile_urls.get_array_member ("urls");
-        // It should only have one element, so assuming this to avoid an loop
-        Json.Node url_node = urls_array.get_element (0);
-        if (url_node.get_node_type () == OBJECT) {
-          weblink_entity = url_node.get_object ();
-        }
-      }
     }
     description_modules = Utils.TextUtils.parse_text (raw_text, description_entities);
 
@@ -120,26 +93,7 @@ public class Backend.TwitterLegacy.Profile : Backend.Profile {
     description = Backend.Utils.TextUtils.format_text (description_modules);
 
     // Store additional information in data fields
-    UserDataField[] additional_fields = {};
-    if (json.has_member ("location")) {
-      if (json.get_string_member ("location") != "") {
-        var new_field      = UserDataField ();
-        new_field.type     = LOCATION;
-        new_field.name     = "Location";
-        new_field.display  = json.get_string_member ("location");
-        new_field.target   = null;
-        additional_fields += new_field;
-      }
-    }
-    if (weblink_entity != null) {
-      var new_field      = UserDataField ();
-      new_field.type     = WEBLINK;
-      new_field.name     = "Weblink";
-      new_field.display  = weblink_entity.get_string_member ("display_url");
-      new_field.target   = weblink_entity.get_string_member ("expanded_url");
-      additional_fields += new_field;
-    }
-    data_fields = additional_fields;
+    data_fields = Utils.ParseUtils.parse_data_fields (json);
 
     // Get possible flags for this profile
     if (json.get_boolean_member ("protected")) {

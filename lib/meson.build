@@ -61,6 +61,7 @@ if get_option('twitter_legacy_backend').enabled()
     'TwitterLegacy/Content/User.vala',
     'TwitterLegacy/System/Account.vala',
     'TwitterLegacy/System/Server.vala',
+    'TwitterLegacy/Utils/ParseUtils.vala',
     'TwitterLegacy/Utils/TextUtils.vala'
   ]
 endif
