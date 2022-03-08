@@ -104,20 +104,6 @@ public class Backend.Mastodon.Account : Backend.Account {
       // Set access_secret to null as there is none
       access_secret: null
     );
-  }
-
-  /**
-   * Prepares the link to launch the authentication of a new Account.
-   *
-   * @return The link with the site to authenticate the user.
-   *
-   * @throws Error Any error occurring while requesting the token.
-   */
-  public override async string init_authentication () throws Error {
-    // Check if authentication is necessary
-    if (authenticated) {
-      error ("Already authenticated!");
-    }
 
     // Get Client instance and determine used redirect uri
     Client application    = Client.instance;
@@ -132,6 +118,20 @@ public class Backend.Mastodon.Account : Backend.Account {
                                    server.client_key,
                                    server.client_secret,
                                    server.domain);
+  }
+
+  /**
+   * Prepares the link to launch the authentication of a new Account.
+   *
+   * @return The link with the site to authenticate the user.
+   *
+   * @throws Error Any error occurring while requesting the token.
+   */
+  public override async string init_authentication () throws Error {
+    // Check if authentication is necessary
+    if (authenticated) {
+      error ("Already authenticated!");
+    }
 
     // Create code challenge
     auth_challenge = new Rest.PkceCodeChallenge.random ();
@@ -203,6 +203,35 @@ public class Backend.Mastodon.Account : Backend.Account {
    * @throws Error Any error occurring while requesting the token.
    */
   public override async void login (string token, string secret) throws Error {
+    // Check if authentication is necessary
+    if (authenticated) {
+      error ("Already authenticated!");
+    }
+
+    // Check if init_authenticate was run beforehand
+    if (auth_challenge != null) {
+      error ("Authentication in progress!");
+    }
+
+    // Set the access token on the proxy
+    access_token       = token;
+    proxy.access_token = access_token;
+
+    // Retrieve the account profile data
+    var auth_call = create_call ();
+    auth_call.set_method ("GET");
+    auth_call.set_function ("/api/v1/accounts/verify_credentials");
+
+    Json.Object data;
+    try {
+      data = yield server.call (auth_call);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Populate data with retrieved json
+    set_profile_data (data);
+    authenticated = true;
   }
 
   /**
