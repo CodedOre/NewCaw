@@ -30,62 +30,6 @@ using GLib;
 public class Backend.Mastodon.Account : Backend.Account {
 
   /**
-   * Sets the Profile data for this Account.
-   *
-   * @param json A Json.Object retrieved from the API.
-   */
-  private void set_profile_data (Json.Object json) {
-    // Get the url for avatar and header
-    string avatar_url = json.get_string_member ("avatar_static");
-    string header_url = json.get_string_member ("header_static");
-
-    // Get url and domain to this account
-    string account_url = json.get_string_member ("url");
-    string account_domain = Utils.ParseUtils.strip_domain (account_url);
-
-    // Set the id of the account
-    id = json.get_string_member ("id");
-
-    // Set the creation date for the account
-    creation_date = new DateTime.from_iso8601 (
-                      json.get_string_member ("created_at"),
-                      new TimeZone.utc ()
-                    );
-
-    // Set the names of the account
-    display_name = json.get_string_member ("display_name");
-    username     = json.get_string_member ("acct");
-
-    // Set the url and domain
-    url    = account_url;
-    domain = account_domain;
-
-    // Set metrics
-    followers_count = (int) json.get_int_member ("followers_count");
-    following_count = (int) json.get_int_member ("following_count");
-    posts_count     = (int) json.get_int_member ("statuses_count");
-
-    // Set the images
-    avatar = new Media (PICTURE, avatar_url);
-    header = new Media (PICTURE, header_url);
-
-    // Parse the description into modules and create a formatted version
-    description_modules = Utils.TextUtils.parse_text (json.get_string_member ("note"));
-    description = Backend.Utils.TextUtils.format_text (description_modules);
-
-    // Parses all fields
-    data_fields = Utils.ParseUtils.parse_data_fields (json.get_array_member ("fields"));
-
-    // Get possible flags for this user
-    if (json.get_boolean_member ("locked")) {
-      flags = flags | MODERATED;
-    }
-    if (json.get_boolean_member ("bot")) {
-      flags = flags | BOT;
-    }
-  }
-
-  /**
    * Creates an unauthenticated Account for a server.
    *
    * After construction, it is required to either authenticate the account,
@@ -117,7 +61,7 @@ public class Backend.Mastodon.Account : Backend.Account {
                                    used_redirects,
                                    server.client_key,
                                    server.client_secret,
-                                   server.domain);
+                                  @"$(server.domain)/api/v1/");
   }
 
   /**
@@ -180,7 +124,7 @@ public class Backend.Mastodon.Account : Backend.Account {
     // Retrieve the account profile data
     var auth_call = create_call ();
     auth_call.set_method ("GET");
-    auth_call.set_function ("/api/v1/accounts/verify_credentials");
+    auth_call.set_function ("accounts/verify_credentials");
 
     Json.Object data;
     try {
@@ -220,7 +164,7 @@ public class Backend.Mastodon.Account : Backend.Account {
     // Retrieve the account profile data
     var auth_call = create_call ();
     auth_call.set_method ("GET");
-    auth_call.set_function ("/api/v1/accounts/verify_credentials");
+    auth_call.set_function ("accounts/verify_credentials");
 
     Json.Object data;
     try {
@@ -232,6 +176,62 @@ public class Backend.Mastodon.Account : Backend.Account {
     // Populate data with retrieved json
     set_profile_data (data);
     authenticated = true;
+  }
+
+  /**
+   * Sets the Profile data for this Account.
+   *
+   * @param json A Json.Object retrieved from the API.
+   */
+  private void set_profile_data (Json.Object json) {
+    // Get the url for avatar and header
+    string avatar_url = json.get_string_member ("avatar_static");
+    string header_url = json.get_string_member ("header_static");
+
+    // Get url and domain to this account
+    string account_url = json.get_string_member ("url");
+    string account_domain = Utils.ParseUtils.strip_domain (account_url);
+
+    // Set the id of the account
+    id = json.get_string_member ("id");
+
+    // Set the creation date for the account
+    creation_date = new DateTime.from_iso8601 (
+                      json.get_string_member ("created_at"),
+                      new TimeZone.utc ()
+                    );
+
+    // Set the names of the account
+    display_name = json.get_string_member ("display_name");
+    username     = json.get_string_member ("acct");
+
+    // Set the url and domain
+    url    = account_url;
+    domain = account_domain;
+
+    // Set metrics
+    followers_count = (int) json.get_int_member ("followers_count");
+    following_count = (int) json.get_int_member ("following_count");
+    posts_count     = (int) json.get_int_member ("statuses_count");
+
+    // Set the images
+    avatar = new Media (PICTURE, avatar_url);
+    header = new Media (PICTURE, header_url);
+
+    // Parse the description into modules and create a formatted version
+    description_modules = Utils.TextUtils.parse_text (json.get_string_member ("note"));
+    description = Backend.Utils.TextUtils.format_text (description_modules);
+
+    // Parses all fields
+    data_fields = Utils.ParseUtils.parse_data_fields (json.get_array_member ("fields"));
+
+    // Get possible flags for this user
+    if (json.get_boolean_member ("locked")) {
+      flags = flags | MODERATED;
+    }
+    if (json.get_boolean_member ("bot")) {
+      flags = flags | BOT;
+    }
   }
 
   /**
