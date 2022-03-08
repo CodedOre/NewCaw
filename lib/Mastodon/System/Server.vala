@@ -81,7 +81,7 @@ public class Backend.Mastodon.Server : Backend.Server {
 
     // Set up authentication
     client_call.set_method ("POST");
-    client_call.set_function ("api/v1/apps");
+    client_call.set_function ("apps");
     client_call.add_param ("client_name", application.name);
     client_call.add_param ("redirect_uris", used_redirects);
     client_call.add_param ("scopes", "read write follow push");

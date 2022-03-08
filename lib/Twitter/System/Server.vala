@@ -22,7 +22,11 @@ using GLib;
 
 /**
  * Stores the information to connect to the Twitter server.
+ *
+ * As there is only one server this backend can connect to,
+ * this server is created as an singleton.
  */
+[SingleInstance]
 public class Backend.Twitter.Server : Backend.Server {
 
   /**
@@ -33,6 +37,18 @@ public class Backend.Twitter.Server : Backend.Server {
    * the user needs to manually input to authenticate the client.
    */
   internal const string OOB_REDIRECT = "oob";
+
+  /**
+   * The global instance of this server.
+   */
+  public static Server? instance {
+    get {
+      if (_instance == null) {
+        critical ("This server was not initialized!");
+      }
+      return _instance;
+    }
+  }
 
   /**
    * Creates an connection with established client authentication.
@@ -49,10 +65,13 @@ public class Backend.Twitter.Server : Backend.Server {
   public Server (string client_key, string client_secret) {
     // Create the Server instance
     Object (
-      domain:        "https://twitter.com",
+      domain:        "https://api.twitter.com",
       client_key:    client_key,
       client_secret: client_secret
     );
+
+    // Set the global instance
+    _instance = this;
   }
 
   /**
@@ -64,5 +83,10 @@ public class Backend.Twitter.Server : Backend.Server {
    */
   protected override void check_call (Rest.ProxyCall call) throws CallError {
   }
+
+  /**
+   * Stores the global instance of this Server.
+   */
+  private static Server? _instance = null;
 
 }
