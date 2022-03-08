@@ -30,6 +30,36 @@ using GLib;
 public class Backend.Twitter.Account : Backend.Account {
 
   /**
+   * Creates an unauthenticated Account for a server.
+   *
+   * After construction, it is required to either authenticate the account,
+   * using the methods init_authentication and authenticate,
+   * or to login with the method login.
+   */
+  public Account () {
+    // Construct the object with server information
+    Object (
+      // Set server and non-authenticated
+      server:        Server.instance,
+      authenticated: false
+    );
+
+    // Get Client instance and determine used redirect uri
+    Client application    = Client.instance;
+    string used_redirects = application.redirect_uri != null
+                              ? application.redirect_uri
+                              : Server.OOB_REDIRECT;
+
+    // Create proxy
+    proxy = new Rest.OAuth2Proxy (@"https://twitter.com/i/oauth2/authorize",
+                                  @"$(server.domain)/oauth2/token",
+                                   used_redirects,
+                                   server.client_key,
+                                   server.client_secret,
+                                  @"$(server.domain)/2/");
+  }
+
+  /**
    * Prepares the link to launch the authentication of a new Account.
    *
    * @return The link with the site to authenticate the user.
