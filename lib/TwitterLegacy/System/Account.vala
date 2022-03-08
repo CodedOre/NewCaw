@@ -35,6 +35,28 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
   public string access_secret { get; private set; }
 
   /**
+   * Creates an unauthenticated Account.
+   *
+   * After construction, it is required to either authenticate the account,
+   * using the methods init_authentication and authenticate,
+   * or to login with the method login.
+   */
+  public Account () {
+    // Construct the object with server information
+    Object (
+      // Set server and non-authenticated
+      server:        Server.instance,
+      authenticated: false
+    );
+
+    // Create proxy
+    proxy = new Rest.OAuthProxy (server.client_key,
+                                 server.client_secret,
+                                 server.domain,
+                                 false);
+  }
+
+  /**
    * Prepares the link to launch the authentication of a new Account.
    *
    * @return The link with the site to authenticate the user.
@@ -42,7 +64,21 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
    * @throws Error Any error occurring while requesting the token.
    */
   public override async string init_authentication () throws Error {
-    return "";
+    // Get Client instance and determine used redirect uri
+    Client application    = Client.instance;
+    string used_redirects = application.redirect_uri != null
+                              ? application.redirect_uri
+                              : Server.OOB_REDIRECT;
+
+    // Request a oauth token with the proxy
+    try {
+      yield proxy.request_token_async ("oauth/request_token", used_redirects, null);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Create authentication url
+    return @"$(server.domain)/oauth/authorize?oauth_token=$(proxy.token)";
   }
 
   /**
@@ -72,6 +108,7 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
    * @throws Error Any error occurring while requesting the token.
    */
   public override async void login (string token) throws Error {
+    critical ("Access secret not given!");
   }
 
   /**
@@ -85,7 +122,7 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
    *
    * @throws Error Any error occurring while requesting the token.
    */
-  public override async void login_with_secret (string token, string secret) throws Error {
+  public async void login_with_secret (string token, string secret) throws Error {
   }
 
   /**
