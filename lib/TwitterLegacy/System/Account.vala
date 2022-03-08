@@ -64,6 +64,11 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
    * @throws Error Any error occurring while requesting the token.
    */
   public override async string init_authentication () throws Error {
+    // Check if authentication is necessary
+    if (authenticated) {
+      error ("Already authenticated!");
+    }
+
     // Get Client instance and determine used redirect uri
     Client application    = Client.instance;
     string used_redirects = application.redirect_uri != null
@@ -95,6 +100,42 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
    * @throws Error Any error occurring while requesting the token.
    */
   public override async void authenticate (string auth_code) throws Error {
+    // Check if authentication is necessary
+    if (authenticated) {
+      error ("Already authenticated!");
+    }
+
+    // Retrieve the access token
+    try {
+      yield proxy.access_token_async ("oauth/access_token", auth_code, null);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Check if we retrieved a valid access token
+    if (proxy.token == null || proxy.token == "") {
+      error ("Could not retrieve access token!");
+    } else {
+      // Store the access token and secret in the properties
+      access_token  = proxy.token;
+      access_secret = proxy.token_secret;
+    }
+
+    // Retrieve the account profile data
+    var auth_call = create_call ();
+    auth_call.set_method ("GET");
+    auth_call.set_function ("1.1/account/verify_credentials.json");
+
+    Json.Object data;
+    try {
+      data = yield server.call (auth_call);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Populate data with retrieved json
+    set_profile_data (data);
+    authenticated = true;
   }
 
   /**
@@ -123,6 +164,10 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
    * @throws Error Any error occurring while requesting the token.
    */
   public async void login_with_secret (string token, string secret) throws Error {
+    // Check if authentication is necessary
+    if (authenticated) {
+      error ("Already authenticated!");
+    }
   }
 
   /**
