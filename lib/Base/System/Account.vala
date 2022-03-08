@@ -42,11 +42,6 @@ public abstract class Backend.Account : Backend.Profile {
   public string access_token { get; protected set; }
 
   /**
-   * The access secret for this specific Account.
-   */
-  public string access_secret { get; protected set; }
-
-  /**
    * If the account was successfully authenticated at the server.
    */
   public bool authenticated { get; protected set; }
@@ -92,7 +87,7 @@ public abstract class Backend.Account : Backend.Profile {
    *
    * @throws Error Any error occurring while requesting the token.
    */
-  public abstract async void login (string token, string secret) throws Error;
+  public abstract async void login (string token) throws Error;
 
   /**
    * Creates a Rest.ProxyCall to perform an API call.

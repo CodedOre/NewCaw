@@ -60,11 +60,18 @@ public class Backend.Twitter.Account : Backend.Account {
    * Creates an Account with existing access token.
    *
    * @param token The access token for the account.
-   * @param secret The secret for the access token.
    *
    * @throws Error Any error occurring while requesting the token.
    */
-  public override async void login (string token, string secret) throws Error {
+  public override async void login (string token) throws Error {
+  }
+
+  /**
+   * Sets the Profile data for this Account.
+   *
+   * @param json A Json.Object retrieved from the API.
+   */
+  private void set_profile_data (Json.Object json) {
   }
 
   /**

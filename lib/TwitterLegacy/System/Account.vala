@@ -30,6 +30,11 @@ using GLib;
 public class Backend.TwitterLegacy.Account : Backend.Account {
 
   /**
+   * The access secret for this specific Account.
+   */
+  public string access_secret { get; private set; }
+
+  /**
    * Prepares the link to launch the authentication of a new Account.
    *
    * @return The link with the site to authenticate the user.
@@ -59,12 +64,36 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
   /**
    * Creates an Account with existing access token.
    *
+   * As OAuth 1.0 requires an additional secret,
+   * use login_with_secret instead of this method.
+   *
+   * @param token The access token for the account.
+   *
+   * @throws Error Any error occurring while requesting the token.
+   */
+  public override async void login (string token) throws Error {
+  }
+
+  /**
+   * Creates an Account with existing access token.
+   *
+   * As OAuth 1.0 requires an additional secret,
+   * this method should be used instead of login.
+   *
    * @param token The access token for the account.
    * @param secret The secret for the access token.
    *
    * @throws Error Any error occurring while requesting the token.
    */
-  public override async void login (string token, string secret) throws Error {
+  public override async void login_with_secret (string token, string secret) throws Error {
+  }
+
+  /**
+   * Sets the Profile data for this Account.
+   *
+   * @param json A Json.Object retrieved from the API.
+   */
+  private void set_profile_data (Json.Object json) {
   }
 
   /**

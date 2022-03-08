@@ -43,10 +43,7 @@ public class Backend.Mastodon.Account : Backend.Account {
     Object (
       // Set server and non-authenticated
       server:        server,
-      authenticated: false,
-
-      // Set access_secret to null as there is none
-      access_secret: null
+      authenticated: false
     );
 
     // Get Client instance and determine used redirect uri
@@ -142,11 +139,10 @@ public class Backend.Mastodon.Account : Backend.Account {
    * Creates an Account with existing access token.
    *
    * @param token The access token for the account.
-   * @param secret The secret for the access token.
    *
    * @throws Error Any error occurring while requesting the token.
    */
-  public override async void login (string token, string secret) throws Error {
+  public override async void login (string token) throws Error {
     // Check if authentication is necessary
     if (authenticated) {
       error ("Already authenticated!");
