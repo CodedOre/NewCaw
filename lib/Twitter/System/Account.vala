@@ -67,7 +67,18 @@ public class Backend.Twitter.Account : Backend.Account {
    * @throws Error Any error occurring while requesting the token.
    */
   public override async string init_authentication () throws Error {
-    return "";
+    // Check if authentication is necessary
+    if (authenticated) {
+      error ("Already authenticated!");
+    }
+
+    // Create code challenge
+    auth_challenge = new Rest.PkceCodeChallenge.random ();
+
+    // Build authorization url
+    return proxy.build_authorization_url (auth_challenge.get_challenge (),
+                                          "tweet.read users.read offline.access",
+                                          out auth_state);
   }
 
   /**
@@ -105,6 +116,16 @@ public class Backend.Twitter.Account : Backend.Account {
   }
 
   /**
+   * A CodeChallenge used to verify the authentication process.
+   */
+  private Rest.PkceCodeChallenge? auth_challenge = null;
+
+  /**
+   * A string that can be used to proof-check the process.
+   */
+  private string? auth_state = null;
+
+  /**
    * Creates a Rest.ProxyCall to perform an API call.
    */
   internal override Rest.ProxyCall create_call () {
@@ -115,6 +136,6 @@ public class Backend.Twitter.Account : Backend.Account {
   /**
    * The proxy used to authorize the API calls.
    */
-  private Rest.OAuthProxy proxy;
+  private Rest.OAuth2Proxy proxy;
 
 }
