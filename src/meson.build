@@ -37,11 +37,13 @@ cawfiles = [
 
 # Add build configurations
 cdata = configuration_data()
-cdata.set_quoted ('LOCALEDIR', join_paths(get_option('prefix'), get_option('localedir')))
-cdata.set_quoted ('GETTEXT_PACKAGE', meson.project_name())
-cdata.set_quoted ('PROJECT_VERSION', version)
-cdata.set_quoted ('TWITTER_CLIENT_KEY', get_option ('twitter_client_key'))
-cdata.set_quoted ('TWITTER_CLIENT_SECRET', get_option ('twitter_client_secret'))
+cdata.set_quoted ('PROJECT_NAME',           meson.project_name())
+cdata.set_quoted ('PROJECT_VERSION',        version)
+cdata.set_quoted ('LOCALEDIR',              join_paths(get_option('prefix'), get_option('localedir')))
+cdata.set_quoted ('TWITTER_OAUTH_1_KEY',    get_option ('twitter_oauth1_tokens')[0])
+cdata.set_quoted ('TWITTER_OAUTH_1_SECRET', get_option ('twitter_oauth1_tokens')[1])
+cdata.set_quoted ('TWITTER_OAUTH_2_KEY',    get_option ('twitter_oauth2_tokens')[0])
+cdata.set_quoted ('TWITTER_OAUTH_2_SECRET', get_option ('twitter_oauth2_tokens')[1])
 configure_file(
   output: 'config.h',
   configuration: cdata

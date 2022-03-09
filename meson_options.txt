@@ -20,13 +20,13 @@ option(
 )
 
 option(
-  'twitter_client_key',
-  type:        'string',
-  description: 'The key used by the client for Twitter.'
+  'twitter_oauth1_tokens',
+  type:        'array',
+  description: 'Key and Secret for a Twitter OAuth 1.0a application.'
 )
 
 option(
-  'twitter_client_secret',
-  type:        'string',
-  description: 'The secret used by the client for Twitter.'
+  'twitter_oauth2_tokens',
+  type:        'array',
+  description: 'Key and Secret for a Twitter OAuth 2.0 application.'
 )

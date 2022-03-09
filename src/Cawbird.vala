@@ -40,8 +40,8 @@ public class Cawbird : Adw.Application {
 #endif
 #if SUPPORT_TWITTER || SUPPORT_TWITTER_LEGACY
     // Get client key and secret
-    string client_key    = Config.TWITTER_CLIENT_KEY;
-    string client_secret = Config.TWITTER_CLIENT_SECRET;
+    string client_key    = "";
+    string client_secret = "";
 
     // Get possible key and secret override
     var settings         = new Settings ("uk.co.ibboard.Cawbird.experimental");
@@ -66,9 +66,9 @@ public class Cawbird : Adw.Application {
   public static int main (string[] args) {
     // Setup gettext
     GLib.Intl.setlocale (GLib.LocaleCategory.ALL, "");
-    GLib.Intl.bindtextdomain (Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
-    GLib.Intl.bind_textdomain_codeset (Config.GETTEXT_PACKAGE, "UTF-8");
-    GLib.Intl.textdomain (Config.GETTEXT_PACKAGE);
+    GLib.Intl.bindtextdomain (Config.PROJECT_NAME, Config.LOCALEDIR);
+    GLib.Intl.bind_textdomain_codeset (Config.PROJECT_NAME, "UTF-8");
+    GLib.Intl.textdomain (Config.PROJECT_NAME);
 
     // Run the app
     return new Cawbird ().run (args);
