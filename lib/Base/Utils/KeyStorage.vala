@@ -45,14 +45,51 @@ public class Backend.Utils.KeyStorage : Object {
    * Constructs the KeyStorage instance.
    */
   private KeyStorage () {
+    // Create the secrets schemas
+    secret_schema = new Secret.Schema (Client.instance.id,
+                                       Secret.SchemaFlags.NONE,
+                                       "type",       Secret.SchemaAttributeType.STRING,
+                                       "identifier", Secret.SchemaAttributeType.STRING,
+                                       "secret",     Secret.SchemaAttributeType.BOOLEAN
+                                      );
   }
 
   /**
    * Store the access tokens for a Server.
    *
    * @param server The Server which tokens are to be stored.
+   *
+   * @throws Error Any error that happens while storing the token.
    */
-  public async void store_server_access (Server server) {
+  public static async void store_server_access (Server server) throws Error {
+    print ("DEBUGPOINT 1\n");
+    // Create the attributes
+    string token_label;
+    var    attributes        = new GLib.HashTable<string,string> (str_hash, str_equal);
+    attributes["type"]       = "Server";
+    attributes["identifier"] = server.domain;
+
+    // Store the access
+    try {
+      print ("DEBUGPOINT 2\n");
+      // Store the client token
+      token_label          = @"Client Token for Server \"$(server.domain)\"";
+      attributes["secret"] = "false";
+      Secret.password_storev_sync (instance.secret_schema, attributes,
+                                   Secret.COLLECTION_DEFAULT, token_label,
+                                   server.client_key, null);
+
+      print ("DEBUGPOINT 3\n");
+      // Store the client secret
+      token_label          = @"Client Secret for Server \"$(server.domain)\"";
+      attributes["secret"] = "true";
+      Secret.password_storev_sync (instance.secret_schema, attributes,
+                                   Secret.COLLECTION_DEFAULT, token_label,
+                                   server.client_secret, null);
+    } catch (Error e) {
+      throw e;
+    }
+    print ("DEBUGPOINT 4\n");
   }
 
   /**
