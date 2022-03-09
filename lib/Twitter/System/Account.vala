@@ -124,10 +124,12 @@ public class Backend.Twitter.Account : Backend.Account {
     var auth_call = create_call ();
     auth_call.set_method ("GET");
     auth_call.set_function ("users/me");
+    Server.append_user_fields (ref auth_call);
 
-    Json.Object data;
+    Json.Object json, data;
     try {
-      data = yield server.call (auth_call);
+      json = yield server.call (auth_call);
+      Server.data_include_split (json, out data, null);
     } catch (Error e) {
       throw e;
     }
@@ -145,6 +147,37 @@ public class Backend.Twitter.Account : Backend.Account {
    * @throws Error Any error occurring while requesting the token.
    */
   public override async void login (string token) throws Error {
+    // Check if authentication is necessary
+    if (authenticated) {
+      error ("Already authenticated!");
+    }
+
+    // Check if init_authenticate was run beforehand
+    if (auth_challenge != null) {
+      error ("Authentication in progress!");
+    }
+
+    // Set the access token on the proxy
+    access_token       = token;
+    proxy.access_token = access_token;
+
+    // Retrieve the account profile data
+    var auth_call = create_call ();
+    auth_call.set_method ("GET");
+    auth_call.set_function ("users/me");
+    Server.append_user_fields (ref auth_call);
+
+    Json.Object json, data;
+    try {
+      json = yield server.call (auth_call);
+      Server.data_include_split (json, out data, null);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Populate data with retrieved json
+    set_profile_data (data);
+    authenticated = true;
   }
 
   /**

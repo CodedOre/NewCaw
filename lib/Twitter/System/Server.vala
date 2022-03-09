@@ -75,6 +75,61 @@ public class Backend.Twitter.Server : Backend.Server {
   }
 
   /**
+   * Appends the parameters to retrieve the complete data for a user.
+   *
+   * This adds all parameters to a Rest.ProxyCall so
+   * it requests the complete data set for a user.
+   *
+   * @param call A reference to the call which should get the parameters.
+   */
+  internal static void append_user_fields (ref Rest.ProxyCall call) {
+    // All fields to be requested
+    string[] fields = {
+      "id",
+      "name",
+      "username",
+      "created_at",
+      "description",
+      "url",
+      "entities",
+      "profile_image_url",
+      "verified",
+      "protected",
+      "public_metrics"
+    };
+
+    // Add fields parameter
+    string field_param = string.joinv (",", fields);
+    call.add_param ("user.fields", field_param);
+  }
+
+  /**
+   * Splits the received json into an data and includes object.
+   *
+   * This splits the json received from the API
+   * into an data and includes json, if available.
+   *
+   * @param json The original json object.
+   * @param data A reference where the data object will be stored.
+   * @param includes A reference where the includes object will be stored, or null if not available.
+   */
+  internal static void data_include_split (Json.Object json, out Json.Object data, out Json.Object? includes) {
+    // Retrieve the data object
+    if (json.has_member ("data")) {
+      data = json.get_object_member ("data");
+    } else {
+      error ("Could not retrieve data object");
+    }
+
+    // Retrieve the data object
+    if (json.has_member ("includes")) {
+      includes = json.get_object_member ("includes");
+    } else {
+      includes = null;
+    }
+  }
+
+  /**
    * Checks an finished Rest.ProxyCall for occurred errors.
    *
    * @param call The call as run by call.
