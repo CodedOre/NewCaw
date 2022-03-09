@@ -52,7 +52,7 @@ public class Backend.Twitter.Account : Backend.Account {
 
     // Create proxy
     proxy = new Rest.OAuth2Proxy (@"https://twitter.com/i/oauth2/authorize",
-                                  @"$(server.domain)/oauth2/token",
+                                  @"$(server.domain)/2/oauth2/token",
                                    used_redirects,
                                    server.client_key,
                                    server.client_secret,
@@ -106,7 +106,11 @@ public class Backend.Twitter.Account : Backend.Account {
     }
 
     // Get the access token using the proxy
-    yield proxy.fetch_access_token_async (auth_code, auth_challenge.get_verifier (), null);
+    try {
+      yield proxy.fetch_access_token_async (auth_code, auth_challenge.get_verifier (), null);
+    } catch (Error e) {
+      throw e;
+    }
 
     // Check if we retrieved a valid access token
     if (proxy.access_token == null || proxy.access_token == "") {

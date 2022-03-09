@@ -108,7 +108,11 @@ public class Backend.Mastodon.Account : Backend.Account {
     }
 
     // Get the access token using the proxy
-    yield proxy.fetch_access_token_async (auth_code, auth_challenge.get_verifier (), null);
+    try {
+      yield proxy.fetch_access_token_async (auth_code, auth_challenge.get_verifier (), null);
+    } catch (Error e) {
+      throw e;
+    }
 
     // Check if we retrieved a valid access token
     if (proxy.access_token == null || proxy.access_token == "") {
