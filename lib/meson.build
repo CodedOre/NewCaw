@@ -50,6 +50,7 @@ if get_option('twitter_backend').enabled()
     'Twitter/Content/User.vala',
     'Twitter/System/Account.vala',
     'Twitter/System/Server.vala',
+    'Twitter/Utils/ParseUtils.vala',
     'Twitter/Utils/TextUtils.vala'
   ]
 endif

@@ -146,9 +146,72 @@ public class Backend.Twitter.Account : Backend.Account {
   /**
    * Sets the Profile data for this Account.
    *
-   * @param json A Json.Object retrieved from the API.
+   * @param data A Json.Object retrieved from the API.
    */
-  private void set_profile_data (Json.Object json) {
+  private void set_profile_data (Json.Object data) {
+    // Get metrics object
+    Json.Object metrics = data.get_object_member ("public_metrics");
+
+    // Parse the avatar image url
+    string avatar_preview_url = data.get_string_member ("profile_image_url");
+    string avatar_media_url   = Utils.ParseUtils.parse_profile_image (avatar_preview_url);
+
+    // Set the id of the user
+    id = data.get_string_member ("id");
+
+    // Set the creation data
+    creation_date = new DateTime.from_iso8601 (
+                      data.get_string_member ("created_at"),
+                      new TimeZone.utc ()
+                    );
+
+    // Set the names of the user
+    display_name = data.get_string_member ("name");
+    username     = data.get_string_member ("username");
+
+    // Set url and domain
+    domain = "Twitter.com";
+    url    = @"https://twitter.com/$(username)";
+
+    // Set metrics
+    followers_count = (int) metrics.get_int_member ("followers_count");
+    following_count = (int) metrics.get_int_member ("following_count");
+    posts_count     = (int) metrics.get_int_member ("tweet_count");
+
+    // Set the ImageLoader for the avatar
+    avatar = new Media (PICTURE, avatar_media_url, avatar_preview_url);
+    header = null;
+
+    // Parse text into modules
+    Json.Object? description_entities = null;
+    string       raw_text             = "";
+    if (data.has_member ("description")) {
+      raw_text = data.get_string_member ("description");
+    }
+
+    // Parse entities
+    if (data.has_member ("entities")) {
+      Json.Object profile_entities = data.get_object_member ("entities");
+      // Parse entities for the description
+      if (profile_entities.has_member ("description")) {
+        description_entities = profile_entities.get_object_member ("description");
+      }
+    }
+    description_modules = Utils.TextUtils.parse_text (raw_text, description_entities);
+
+    // First format of the description.
+    description = Backend.Utils.TextUtils.format_text (description_modules);
+
+    // Store additional information in data fields
+    data_fields = Utils.ParseUtils.parse_data_fields (data);
+
+    // Get possible flags for this user
+    if (data.get_boolean_member ("protected")) {
+      flags = flags | MODERATED | PROTECTED;
+    }
+    if (data.get_boolean_member ("verified")) {
+      flags = flags | VERIFIED;
+    }
   }
 
   /**
