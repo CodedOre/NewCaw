@@ -49,7 +49,7 @@ public abstract class Backend.Account : Backend.Profile {
   /**
    * The server this account is connected to.
    */
-  public Server server { get; construct; }
+  public weak Server server { get; construct; }
 
   /**
    * Prepares the link to launch the authentication of a new Account.

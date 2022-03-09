@@ -33,7 +33,7 @@ public class Cawbird : Adw.Application {
 
   protected override void activate () {
     // Initializes the backend client
-    new Backend.Client ("NewCaw Development", "https://github.com/CodedOre/NewCaw");
+    new Backend.Client ("uk.co.ibboard.Cawbird.Devel", "NewCaw Development", "https://github.com/CodedOre/NewCaw");
 
 #if SUPPORT_TWITTER
     // Initializes the Twitter backend

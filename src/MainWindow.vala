@@ -1,6 +1,6 @@
 /* MainWindow.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,8 +35,8 @@ public class MainWindow : Adw.ApplicationWindow {
     // Initializes the Object
     Object (application: app);
 
-    // Add development style in debug
 #if DEBUG
+    // Add development style in debug
     this.add_css_class ("devel");
 #endif
   }
