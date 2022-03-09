@@ -77,7 +77,7 @@ public class Backend.Twitter.Account : Backend.Account {
 
     // Build authorization url
     return proxy.build_authorization_url (auth_challenge.get_challenge (),
-                                          "tweet.read users.read offline.access",
+                                          "tweet.read tweet.write tweet.moderate.write users.read follows.read follows.write space.read mute.read mute.write like.read like.write list.read list.write block.read block.write offline.access",
                                           out auth_state);
   }
 
