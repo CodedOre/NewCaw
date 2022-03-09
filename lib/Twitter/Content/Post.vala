@@ -57,8 +57,8 @@ public class Backend.Twitter.Post : Backend.Post {
                      ),
 
       // Set url and domain
-      domain: PLATFORM_DOMAIN,
-      url:    @"https://$(PLATFORM_DOMAIN)/$(author_name)/status/$(post_id)",
+      domain: "Twitter.com",
+      url:    @"https://twitter.com/$(author_name)/status/$(post_id)",
 
       // Set public metrics
       liked_count:    (int) metrics.get_int_member ("like_count"),
@@ -80,10 +80,10 @@ public class Backend.Twitter.Post : Backend.Post {
     if (data.has_member ("entities")) {
       entities = data.get_object_member ("entities");
     }
-    text_modules = Utils.parse_text (raw_text, entities);
+    text_modules = Utils.TextUtils.parse_text (raw_text, entities);
 
     // First format of the text.
-    text = Backend.Utils.format_text (text_modules);
+    text = Backend.Utils.TextUtils.format_text (text_modules);
 
     // Retrieve the attached media for this Post
     attached_media = parse_media (data, includes);

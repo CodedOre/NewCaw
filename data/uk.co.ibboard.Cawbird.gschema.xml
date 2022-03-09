@@ -9,7 +9,7 @@
       <default>true</default>
     </key>
 	</schema>
-  <!-- Experimental UI -->
+  <!-- Experimental Settings -->
 	<schema id="uk.co.ibboard.Cawbird.experimental" path="/uk/co/ibboard/Cawbird/experimental/">
 	  <key type="b" name="profile-inline-header">
       <description>
@@ -17,5 +17,17 @@
       </description>
       <default>false</default>
     </key>
+	  <key type="s" name="twitter-client-key-override">
+	    <description>
+	      A custom client key the Twitter backend will use if set.
+	    </description>
+	    <default>""</default>
+	  </key>
+	  <key type="s" name="twitter-client-secret-override">
+	    <description>
+	      A custom client secret the Twitter backend will use if set.
+	    </description>
+	    <default>""</default>
+	  </key>
 	</schema>
 </schemalist>

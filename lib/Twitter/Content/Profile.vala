@@ -20,6 +20,12 @@
 
 using GLib;
 
+
+/**
+ * Extends User with additional information not contained there.
+ *
+ * Used when displaying a User in detail.
+ */
 public class Backend.Twitter.Profile : Backend.Profile {
 
   /**
@@ -34,18 +40,7 @@ public class Backend.Twitter.Profile : Backend.Profile {
 
     // Parse the avatar image url
     string avatar_preview_url = data.get_string_member ("profile_image_url");
-    string avatar_media_url;
-    try {
-      var image_regex = new Regex ("(https://pbs.twimg.com/.*?)_normal(\\..*)");
-      avatar_media_url = image_regex.replace (
-        avatar_preview_url,
-        avatar_preview_url.length,
-        0,
-        "\\1\\2"
-      );
-    } catch (RegexError e) {
-      error (@"Error while parsing source: $(e.message)");
-    }
+    string avatar_media_url   = Utils.ParseUtils.parse_profile_image (avatar_preview_url);
 
     // Get strings used to compose the url.
     string profile_name = data.get_string_member ("username");
@@ -66,8 +61,8 @@ public class Backend.Twitter.Profile : Backend.Profile {
       username:     profile_name,
 
       // Set url and domain
-      domain: PLATFORM_DOMAIN,
-      url:    @"https://$(PLATFORM_DOMAIN)/$(profile_name)",
+      domain: "Twitter.com",
+      url:    @"https://twitter.com/$(profile_name)",
 
       // Set metrics
       followers_count: (int) metrics.get_int_member ("followers_count"),
@@ -81,7 +76,6 @@ public class Backend.Twitter.Profile : Backend.Profile {
 
     // Parse text into modules
     Json.Object? description_entities = null;
-    Json.Object? weblink_entity       = null;
     string       raw_text             = "";
     if (data.has_member ("description")) {
       raw_text = data.get_string_member ("description");
@@ -94,43 +88,14 @@ public class Backend.Twitter.Profile : Backend.Profile {
       if (profile_entities.has_member ("description")) {
         description_entities = profile_entities.get_object_member ("description");
       }
-      // Parse entity for the linked url
-      if (profile_entities.has_member ("url")) {
-        Json.Object profile_urls = profile_entities.get_object_member ("url");
-        Json.Array  urls_array   = profile_urls.get_array_member ("urls");
-        // It should only have one element, so assuming this to avoid an loop
-        Json.Node url_node = urls_array.get_element (0);
-        if (url_node.get_node_type () == OBJECT) {
-          weblink_entity = url_node.get_object ();
-        }
-      }
     }
-    description_modules = Utils.parse_text (raw_text, description_entities);
+    description_modules = Utils.TextUtils.parse_text (raw_text, description_entities);
 
     // First format of the description.
-    description = Backend.Utils.format_text (description_modules);
+    description = Backend.Utils.TextUtils.format_text (description_modules);
 
     // Store additional information in data fields
-    UserDataField[] additional_fields = {};
-    if (data.has_member ("location")) {
-      if (data.get_string_member ("location") != "") {
-        var new_field      = UserDataField ();
-        new_field.type     = LOCATION;
-        new_field.name     = "Location";
-        new_field.display  = data.get_string_member ("location");
-        new_field.target   = null;
-        additional_fields += new_field;
-      }
-    }
-    if (weblink_entity != null) {
-      var new_field      = UserDataField ();
-      new_field.type     = WEBLINK;
-      new_field.name     = "Weblink";
-      new_field.display  = weblink_entity.get_string_member ("display_url");
-      new_field.target   = weblink_entity.get_string_member ("expanded_url");
-      additional_fields += new_field;
-    }
-    data_fields = additional_fields;
+    data_fields = Utils.ParseUtils.parse_data_fields (data);
 
     // Get possible flags for this user
     if (data.get_boolean_member ("protected")) {

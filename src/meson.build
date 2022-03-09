@@ -6,9 +6,11 @@ cawdepends = [
   dependency('glib-2.0',      version: '>= 2.50'),
   dependency('gtk4',          version: '>= 4.0'),
   dependency('libadwaita-1',  version: '>= 1.0'),
+  # Compile with GLib Math support.
   meson.get_compiler('c').find_library('m', required: false)
 ]
 
+# Link backend to client
 cawdepends += declare_dependency(
   link_with:            backendlib,
   include_directories:  backendsrc,
@@ -38,6 +40,8 @@ cdata = configuration_data()
 cdata.set_quoted ('LOCALEDIR', join_paths(get_option('prefix'), get_option('localedir')))
 cdata.set_quoted ('GETTEXT_PACKAGE', meson.project_name())
 cdata.set_quoted ('PROJECT_VERSION', version)
+cdata.set_quoted ('TWITTER_CLIENT_KEY', get_option ('twitter_client_key'))
+cdata.set_quoted ('TWITTER_CLIENT_SECRET', get_option ('twitter_client_secret'))
 configure_file(
   output: 'config.h',
   configuration: cdata

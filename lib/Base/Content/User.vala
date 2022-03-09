@@ -28,22 +28,22 @@ public abstract class Backend.User : Object {
   /**
    * The identifier of the user in the API.
    */
-  public string id { get; construct; }
+  public string id { get; protected set; }
 
   /**
    * The "name" of the user.
    */
-  public string display_name { get; construct; }
+  public string display_name { get; protected set; }
 
   /**
    * The unique handle of this user.
    */
-  public string username { get; construct; }
+  public string username { get; protected set; }
 
   /**
    * The avatar image from this user.
    */
-  public Media avatar { get; construct; }
+  public Media avatar { get; protected set; }
 
   /**
    * Checks if the User has a certain flag set.

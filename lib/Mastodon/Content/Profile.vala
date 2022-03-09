@@ -20,6 +20,12 @@
 
 using GLib;
 
+
+/**
+ * Extends User with additional information not contained there.
+ *
+ * Used when displaying a User in detail.
+ */
 public class Backend.Mastodon.Profile : Backend.Profile {
 
   /**
@@ -34,18 +40,7 @@ public class Backend.Mastodon.Profile : Backend.Profile {
 
     // Get url and domain to this profile
     string profile_url = json.get_string_member ("url");
-    string profile_domain;
-    try {
-      var domain_regex = new Regex ("https?://(.*?)/.*");
-      profile_domain = domain_regex.replace (
-        profile_url,
-        profile_url.length,
-        0,
-        "\\1"
-      );
-    } catch (RegexError e) {
-      error (@"Error while parsing domain: $(e.message)");
-    }
+    string profile_domain = Utils.ParseUtils.strip_domain (profile_url);
 
     // Construct the object with properties
     Object (
@@ -77,39 +72,13 @@ public class Backend.Mastodon.Profile : Backend.Profile {
     );
 
     // Parse the description into modules
-    description_modules = Utils.parse_text (json.get_string_member ("note"));
+    description_modules = Utils.TextUtils.parse_text (json.get_string_member ("note"));
 
     // First format of the description.
-    description = Backend.Utils.format_text (description_modules);
+    description = Backend.Utils.TextUtils.format_text (description_modules);
 
     // Parses all fields
-    UserDataField[] parsed_fields = {};
-    Json.Array profile_fields     = json.get_array_member ("fields");
-    profile_fields.foreach_element ((array, index, element) => {
-      if (element.get_node_type () == OBJECT) {
-        // Create an data field object
-        Json.Object obj = element.get_object ();
-        var new_field   = UserDataField ();
-        new_field.type  = GENERIC;
-        new_field.name  = obj.get_string_member ("name");
-        // Check if field contains weblink
-        try {
-          var link_regex = new Regex ("<a href=\"(.*?)\" rel=\".*?\" target=\"_blank\"><span class=\"invisible\">.*?</span><span class=\"\">(.*?)</span><span class=\"invisible\"></span></a>");
-          if (link_regex.match (obj.get_string_member ("value"))) {
-            new_field.display = link_regex.replace (obj.get_string_member ("value"), obj.get_string_member ("value").length, 0, "\\2");
-            new_field.target  = link_regex.replace (obj.get_string_member ("value"), obj.get_string_member ("value").length, 0, "\\1");
-          } else {
-            new_field.display = obj.get_string_member ("value");
-            new_field.target  = null;
-          }
-        } catch (RegexError e) {
-          error (@"Error while parsing data fields: $(e.message)");
-        }
-        // Append field to the array
-        parsed_fields  += new_field;
-      }
-    });
-    data_fields = parsed_fields;
+    data_fields = Utils.ParseUtils.parse_data_fields (json.get_array_member ("fields"));
 
     // Get possible flags for this user
     if (json.get_boolean_member ("locked")) {

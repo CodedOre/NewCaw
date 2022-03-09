@@ -21,9 +21,9 @@
 using GLib;
 
 /**
- * Provides utilities for the Mastodon Platform.
+ * Contains methods used to parse text to TextModules.
  */
-namespace Backend.Mastodon.Utils {
+namespace Backend.Mastodon.Utils.TextUtils {
 
   /**
    * Parses the text into a list of TextEntities.
@@ -145,7 +145,7 @@ namespace Backend.Mastodon.Utils {
       final_modules         += text_module;
     }
 
-    Backend.Utils.mark_trailing_tags (final_modules);
+    Backend.Utils.TextUtils.mark_trailing_tags (final_modules);
 
     return final_modules;
   }

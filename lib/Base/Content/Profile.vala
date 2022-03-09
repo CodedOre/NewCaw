@@ -30,7 +30,7 @@ public abstract class Backend.Profile : Backend.User {
   /**
    * When this Profile was created on the platform.
    */
-  public DateTime creation_date { get; construct; }
+  public DateTime creation_date { get; protected set; }
 
   /**
    * A formatted description set for the Profile.
@@ -40,22 +40,22 @@ public abstract class Backend.Profile : Backend.User {
   /**
    * The header image for the detail page of this user.
    */
-  public Media header { get; construct; }
+  public Media header { get; protected set; }
 
   /**
    * How many people are following this Profile.
    */
-  public int followers_count { get; construct; }
+  public int followers_count { get; protected set; }
 
   /**
    * How many people this Profile follows.
    */
-  public int following_count { get; construct; }
+  public int following_count { get; protected set; }
 
   /**
    * How many posts this Profile wrote.
    */
-  public int posts_count { get; construct; }
+  public int posts_count { get; protected set; }
 
   /**
    * The website where this post originates from.
@@ -63,12 +63,12 @@ public abstract class Backend.Profile : Backend.User {
    * Mostly important for the Mastodon backend, where a post
    * can come from multiple site thanks to the federation.
    */
-  public string domain { get; construct; }
+  public string domain { get; protected set; }
 
   /**
    * The url to visit this post on the original website.
    */
-  public string url { get; construct; }
+  public string url { get; protected set; }
 
   /**
    * Run while an object is constructed.
@@ -76,7 +76,7 @@ public abstract class Backend.Profile : Backend.User {
   construct {
     // Reformat the description when flags were changed.
     Utils.TextFormats.instance.update_formatting.connect (() => {
-      description = Utils.format_text (description_modules);
+      description = Utils.TextUtils.format_text (description_modules);
     });
   }
 

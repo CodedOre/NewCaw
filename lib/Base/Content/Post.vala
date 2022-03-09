@@ -94,7 +94,7 @@ public abstract class Backend.Post : Object {
   construct {
     // Reformat the text when flags were changed.
     Utils.TextFormats.instance.update_formatting.connect (() => {
-      text = Utils.format_text (text_modules);
+      text = Utils.TextUtils.format_text (text_modules);
     });
   }
 

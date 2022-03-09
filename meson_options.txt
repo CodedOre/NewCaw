@@ -1,20 +1,32 @@
 option(
-  'support_mastodon',
-  type:         'boolean',
-  value:         true,
-  description:  'Builds the Mastodon backend'
+  'mastodon_backend',
+  type:        'feature',
+  value:       'enabled',
+  description: 'If to build the backend for Mastodon.'
 )
 
 option(
-  'support_twitter',
-  type:         'boolean',
-  value:         true,
-  description:  'Builds the Twitter backend'
+  'twitter_backend',
+  type:        'feature',
+  value:       'enabled',
+  description: 'If to build the backend for Twitter v2.'
 )
 
 option(
-  'support_twitter_legacy',
-  type:         'boolean',
-  value:         true,
-  description:  'Builds the TwitterLegacy backend'
+  'twitter_legacy_backend',
+  type:        'feature',
+  value:       'enabled',
+  description: 'If to build the backend for Twitter v1.'
+)
+
+option(
+  'twitter_client_key',
+  type:        'string',
+  description: 'The key used by the client for Twitter.'
+)
+
+option(
+  'twitter_client_secret',
+  type:        'string',
+  description: 'The secret used by the client for Twitter.'
 )

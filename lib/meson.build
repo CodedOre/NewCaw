@@ -6,7 +6,8 @@ libdepends = [
   dependency('gtk4',           version: '>= 4.0'),
   dependency('gdk-pixbuf-2.0', version: '>= 2.0'),
   dependency('json-glib-1.0',  version: '>= 1.2'),
-  dependency('libsoup-3.0',    version: '>= 3.0')
+  dependency('libsoup-3.0',    version: '>= 3.0'),
+  dependency('rest-1.0',       version: '>= 0.9')
 ]
 
 # Base files
@@ -20,38 +21,48 @@ libfiles = [
   'Base/Content/User.vala',
   'Base/Content/UserDataField.vala',
   'Base/Content/UserEnums.vala',
+  'Base/System/Account.vala',
+  'Base/System/Client.vala',
+  'Base/System/Server.vala',
   'Base/Utils/MediaLoader.vala',
   'Base/Utils/TextFormats.vala',
   'Base/Utils/TextUtils.vala'
 ]
 
 # Add files for active backends
-if get_option('support_mastodon')
+if get_option('mastodon_backend').enabled()
   libfiles += [
     'Mastodon/Content/Media.vala',
     'Mastodon/Content/Post.vala',
     'Mastodon/Content/Profile.vala',
     'Mastodon/Content/User.vala',
+    'Mastodon/System/Account.vala',
+    'Mastodon/System/Server.vala',
+    'Mastodon/Utils/ParseUtils.vala',
     'Mastodon/Utils/TextUtils.vala'
   ]
 endif
-if get_option('support_twitter')
+if get_option('twitter_backend').enabled()
   libfiles += [
-    'Twitter/Platform.vala',
     'Twitter/Content/Media.vala',
     'Twitter/Content/Post.vala',
     'Twitter/Content/Profile.vala',
     'Twitter/Content/User.vala',
+    'Twitter/System/Account.vala',
+    'Twitter/System/Server.vala',
+    'Twitter/Utils/ParseUtils.vala',
     'Twitter/Utils/TextUtils.vala'
   ]
 endif
-if get_option('support_twitter_legacy')
+if get_option('twitter_legacy_backend').enabled()
   libfiles += [
-    'TwitterLegacy/Platform.vala',
     'TwitterLegacy/Content/Media.vala',
     'TwitterLegacy/Content/Post.vala',
     'TwitterLegacy/Content/Profile.vala',
     'TwitterLegacy/Content/User.vala',
+    'TwitterLegacy/System/Account.vala',
+    'TwitterLegacy/System/Server.vala',
+    'TwitterLegacy/Utils/ParseUtils.vala',
     'TwitterLegacy/Utils/TextUtils.vala'
   ]
 endif
