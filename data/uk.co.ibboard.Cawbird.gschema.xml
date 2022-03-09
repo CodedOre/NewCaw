@@ -17,17 +17,17 @@
       </description>
       <default>false</default>
     </key>
-	  <key type="s" name="twitter-client-key-override">
+	  <key type="(ss)" name="twitter-oauth1-tokens">
 	    <description>
-	      A custom client key the Twitter backend will use if set.
+	      Custom client tokens to authenticate with Twitter using OAuth 1.0a.
 	    </description>
-	    <default>""</default>
+	    <default>("","")</default>
 	  </key>
-	  <key type="s" name="twitter-client-secret-override">
+	  <key type="(ss)" name="twitter-oauth2-tokens">
 	    <description>
-	      A custom client secret the Twitter backend will use if set.
+	      Custom client tokens to authenticate with Twitter using OAuth 2.0.
 	    </description>
-	    <default>""</default>
+	    <default>("","")</default>
 	  </key>
 	</schema>
 </schemalist>
