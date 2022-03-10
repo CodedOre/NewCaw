@@ -95,7 +95,29 @@ public class Backend.Utils.KeyStorage : Object {
    * @param token A reference which will hold the retrieved token.
    * @param secret A reference which will hold the retrieved secret.
    */
-  public async void retrieve_server_access (string server, out string token, out string secret) {
+  public static async void retrieve_server_access (string server, out string token, out string secret) {
+    // Create the attributes
+    var attributes           = new GLib.HashTable<string,string> (str_hash, str_equal);
+    attributes["type"]       = "Server";
+    attributes["identifier"] = server;
+
+    // Store the access
+    try {
+      // Store the client token
+      attributes["secret"] = "false";
+      token = Secret.password_lookupv_sync (instance.secret_schema, attributes, null);
+
+      // Store the client secret
+      attributes["secret"] = "true";
+      secret = Secret.password_lookupv_sync (instance.secret_schema, attributes, null);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Check if tokens were retrieved
+    if (token == null || secret == null) {
+      error ("Could not retrieve access tokens for server \"$(server)\"");
+    }
   }
 
   /**
