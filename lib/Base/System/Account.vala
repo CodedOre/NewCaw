@@ -21,13 +21,6 @@
 using GLib;
 
 /**
- * Error domain for errors in Account.
- */
-errordomain AccountError {
-  FAILED_TOKEN_REQUEST
-}
-
-/**
  * Represents an Profile that uses this library.
  *
  * Account extends Profile to add the
@@ -83,7 +76,6 @@ public abstract class Backend.Account : Backend.Profile {
    * Creates an Account with existing access token.
    *
    * @param token The access token for the account.
-   * @param secret The secret for the access token.
    *
    * @throws Error Any error occurring while requesting the token.
    */
