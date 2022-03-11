@@ -51,17 +51,35 @@ public class AccountManager : Object {
   }
 
   /**
+   * Adds an Account to the list of managed accounts.
+   *
+   * @param account The Account to be added.
+   */
+  public static void add_account (Backend.Account account) {
+    instance.account_list += account;
+  }
+
+  /**
+   * Returns all accounts managed by this class.
+   *
+   * @return An array of all accounts managed.
+   */
+  public static Backend.Account[] get_accounts () {
+    return instance.account_list;
+  }
+
+  /**
    * Stores the single instance of this class.
    */
   private static AccountManager? global_instance = null;
 
   /**
-   * Stores all accounts connected to the client.
+   * Stores all accounts managed by this class.
    */
   private Backend.Account[] account_list;
 
   /**
-   * Stores all servers connected to the client.
+   * Stores all servers managed by this class.
    */
   private Backend.Server[] server_list;
 
