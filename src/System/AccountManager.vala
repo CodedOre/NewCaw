@@ -42,6 +42,15 @@ public class AccountManager : Object {
   }
 
   /**
+   * Constructs the instance.
+   */
+  private AccountManager () {
+    // Initialize the arrays
+    account_list = {};
+    server_list  = {};
+  }
+
+  /**
    * Stores the single instance of this class.
    */
   private static AccountManager? global_instance = null;
