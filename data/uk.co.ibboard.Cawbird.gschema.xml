@@ -2,6 +2,12 @@
 <schemalist gettext-domain="cawbird">
   <!-- General settings -->
 	<schema id="uk.co.ibboard.Cawbird" path="/uk/co/ibboard/Cawbird/">
+	  <key type="as" name="accounts">
+	    <description>
+	      A short list of managed accounts.
+	    </description>
+	    <default>[]</default>
+	  </key>
     <key type="b" name="round-avatars">
       <description>
         Display user avatars round.
@@ -9,6 +15,21 @@
       <default>true</default>
     </key>
 	</schema>
+  <!-- Account Schema (using relocatable gsettings) -->
+  <schema id="uk.co.ibboard.Cawbird.Account">
+    <key type="s" name="username">
+      <description>
+        The name for this username.
+      </description>
+      <default>""</default>
+    </key>
+    <key type="s" name="server">
+      <description>
+        The domain on which this account is authenticated.
+      </description>
+      <default>""</default>
+    </key>
+  </schema>
   <!-- Experimental Settings -->
 	<schema id="uk.co.ibboard.Cawbird.experimental" path="/uk/co/ibboard/Cawbird/experimental/">
 	  <key type="b" name="profile-inline-header">
