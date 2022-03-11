@@ -94,8 +94,10 @@ public class Backend.Utils.KeyStorage : Object {
    * @param server The domain to the Server.
    * @param token A reference which will hold the retrieved token.
    * @param secret A reference which will hold the retrieved secret.
+   *
+   * @throws Error Any error that happens while retrieving the token.
    */
-  public static async void retrieve_server_access (string server, out string token, out string secret) {
+  public static async void retrieve_server_access (string server, out string token, out string secret) throws Error {
     // Create the attributes
     var attributes           = new GLib.HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Server";
@@ -117,6 +119,33 @@ public class Backend.Utils.KeyStorage : Object {
     // Check if tokens were retrieved
     if (token == null || secret == null) {
       error ("Could not retrieve access tokens for server \"$(server)\"");
+    }
+  }
+
+  /**
+   * Removes the access tokens for a Server.
+   *
+   * @param server The Server which tokens are to be removed.
+   *
+   * @throws Error Any error that happens while removing the token.
+   */
+  public static async void remove_server_access (Server server) throws Error {
+    // Create the attributes
+    var attributes           = new GLib.HashTable<string,string> (str_hash, str_equal);
+    attributes["type"]       = "Server";
+    attributes["identifier"] = server.domain;
+
+    // Store the access
+    try {
+      // Store the client token
+      attributes["secret"] = "false";
+      Secret.password_clearv_sync (instance.secret_schema, attributes, null);
+
+      // Store the client secret
+      attributes["secret"] = "true";
+      Secret.password_clearv_sync (instance.secret_schema, attributes, null);
+    } catch (Error e) {
+      throw e;
     }
   }
 
@@ -170,8 +199,10 @@ public class Backend.Utils.KeyStorage : Object {
    * @param account The username for the account.
    * @param token A reference which will hold the retrieved token.
    * @param secret A reference which will hold the retrieved secret.
+   *
+   * @throws Error Any error that happens while retrieving the token.
    */
-  public static async void retrieve_account_access (string account, out string token, out string? secret = null) {
+  public static async void retrieve_account_access (string account, out string token, out string? secret = null) throws Error {
     // Create the attributes
     var attributes           = new GLib.HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Account";
@@ -193,6 +224,36 @@ public class Backend.Utils.KeyStorage : Object {
     // Check if tokens were retrieved
     if (token == null) {
       error ("Could not retrieve access tokens for account \"$(account)\"");
+    }
+  }
+
+  /**
+   * Removes the access tokens for a Account.
+   *
+   * @param account The Account which tokens are to be removed.
+   *
+   * @throws Error Any error that happens while removing the token.
+   */
+  public static async void remove_account_access (Account account) throws Error {
+    // Create the attributes
+    var    attributes        = new GLib.HashTable<string,string> (str_hash, str_equal);
+    attributes["type"]       = "Account";
+    attributes["identifier"] = account.username;
+
+    // Store the access
+    try {
+      // Store the access token
+      attributes["secret"] = "false";
+      Secret.password_clearv_sync (instance.secret_schema, attributes, null);
+
+      // If account is from TwitterLegacy
+      if (account is TwitterLegacy.Account) {
+        // Store the access secret
+        attributes["secret"] = "true";
+        Secret.password_clearv_sync (instance.secret_schema, attributes, null);
+      }
+    } catch (Error e) {
+      throw e;
     }
   }
 
