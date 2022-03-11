@@ -27,7 +27,7 @@ using GLib;
  * the tokens in the users password storage.
  */
 [SingleInstance]
-public class Backend.Utils.KeyStorage : Object {
+public class KeyStorage : Object {
 
   /**
    * The global instance of KeyStorage.
@@ -46,7 +46,7 @@ public class Backend.Utils.KeyStorage : Object {
    */
   private KeyStorage () {
     // Create the secrets schemas
-    secret_schema = new Secret.Schema (Client.instance.id,
+    secret_schema = new Secret.Schema ("uk.co.ibboard.Cawbird",
                                        Secret.SchemaFlags.NONE,
                                        "type",       Secret.SchemaAttributeType.STRING,
                                        "identifier", Secret.SchemaAttributeType.STRING,
@@ -61,7 +61,7 @@ public class Backend.Utils.KeyStorage : Object {
    *
    * @throws Error Any error that happens while storing the token.
    */
-  public static async void store_server_access (Server server) throws Error {
+  public static async void store_server_access (Backend.Server server) throws Error {
     // Create the attributes
     string token_label;
     var    attributes        = new GLib.HashTable<string,string> (str_hash, str_equal);
@@ -129,7 +129,7 @@ public class Backend.Utils.KeyStorage : Object {
    *
    * @throws Error Any error that happens while removing the token.
    */
-  public static async void remove_server_access (Server server) throws Error {
+  public static async void remove_server_access (Backend.Server server) throws Error {
     // Create the attributes
     var attributes           = new GLib.HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Server";
@@ -156,7 +156,7 @@ public class Backend.Utils.KeyStorage : Object {
    *
    * @throws Error Any error that happens while storing the token.
    */
-  public static async void store_account_access (Account account) throws Error {
+  public static async void store_account_access (Backend.Account account) throws Error {
     // Create the attributes
     string token_label;
     var    attributes        = new GLib.HashTable<string,string> (str_hash, str_equal);
@@ -172,10 +172,11 @@ public class Backend.Utils.KeyStorage : Object {
                                    Secret.COLLECTION_DEFAULT, token_label,
                                    account.access_token, null);
 
+#if SUPPORT_TWITTER_LEGACY
       // If account is from TwitterLegacy
-      if (account is TwitterLegacy.Account) {
+      if (account is Backend.TwitterLegacy.Account) {
         // Cast account to subclass
-        var legacy_account = account as TwitterLegacy.Account;
+        var legacy_account = account as Backend.TwitterLegacy.Account;
 
         // Store the access secret
         token_label          = @"Access Secret for Account \"$(account.username)\"";
@@ -184,6 +185,7 @@ public class Backend.Utils.KeyStorage : Object {
                                      Secret.COLLECTION_DEFAULT, token_label,
                                      legacy_account.access_secret, null);
       }
+#endif
     } catch (Error e) {
       throw e;
     }
@@ -234,7 +236,7 @@ public class Backend.Utils.KeyStorage : Object {
    *
    * @throws Error Any error that happens while removing the token.
    */
-  public static async void remove_account_access (Account account) throws Error {
+  public static async void remove_account_access (Backend.Account account) throws Error {
     // Create the attributes
     var    attributes        = new GLib.HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Account";
@@ -246,12 +248,14 @@ public class Backend.Utils.KeyStorage : Object {
       attributes["secret"] = "false";
       Secret.password_clearv_sync (instance.secret_schema, attributes, null);
 
+#if SUPPORT_TWITTER_LEGACY
       // If account is from TwitterLegacy
-      if (account is TwitterLegacy.Account) {
+      if (account is Backend.TwitterLegacy.Account) {
         // Store the access secret
         attributes["secret"] = "true";
         Secret.password_clearv_sync (instance.secret_schema, attributes, null);
       }
+#endif
     } catch (Error e) {
       throw e;
     }

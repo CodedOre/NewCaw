@@ -45,14 +45,6 @@ public class Backend.Client : Object {
   }
 
   /**
-   * The identifier for the client.
-   *
-   * Should be the same as the application identifier.
-   * Used by KeyStorage to assign the password storage.
-   */
-  public string id { get; construct; }
-
-  /**
    * The name of the client.
    *
    * Used by the Mastodon backend to create an oauth application when needed.
@@ -85,10 +77,9 @@ public class Backend.Client : Object {
    * @param website The website for the client.
    * @param redirect_uri An optional redirect uri.
    */
-  public Client (string id, string name, string website, string? redirect_uri = null) {
+  public Client (string name, string website, string? redirect_uri = null) {
     // Construct the class
     Object (
-      id:           id,
       name:         name,
       website:      website,
       redirect_uri: redirect_uri

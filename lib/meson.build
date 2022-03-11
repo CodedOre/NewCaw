@@ -25,7 +25,6 @@ libfiles = [
   'Base/System/Account.vala',
   'Base/System/Client.vala',
   'Base/System/Server.vala',
-  'Base/Utils/KeyStorage.vala',
   'Base/Utils/MediaLoader.vala',
   'Base/Utils/TextFormats.vala',
   'Base/Utils/TextUtils.vala'
