@@ -68,11 +68,11 @@ public class Backend.Mastodon.Server : Backend.Server {
   public async Server.authenticate (string domain) throws Error {
     // Create the Server instance
     Object (
-      domain:        domain
+      domain: domain
     );
 
     // Create Rest Proxy and Call
-    var client_proxy = new Rest.Proxy (domain, false);
+    var client_proxy = new Rest.Proxy (@"https://$(domain)", false);
     var client_call  = client_proxy.new_call ();
 
     // Get Client instance and determine used redirect uri

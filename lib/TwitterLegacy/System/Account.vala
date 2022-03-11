@@ -52,7 +52,7 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
     // Create proxy
     proxy = new Rest.OAuthProxy (server.client_key,
                                  server.client_secret,
-                                 server.domain,
+                                 @"https://api.$(server.domain)",
                                  false);
   }
 
@@ -83,7 +83,7 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
     }
 
     // Create authentication url
-    return @"$(server.domain)/oauth/authorize?oauth_token=$(proxy.token)";
+    return @"https://api.$(server.domain)/oauth/authorize?oauth_token=$(proxy.token)";
   }
 
   /**

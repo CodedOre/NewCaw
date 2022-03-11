@@ -39,6 +39,8 @@ public abstract class Backend.Server : Object {
 
   /**
    * The domain of the server.
+   *
+   * This should only be the server domain, without protocol.
    */
   public string domain { get; construct; }
 

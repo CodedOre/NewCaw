@@ -65,7 +65,7 @@ public class Backend.TwitterLegacy.Server : Backend.Server {
   public Server (string client_key, string client_secret) {
     // Create the Server instance
     Object (
-      domain:        "https://api.twitter.com",
+      domain:        "twitter.com",
       client_key:    client_key,
       client_secret: client_secret
     );

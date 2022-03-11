@@ -52,11 +52,11 @@ public class Backend.Twitter.Account : Backend.Account {
 
     // Create proxy
     proxy = new Rest.OAuth2Proxy (@"https://twitter.com/i/oauth2/authorize",
-                                  @"$(server.domain)/2/oauth2/token",
+                                  @"https://api.$(server.domain)/2/oauth2/token",
                                    used_redirects,
                                    server.client_key,
                                    server.client_secret,
-                                  @"$(server.domain)/2/");
+                                  @"https://api.$(server.domain)/2/");
   }
 
   /**

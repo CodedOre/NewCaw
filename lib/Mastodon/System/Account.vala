@@ -53,12 +53,12 @@ public class Backend.Mastodon.Account : Backend.Account {
                               : Server.OOB_REDIRECT;
 
     // Create proxy
-    proxy = new Rest.OAuth2Proxy (@"$(server.domain)/oauth/authorize",
-                                  @"$(server.domain)/oauth/token",
+    proxy = new Rest.OAuth2Proxy (@"https://$(server.domain)/oauth/authorize",
+                                  @"https://$(server.domain)/oauth/token",
                                    used_redirects,
                                    server.client_key,
                                    server.client_secret,
-                                  @"$(server.domain)/api/v1/");
+                                  @"https://$(server.domain)/api/v1/");
   }
 
   /**
