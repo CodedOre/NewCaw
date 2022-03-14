@@ -69,6 +69,95 @@ public class AccountManager : Object {
   }
 
   /**
+   * Saves all managed accounts and servers to the storage.
+   *
+   * @throws Error Errors that happen when storage fails.
+   */
+  public static async void store_data () throws Error {
+    // Store servers
+    foreach (Backend.Server server in instance.server_list) {
+      // Only store if Mastodon server
+      if (server is Backend.Mastodon.Server) {
+        // Store access tokens
+        try {
+          yield KeyStorage.store_server_access (server);
+        } catch (Error e) {
+          throw e;
+        }
+      }
+    }
+
+    // Create dictionary to build up the server categorization
+    var mastodon_categorizer   = new HashTable<string,Array> (str_hash, str_equal);
+
+    // Create VariantBuilders for shortlists
+    var mastodon_builder       = new VariantBuilder (new VariantType ("a{sas}"));
+    var twitter_builder        = new VariantBuilder (new VariantType ("as"));
+    var twitter_legacy_builder = new VariantBuilder (new VariantType ("as"));
+
+    // Store accounts
+    foreach (Backend.Account account in instance.account_list) {
+      // Store access tokens
+      try {
+        yield KeyStorage.store_account_access (account);
+      } catch (Error e) {
+        throw e;
+      }
+
+      // Store username in shortlist
+      if (account is Backend.Mastodon.Account) {
+        // Get the list of accounts set for a specific domain
+        Array<string> server_accounts;
+        if (mastodon_categorizer.contains (account.domain)) {
+          server_accounts = mastodon_categorizer [account.domain];
+        } else {
+          server_accounts                       = new Array<string> ();
+          mastodon_categorizer [account.domain] = server_accounts;
+        }
+
+        // Add the account to the list
+        server_accounts.append_val (account.username);
+        continue;
+      }
+      if (account is Backend.Twitter.Account) {
+        twitter_builder.add ("s", account.username);
+        continue;
+      }
+      if (account is Backend.TwitterLegacy.Account) {
+        twitter_legacy_builder.add ("s", account.username);
+        continue;
+      }
+
+      // Fail if no platform was detected
+      error (@"Account $(account.username) belongs to no platform!");
+    }
+
+    // Build the Mastodon variant
+    foreach (string server in mastodon_categorizer.get_keys ()) {
+      mastodon_builder.open (new VariantType ("{sas}"));
+      mastodon_builder.add ("s", server);
+      mastodon_builder.open (new VariantType ("as"));
+      Array<string> server_accounts = mastodon_categorizer[server];
+      foreach (string acc in server_accounts) {
+        mastodon_builder.add ("s", acc);
+      }
+      mastodon_builder.close ();
+      mastodon_builder.close ();
+    }
+
+    // Create Variants from the builders
+    Variant mastodon_shortlist       = mastodon_builder.end ();
+    Variant twitter_shortlist        = twitter_builder.end ();
+    Variant twitter_legacy_shortlist = twitter_legacy_builder.end ();
+
+    // Save shortlists
+    var account_settings = new Settings ("uk.co.ibboard.Cawbird.Accounts");
+    account_settings.set_value ("mastodon-accounts", mastodon_shortlist);
+    account_settings.set_value ("twitter-accounts", twitter_shortlist);
+    account_settings.set_value ("twitter-legacy-accounts", twitter_legacy_shortlist);
+  }
+
+  /**
    * Stores the single instance of this class.
    */
   private static AccountManager? global_instance = null;

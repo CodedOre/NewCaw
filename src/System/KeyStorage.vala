@@ -111,7 +111,7 @@ public class KeyStorage : Object {
                                                    out string   secret)
                                                          throws Error {
     // Create the attributes
-    var attributes           = new GLib.HashTable<string,string> (str_hash, str_equal);
+    var attributes           = new HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Server";
     attributes["platform"]   = platform.to_string ();
     attributes["identifier"] = server;
@@ -144,7 +144,7 @@ public class KeyStorage : Object {
    */
   public static async void remove_server_access (Backend.Server server) throws Error {
     // Create the attributes
-    var attributes           = new GLib.HashTable<string,string> (str_hash, str_equal);
+    var attributes           = new HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Server";
     attributes["platform"]   = PlatformEnum.get_platform_for_server (server).to_string ();
     attributes["identifier"] = server.domain;
@@ -173,7 +173,7 @@ public class KeyStorage : Object {
   public static async void store_account_access (Backend.Account account) throws Error {
     // Create the attributes
     string token_label;
-    var    attributes        = new GLib.HashTable<string,string> (str_hash, str_equal);
+    var    attributes        = new HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Account";
     attributes["platform"]   = PlatformEnum.get_platform_for_account (account).to_string ();
 
@@ -232,7 +232,7 @@ public class KeyStorage : Object {
                                                     out string   secret)
                                                           throws Error {
     // Create the attributes
-    var attributes           = new GLib.HashTable<string,string> (str_hash, str_equal);
+    var attributes           = new HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Account";
     attributes["platform"]   = platform.to_string ();
     attributes["identifier"] = account;
@@ -265,7 +265,7 @@ public class KeyStorage : Object {
    */
   public static async void remove_account_access (Backend.Account account) throws Error {
     // Create the attributes
-    var    attributes        = new GLib.HashTable<string,string> (str_hash, str_equal);
+    var attributes           = new HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Account";
     attributes["platform"]   = PlatformEnum.get_platform_for_account (account).to_string ();
     attributes["identifier"] = account.username;
