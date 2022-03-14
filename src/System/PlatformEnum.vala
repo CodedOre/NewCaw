@@ -58,7 +58,7 @@ public enum PlatformEnum {
    *
    * @return The enum representing the platform this server is using.
    */
-  public PlatformEnum get_platform_for_server (Backend.Server server) {
+  public static PlatformEnum get_platform_for_server (Backend.Server server) {
     // Return if using Mastodon
     if (server is Backend.Mastodon.Server) {
       return MASTODON;
@@ -85,7 +85,7 @@ public enum PlatformEnum {
    *
    * @return The enum representing the platform this account is using.
    */
-  public PlatformEnum get_platform_for_account (Backend.Account account) {
+  public static PlatformEnum get_platform_for_account (Backend.Account account) {
     // Return if using Mastodon
     if (account is Backend.Mastodon.Account) {
       return MASTODON;

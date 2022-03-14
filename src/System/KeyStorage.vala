@@ -49,6 +49,7 @@ public class KeyStorage : Object {
     secret_schema = new Secret.Schema ("uk.co.ibboard.Cawbird",
                                        Secret.SchemaFlags.NONE,
                                        "type",       Secret.SchemaAttributeType.STRING,
+                                       "platform",   Secret.SchemaAttributeType.STRING,
                                        "identifier", Secret.SchemaAttributeType.STRING,
                                        "secret",     Secret.SchemaAttributeType.BOOLEAN
                                       );
@@ -62,10 +63,16 @@ public class KeyStorage : Object {
    * @throws Error Any error that happens while storing the token.
    */
   public static async void store_server_access (Backend.Server server) throws Error {
+    // Fail on attempting to non Mastodon servers
+    if (! (server is Backend.Mastodon.Server)) {
+      error ("Only Mastodon servers should be stored!");
+    }
+
     // Create the attributes
     string token_label;
     var    attributes        = new GLib.HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Server";
+    attributes["platform"]   = PlatformEnum.get_platform_for_server (server).to_string ();
     attributes["identifier"] = server.domain;
 
     // Store the access
@@ -91,16 +98,22 @@ public class KeyStorage : Object {
   /**
    * Retrieves the access tokens for a Server.
    *
+   * @param platform The platform this server is using.
    * @param server The domain to the Server.
    * @param token A reference which will hold the retrieved token.
    * @param secret A reference which will hold the retrieved secret.
    *
    * @throws Error Any error that happens while retrieving the token.
    */
-  public static async void retrieve_server_access (string server, out string token, out string secret) throws Error {
+  public static async void retrieve_server_access (PlatformEnum platform,
+                                                       string   server,
+                                                   out string   token,
+                                                   out string   secret)
+                                                         throws Error {
     // Create the attributes
     var attributes           = new GLib.HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Server";
+    attributes["platform"]   = platform.to_string ();
     attributes["identifier"] = server;
 
     // Store the access
@@ -133,6 +146,7 @@ public class KeyStorage : Object {
     // Create the attributes
     var attributes           = new GLib.HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Server";
+    attributes["platform"]   = PlatformEnum.get_platform_for_server (server).to_string ();
     attributes["identifier"] = server.domain;
 
     // Store the access
@@ -161,7 +175,14 @@ public class KeyStorage : Object {
     string token_label;
     var    attributes        = new GLib.HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Account";
-    attributes["identifier"] = account.username;
+    attributes["platform"]   = PlatformEnum.get_platform_for_account (account).to_string ();
+
+    // Add the domain on Mastodon accounts to clearly identify them
+    if (account is Backend.Mastodon.Account) {
+      attributes["identifier"] = @"$(account.username)@$(account.domain)";
+    } else {
+      attributes["identifier"] = account.username;
+    }
 
     // Store the access
     try {
@@ -198,16 +219,22 @@ public class KeyStorage : Object {
    * authenticated with OAuth 2.0, the secret parameter
    * is not needed and can be omitted.
    *
-   * @param account The username for the account.
+   * @param platform The platform this server is using.
+   * @param account The username for the account, with domain when using Mastodon.
    * @param token A reference which will hold the retrieved token.
    * @param secret A reference which will hold the retrieved secret.
    *
    * @throws Error Any error that happens while retrieving the token.
    */
-  public static async void retrieve_account_access (string account, out string token, out string? secret = null) throws Error {
+  public static async void retrieve_account_access (PlatformEnum platform,
+                                                        string   account,
+                                                    out string   token,
+                                                    out string   secret)
+                                                          throws Error {
     // Create the attributes
     var attributes           = new GLib.HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Account";
+    attributes["platform"]   = platform.to_string ();
     attributes["identifier"] = account;
 
     // Store the access
@@ -240,6 +267,7 @@ public class KeyStorage : Object {
     // Create the attributes
     var    attributes        = new GLib.HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Account";
+    attributes["platform"]   = PlatformEnum.get_platform_for_account (account).to_string ();
     attributes["identifier"] = account.username;
 
     // Store the access
