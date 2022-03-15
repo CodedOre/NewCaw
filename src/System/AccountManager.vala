@@ -163,6 +163,29 @@ public class AccountManager : Object {
         throw e;
       }
     }
+
+    // Parse through all TwitterLegacy accounts
+    VariantIter twitter_legacy_iter = twitter_legacy_list.iterator ();
+    string      twitter_legacy_acc;
+    while (twitter_legacy_iter.next ("s", out twitter_legacy_acc)) {
+      // Create account instance
+      try {
+        // Get account access
+        string account_token;
+        string account_secret;
+        yield KeyStorage.retrieve_account_access (TWITTER_LEGACY, twitter_legacy_acc, out account_token, out account_secret);
+
+        // Create account object
+        var account = new Backend.TwitterLegacy.Account ();
+        assert (account != null);
+        add_account (account);
+
+        // Login the account async
+        account.login_with_secret.begin (account_token, account_secret);
+      } catch (Error e) {
+        throw e;
+      }
+    }
   }
 
   /**

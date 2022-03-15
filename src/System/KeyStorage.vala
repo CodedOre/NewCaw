@@ -252,7 +252,7 @@ public class KeyStorage : Object {
 
     // Check if tokens were retrieved
     if (token == null) {
-      error ("Could not retrieve access tokens for account \"$(account)\"");
+      error (@"Could not retrieve access tokens for account \"$(account)\"");
     }
   }
 
