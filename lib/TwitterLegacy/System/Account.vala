@@ -95,11 +95,15 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
    * After completion, you should save the access token retrieved
    * from the platform so you can use the login method on following runs.
    *
+   * The optional state parameter must be provided for OAuth 2.0 authentications
+   * when the Client has an redirect uri set, but is irrelevant on TwitterLegacy.
+   *
    * @param auth_code The authentication code for the user.
+   * @param state Ignored in this sub-class.
    *
    * @throws Error Any error occurring while requesting the token.
    */
-  public override async void authenticate (string auth_code) throws Error {
+  public override async void authenticate (string auth_code, string? state = null) throws Error {
     // Check if authentication is necessary
     if (authenticated) {
       error ("Already authenticated!");
