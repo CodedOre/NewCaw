@@ -51,6 +51,15 @@ public class AccountManager : Object {
   }
 
   /**
+   * Adds an Server to the list of managed servers.
+   *
+   * @param server The Server to be added.
+   */
+  public static void add_server (Backend.Server server) {
+    instance.server_list += server;
+  }
+
+  /**
    * Adds an Account to the list of managed accounts.
    *
    * @param account The Account to be added.
@@ -81,6 +90,56 @@ public class AccountManager : Object {
     Variant mastodon_list       = account_settings.get_value ("mastodon-accounts");
     Variant twitter_list        = account_settings.get_value ("twitter-accounts");
     Variant twitter_legacy_list = account_settings.get_value ("twitter-legacy-accounts");
+
+    // Parse through all Mastodon accounts
+    VariantIter mastodon_iter = mastodon_list.iterator ();
+    while (true) {
+      // Get the data as Variant
+      Variant? iter_variant = mastodon_iter.next_value ();
+      if (iter_variant == null) {
+        break;
+      }
+
+      // Get the server information
+      string domain;
+      iter_variant.get_child (0, "s", out domain);
+
+      // Create server instance
+      Backend.Mastodon.Server? server;
+      try {
+        // Get server access
+        string server_token, server_secret;
+        yield KeyStorage.retrieve_server_access (MASTODON, domain, out server_token, out server_secret);
+
+        // Create server object
+        server = new Backend.Mastodon.Server (domain, server_token, server_secret);
+        assert (server != null);
+        add_server (server);
+      } catch (Error e) {
+        throw e;
+      }
+
+      // Get the accounts array for this server
+      VariantIter accounts = iter_variant.get_child_value (1).iterator ();
+      string acc;
+      while (accounts.next ("s", out acc)) {
+        // Create account instance
+        try {
+          // Get account access
+          string account_token;
+          yield KeyStorage.retrieve_account_access (MASTODON, @"$(acc)@$(domain)", out account_token, null);
+
+          // Create account object
+          var account = new Backend.Mastodon.Account (server);
+          assert (account != null);
+          add_account (account);
+
+          // Login the account async
+          account.login.begin (account_token);
+        } catch (Error e) {
+        }
+      }
+    }
   }
 
   /**
