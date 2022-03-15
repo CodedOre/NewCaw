@@ -137,7 +137,30 @@ public class AccountManager : Object {
           // Login the account async
           account.login.begin (account_token);
         } catch (Error e) {
+          throw e;
         }
+      }
+    }
+
+    // Parse through all Twitter accounts
+    VariantIter twitter_iter = twitter_list.iterator ();
+    string      twitter_acc;
+    while (twitter_iter.next ("s", out twitter_acc)) {
+      // Create account instance
+      try {
+        // Get account access
+        string account_token;
+        yield KeyStorage.retrieve_account_access (TWITTER, twitter_acc, out account_token, null);
+
+        // Create account object
+        var account = new Backend.Twitter.Account ();
+        assert (account != null);
+        add_account (account);
+
+        // Login the account async
+        account.login.begin (account_token);
+      } catch (Error e) {
+        throw e;
       }
     }
   }
