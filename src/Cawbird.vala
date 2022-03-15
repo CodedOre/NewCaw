@@ -35,15 +35,6 @@ public class Cawbird : Adw.Application {
     // Initializes the backend client
     new Backend.Client ("NewCaw Development", "https://github.com/CodedOre/NewCaw");
 
-#if SUPPORT_TWITTER
-    // Initializes the Twitter backend
-    init_twitter_server ();
-#endif
-
-#if SUPPORT_TWITTER_LEGACY
-    // Initializes the TwitterLegacy backend
-    init_twitter_legacy_server ();
-#endif
 
     // Open the MainWindow
     var win = this.active_window;
@@ -52,54 +43,6 @@ public class Cawbird : Adw.Application {
     }
     win.present ();
   }
-
-#if SUPPORT_TWITTER
-  /**
-   * Initializes the Server instance for the Twitter backend.
-   */
-  private void init_twitter_server () {
-    // Look for override tokens
-    var     settings      = new Settings ("uk.co.ibboard.Cawbird.experimental");
-    Variant tokens        = settings.get_value ("twitter-oauth2-tokens");
-    string  custom_key    = tokens.get_child_value (0).get_string ();
-    string  custom_secret = tokens.get_child_value (1).get_string ();
-
-    // Determine oauth tokens
-    string oauth_key = custom_key != ""
-                         ? custom_key
-                         : Config.TWITTER_OAUTH_2_KEY;
-    string oauth_secret = custom_secret != ""
-                            ? custom_secret
-                            : Config.TWITTER_OAUTH_2_SECRET;
-
-    // Initializes the server
-    new Backend.Twitter.Server (oauth_key, oauth_secret);
-  }
-#endif
-
-#if SUPPORT_TWITTER_LEGACY
-  /**
-   * Initializes the Server instance for the TwitterLegacy backend.
-   */
-  private void init_twitter_legacy_server () {
-    // Look for override tokens
-    var     settings      = new Settings ("uk.co.ibboard.Cawbird.experimental");
-    Variant tokens        = settings.get_value ("twitter-oauth1-tokens");
-    string  custom_key    = tokens.get_child_value (0).get_string ();
-    string  custom_secret = tokens.get_child_value (1).get_string ();
-
-    // Determine oauth tokens
-    string oauth_key = custom_key != ""
-                         ? custom_key
-                         : Config.TWITTER_OAUTH_1_KEY;
-    string oauth_secret = custom_secret != ""
-                            ? custom_secret
-                            : Config.TWITTER_OAUTH_1_SECRET;
-
-    // Initializes the server
-    new Backend.TwitterLegacy.Server (oauth_key, oauth_secret);
-  }
-#endif
 
   public static int main (string[] args) {
     // Setup gettext
