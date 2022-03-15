@@ -69,6 +69,21 @@ public class AccountManager : Object {
   }
 
   /**
+   * Loads managed accounts and servers from the storage.
+   *
+   * @throws Error Errors that happen when loading fails.
+   */
+  public static async void load_data () throws Error {
+    // Load settings
+    var account_settings = new Settings ("uk.co.ibboard.Cawbird.Accounts");
+
+    // Load the shortlists from the settings
+    Variant mastodon_list       = account_settings.get_value ("mastodon-accounts");
+    Variant twitter_list        = account_settings.get_value ("twitter-accounts");
+    Variant twitter_legacy_list = account_settings.get_value ("twitter-legacy-accounts");
+  }
+
+  /**
    * Saves all managed accounts and servers to the storage.
    *
    * @throws Error Errors that happen when storage fails.
