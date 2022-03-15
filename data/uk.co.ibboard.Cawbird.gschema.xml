@@ -31,21 +31,6 @@
       <default>[]</default>
     </key>
   </schema>
-  <!-- Account specific settings (relocatable schema) -->
-  <schema id="uk.co.ibboard.Cawbird.AccountConfig">
-    <key type="s" name="username">
-      <description>
-        The name for this username.
-      </description>
-      <default>""</default>
-    </key>
-    <key type="s" name="server">
-      <description>
-        The domain on which this account is authenticated.
-      </description>
-      <default>""</default>
-    </key>
-  </schema>
   <!-- Experimental Settings -->
 	<schema id="uk.co.ibboard.Cawbird.experimental" path="/uk/co/ibboard/Cawbird/experimental/">
 	  <key type="b" name="profile-inline-header">
