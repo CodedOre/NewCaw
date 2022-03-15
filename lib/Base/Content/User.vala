@@ -41,9 +41,62 @@ public abstract class Backend.User : Object {
   public string username { get; protected set; }
 
   /**
+   * When this Profile was created on the platform.
+   */
+  public DateTime creation_date { get; protected set; }
+
+  /**
+   * A formatted description set for the Profile.
+   */
+  public string description { get; protected set; }
+
+  /**
+   * The website where this user is located.
+   *
+   * Mostly important for the Mastodon backend, where a user
+   * can come from multiple site thanks to the federation.
+   */
+  public string domain { get; protected set; }
+
+  /**
+   * The url to visit this user on the original website.
+   */
+  public string url { get; protected set; }
+
+  /**
    * The avatar image from this user.
    */
   public Media avatar { get; protected set; }
+
+  /**
+   * The header image for the detail page of this user.
+   */
+  public Media header { get; protected set; }
+
+  /**
+   * How many people are following this Profile.
+   */
+  public int followers_count { get; protected set; }
+
+  /**
+   * How many people this Profile follows.
+   */
+  public int following_count { get; protected set; }
+
+  /**
+   * How many posts this Profile wrote.
+   */
+  public int posts_count { get; protected set; }
+
+  /**
+   * Run while an object is constructed.
+   */
+  construct {
+    // Reformat the description when flags were changed.
+    Utils.TextFormats.instance.update_formatting.connect (() => {
+      description = Utils.TextUtils.format_text (description_modules);
+    });
+  }
 
   /**
    * Checks if the User has a certain flag set.
@@ -53,8 +106,36 @@ public abstract class Backend.User : Object {
   }
 
   /**
+   * Retrieves the UserDataFields for this Profile.
+   */
+  public UserDataField[] get_data_fields () {
+    return data_fields;
+  }
+
+#if DEBUG
+  /**
+   * Returns the text modules from the description.
+   *
+   * Only used in test cases and therefore only available in debug builds.
+   */
+  public TextModule[] get_description_modules () {
+    return description_modules;
+  }
+#endif
+
+  /**
    * Stores the flags for this user.
    */
   protected UserFlag flags;
+
+  /**
+   * All data fields attached to this post.
+   */
+  protected UserDataField[] data_fields;
+
+  /**
+   * The description split into modules for formatting.
+   */
+  protected TextModule[] description_modules;
 
 }

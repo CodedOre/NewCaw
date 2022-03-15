@@ -32,33 +32,67 @@ public class Backend.Twitter.User : Backend.User {
    * @param includes A Json.Object including additional objects which may be related to this Post.
    */
   public User.from_json (Json.Object data, Json.Object? includes = null) {
+    // Get metrics object
+    Json.Object metrics = data.get_object_member ("public_metrics");
+
     // Parse the avatar image url
     string avatar_preview_url = data.get_string_member ("profile_image_url");
-    string avatar_media_url;
-    try {
-      var image_regex = new Regex ("(https://pbs.twimg.com/.*?)_normal(\\..*)");
-      avatar_media_url = image_regex.replace (
-        avatar_preview_url,
-        avatar_preview_url.length,
-        0,
-        "\\1\\2"
-      );
-    } catch (RegexError e) {
-      error (@"Error while parsing source: $(e.message)");
-    }
+    string avatar_media_url   = Utils.ParseUtils.parse_user_image (avatar_preview_url);
+
+    // Get strings used to compose the url.
+    string user_name = data.get_string_member ("username");
 
     // Construct the object with properties
     Object (
       // Set the id of the user
       id: data.get_string_member ("id"),
 
+      // Set the creation data
+      creation_date: new DateTime.from_iso8601 (
+                       data.get_string_member ("created_at"),
+                       new TimeZone.utc ()
+                     ),
+
       // Set the names of the user
       display_name: data.get_string_member ("name"),
-      username:     data.get_string_member ("username"),
+      username:     user_name,
 
-      // Set the Media for the avatar
-      avatar: new Media (PICTURE, avatar_media_url, avatar_preview_url)
+      // Set url and domain
+      domain: "Twitter.com",
+      url:    @"https://twitter.com/$(user_name)",
+
+      // Set metrics
+      followers_count: (int) metrics.get_int_member ("followers_count"),
+      following_count: (int) metrics.get_int_member ("following_count"),
+      posts_count:     (int) metrics.get_int_member ("tweet_count"),
+
+      // Set the ImageLoader for the avatar
+      avatar: new Media (PICTURE, avatar_media_url, avatar_preview_url),
+      header: null
     );
+
+    // Parse text into modules
+    Json.Object? description_entities = null;
+    string       raw_text             = "";
+    if (data.has_member ("description")) {
+      raw_text = data.get_string_member ("description");
+    }
+
+    // Parse entities
+    if (data.has_member ("entities")) {
+      Json.Object user_entities = data.get_object_member ("entities");
+      // Parse entities for the description
+      if (user_entities.has_member ("description")) {
+        description_entities = user_entities.get_object_member ("description");
+      }
+    }
+    description_modules = Utils.TextUtils.parse_text (raw_text, description_entities);
+
+    // First format of the description.
+    description = Backend.Utils.TextUtils.format_text (description_modules);
+
+    // Store additional information in data fields
+    data_fields = Utils.ParseUtils.parse_data_fields (data);
 
     // Get possible flags for this user
     if (data.get_boolean_member ("protected")) {

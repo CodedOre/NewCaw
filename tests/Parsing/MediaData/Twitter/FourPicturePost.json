@@ -1,23 +1,16 @@
 {
   "data": {
+    "created_at": "2021-10-14T12:06:27.000Z",
+    "id": "1448621218572247045",
     "text": "And at last, now to show the maximum number: 4! https://t.co/AOatVpaOUs",
+    "source": "Twitter Web App",
     "author_id": "1303637097803382786",
-    "attachments": {
-      "media_keys": [
-        "3_1448621106131243008",
-        "3_1448621106173259796",
-        "3_1448621106336776213",
-        "3_1448621106785566720"
-      ]
-    },
     "public_metrics": {
       "retweet_count": 0,
       "reply_count": 0,
       "like_count": 0,
       "quote_count": 0
     },
-    "source": "Twitter Web App",
-    "created_at": "2021-10-14T12:06:27.000Z",
     "entities": {
       "urls": [
         {
@@ -50,47 +43,87 @@
         }
       ]
     },
-    "id": "1448621218572247045"
+    "attachments": {
+      "media_keys": [
+        "3_1448621106131243008",
+        "3_1448621106173259796",
+        "3_1448621106336776213",
+        "3_1448621106785566720"
+      ]
+    }
   },
   "includes": {
     "media": [
       {
-        "url": "https://pbs.twimg.com/media/FBqJOI0WEAAAiOn.jpg",
+        "height": 2160,
         "type": "photo",
-        "width": 4096,
         "media_key": "3_1448621106131243008",
-        "height": 2160
+        "url": "https://pbs.twimg.com/media/FBqJOI0WEAAAiOn.jpg",
+        "width": 4096
       },
       {
-        "url": "https://pbs.twimg.com/media/FBqJOI-XMBQjQ5h.jpg",
+        "height": 2160,
         "type": "photo",
-        "width": 4096,
         "media_key": "3_1448621106173259796",
-        "height": 2160
+        "url": "https://pbs.twimg.com/media/FBqJOI-XMBQjQ5h.jpg",
+        "width": 4096
       },
       {
-        "url": "https://pbs.twimg.com/media/FBqJOJlWQBUX4rf.jpg",
+        "height": 2160,
         "type": "photo",
-        "width": 4096,
         "media_key": "3_1448621106336776213",
-        "height": 2160
+        "url": "https://pbs.twimg.com/media/FBqJOJlWQBUX4rf.jpg",
+        "width": 4096
       },
       {
-        "url": "https://pbs.twimg.com/media/FBqJOLQWQAAlxNx.jpg",
+        "height": 2160,
         "type": "photo",
-        "width": 4096,
         "media_key": "3_1448621106785566720",
-        "height": 2160
+        "url": "https://pbs.twimg.com/media/FBqJOLQWQAAlxNx.jpg",
+        "width": 4096
       }
     ],
     "users": [
       {
-        "verified": false,
-        "name": "CawbirdTestAccount",
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "start": 0,
+                "end": 23,
+                "url": "https://t.co/nJBBsO2cRV",
+                "expanded_url": "https://example.com",
+                "display_url": "example.com"
+              }
+            ]
+          },
+          "description": {
+            "mentions": [
+              {
+                "start": 38,
+                "end": 47,
+                "username": "CodedOre"
+              }
+            ]
+          }
+        },
+        "location": "org.gnome.Sdk",
+        "pinned_tweet_id": "1472872096132960260",
+        "username": "CawbirdA",
         "profile_image_url": "https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png",
-        "id": "1303637097803382786",
+        "name": "CawbirdTestAccount",
+        "description": "This may or may not be a account from @CodedOre for testing some API's for a certain Client.",
         "protected": false,
-        "username": "CawbirdA"
+        "public_metrics": {
+          "followers_count": 1,
+          "following_count": 1,
+          "tweet_count": 13,
+          "listed_count": 0
+        },
+        "id": "1303637097803382786",
+        "verified": false,
+        "url": "https://t.co/nJBBsO2cRV",
+        "created_at": "2020-09-09T10:11:27.000Z"
       }
     ]
   }

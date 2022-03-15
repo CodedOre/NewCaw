@@ -17,7 +17,6 @@ libfiles = [
   'Base/Content/MediaEnums.vala',
   'Base/Content/Post.vala',
   'Base/Content/PostEnums.vala',
-  'Base/Content/Profile.vala',
   'Base/Content/TextModule.vala',
   'Base/Content/User.vala',
   'Base/Content/UserDataField.vala',
@@ -35,7 +34,6 @@ if get_option('mastodon_backend').enabled()
   libfiles += [
     'Mastodon/Content/Media.vala',
     'Mastodon/Content/Post.vala',
-    'Mastodon/Content/Profile.vala',
     'Mastodon/Content/User.vala',
     'Mastodon/System/Account.vala',
     'Mastodon/System/Server.vala',
@@ -47,7 +45,6 @@ if get_option('twitter_backend').enabled()
   libfiles += [
     'Twitter/Content/Media.vala',
     'Twitter/Content/Post.vala',
-    'Twitter/Content/Profile.vala',
     'Twitter/Content/User.vala',
     'Twitter/System/Account.vala',
     'Twitter/System/Server.vala',
@@ -59,7 +56,6 @@ if get_option('twitter_legacy_backend').enabled()
   libfiles += [
     'TwitterLegacy/Content/Media.vala',
     'TwitterLegacy/Content/Post.vala',
-    'TwitterLegacy/Content/Profile.vala',
     'TwitterLegacy/Content/User.vala',
     'TwitterLegacy/System/Account.vala',
     'TwitterLegacy/System/Server.vala',

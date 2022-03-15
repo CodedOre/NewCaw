@@ -21,18 +21,18 @@
 using GLib;
 
 /**
- * Displays a Profiles banner, avatar and names.
+ * Displays a the banner, avatar and names of an User.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/ProfileCard.ui")]
-public class ProfileCard : Gtk.Widget {
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/UserCard.ui")]
+public class UserCard : Gtk.Widget {
 
-  // UI-Elements of ProfileCard
+  // UI-Elements of UserCard
   [GtkChild]
   private unowned CroppedPicture blurred_banner;
   [GtkChild]
   private unowned Adw.Clamp banner_clamp;
   [GtkChild]
-  private unowned CroppedPicture profile_banner;
+  private unowned CroppedPicture user_banner;
   [GtkChild]
   private unowned Adw.Bin card_scrim;
   [GtkChild]
@@ -40,29 +40,29 @@ public class ProfileCard : Gtk.Widget {
   [GtkChild]
   private unowned Adw.Clamp content_clamp;
   [GtkChild]
-  private unowned UserAvatar profile_avatar;
+  private unowned UserAvatar user_avatar;
 
   /**
-   * The Profile which is displayed.
+   * The User which is displayed.
    */
-  public Backend.Profile profile {
+  public Backend.User user {
     get {
-      return displayed_profile;
+      return displayed_user;
     }
     set {
-      displayed_profile = value;
-      // Set's the UI for the new profile
-      if (displayed_profile != null) {
-        // Set the profile images
-        profile_avatar.set_avatar (displayed_profile.avatar);
+      displayed_user = value;
+      // Set's the UI for the new user
+      if (displayed_user != null) {
+        // Set the user images
+        user_avatar.set_avatar (displayed_user.avatar);
 
         // Load and set the header
-        Backend.Media header = displayed_profile.header;
+        Backend.Media header = displayed_user.header;
         header.get_media.begin (load_cancellable, (obj, res) => {
           try {
             var paintable = header.get_media.end (res) as Gdk.Paintable;
             blurred_banner.paintable = paintable;
-            profile_banner.paintable = paintable;
+            user_banner.paintable = paintable;
           } catch (Error e) {
             warning (@"Could not load header: $(e.message)");
           }
@@ -86,28 +86,28 @@ public class ProfileCard : Gtk.Widget {
     load_cancellable = new Cancellable ();
 
     // Installs the header display action
-    this.install_action ("profile.display_header", null, (widget, action) => {
+    this.install_action ("UserCard.display_header", null, (widget, action) => {
       // Get the instance for this
-      ProfileCard display = (ProfileCard) widget;
+      UserCard display = (UserCard) widget;
 
-      // Return if no profile is set
-      if (display.displayed_profile == null) {
+      // Return if no user is set
+      if (display.displayed_user == null) {
         return;
       }
 
       // Display the header in a MediaDisplay
-      Backend.Media[] media  = { display.displayed_profile.header };
+      Backend.Media[] media  = { display.displayed_user.header };
       MainWindow main_window = display.get_root () as MainWindow;
       if (main_window != null) {
         main_window.show_media_display (media);
       } else {
-        error ("ProfileCard: Can not display MediaDisplay without MainWindow!");
+        error ("UserCard: Can not display MediaDisplay without MainWindow!");
       }
     });
   }
 
   /**
-   * Deconstructs ProfileCard and it's childrens.
+   * Deconstructs UserCard and it's childrens.
    */
   public override void dispose () {
     // Cancel possible loads
@@ -126,8 +126,8 @@ public class ProfileCard : Gtk.Widget {
   private Cancellable load_cancellable;
 
   /**
-   * Stores the displayed profile.
+   * Stores the displayed user.
    */
-  private Backend.Profile displayed_profile;
+  private Backend.User displayed_user;
 
 }

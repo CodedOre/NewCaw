@@ -21,9 +21,9 @@
 using GLib;
 
 /**
- * Represents an Profile that uses this library.
+ * Represents an User that uses this library.
  *
- * Account extends Profile to add the
+ * Account extends User to add the
  * properties and methods to allow it to
  * interact with the API provided by the platform.
  */
@@ -131,7 +131,7 @@ public class Backend.Mastodon.Account : Backend.Account {
       access_token = proxy.access_token;
     }
 
-    // Retrieve the account profile data
+    // Retrieve the account user data
     var auth_call = create_call ();
     auth_call.set_method ("GET");
     auth_call.set_function ("accounts/verify_credentials");
@@ -144,7 +144,7 @@ public class Backend.Mastodon.Account : Backend.Account {
     }
 
     // Populate data with retrieved json
-    set_profile_data (data);
+    set_user_data (data);
     authenticated = true;
   }
 
@@ -170,7 +170,7 @@ public class Backend.Mastodon.Account : Backend.Account {
     access_token       = token;
     proxy.access_token = access_token;
 
-    // Retrieve the account profile data
+    // Retrieve the account user data
     var auth_call = create_call ();
     auth_call.set_method ("GET");
     auth_call.set_function ("accounts/verify_credentials");
@@ -183,16 +183,16 @@ public class Backend.Mastodon.Account : Backend.Account {
     }
 
     // Populate data with retrieved json
-    set_profile_data (data);
+    set_user_data (data);
     authenticated = true;
   }
 
   /**
-   * Sets the Profile data for this Account.
+   * Sets the User data for this Account.
    *
    * @param json A Json.Object retrieved from the API.
    */
-  private void set_profile_data (Json.Object json) {
+  private void set_user_data (Json.Object json) {
     // Get the url for avatar and header
     string avatar_url = json.get_string_member ("avatar_static");
     string header_url = json.get_string_member ("header_static");

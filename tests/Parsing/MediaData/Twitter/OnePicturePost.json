@@ -1,14 +1,11 @@
 {
   "data": {
-    "created_at": "2021-10-04T06:19:27.000Z",
     "public_metrics": {
       "retweet_count": 0,
       "reply_count": 0,
       "like_count": 0,
       "quote_count": 0
     },
-    "author_id": "1303637097803382786",
-    "source": "Twitter Web App",
     "attachments": {
       "media_keys": [
         "3_1444909981329985547"
@@ -25,28 +22,64 @@
         }
       ]
     },
+    "created_at": "2021-10-04T06:19:27.000Z",
+    "source": "Twitter Web App",
     "text": "A new post is there!\nLet's test one picture here: https://t.co/YnfnQob2nZ",
-    "id": "1444910017153470465"
+    "id": "1444910017153470465",
+    "author_id": "1303637097803382786"
   },
   "includes": {
     "media": [
       {
         "type": "photo",
+        "height": 2160,
         "url": "https://pbs.twimg.com/media/FA1Z-PmXEAs8TFt.jpg",
         "alt_text": "The default background of the GNOME 41 desktop.",
         "width": 4096,
-        "height": 2160,
         "media_key": "3_1444909981329985547"
       }
     ],
     "users": [
       {
-        "verified": false,
-        "name": "CawbirdTestAccount",
-        "profile_image_url": "https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png",
         "id": "1303637097803382786",
+        "name": "CawbirdTestAccount",
+        "verified": false,
+        "url": "https://t.co/nJBBsO2cRV",
         "protected": false,
-        "username": "CawbirdA"
+        "description": "This may or may not be a account from @CodedOre for testing some API's for a certain Client.",
+        "created_at": "2020-09-09T10:11:27.000Z",
+        "pinned_tweet_id": "1472872096132960260",
+        "profile_image_url": "https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png",
+        "location": "org.gnome.Sdk",
+        "username": "CawbirdA",
+        "public_metrics": {
+          "followers_count": 1,
+          "following_count": 1,
+          "tweet_count": 13,
+          "listed_count": 0
+        },
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "start": 0,
+                "end": 23,
+                "url": "https://t.co/nJBBsO2cRV",
+                "expanded_url": "https://example.com",
+                "display_url": "example.com"
+              }
+            ]
+          },
+          "description": {
+            "mentions": [
+              {
+                "start": 38,
+                "end": 47,
+                "username": "CodedOre"
+              }
+            ]
+          }
+        }
       }
     ]
   }

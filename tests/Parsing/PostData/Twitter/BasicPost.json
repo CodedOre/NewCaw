@@ -1,5 +1,6 @@
 {
   "data": {
+    "source": "Twitter Web App",
     "public_metrics": {
       "retweet_count": 1,
       "reply_count": 0,
@@ -7,20 +8,52 @@
       "quote_count": 0
     },
     "created_at": "2021-09-06T09:08:03.000Z",
-    "text": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don't expect an interesting text.",
     "id": "1434805586529505284",
-    "source": "Twitter Web App",
-    "author_id": "1303637097803382786"
+    "author_id": "1303637097803382786",
+    "text": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don't expect an interesting text."
   },
   "includes": {
     "users": [
       {
-        "verified": false,
-        "name": "CawbirdTestAccount",
-        "profile_image_url": "https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png",
-        "id": "1303637097803382786",
         "protected": false,
-        "username": "CawbirdA"
+        "id": "1303637097803382786",
+        "location": "org.gnome.Sdk",
+        "pinned_tweet_id": "1472872096132960260",
+        "username": "CawbirdA",
+        "name": "CawbirdTestAccount",
+        "created_at": "2020-09-09T10:11:27.000Z",
+        "public_metrics": {
+          "followers_count": 1,
+          "following_count": 1,
+          "tweet_count": 13,
+          "listed_count": 0
+        },
+        "profile_image_url": "https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png",
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "start": 0,
+                "end": 23,
+                "url": "https://t.co/nJBBsO2cRV",
+                "expanded_url": "https://example.com",
+                "display_url": "example.com"
+              }
+            ]
+          },
+          "description": {
+            "mentions": [
+              {
+                "start": 38,
+                "end": 47,
+                "username": "CodedOre"
+              }
+            ]
+          }
+        },
+        "verified": false,
+        "description": "This may or may not be a account from @CodedOre for testing some API's for a certain Client.",
+        "url": "https://t.co/nJBBsO2cRV"
       }
     ]
   }

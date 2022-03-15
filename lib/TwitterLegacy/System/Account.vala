@@ -21,9 +21,9 @@
 using GLib;
 
 /**
- * Represents an Profile that uses this library.
+ * Represents an User that uses this library.
  *
- * Account extends Profile to add the
+ * Account extends User to add the
  * properties and methods to allow it to
  * interact with the API provided by the platform.
  */
@@ -125,7 +125,7 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
       access_secret = proxy.token_secret;
     }
 
-    // Retrieve the account profile data
+    // Retrieve the account user data
     var auth_call = create_call ();
     auth_call.set_method ("GET");
     auth_call.set_function ("1.1/account/verify_credentials.json");
@@ -138,7 +138,7 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
     }
 
     // Populate data with retrieved json
-    set_profile_data (data);
+    set_user_data (data);
     authenticated = true;
   }
 
@@ -179,7 +179,7 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
     proxy.token        = access_token;
     proxy.token_secret = access_secret;
 
-    // Retrieve the account profile data
+    // Retrieve the account user data
     var auth_call = create_call ();
     auth_call.set_method ("GET");
     auth_call.set_function ("1.1/account/verify_credentials.json");
@@ -192,42 +192,42 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
     }
 
     // Populate data with retrieved json
-    set_profile_data (data);
+    set_user_data (data);
     authenticated = true;
   }
 
   /**
-   * Sets the Profile data for this Account.
+   * Sets the User data for this Account.
    *
    * @param json A Json.Object retrieved from the API.
    */
-  private void set_profile_data (Json.Object json) {
+  private void set_user_data (Json.Object json) {
     // Parse the url for avatar and header
     string  avatar_preview_url = json.get_string_member ("profile_image_url_https");
-    string  avatar_media_url   = Utils.ParseUtils.parse_profile_image (avatar_preview_url);
+    string  avatar_media_url   = Utils.ParseUtils.parse_user_image (avatar_preview_url);
     string? header_preview_url = json.has_member ("profile_banner_url")
                                   ? json.get_string_member ("profile_banner_url")
                                   : null;
     string? header_media_url   = header_preview_url != null
-                                  ? Utils.ParseUtils.parse_profile_image (header_preview_url)
+                                  ? Utils.ParseUtils.parse_user_image (header_preview_url)
                                   : null;
 
     // Get strings used to compose the url.
-    string profile_name = json.get_string_member ("screen_name");
+    string user_name = json.get_string_member ("screen_name");
 
-    // Set the id of the profile
+    // Set the id of the user
     id = json.get_string_member ("id_str");
 
     // Set the creation data
     creation_date = Utils.TextUtils.parse_time (json.get_string_member ("created_at"));
 
-    // Set the names of the profile
+    // Set the names of the user
     display_name = json.get_string_member ("name");
-    username     = profile_name;
+    username     = user_name;
 
     // Set url and domain
     domain = "Twitter.com";
-    url    = @"https://twitter.com/$(profile_name)";
+    url    = @"https://twitter.com/$(user_name)";
 
     // Set metrics
     followers_count = (int) json.get_int_member ("followers_count");
@@ -246,10 +246,10 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
 
     // Parse entities
     if (json.has_member ("entities")) {
-      Json.Object profile_entities = json.get_object_member ("entities");
+      Json.Object user_entities = json.get_object_member ("entities");
       // Parse entities for the description
-      if (profile_entities.has_member ("description")) {
-        description_entities = profile_entities.get_object_member ("description");
+      if (user_entities.has_member ("description")) {
+        description_entities = user_entities.get_object_member ("description");
       }
     }
     description_modules = Utils.TextUtils.parse_text (raw_text, description_entities);
@@ -260,7 +260,7 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
     // Store additional information in data fields
     data_fields = Utils.ParseUtils.parse_data_fields (json);
 
-    // Get possible flags for this profile
+    // Get possible flags for this user
     if (json.get_boolean_member ("protected")) {
       flags = flags | MODERATED | PROTECTED;
     }

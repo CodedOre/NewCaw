@@ -31,21 +31,51 @@ public class Backend.Mastodon.User : Backend.User {
    * @param json A Json.Object retrieved from the API.
    */
   public User.from_json (Json.Object json) {
-    // Get the url for the avatar
+    // Get the url for avatar and header
     string avatar_url = json.get_string_member ("avatar_static");
+    string header_url = json.get_string_member ("header_static");
+
+    // Get url and domain to this user
+    string user_url = json.get_string_member ("url");
+    string user_domain = Utils.ParseUtils.strip_domain (user_url);
 
     // Construct the object with properties
     Object (
       // Set the id of the user
       id: json.get_string_member ("id"),
 
+      // Set the creation date for the user
+      creation_date: new DateTime.from_iso8601 (
+                       json.get_string_member ("created_at"),
+                       new TimeZone.utc ()
+                     ),
+
       // Set the names of the user
       display_name: json.get_string_member ("display_name"),
       username:     json.get_string_member ("acct"),
 
-      // Set the Media for the avatar
-      avatar: new Media (PICTURE, avatar_url)
+      // Set the url and domain
+      url:    user_url,
+      domain: user_domain,
+
+      // Set metrics
+      followers_count: (int) json.get_int_member ("followers_count"),
+      following_count: (int) json.get_int_member ("following_count"),
+      posts_count:     (int) json.get_int_member ("statuses_count"),
+
+      // Set the images
+      avatar: new Media (PICTURE, avatar_url),
+      header: new Media (PICTURE, header_url)
     );
+
+    // Parse the description into modules
+    description_modules = Utils.TextUtils.parse_text (json.get_string_member ("note"));
+
+    // First format of the description.
+    description = Backend.Utils.TextUtils.format_text (description_modules);
+
+    // Parses all fields
+    data_fields = Utils.ParseUtils.parse_data_fields (json.get_array_member ("fields"));
 
     // Get possible flags for this user
     if (json.get_boolean_member ("locked")) {

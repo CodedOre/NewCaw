@@ -1,4 +1,4 @@
-/* ProfileDisplay.vala
+/* UserDisplay.vala
  *
  * Copyright 2021-2022 Frederick Schenk
  *
@@ -21,26 +21,26 @@
 using GLib;
 
 /**
- * Displays an overview over an Profile.
+ * Displays an overview over an User.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/ProfileDisplay.ui")]
-public class ProfileDisplay : Gtk.Widget {
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/UserDisplay.ui")]
+public class UserDisplay : Gtk.Widget {
 
-  // General UI-Elements of ProfileDisplay
+  // General UI-Elements of UserDisplay
   [GtkChild]
-  private unowned ProfileCard profile_card;
+  private unowned UserCard user_card;
   [GtkChild]
   private unowned Adw.Clamp content_clamp;
 
   // UI-Elements for text information
   [GtkChild]
-  private unowned Gtk.Label profile_display_label;
+  private unowned Gtk.Label user_display_label;
   [GtkChild]
-  private unowned BadgesBox profile_badges;
+  private unowned BadgesBox user_badges;
   [GtkChild]
-  private unowned Gtk.Label profile_username_label;
+  private unowned Gtk.Label user_username_label;
   [GtkChild]
-  private unowned Gtk.Label profile_description_label;
+  private unowned Gtk.Label user_description_label;
 
   // UI-Elements for metrics
   [GtkChild]
@@ -48,45 +48,45 @@ public class ProfileDisplay : Gtk.Widget {
   [GtkChild]
   private unowned Gtk.Label followers_counter;
   [GtkChild]
-  private unowned Gtk.FlowBox profile_fields;
+  private unowned Gtk.FlowBox user_fields;
 
   /**
-   * The Profile which is displayed.
+   * The User which is displayed.
    */
-  public Backend.Profile profile {
+  public Backend.User user {
     get {
-      return displayed_profile;
+      return displayed_user;
     }
     set {
-      displayed_profile = value;
-      // Set's the UI for the new profile
-      if (displayed_profile != null) {
+      displayed_user = value;
+      // Set's the UI for the new user
+      if (displayed_user != null) {
         // Set names and description
-        profile_display_label.label     = displayed_profile.display_name;
-        profile_username_label.label    = @"@$(displayed_profile.username)";
-        profile_description_label.label = displayed_profile.description;
+        user_display_label.label     = displayed_user.display_name;
+        user_username_label.label    = @"@$(displayed_user.username)";
+        user_description_label.label = displayed_user.description;
 
-        // Set up badges for the profile
-        profile_badges.display_verified  = displayed_profile.has_flag (VERIFIED);
-        profile_badges.display_bot       = displayed_profile.has_flag (BOT);
-        profile_badges.display_protected = displayed_profile.has_flag (PROTECTED);
+        // Set up badges for the user
+        user_badges.display_verified  = displayed_user.has_flag (VERIFIED);
+        user_badges.display_bot       = displayed_user.has_flag (BOT);
+        user_badges.display_protected = displayed_user.has_flag (PROTECTED);
 
         // Set the labels for metrics
-        following_counter.label = _("<b>%i</b>  Following").printf (displayed_profile.following_count);
-        followers_counter.label = _("<b>%i</b>  Followers").printf (displayed_profile.followers_count);
+        following_counter.label = _("<b>%i</b>  Following").printf (displayed_user.following_count);
+        followers_counter.label = _("<b>%i</b>  Followers").printf (displayed_user.followers_count);
 
         // Create a special creation date field
         var creation_field         = new Gtk.Box (HORIZONTAL, 4);
         var creation_icon          = new Gtk.Image.from_icon_name ("x-office-calendar-symbolic");
-        creation_icon.tooltip_text = _("Joined %s").printf (displayed_profile.domain);
+        creation_icon.tooltip_text = _("Joined %s").printf (displayed_user.domain);
         var creation_value         = new Gtk.Label (DisplayUtils.display_time_delta (
-                                                      displayed_profile.creation_date, true));
+                                                      displayed_user.creation_date, true));
         creation_field.append (creation_icon);
         creation_field.append (creation_value);
-        profile_fields.insert (creation_field, -1);
+        user_fields.insert (creation_field, -1);
 
-        // Set up the fields for the profile
-        foreach (Backend.UserDataField field in displayed_profile.get_data_fields ()) {
+        // Set up the fields for the user
+        foreach (Backend.UserDataField field in displayed_user.get_data_fields ()) {
           var field_box   = new Gtk.Box (HORIZONTAL, 4);
 
           // Create either an icon or an label for the field name
@@ -117,27 +117,27 @@ public class ProfileDisplay : Gtk.Widget {
           var field_value        = new Gtk.Label (display_label);
           field_value.use_markup = true;
 
-          // Add the widgets to the profile_fields box
+          // Add the widgets to the user_fields box
           field_box.append (field_desc);
           field_box.append (field_value);
-          profile_fields.insert (field_box, -1);
+          user_fields.insert (field_box, -1);
         }
       }
     }
   }
 
   /**
-   * Deconstructs ProfileCard and it's childrens.
+   * Deconstructs UserCard and it's childrens.
    */
   public override void dispose () {
     // Destructs children of MediaDisplay
-    profile_card.unparent ();
+    user_card.unparent ();
     content_clamp.unparent ();
   }
 
   /**
-   * Stores the displayed profile.
+   * Stores the displayed user.
    */
-  private Backend.Profile displayed_profile;
+  private Backend.User displayed_user;
 
 }

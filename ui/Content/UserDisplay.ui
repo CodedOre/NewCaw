@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
-  <template class="ProfileDisplay" parent="GtkWidget">
+  <template class="UserDisplay" parent="GtkWidget">
     <property name="layout-manager">
       <object class="GtkBoxLayout">
         <property name="orientation">vertical</property>
@@ -10,9 +10,9 @@
       </object>
     </property>
     <child>
-      <object class="ProfileCard" id="profile_card">
-        <binding name="profile">
-          <lookup name="profile">ProfileDisplay</lookup>
+      <object class="UserCard" id="user_card">
+        <binding name="user">
+          <lookup name="user">UserDisplay</lookup>
         </binding>
       </object>
     </child>
@@ -30,7 +30,7 @@
               <object class="GtkBox">
                 <property name="spacing">4</property>
                 <child>
-                  <object class="GtkLabel" id="profile_display_label">
+                  <object class="GtkLabel" id="user_display_label">
                     <property name="xalign">0.0</property>
                     <property name="ellipsize">end</property>
                     <style>
@@ -39,7 +39,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="BadgesBox" id="profile_badges">
+                  <object class="BadgesBox" id="user_badges">
                     <property name="icon-size">12</property>
                     <property name="valign">start</property>
                   </object>
@@ -47,7 +47,7 @@
               </object>
             </child>
             <child>
-              <object class="GtkLabel" id="profile_username_label">
+              <object class="GtkLabel" id="user_username_label">
                 <property name="xalign">0.0</property>
                 <property name="ellipsize">end</property>
                 <property name="margin-bottom">8</property>
@@ -58,7 +58,7 @@
               </object>
             </child>
             <child>
-              <object class="GtkLabel" id="profile_description_label">
+              <object class="GtkLabel" id="user_description_label">
                 <property name="xalign">0.0</property>
                 <property name="wrap">true</property>
                 <property name="use-markup">true</property>
@@ -126,7 +126,7 @@
               </object>
             </child>
             <child>
-              <object class="GtkFlowBox" id="profile_fields">
+              <object class="GtkFlowBox" id="user_fields">
                 <property name="margin-bottom">2</property>
                 <property name="column-spacing">12</property>
                 <property name="max-children-per-line">42</property>

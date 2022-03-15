@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
-  <template class="ProfileCard" parent="GtkWidget">
+  <template class="UserCard" parent="GtkWidget">
     <property name="height-request">280</property>
     <property name="layout-manager">
       <object class="GtkBinLayout"/>
@@ -26,12 +26,12 @@
         <child>
           <object class="GtkOverlay">
             <child>
-              <object class="CroppedPicture" id="profile_banner">
+              <object class="CroppedPicture" id="user_banner">
               </object>
             </child>
             <child type="overlay">
               <object class="GtkButton">
-                <property name="action-name">profile.display_header</property>
+                <property name="action-name">UserCard.display_header</property>
                 <style>
                   <class name="flat"/>
                 </style>
@@ -81,7 +81,7 @@
             <property name="margin-end">20</property>
             <property name="spacing">8</property>
             <child>
-              <object class="UserAvatar" id="profile_avatar">
+              <object class="UserAvatar" id="user_avatar">
                 <property name="size">96</property>
                 <property name="main-mode">true</property>
                 <property name="hexpand">true</property>

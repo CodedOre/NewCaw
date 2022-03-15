@@ -26,13 +26,13 @@ using GLib;
 namespace Backend.Twitter.Utils.ParseUtils {
 
   /**
-   * Get the high resolution url for an profile image.
+   * Get the high resolution url for an user image.
    *
    * @param url The url to be parsed.
    *
    * @return The url changed to point to the original media.
    */
-  private string parse_profile_image (string url) {
+  private string parse_user_image (string url) {
     // Use Regex to remove the `_normal` url extension.
     try {
       var image_regex = new Regex ("(https://pbs.twimg.com/.*?)_normal(\\..*)");
@@ -59,11 +59,11 @@ namespace Backend.Twitter.Utils.ParseUtils {
 
     // Search for weblink entity
     if (data.has_member ("entities")) {
-      Json.Object profile_entities = data.get_object_member ("entities");
+      Json.Object user_entities = data.get_object_member ("entities");
       // Parse entity for the linked url
-      if (profile_entities.has_member ("url")) {
-        Json.Object profile_urls = profile_entities.get_object_member ("url");
-        Json.Array  urls_array   = profile_urls.get_array_member ("urls");
+      if (user_entities.has_member ("url")) {
+        Json.Object user_urls = user_entities.get_object_member ("url");
+        Json.Array  urls_array   = user_urls.get_array_member ("urls");
         // It should only have one element, so assuming this to avoid an loop
         Json.Node url_node = urls_array.get_element (0);
         if (url_node.get_node_type () == OBJECT) {

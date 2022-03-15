@@ -53,48 +53,48 @@ namespace UserChecks {
   }
 
   /**
-   * Checks additional information a Profile contains.
+   * Checks additional information a User contains.
    *
-   * @param profile The Profile to be checked.
+   * @param user The User to be checked.
    * @param check A Json.Object containing fields to check against.
    */
-  void check_profile_fields (Backend.Profile profile, Json.Object check) {
+  void check_additional_fields (Backend.User user, Json.Object check) {
     // Check creation date and urls
-    assert_true (profile.creation_date.equal (
+    assert_true (user.creation_date.equal (
       new DateTime.from_iso8601 (
         check.get_string_member ("creation_date"),
         new TimeZone.utc ()
     )));
-    assert_true (profile.url    == check.get_string_member ("url"));
-    assert_true (profile.domain == check.get_string_member ("domain"));
+    assert_true (user.url    == check.get_string_member ("url"));
+    assert_true (user.domain == check.get_string_member ("domain"));
 
     // Check public metrics
-    assert_true (profile.followers_count == check.get_int_member ("followers_count"));
-    assert_true (profile.following_count == check.get_int_member ("following_count"));
-    assert_true (profile.posts_count     == check.get_int_member ("posts_count"));
+    assert_true (user.followers_count == check.get_int_member ("followers_count"));
+    assert_true (user.following_count == check.get_int_member ("following_count"));
+    assert_true (user.posts_count     == check.get_int_member ("posts_count"));
 
     // Check description without format flags
     Backend.Utils.TextFormats.set_format_flag (HIDE_TRAILING_TAGS, false);
     Backend.Utils.TextFormats.set_format_flag (SHOW_QUOTE_LINKS,   false);
     Backend.Utils.TextFormats.set_format_flag (SHOW_MEDIA_LINKS,   false);
-    assert_true (profile.description == check.get_string_member ("description"));
+    assert_true (user.description == check.get_string_member ("description"));
   }
 
 #if DEBUG
   /**
    * Test text_modules
    *
-   * @param profile The Profile to be checked.
+   * @param user The User to be checked.
    * @param check A Json.Object containing fields to check against.
    */
-  void check_description_parsing (Backend.Profile profile, Json.Object check) {
+  void check_description_parsing (Backend.User user, Json.Object check) {
     Json.Array modules = check.get_array_member ("description_modules");
-    Backend.TextModule[] profile_modules = profile.get_description_modules ();
-    assert_true (modules.get_length () == profile_modules.length);
+    Backend.TextModule[] user_modules = user.get_description_modules ();
+    assert_true (modules.get_length () == user_modules.length);
 
     modules.foreach_element ((array, index, element) => {
       Json.Object obj         = element.get_object ();
-      Backend.TextModule  mod = profile_modules [index];
+      Backend.TextModule  mod = user_modules [index];
       assert_true (mod.type.to_string () == obj.get_string_member     ("type"));
       assert_true (mod.display           == obj.get_string_member     ("display"));
       assert_true (mod.target            == obj.get_string_member     ("target"));
@@ -107,17 +107,17 @@ namespace UserChecks {
   /**
    * Test the data fields
    *
-   * @param profile The Profile to be checked.
+   * @param user The User to be checked.
    * @param check A Json.Object containing fields to check against.
    */
-  void check_data_fields (Backend.Profile profile, Json.Object check) {
+  void check_data_fields (Backend.User user, Json.Object check) {
     Json.Array check_fields = check.get_array_member ("data_fields");
-    Backend.UserDataField[] profile_fields = profile.get_data_fields ();
-    assert_true (check_fields.get_length () == profile_fields.length);
+    Backend.UserDataField[] user_fields = user.get_data_fields ();
+    assert_true (check_fields.get_length () == user_fields.length);
 
     check_fields.foreach_element ((array, index, element) => {
       Json.Object obj             = element.get_object ();
-      Backend.UserDataField field = profile_fields [index];
+      Backend.UserDataField field = user_fields [index];
       assert_true (field.type.to_string () == obj.get_string_member     ("type"));
       assert_true (field.name              == obj.get_string_member     ("name"));
       assert_true (field.display           == obj.get_string_member     ("display"));

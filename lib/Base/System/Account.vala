@@ -21,13 +21,13 @@
 using GLib;
 
 /**
- * Represents an Profile that uses this library.
+ * Represents an User that uses this library.
  *
- * Account extends Profile to add the
+ * Account extends User to add the
  * properties and methods to allow it to
  * interact with the API provided by the platform.
  */
-public abstract class Backend.Account : Backend.Profile {
+public abstract class Backend.Account : Backend.User {
 
   /**
    * The access token for this specific Account.

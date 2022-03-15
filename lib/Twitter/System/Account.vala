@@ -21,9 +21,9 @@
 using GLib;
 
 /**
- * Represents an Profile that uses this library.
+ * Represents an User that uses this library.
  *
- * Account extends Profile to add the
+ * Account extends User to add the
  * properties and methods to allow it to
  * interact with the API provided by the platform.
  */
@@ -129,7 +129,7 @@ public class Backend.Twitter.Account : Backend.Account {
       access_token = proxy.access_token;
     }
 
-    // Retrieve the account profile data
+    // Retrieve the account user data
     var auth_call = create_call ();
     auth_call.set_method ("GET");
     auth_call.set_function ("users/me");
@@ -144,7 +144,7 @@ public class Backend.Twitter.Account : Backend.Account {
     }
 
     // Populate data with retrieved json
-    set_profile_data (data);
+    set_user_data (data);
     authenticated = true;
   }
 
@@ -170,7 +170,7 @@ public class Backend.Twitter.Account : Backend.Account {
     access_token       = token;
     proxy.access_token = access_token;
 
-    // Retrieve the account profile data
+    // Retrieve the account user data
     var auth_call = create_call ();
     auth_call.set_method ("GET");
     auth_call.set_function ("users/me");
@@ -185,22 +185,22 @@ public class Backend.Twitter.Account : Backend.Account {
     }
 
     // Populate data with retrieved json
-    set_profile_data (data);
+    set_user_data (data);
     authenticated = true;
   }
 
   /**
-   * Sets the Profile data for this Account.
+   * Sets the User data for this Account.
    *
    * @param data A Json.Object retrieved from the API.
    */
-  private void set_profile_data (Json.Object data) {
+  private void set_user_data (Json.Object data) {
     // Get metrics object
     Json.Object metrics = data.get_object_member ("public_metrics");
 
     // Parse the avatar image url
     string avatar_preview_url = data.get_string_member ("profile_image_url");
-    string avatar_media_url   = Utils.ParseUtils.parse_profile_image (avatar_preview_url);
+    string avatar_media_url   = Utils.ParseUtils.parse_user_image (avatar_preview_url);
 
     // Set the id of the user
     id = data.get_string_member ("id");
@@ -237,10 +237,10 @@ public class Backend.Twitter.Account : Backend.Account {
 
     // Parse entities
     if (data.has_member ("entities")) {
-      Json.Object profile_entities = data.get_object_member ("entities");
+      Json.Object user_entities = data.get_object_member ("entities");
       // Parse entities for the description
-      if (profile_entities.has_member ("description")) {
-        description_entities = profile_entities.get_object_member ("description");
+      if (user_entities.has_member ("description")) {
+        description_entities = user_entities.get_object_member ("description");
       }
     }
     description_modules = Utils.TextUtils.parse_text (raw_text, description_entities);
