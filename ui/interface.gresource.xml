@@ -17,5 +17,6 @@
     <file>System/AuthView.ui</file>
     <file>Widgets/UserAvatar.ui</file>
     <file>Widgets/BadgesBox.ui</file>
+    <file>Widgets/WaitingButton.ui</file>
   </gresource>
 </gresources>

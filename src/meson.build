@@ -36,7 +36,8 @@ cawfiles = [
   'Utils/DisplayUtils.vala',
   'Widgets/BadgesBox.vala',
   'Widgets/CroppedPicture.vala',
-  'Widgets/UserAvatar.vala'
+  'Widgets/UserAvatar.vala',
+  'Widgets/WaitingButton.vala'
 ]
 
 # Add build configurations

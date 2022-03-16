@@ -23,14 +23,6 @@
             <property name="title">Add Account</property>
           </object>
         </child>
-        <child type="end">
-          <object class="GtkButton">
-            <property name="label">Next</property>
-            <style>
-              <class name="suggested-action"/>
-            </style>
-          </object>
-        </child>
         <style>
           <class name="flat"/>
         </style>
@@ -55,7 +47,11 @@
                     <child>
                       <object class="GtkButton" id="init_twitter_auth_button">
                         <property name="visible">false</property>
-                        <property name="label">Add Twitter Account</property>
+                        <child>
+                          <object class="WaitingButton">
+                            <property name="label">Add Twitter Account</property>
+                          </object>
+                        </child>
                         <style>
                           <class name="twitter-accent"/>
                           <class name="pill"/>
@@ -66,7 +62,11 @@
                     <child>
                       <object class="GtkButton" id="init_twitter_legacy_auth_button">
                         <property name="visible">false</property>
-                        <property name="label">Add Twitter (Legacy) Account</property>
+                        <child>
+                          <object class="WaitingButton">
+                            <property name="label">Add Twitter (Legacy) Account</property>
+                          </object>
+                        </child>
                         <style>
                           <class name="twitter-accent"/>
                           <class name="pill"/>
@@ -102,7 +102,7 @@
                 <child>
                   <object class="GtkBox">
                     <child>
-                      <object class="GtkEntry">
+                      <object class="GtkEntry" id="server_entry">
                         <property name="hexpand">true</property>
                         <property name="input-purpose">url</property>
                         <property name="placeholder-text">mastodon.example</property>
@@ -110,7 +110,11 @@
                     </child>
                     <child>
                       <object class="GtkButton">
-                        <property name="icon-name">go-next-symbolic</property>
+                        <child>
+                          <object class="WaitingButton">
+                            <property name="icon-name">go-next-symbolic</property>
+                          </object>
+                        </child>
                         <style>
                           <class name="suggested-action"/>
                         </style>
