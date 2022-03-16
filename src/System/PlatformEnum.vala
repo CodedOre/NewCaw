@@ -37,6 +37,7 @@ public enum PlatformEnum {
    */
   public string to_string() {
     switch (this) {
+
       case MASTODON:
         return "Mastodon";
 
@@ -59,20 +60,26 @@ public enum PlatformEnum {
    * @return The enum representing the platform this server is using.
    */
   public static PlatformEnum get_platform_for_server (Backend.Server server) {
+#if SUPPORT_MASTODON
     // Return if using Mastodon
     if (server is Backend.Mastodon.Server) {
       return MASTODON;
     }
+#endif
 
+#if SUPPORT_TWITTER
     // Return if using Twitter
     if (server is Backend.Twitter.Server) {
       return TWITTER;
     }
+#endif
 
+#if SUPPORT_TWITTER_LEGACY
     // Return if using TwitterLegacy
     if (server is Backend.TwitterLegacy.Server) {
       return TWITTER_LEGACY;
     }
+#endif
 
     // Failing if not detected any platform
     assert_not_reached();
@@ -86,20 +93,26 @@ public enum PlatformEnum {
    * @return The enum representing the platform this account is using.
    */
   public static PlatformEnum get_platform_for_account (Backend.Account account) {
+#if SUPPORT_MASTODON
     // Return if using Mastodon
     if (account is Backend.Mastodon.Account) {
       return MASTODON;
     }
+#endif
 
+#if SUPPORT_TWITTER
     // Return if using Twitter
     if (account is Backend.Twitter.Account) {
       return TWITTER;
     }
+#endif
 
+#if SUPPORT_TWITTER_LEGACY
     // Return if using TwitterLegacy
     if (account is Backend.TwitterLegacy.Account) {
       return TWITTER_LEGACY;
     }
+#endif
 
     // Failing if not detected any platform
     assert_not_reached();

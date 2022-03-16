@@ -93,15 +93,12 @@ public class AccountManager : Object {
    * @throws Error Errors that happen when loading fails.
    */
   public static async void load_data () throws Error {
-    // Load settings
+    // Load settings and ensure instance
     var account_settings = new Settings ("uk.co.ibboard.Cawbird.Accounts");
 
-    // Load the shortlists from the settings
-    Variant mastodon_list       = account_settings.get_value ("mastodon-accounts");
-    Variant twitter_list        = account_settings.get_value ("twitter-accounts");
-    Variant twitter_legacy_list = account_settings.get_value ("twitter-legacy-accounts");
-
+#if SUPPORT_MASTODON
     // Parse through all Mastodon accounts
+    Variant     mastodon_list = account_settings.get_value ("mastodon-accounts");
     VariantIter mastodon_iter = mastodon_list.iterator ();
     while (true) {
       // Get the data as Variant
@@ -151,8 +148,11 @@ public class AccountManager : Object {
         }
       }
     }
+#endif
 
+#if SUPPORT_TWITTER
     // Parse through all Twitter accounts
+    Variant     twitter_list = account_settings.get_value ("twitter-accounts");
     VariantIter twitter_iter = twitter_list.iterator ();
     string      twitter_acc;
     while (twitter_iter.next ("s", out twitter_acc)) {
@@ -173,8 +173,11 @@ public class AccountManager : Object {
         throw e;
       }
     }
+#endif
 
+#if SUPPORT_TWITTER_LEGACY
     // Parse through all TwitterLegacy accounts
+    Variant     twitter_legacy_list = account_settings.get_value ("twitter-legacy-accounts");
     VariantIter twitter_legacy_iter = twitter_legacy_list.iterator ();
     string      twitter_legacy_acc;
     while (twitter_legacy_iter.next ("s", out twitter_legacy_acc)) {
@@ -196,6 +199,7 @@ public class AccountManager : Object {
         throw e;
       }
     }
+#endif
   }
 
   /**
@@ -204,6 +208,10 @@ public class AccountManager : Object {
    * @throws Error Errors that happen when storage fails.
    */
   public static async void store_data () throws Error {
+    // Load the Accounts settings
+    var account_settings = new Settings ("uk.co.ibboard.Cawbird.Accounts");
+
+#if SUPPORT_MASTODON
     // Store servers
     foreach (Backend.Server server in instance.server_list) {
       // Only store if Mastodon server
@@ -216,14 +224,23 @@ public class AccountManager : Object {
         }
       }
     }
+#endif
 
-    // Create dictionary to build up the server categorization
-    var mastodon_categorizer   = new HashTable<string,Array> (str_hash, str_equal);
+#if SUPPORT_MASTODON
+    // Create variables to construct the Mastodon settings Variant
+    var mastodon_categorizer = new HashTable<string,Array> (str_hash, str_equal);
+    var mastodon_builder     = new VariantBuilder (new VariantType ("a{sas}"));
+#endif
 
-    // Create VariantBuilders for shortlists
-    var mastodon_builder       = new VariantBuilder (new VariantType ("a{sas}"));
+#if SUPPORT_TWITTER
+    // Create VariantBuilders for Twitter shortlists
     var twitter_builder        = new VariantBuilder (new VariantType ("as"));
+#endif
+
+#if SUPPORT_TWITTER_LEGACY
+    // Create VariantBuilders for TwitterLegacy shortlists
     var twitter_legacy_builder = new VariantBuilder (new VariantType ("as"));
+#endif
 
     // Store accounts
     foreach (Backend.Account account in instance.account_list) {
@@ -234,7 +251,8 @@ public class AccountManager : Object {
         throw e;
       }
 
-      // Store username in shortlist
+#if SUPPORT_MASTODON
+      // Store Mastodon username in shortlist
       if (account is Backend.Mastodon.Account) {
         // Get the list of accounts set for a specific domain
         Array<string> server_accounts;
@@ -249,20 +267,30 @@ public class AccountManager : Object {
         server_accounts.append_val (account.username);
         continue;
       }
+#endif
+
+#if SUPPORT_TWITTER
+      // Store Twitter username in shortlist
       if (account is Backend.Twitter.Account) {
         twitter_builder.add ("s", account.username);
         continue;
       }
+#endif
+
+#if SUPPORT_TWITTER_LEGACY
+      // Store TwitterLegacy username in shortlist
       if (account is Backend.TwitterLegacy.Account) {
         twitter_legacy_builder.add ("s", account.username);
         continue;
       }
+#endif
 
       // Fail if no platform was detected
       error (@"Account $(account.username) belongs to no platform!");
     }
 
-    // Build the Mastodon variant
+#if SUPPORT_MASTODON
+    // Build the Mastodon settings variant
     foreach (string server in mastodon_categorizer.get_keys ()) {
       mastodon_builder.open (new VariantType ("{sas}"));
       mastodon_builder.add ("s", server);
@@ -275,16 +303,22 @@ public class AccountManager : Object {
       mastodon_builder.close ();
     }
 
-    // Create Variants from the builders
+    // Save the Mastodon shortlist
     Variant mastodon_shortlist       = mastodon_builder.end ();
-    Variant twitter_shortlist        = twitter_builder.end ();
-    Variant twitter_legacy_shortlist = twitter_legacy_builder.end ();
-
-    // Save shortlists
-    var account_settings = new Settings ("uk.co.ibboard.Cawbird.Accounts");
     account_settings.set_value ("mastodon-accounts", mastodon_shortlist);
+#endif
+
+#if SUPPORT_TWITTER
+    // Save the Twitter shortlist
+    Variant twitter_shortlist        = twitter_builder.end ();
     account_settings.set_value ("twitter-accounts", twitter_shortlist);
+#endif
+
+#if SUPPORT_TWITTER_LEGACY
+    // Save the TwitterLegacy shortlists
+    Variant twitter_legacy_shortlist = twitter_legacy_builder.end ();
     account_settings.set_value ("twitter-legacy-accounts", twitter_legacy_shortlist);
+#endif
   }
 
 #if SUPPORT_TWITTER
