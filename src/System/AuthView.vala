@@ -29,6 +29,8 @@ public class AuthView : Gtk.Widget {
   // UI-Elements of AuthView
   [GtkChild]
   private unowned Adw.Carousel auth_carousel;
+  [GtkChild]
+  private unowned Gtk.Button back_button;
 
   // UI-Elements of the first page
   [GtkChild]
@@ -45,9 +47,17 @@ public class AuthView : Gtk.Widget {
   private unowned Adw.Clamp server_page;
 
   /**
+   * Notifys the parent that this widget should be closed.
+   */
+  public signal void close_widget ();
+
+  /**
    * Run at construction of the widget.
    */
   construct {
+    // Init fields
+    previous_screens = new Queue<Gtk.Widget> ();
+
 #if SUPPORT_MASTODON
     // Enable the Mastodon login button
     init_mastodon_auth_button.visible = true;
@@ -70,12 +80,40 @@ public class AuthView : Gtk.Widget {
 #endif
   }
 
+  /**
+   * Update the back button on change.
+   */
+  [GtkCallback]
+  private void update_back_button (uint page) {
+    if (page == 0) {
+      back_button.label = "Cancel";
+    } else {
+      back_button.label = "Back";
+    }
+  }
+
+  /**
+   * Activates the back button.
+   */
+  [GtkCallback]
+  private void back_button_action () {
+    if (previous_screens.length == 0) {
+      // If no previous screens, close widget.
+      close_widget ();
+    } else {
+      // Move to previous screen
+      Gtk.Widget page = previous_screens.pop_head ();
+      auth_carousel.scroll_to (page, true);
+    }
+  }
+
 #if SUPPORT_MASTODON
   /**
    * Initializes a Mastodon authentication.
    */
   private void begin_mastodon_auth () {
     // Move to the server page
+    previous_screens.push_head (start_page);
     auth_carousel.scroll_to (server_page, true);
   }
 #endif
@@ -99,6 +137,13 @@ public class AuthView : Gtk.Widget {
     account = new Backend.TwitterLegacy.Account ();
   }
 #endif
+
+  /**
+   * Holds an reference of widgets which were previously called.
+   *
+   * Used by back_button_action to move to previous screens.
+   */
+  private Queue<Gtk.Widget> previous_screens;
 
 #if SUPPORT_MASTODON
   /**

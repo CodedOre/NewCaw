@@ -13,8 +13,9 @@
         <property name="show-start-title-buttons">false</property>
         <property name="show-end-title-buttons">false</property>
         <child type="start">
-          <object class="GtkButton">
+          <object class="GtkButton" id="back_button">
             <property name="label">Cancel</property>
+            <signal name="clicked" handler="back_button_action"/>
           </object>
         </child>
         <child type="title">
@@ -39,6 +40,7 @@
       <object class="AdwCarousel" id="auth_carousel">
         <property name="vexpand">true</property>
         <property name="interactive">false</property>
+        <signal name="page_changed" handler="update_back_button"/>
         <child>
           <object class="AdwStatusPage" id="start_page">
             <property name="hexpand">true</property>
