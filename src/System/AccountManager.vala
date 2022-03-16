@@ -35,16 +35,16 @@ public class AccountManager : Object {
   public static AccountManager instance {
     get {
       if (global_instance == null) {
-        global_instance = new AccountManager ();
+        critical ("AccountManager was not intialized!");
       }
       return global_instance;
     }
   }
 
   /**
-   * Constructs the instance.
+   * Run at the construction.
    */
-  private AccountManager () {
+  construct {
     // Initialize the arrays
     account_list = {};
     server_list  = {};
@@ -58,6 +58,13 @@ public class AccountManager : Object {
     // Initializes the TwitterLegacy backend
     init_twitter_legacy_server ();
 #endif
+  }
+
+  /**
+   * Initializes the instance.
+   */
+  public static void init () {
+    global_instance = new AccountManager ();
   }
 
   /**
@@ -93,6 +100,11 @@ public class AccountManager : Object {
    * @throws Error Errors that happen when loading fails.
    */
   public static async void load_data () throws Error {
+    // Check if global instance exits
+    if (global_instance == null) {
+      critical ("AccountManager was not intialized!");
+    }
+
     // Load settings and ensure instance
     var account_settings = new Settings ("uk.co.ibboard.Cawbird.Accounts");
 
@@ -208,6 +220,11 @@ public class AccountManager : Object {
    * @throws Error Errors that happen when storage fails.
    */
   public static async void store_data () throws Error {
+    // Check if global instance exits
+    if (global_instance == null) {
+      critical ("AccountManager was not intialized!");
+    }
+
     // Load the Accounts settings
     var account_settings = new Settings ("uk.co.ibboard.Cawbird.Accounts");
 

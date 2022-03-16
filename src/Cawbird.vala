@@ -35,6 +35,8 @@ public class Cawbird : Adw.Application {
     // Initializes the backend client
     new Backend.Client ("NewCaw Development", "https://github.com/CodedOre/NewCaw");
 
+    // Initalize the AccoutManager
+    AccountManager.init ();
 
     // Open the MainWindow
     var win = this.active_window;
