@@ -35,7 +35,7 @@ public class AccountManager : Object {
   public static AccountManager instance {
     get {
       if (global_instance == null) {
-        critical ("AccountManager was not intialized!");
+        critical ("AccountManager was not initialized!");
       }
       return global_instance;
     }
@@ -47,7 +47,7 @@ public class AccountManager : Object {
   construct {
     // Initialize the arrays
     account_list = {};
-    server_list  = {};
+    server_list  = new HashTable<string,Backend.Server> (str_hash, str_equal);
 
 #if SUPPORT_TWITTER
     // Initializes the Twitter backend
@@ -73,7 +73,22 @@ public class AccountManager : Object {
    * @param server The Server to be added.
    */
   public static void add_server (Backend.Server server) {
-    instance.server_list += server;
+    instance.server_list [server.domain] = server;
+  }
+
+  /**
+   * Get a specific server from a domain.
+   *
+   * @param domain The domain to find.
+   *
+   * @return The server from the list, or null if not found.
+   */
+  public static Backend.Server? get_server (string domain) {
+    if (instance.server_list.contains (domain)) {
+      return instance.server_list [domain];
+    } else {
+      return null;
+    }
   }
 
   /**
@@ -102,7 +117,7 @@ public class AccountManager : Object {
   public static async void load_data () throws Error {
     // Check if global instance exits
     if (global_instance == null) {
-      critical ("AccountManager was not intialized!");
+      critical ("AccountManager was not initialized!");
     }
 
     // Load settings and ensure instance
@@ -222,7 +237,7 @@ public class AccountManager : Object {
   public static async void store_data () throws Error {
     // Check if global instance exits
     if (global_instance == null) {
-      critical ("AccountManager was not intialized!");
+      critical ("AccountManager was not initialized!");
     }
 
     // Load the Accounts settings
@@ -230,7 +245,8 @@ public class AccountManager : Object {
 
 #if SUPPORT_MASTODON
     // Store servers
-    foreach (Backend.Server server in instance.server_list) {
+    foreach (string domain in instance.server_list.get_keys ()) {
+      Backend.Server server = instance.server_list [domain];
       // Only store if Mastodon server
       if (server is Backend.Mastodon.Server) {
         // Store access tokens
@@ -399,6 +415,6 @@ public class AccountManager : Object {
   /**
    * Stores all servers managed by this class.
    */
-  private Backend.Server[] server_list;
+  private HashTable<string,Backend.Server> server_list;
 
 }
