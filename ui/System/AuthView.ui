@@ -40,7 +40,7 @@
         <property name="vexpand">true</property>
         <property name="interactive">false</property>
         <child>
-          <object class="AdwStatusPage">
+          <object class="AdwStatusPage" id="start_page">
             <property name="hexpand">true</property>
             <property name="icon-name">system-users</property>
             <property name="title">Add an Account</property>
@@ -90,7 +90,7 @@
           </object>
         </child>
         <child>
-          <object class="AdwClamp">
+          <object class="AdwClamp" id="server_page">
             <property name="hexpand">true</property>
             <property name="maximum-size">450</property>
             <child>
@@ -126,7 +126,7 @@
           </object>
         </child>
         <child>
-          <object class="AdwStatusPage">
+          <object class="AdwStatusPage" id="browser_page">
             <property name="hexpand">true</property>
             <property name="icon-name">web-browser-symbolic</property>
             <property name="title">Authenticate Cawbird</property>

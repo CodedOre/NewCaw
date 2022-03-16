@@ -32,11 +32,17 @@ public class AuthView : Gtk.Widget {
 
   // UI-Elements of the first page
   [GtkChild]
+  private unowned Adw.StatusPage start_page;
+  [GtkChild]
   private unowned Gtk.Button init_twitter_auth_button;
   [GtkChild]
   private unowned Gtk.Button init_twitter_legacy_auth_button;
   [GtkChild]
   private unowned Gtk.Button init_mastodon_auth_button;
+
+  // UI-Elements of the second page
+  [GtkChild]
+  private unowned Adw.Clamp server_page;
 
   /**
    * Run at construction of the widget.
@@ -65,18 +71,45 @@ public class AuthView : Gtk.Widget {
   }
 
 #if SUPPORT_MASTODON
+  /**
+   * Initializes a Mastodon authentication.
+   */
   private void begin_mastodon_auth () {
+    // Move to the server page
+    auth_carousel.scroll_to (server_page, true);
   }
 #endif
 
 #if SUPPORT_TWITTER
+  /**
+   * Initializes a Twitter authentication.
+   */
   private void begin_twitter_auth () {
+    // Initialize the account
+    account = new Backend.Twitter.Account ();
   }
 #endif
 
 #if SUPPORT_TWITTER_LEGACY
+  /**
+   * Initializes a TwitterLegacy authentication.
+   */
   private void begin_twitter_legacy_auth () {
+    // Initializes the account
+    account = new Backend.TwitterLegacy.Account ();
   }
 #endif
+
+#if SUPPORT_MASTODON
+  /**
+   * An Mastodon server if it was created for the authentication.
+   */
+  private Backend.Mastodon.Server? new_server = null;
+#endif
+
+  /**
+   * Holds the account which is to be authenticated.
+   */
+  private Backend.Account? account = null;
 
 }
