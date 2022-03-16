@@ -30,6 +30,7 @@ cawfiles = [
   'Media/MediaPreview.vala',
   'Media/MediaPreviewItem.vala',
   'System/AccountManager.vala',
+  'System/AuthView.vala',
   'System/KeyStorage.vala',
   'System/PlatformEnum.vala',
   'Utils/DisplayUtils.vala',

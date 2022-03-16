@@ -14,6 +14,7 @@
     <file>Media/MediaDisplay.ui</file>
     <file>Media/MediaDisplayItem.ui</file>
     <file>Media/MediaPreviewItem.ui</file>
+    <file>System/AuthView.ui</file>
     <file>Widgets/UserAvatar.ui</file>
     <file>Widgets/BadgesBox.ui</file>
   </gresource>
