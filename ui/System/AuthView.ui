@@ -46,6 +46,7 @@
                         <property name="label">Add Twitter Account</property>
                         <style>
                           <class name="pill"/>
+                          <class name="opaque"/>
                         </style>
                       </object>
                     </child>
@@ -54,6 +55,7 @@
                         <property name="label">Add Twitter (Legacy) Account</property>
                         <style>
                           <class name="pill"/>
+                          <class name="opaque"/>
                         </style>
                       </object>
                     </child>
@@ -62,12 +64,49 @@
                         <property name="label">Add Mastodon Account</property>
                         <style>
                           <class name="pill"/>
+                          <class name="opaque"/>
                         </style>
                       </object>
                     </child>
                   </object>
                 </child>
               </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwClamp">
+            <property name="hexpand">true</property>
+            <property name="maximum-size">450</property>
+            <child>
+              <object class="AdwStatusPage">
+                <property name="icon-name">network-server-symbolic</property>
+                <property name="title">Set your Server</property>
+                <child>
+                  <object class="GtkBox">
+                    <child>
+                      <object class="GtkEntry">
+                        <property name="hexpand">true</property>
+                        <property name="input-purpose">url</property>
+                        <property name="placeholder-text">mastodon.example</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="icon-name">go-next-symbolic</property>
+                        <style>
+                          <class name="suggested-action"/>
+                        </style>
+                      </object>
+                    </child>
+                    <style>
+                      <class name="linked"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
             </child>
           </object>
         </child>
