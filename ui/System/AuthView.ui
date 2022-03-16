@@ -3,5 +3,75 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
   <template class="AuthView" parent="GtkWidget">
+    <property name="layout-manager">
+      <object class="GtkBoxLayout">
+        <property name="orientation">vertical</property>
+      </object>
+    </property>
+    <child>
+      <object class="AdwHeaderBar">
+        <property name="show-start-title-buttons">false</property>
+        <property name="show-end-title-buttons">false</property>
+        <child type="start">
+          <object class="GtkButton">
+            <property name="label">Cancel</property>
+          </object>
+        </child>
+        <child type="title">
+          <object class="AdwCarouselIndicatorDots">
+            <property name="carousel">auth_carousel</property>
+          </object>
+        </child>
+        <style>
+          <class name="flat"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="AdwCarousel" id="auth_carousel">
+        <property name="vexpand">true</property>
+        <child>
+          <object class="AdwStatusPage">
+            <property name="hexpand">true</property>
+            <property name="icon-name">system-users</property>
+            <property name="title">Add an Account</property>
+            <child>
+              <object class="AdwClamp">
+                <property name="maximum-size">380</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="label">Add Twitter Account</property>
+                        <style>
+                          <class name="pill"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="label">Add Twitter (Legacy) Account</property>
+                        <style>
+                          <class name="pill"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="label">Add Mastodon Account</property>
+                        <style>
+                          <class name="pill"/>
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
   </template>
 </interface>
