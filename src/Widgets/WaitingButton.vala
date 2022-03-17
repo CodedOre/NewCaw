@@ -61,4 +61,12 @@ public class WaitingButton : Gtk.Widget {
    */
   public string icon_name { get; set; }
 
+  /**
+   * Deconstructs WaitingButton and it's childrens.
+   */
+  public override void dispose () {
+    // Deconstruct childrens
+    waiting_stack.unparent ();
+  }
+
 }

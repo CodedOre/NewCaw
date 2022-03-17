@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="AuthenticationStartPage" parent="GtkWidget">
+    <property name="layout-manager">
+      <object class="GtkBinLayout"/>
+    </property>
+    <property name="hexpand">true</property>
+    <child>
+      <object class="AdwStatusPage" id="page_content">
+        <property name="hexpand">true</property>
+        <property name="icon-name">system-users</property>
+        <property name="title">Add an Account</property>
+        <child>
+          <object class="AdwClamp">
+            <property name="maximum-size">380</property>
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkButton" id="init_twitter_auth_button">
+                    <property name="visible">false</property>
+                    <child>
+                      <object class="WaitingButton" id="init_twitter_auth_waiting">
+                        <property name="label">Add Twitter Account (New API)</property>
+                      </object>
+                    </child>
+                    <style>
+                      <class name="twitter-accent"/>
+                      <class name="pill"/>
+                      <class name="opaque"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="init_twitter_legacy_auth_button">
+                    <property name="visible">false</property>
+                    <child>
+                      <object class="WaitingButton" id="init_twitter_legacy_auth_waiting">
+                        <property name="label">Add Twitter Account</property>
+                      </object>
+                    </child>
+                    <style>
+                      <class name="twitter-accent"/>
+                      <class name="pill"/>
+                      <class name="opaque"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="init_mastodon_auth_button">
+                    <property name="visible">false</property>
+                    <property name="label">Add Mastodon Account</property>
+                    <style>
+                      <class name="mastodon-accent"/>
+                      <class name="pill"/>
+                      <class name="opaque"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

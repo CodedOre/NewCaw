@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="AuthView" parent="GtkWidget">
+    <property name="layout-manager">
+      <object class="GtkBoxLayout">
+        <property name="orientation">vertical</property>
+      </object>
+    </property>
+    <child>
+      <object class="AdwHeaderBar" id="auth_header">
+        <property name="show-start-title-buttons">false</property>
+        <property name="show-end-title-buttons">false</property>
+        <child type="start">
+          <object class="GtkButton" id="back_button">
+            <property name="label">Cancel</property>
+            <property name="action-name">window.close</property>
+          </object>
+        </child>
+        <child type="title">
+          <object class="AdwWindowTitle">
+            <property name="title">Add Account</property>
+          </object>
+        </child>
+        <style>
+          <class name="flat"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="AdwCarousel" id="auth_carousel">
+        <property name="vexpand">true</property>
+        <property name="interactive">false</property>
+        <signal name="page_changed" handler="update_back_button"/>
+        <child>
+          <object class="AuthenticationStartPage" id="start_page">
+            <property name="view">AuthView</property>
+          </object>
+        </child>
+        <child>
+          <object class="AuthenticationServerPage" id="server_page">
+            <property name="view">AuthView</property>
+          </object>
+        </child>
+        <child>
+          <object class="AuthenticationBrowserPage" id="browser_page">
+            <property name="view">AuthView</property>
+          </object>
+        </child>
+        <child>
+          <object class="AuthenticationCodePage" id="code_page">
+            <property name="view">AuthView</property>
+          </object>
+        </child>
+        <child>
+          <object class="AuthenticationFinalPage" id="final_page">
+            <property name="view">AuthView</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
