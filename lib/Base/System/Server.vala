@@ -63,10 +63,10 @@ public abstract class Backend.Server : Object {
    *
    * @throws Error Errors that happened either while loading or parsing.
    */
-  internal async Json.Object call (Rest.ProxyCall call) throws Error {
+  internal async Json.Object call (Rest.ProxyCall call, Cancellable? cancellable = null) throws Error {
     // Run the call
     try {
-      yield call.invoke_async (null);
+      yield call.invoke_async (cancellable);
     } catch (Error e) {
       throw e;
     }

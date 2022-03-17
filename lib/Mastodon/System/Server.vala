@@ -65,7 +65,7 @@ public class Backend.Mastodon.Server : Backend.Server {
    *
    * @throws Error Any error that occurs while creating the client application.
    */
-  public async Server.authenticate (string domain) throws Error {
+  public async Server.authenticate (string domain, Cancellable? cancellable = null) throws Error {
     // Create the Server instance
     Object (
       domain: domain
@@ -90,7 +90,7 @@ public class Backend.Mastodon.Server : Backend.Server {
     // Authenticate client
     Json.Object client;
     try {
-      client = yield call (client_call);
+      client = yield call (client_call, cancellable);
     } catch (Error e) {
       throw e;
     }
