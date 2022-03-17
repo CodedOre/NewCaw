@@ -130,6 +130,18 @@ public class Authentication.StartPage : Gtk.Widget {
    * Runs the Twitter authentication.
    */
   private async void run_twitter_auth () {
+    // Begin authentication
+    try {
+      view.account = new Backend.Twitter.Account ();
+      string auth_url = yield view.account.init_authentication ();
+      Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
+      stop_twitter_auth ();
+      view.move_to_browser ();
+    } catch (Error e) {
+      warning (@"Could not authenticate at server: $(e.message)");
+      stop_twitter_auth ();
+      return;
+    }
   }
 
   /**
@@ -166,6 +178,18 @@ public class Authentication.StartPage : Gtk.Widget {
    * Runs the Twitter authentication.
    */
   private async void run_twitter_legacy_auth () {
+    // Begin authentication
+    try {
+      view.account = new Backend.TwitterLegacy.Account ();
+      string auth_url = yield view.account.init_authentication ();
+      Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
+      stop_twitter_legacy_auth ();
+      view.move_to_browser ();
+    } catch (Error e) {
+      warning (@"Could not authenticate at server: $(e.message)");
+      stop_twitter_legacy_auth ();
+      return;
+    }
   }
 
   /**
