@@ -8,7 +8,7 @@
     </property>
     <property name="hexpand">true</property>
     <child>
-      <object class="AdwStatusPage" id="browser_page">
+      <object class="AdwStatusPage" id="page_content">
         <property name="hexpand">true</property>
         <property name="icon-name">web-browser-symbolic</property>
         <property name="title">Authenticate Cawbird</property>

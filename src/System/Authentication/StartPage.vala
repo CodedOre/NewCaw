@@ -25,4 +25,53 @@ using GLib;
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/System/Authentication/StartPage.ui")]
 public class Authentication.StartPage : Gtk.Widget {
+
+  // UI-Elements of StartPage
+  [GtkChild]
+  private unowned Adw.StatusPage page_content;
+  [GtkChild]
+  private unowned Gtk.Button init_mastodon_auth_button;
+  [GtkChild]
+  private unowned Gtk.Button init_twitter_auth_button;
+  [GtkChild]
+  private unowned Gtk.Button init_twitter_legacy_auth_button;
+
+  /**
+   * The AuthView holding this page.
+   */
+  public weak AuthView view { get; construct; }
+
+  /**
+   * Run at construction of the widget.
+   */
+  construct {
+    // Check if children of AuthView
+    if (view == null) {
+      critical ("Can only be children to AuthView!");
+    }
+
+#if SUPPORT_MASTODON
+    // Enable the Mastodon login button
+    init_mastodon_auth_button.visible = true;
+    // init_mastodon_auth_button.clicked.connect (begin_mastodon_auth);
+#endif
+#if SUPPORT_TWITTER
+    // Enable the first Twitter login button
+    init_twitter_auth_button.visible = true;
+    // init_twitter_auth_button.clicked.connect (begin_twitter_auth);
+#if SUPPORT_TWITTER_LEGACY
+    // Enable the first Twitter login button
+    init_twitter_legacy_auth_button.visible = true;
+    // init_twitter_legacy_auth_button.clicked.connect (begin_twitter_legacy_auth);
+#endif
+  }
+
+  /**
+   * Deconstructs StartPage and it's childrens.
+   */
+  public override void dispose () {
+    // Deconstruct childrens
+    page_content.unparent ();
+  }
+
 }

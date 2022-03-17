@@ -25,4 +25,32 @@ using GLib;
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/System/Authentication/ServerPage.ui")]
 public class Authentication.ServerPage : Gtk.Widget {
+
+  // UI-Elements of ServerPage
+  [GtkChild]
+  private unowned Adw.Clamp page_content;
+
+  /**
+   * The AuthView holding this page.
+   */
+  public weak AuthView view { get; construct; }
+
+  /**
+   * Run at construction of the widget.
+   */
+  construct {
+    // Check if children of AuthView
+    if (view == null) {
+      critical ("Can only be children to AuthView!");
+    }
+  }
+
+  /**
+   * Deconstructs ServerPage and it's childrens.
+   */
+  public override void dispose () {
+    // Deconstruct childrens
+    page_content.unparent ();
+  }
+
 }

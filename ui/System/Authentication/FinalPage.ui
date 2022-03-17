@@ -8,7 +8,7 @@
     </property>
     <property name="hexpand">true</property>
     <child>
-      <object class="AdwStatusPage">
+      <object class="AdwStatusPage" id="page_content">
         <property name="hexpand">true</property>
         <property name="icon-name">user-info-symbolic</property>
         <property name="title">Finishing Authentication...</property>

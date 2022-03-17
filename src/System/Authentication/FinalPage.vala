@@ -25,4 +25,32 @@ using GLib;
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/System/Authentication/FinalPage.ui")]
 public class Authentication.FinalPage : Gtk.Widget {
+
+  // UI-Elements of FinalPage
+  [GtkChild]
+  private unowned Adw.StatusPage page_content;
+
+  /**
+   * The AuthView holding this page.
+   */
+  public weak AuthView view { get; construct; }
+
+  /**
+   * Run at construction of the widget.
+   */
+  construct {
+    // Check if children of AuthView
+    if (view == null) {
+      critical ("Can only be children to AuthView!");
+    }
+  }
+
+  /**
+   * Deconstructs FinalPage and it's childrens.
+   */
+  public override void dispose () {
+    // Deconstruct childrens
+    page_content.unparent ();
+  }
+
 }
