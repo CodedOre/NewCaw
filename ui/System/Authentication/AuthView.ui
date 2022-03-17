@@ -15,7 +15,7 @@
         <child type="start">
           <object class="GtkButton" id="back_button">
             <property name="label">Cancel</property>
-            <signal name="clicked" handler="back_button_action"/>
+            <!-- <signal name="clicked" handler="back_button_action"/> -->
           </object>
         </child>
         <child type="title">
@@ -31,160 +31,22 @@
     <child>
       <object class="AdwCarousel" id="auth_carousel">
         <property name="vexpand">true</property>
-        <property name="interactive">false</property>
-        <signal name="page_changed" handler="update_back_button"/>
+        <!-- <property name="interactive">false</property> -->
+        <!-- <signal name="page_changed" handler="update_back_button"/> -->
         <child>
-          <object class="AdwStatusPage" id="start_page">
-            <property name="hexpand">true</property>
-            <property name="icon-name">system-users</property>
-            <property name="title">Add an Account</property>
-            <child>
-              <object class="AdwClamp">
-                <property name="maximum-size">380</property>
-                <child>
-                  <object class="GtkBox">
-                    <property name="orientation">vertical</property>
-                    <child>
-                      <object class="GtkButton" id="init_twitter_auth_button">
-                        <property name="visible">false</property>
-                        <child>
-                          <object class="WaitingButton" id="init_twitter_auth_waiting">
-                            <property name="label">Add Twitter Account (New API)</property>
-                          </object>
-                        </child>
-                        <style>
-                          <class name="twitter-accent"/>
-                          <class name="pill"/>
-                          <class name="opaque"/>
-                        </style>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="init_twitter_legacy_auth_button">
-                        <property name="visible">false</property>
-                        <child>
-                          <object class="WaitingButton" id="init_twitter_legacy_auth_waiting">
-                            <property name="label">Add Twitter Account</property>
-                          </object>
-                        </child>
-                        <style>
-                          <class name="twitter-accent"/>
-                          <class name="pill"/>
-                          <class name="opaque"/>
-                        </style>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="init_mastodon_auth_button">
-                        <property name="visible">false</property>
-                        <property name="label">Add Mastodon Account</property>
-                        <style>
-                          <class name="mastodon-accent"/>
-                          <class name="pill"/>
-                          <class name="opaque"/>
-                        </style>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-          </object>
+          <object class="AuthenticationStartPage" id="start_page"/>
         </child>
         <child>
-          <object class="AdwClamp" id="server_page">
-            <property name="hexpand">true</property>
-            <property name="maximum-size">450</property>
-            <child>
-              <object class="AdwStatusPage">
-                <property name="icon-name">network-server-symbolic</property>
-                <property name="title">Set your Server</property>
-                <child>
-                  <object class="GtkBox">
-                    <child>
-                      <object class="GtkEntry" id="server_entry">
-                        <property name="hexpand">true</property>
-                        <property name="input-purpose">url</property>
-                        <property name="placeholder-text">mastodon.example</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkButton">
-                        <child>
-                          <object class="WaitingButton">
-                            <property name="icon-name">go-next-symbolic</property>
-                          </object>
-                        </child>
-                        <style>
-                          <class name="suggested-action"/>
-                        </style>
-                      </object>
-                    </child>
-                    <style>
-                      <class name="linked"/>
-                    </style>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-            </child>
-          </object>
+          <object class="AuthenticationServerPage" id="server_page"/>
         </child>
         <child>
-          <object class="AdwStatusPage" id="browser_page">
-            <property name="hexpand">true</property>
-            <property name="icon-name">web-browser-symbolic</property>
-            <property name="title">Authenticate Cawbird</property>
-            <property name="description">Continue the authentication in your browser.</property>
-          </object>
+          <object class="AuthenticationBrowserPage" id="browser_page"/>
         </child>
         <child>
-          <object class="AdwClamp">
-            <property name="hexpand">true</property>
-            <property name="maximum-size">450</property>
-            <child>
-              <object class="AdwStatusPage">
-                <property name="icon-name">dialog-password-symbolic</property>
-                <property name="title">Enter the Passcode</property>
-                <child>
-                  <object class="GtkBox">
-                    <child>
-                      <object class="GtkEntry">
-                        <property name="hexpand">true</property>
-                        <property name="input-purpose">password</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkButton">
-                        <property name="icon-name">go-next-symbolic</property>
-                        <style>
-                          <class name="suggested-action"/>
-                        </style>
-                      </object>
-                    </child>
-                    <style>
-                      <class name="linked"/>
-                    </style>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-            </child>
-          </object>
+          <object class="AuthenticationCodePage" id="code_page"/>
         </child>
         <child>
-          <object class="AdwStatusPage">
-            <property name="hexpand">true</property>
-            <property name="icon-name">user-info-symbolic</property>
-            <property name="title">Finishing Authentication...</property>
-            <child>
-              <object class="GtkSpinner">
-                <property name="spinning">true</property>
-              </object>
-            </child>
-          </object>
+          <object class="AuthenticationFinalPage" id="final_page"/>
         </child>
       </object>
     </child>

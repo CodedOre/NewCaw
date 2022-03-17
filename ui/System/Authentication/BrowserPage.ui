@@ -7,5 +7,13 @@
       <object class="GtkBinLayout"/>
     </property>
     <property name="hexpand">true</property>
+    <child>
+      <object class="AdwStatusPage" id="browser_page">
+        <property name="hexpand">true</property>
+        <property name="icon-name">web-browser-symbolic</property>
+        <property name="title">Authenticate Cawbird</property>
+        <property name="description">Continue the authentication in your browser.</property>
+      </object>
+    </child>
   </template>
 </interface>

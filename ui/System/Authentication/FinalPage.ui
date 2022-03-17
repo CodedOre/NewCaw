@@ -7,5 +7,17 @@
       <object class="GtkBinLayout"/>
     </property>
     <property name="hexpand">true</property>
+    <child>
+      <object class="AdwStatusPage">
+        <property name="hexpand">true</property>
+        <property name="icon-name">user-info-symbolic</property>
+        <property name="title">Finishing Authentication...</property>
+        <child>
+          <object class="GtkSpinner">
+            <property name="spinning">true</property>
+          </object>
+        </child>
+      </object>
+    </child>
   </template>
 </interface>
