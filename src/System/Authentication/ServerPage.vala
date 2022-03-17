@@ -68,6 +68,52 @@ public class Authentication.ServerPage : Gtk.Widget {
   }
 
   /**
+   * Display a warning to the user.
+   *
+   * @param warning The warning text to display, or null to remove one.
+   */
+  private void set_warning (string? warning = null) {
+    if (warning == null) {
+      // Remove the warning
+      if (server_entry.has_css_class ("warning")) {
+        server_entry.remove_css_class ("warning");
+      }
+      server_entry.secondary_icon_name         = "";
+      server_entry.secondary_icon_tooltip_text = "";
+    } else {
+      // Add the warning
+      if (! server_entry.has_css_class ("warning")) {
+        server_entry.add_css_class ("warning");
+      }
+      server_entry.secondary_icon_name         = "dialog-warning-symbolic";
+      server_entry.secondary_icon_tooltip_text = warning;
+    }
+  }
+
+  /**
+   * Display a error to the user.
+   *
+   * @param error The error text to display, or null to remove one.
+   */
+  private void set_error (string? error = null) {
+    if (error == null) {
+      // Remove the error
+      if (server_entry.has_css_class ("error")) {
+        server_entry.remove_css_class ("error");
+      }
+      server_entry.secondary_icon_name         = "";
+      server_entry.secondary_icon_tooltip_text = "";
+    } else {
+      // Add the error
+      if (! server_entry.has_css_class ("error")) {
+        server_entry.add_css_class ("error");
+      }
+      server_entry.secondary_icon_name         = "dialog-error-symbolic";
+      server_entry.secondary_icon_tooltip_text = error;
+    }
+  }
+
+  /**
    * Activated by the confirm button.
    */
   [GtkCallback]
@@ -77,17 +123,56 @@ public class Authentication.ServerPage : Gtk.Widget {
       // Stop authentication
       stop_server_auth ();
     } else {
+      // Block the UI
+      set_waiting (true);
+
       // Begin authentication
-      begin_server_auth ();
+      run_server_auth.begin ();
     }
   }
 
   /**
-   * Begin the server authentication.
+   * Runs the server authentication.
    */
-  private void begin_server_auth () {
-    // Block the UI
-    set_waiting (true);
+  private async void run_server_auth () {
+#if SUPPORT_MASTODON
+    // Get domain and strip protocol
+    string domain = server_entry.text;
+    if (domain.length == 0) {
+      set_warning ("No domain set!");
+      stop_server_auth ();
+      return;
+    }
+    domain = domain.replace ("https://", "");
+
+    // Create the server
+    try {
+      view.server = yield new Backend.Mastodon.Server.authenticate (domain);
+    } catch (Error e) {
+      warning (@"Could not authenticate at server: $(e.message)");
+      set_error ("Could not authenticate at server.");
+      stop_server_auth ();
+      return;
+    }
+
+    // Begin authentication
+    try {
+      view.account = new Backend.Mastodon.Account (view.server);
+      string auth_url = yield view.account.init_authentication ();
+      Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
+      stop_server_auth ();
+      view.move_to_browser ();
+    } catch (Error e) {
+      warning (@"Could not authenticate at server: $(e.message)");
+      set_error ("Could not authenticate at server.");
+      stop_server_auth ();
+      return;
+    }
+#else
+    // Error if no Mastodon backend available
+    set_error ("Why are you even here? There is no Mastodon backend!");
+    stop_server_auth ();
+#endif
   }
 
   /**

@@ -72,7 +72,7 @@ public class Backend.Mastodon.Server : Backend.Server {
     );
 
     // Create Rest Proxy and Call
-    var client_proxy = new Rest.Proxy (@"https://$(domain)", false);
+    var client_proxy = new Rest.Proxy (@"https://$(domain)/api/v1", false);
     var client_call  = client_proxy.new_call ();
 
     // Get Client instance and determine used redirect uri

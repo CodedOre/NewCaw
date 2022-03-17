@@ -127,7 +127,9 @@ public class AuthView : Gtk.Widget {
 
     // Clear account and server cache
     account = null;
+#if SUPPORT_MASTODON
     server  = null;
+#endif
 
     // Move to start page
     auth_carousel.scroll_to (start_page, true);
