@@ -23,7 +23,7 @@ using GLib;
 /**
  * Provides the graphical way to authenticate an account.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/System/AuthView.ui")]
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/System/Authentication/AuthView.ui")]
 public class AuthView : Gtk.Widget {
 
   // UI-Elements of AuthView
