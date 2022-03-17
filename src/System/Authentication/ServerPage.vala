@@ -145,14 +145,19 @@ public class Authentication.ServerPage : Gtk.Widget {
     }
     domain = domain.replace ("https://", "");
 
+    // Look existing servers up
+    view.server = AccountManager.get_server (domain) as Backend.Mastodon.Server;
+
     // Create the server
-    try {
-      view.server = yield new Backend.Mastodon.Server.authenticate (domain);
-    } catch (Error e) {
-      warning (@"Could not authenticate at server: $(e.message)");
-      set_error ("Could not authenticate at server.");
-      stop_server_auth ();
-      return;
+    if (view.server == null) {
+      try {
+        view.server = yield new Backend.Mastodon.Server.authenticate (domain);
+      } catch (Error e) {
+        warning (@"Could not authenticate at server: $(e.message)");
+        set_error ("Could not authenticate at server.");
+        stop_server_auth ();
+        return;
+      }
     }
 
     // Begin authentication
