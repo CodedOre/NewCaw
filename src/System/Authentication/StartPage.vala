@@ -30,11 +30,15 @@ public class Authentication.StartPage : Gtk.Widget {
   [GtkChild]
   private unowned Adw.StatusPage page_content;
   [GtkChild]
-  private unowned Gtk.Button init_mastodon_auth_button;
+  private unowned Gtk.Button mastodon_button;
   [GtkChild]
-  private unowned Gtk.Button init_twitter_auth_button;
+  private unowned Gtk.Button twitter_button;
   [GtkChild]
-  private unowned Gtk.Button init_twitter_legacy_auth_button;
+  private unowned WaitingButton twitter_waiting;
+  [GtkChild]
+  private unowned Gtk.Button twitter_legacy_button;
+  [GtkChild]
+  private unowned WaitingButton twitter_legacy_waiting;
 
   /**
    * The AuthView holding this page.
@@ -52,17 +56,17 @@ public class Authentication.StartPage : Gtk.Widget {
 
 #if SUPPORT_MASTODON
     // Enable the Mastodon login button
-    init_mastodon_auth_button.visible = true;
-    init_mastodon_auth_button.clicked.connect (begin_mastodon_auth);
+    mastodon_button.visible = true;
+    mastodon_button.clicked.connect (begin_mastodon_auth);
 #endif
 #if SUPPORT_TWITTER
     // Enable the first Twitter login button
-    init_twitter_auth_button.visible = true;
-    init_twitter_auth_button.clicked.connect (begin_twitter_auth);
+    twitter_button.visible = true;
+    twitter_button.clicked.connect (begin_twitter_auth);
 #if SUPPORT_TWITTER_LEGACY
     // Enable the first Twitter login button
-    init_twitter_legacy_auth_button.visible = true;
-    init_twitter_legacy_auth_button.clicked.connect (begin_twitter_legacy_auth);
+    twitter_legacy_button.visible = true;
+    twitter_legacy_button.clicked.connect (begin_twitter_legacy_auth);
 #endif
   }
 
@@ -72,11 +76,33 @@ public class Authentication.StartPage : Gtk.Widget {
   public void on_back_action () {
   }
 
+  /**
+   * Block UI for Twitter authentication.
+   *
+   * @param block If the UI should be blocked.
+   */
+  private void waiting_for_twitter (bool block) {
+    mastodon_button.sensitive       = ! block;
+    twitter_legacy_button.sensitive = ! block;
+    twitter_waiting.waiting         = block;
+  }
+
+  /**
+   * Block UI for Twitter authentication.
+   *
+   * @param block If the UI should be blocked.
+   */
+  private void waiting_for_twitter_legacy (bool block) {
+    mastodon_button.sensitive       = ! block;
+    twitter_button.sensitive        = ! block;
+    twitter_legacy_waiting.waiting  = block;
+  }
+
 #if SUPPORT_MASTODON
   /**
    * Begins the Mastodon authentication.
    */
-  public void begin_mastodon_auth () {
+  private void begin_mastodon_auth () {
     // Move to server page
     view.move_to_server ();
   }
@@ -86,7 +112,35 @@ public class Authentication.StartPage : Gtk.Widget {
   /**
    * Begins the Twitter authentication.
    */
-  public void begin_twitter_auth () {
+  private void begin_twitter_auth () {
+    // Check if authentication is already running
+    if (twitter_waiting.waiting) {
+      // Stop authentication
+      stop_twitter_auth ();
+    } else {
+      // Block the UI
+      waiting_for_twitter (true);
+
+      // Begin authentication
+      run_twitter_auth.begin ();
+    }
+  }
+
+  /**
+   * Runs the Twitter authentication.
+   */
+  private async void run_twitter_auth () {
+  }
+
+  /**
+   * Stops the Twitter authentication.
+   */
+  private void stop_twitter_auth () {
+    // Cancel async actions
+    view.cancellable.cancel ();
+
+    // Unblock the UI
+    waiting_for_twitter (false);
   }
 #endif
 
@@ -94,7 +148,35 @@ public class Authentication.StartPage : Gtk.Widget {
   /**
    * Begins the TwitterLegacy authentication.
    */
-  public void begin_twitter_legacy_auth () {
+  private void begin_twitter_legacy_auth () {
+    // Check if authentication is already running
+    if (twitter_legacy_waiting.waiting) {
+      // Stop authentication
+      stop_twitter_legacy_auth ();
+    } else {
+      // Block the UI
+      waiting_for_twitter_legacy (true);
+
+      // Begin authentication
+      run_twitter_legacy_auth.begin ();
+    }
+  }
+
+  /**
+   * Runs the Twitter authentication.
+   */
+  private async void run_twitter_legacy_auth () {
+  }
+
+  /**
+   * Stops the Twitter authentication.
+   */
+  private void stop_twitter_legacy_auth () {
+    // Cancel async actions
+    view.cancellable.cancel ();
+
+    // Unblock the UI
+    waiting_for_twitter_legacy (false);
   }
 #endif
 

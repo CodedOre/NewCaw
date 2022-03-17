@@ -61,6 +61,8 @@ public class Authentication.ServerPage : Gtk.Widget {
 
   /**
    * Set's the UI to waiting during an action.
+   *
+   * @param waiting If the UI should be waiting.
    */
   private void set_waiting (bool waiting) {
     button_waiting.waiting = waiting;

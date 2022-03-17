@@ -19,10 +19,10 @@
               <object class="GtkBox">
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkButton" id="init_twitter_auth_button">
+                  <object class="GtkButton" id="twitter_button">
                     <property name="visible">false</property>
                     <child>
-                      <object class="WaitingButton" id="init_twitter_auth_waiting">
+                      <object class="WaitingButton" id="twitter_waiting">
                         <property name="label">Add Twitter Account (New API)</property>
                       </object>
                     </child>
@@ -34,10 +34,10 @@
                   </object>
                 </child>
                 <child>
-                  <object class="GtkButton" id="init_twitter_legacy_auth_button">
+                  <object class="GtkButton" id="twitter_legacy_button">
                     <property name="visible">false</property>
                     <child>
-                      <object class="WaitingButton" id="init_twitter_legacy_auth_waiting">
+                      <object class="WaitingButton" id="twitter_legacy_waiting">
                         <property name="label">Add Twitter Account</property>
                       </object>
                     </child>
@@ -49,7 +49,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="GtkButton" id="init_mastodon_auth_button">
+                  <object class="GtkButton" id="mastodon_button">
                     <property name="visible">false</property>
                     <property name="label">Add Mastodon Account</property>
                     <style>
