@@ -46,6 +46,12 @@ public class Authentication.FinalPage : Gtk.Widget {
   }
 
   /**
+   * Activated when back button is activated.
+   */
+  public void on_back_action () {
+  }
+
+  /**
    * Deconstructs FinalPage and it's childrens.
    */
   public override void dispose () {

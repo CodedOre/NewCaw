@@ -46,6 +46,12 @@ public class Authentication.BrowserPage : Gtk.Widget {
   }
 
   /**
+   * Activated when back button is activated.
+   */
+  public void on_back_action () {
+  }
+
+  /**
    * Deconstructs BrowserPage and it's childrens.
    */
   public override void dispose () {

@@ -46,6 +46,14 @@ public class Authentication.ServerPage : Gtk.Widget {
   }
 
   /**
+   * Activated when back button is activated.
+   */
+  public void on_back_action () {
+    // Move back to the start page
+    view.back_to_start ();
+  }
+
+  /**
    * Deconstructs ServerPage and it's childrens.
    */
   public override void dispose () {

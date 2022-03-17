@@ -53,18 +53,50 @@ public class Authentication.StartPage : Gtk.Widget {
 #if SUPPORT_MASTODON
     // Enable the Mastodon login button
     init_mastodon_auth_button.visible = true;
-    // init_mastodon_auth_button.clicked.connect (begin_mastodon_auth);
+    init_mastodon_auth_button.clicked.connect (begin_mastodon_auth);
 #endif
 #if SUPPORT_TWITTER
     // Enable the first Twitter login button
     init_twitter_auth_button.visible = true;
-    // init_twitter_auth_button.clicked.connect (begin_twitter_auth);
+    init_twitter_auth_button.clicked.connect (begin_twitter_auth);
 #if SUPPORT_TWITTER_LEGACY
     // Enable the first Twitter login button
     init_twitter_legacy_auth_button.visible = true;
-    // init_twitter_legacy_auth_button.clicked.connect (begin_twitter_legacy_auth);
+    init_twitter_legacy_auth_button.clicked.connect (begin_twitter_legacy_auth);
 #endif
   }
+
+  /**
+   * Activated when back button is activated.
+   */
+  public void on_back_action () {
+  }
+
+#if SUPPORT_MASTODON
+  /**
+   * Begins the Mastodon authentication.
+   */
+  public void begin_mastodon_auth () {
+    // Move to server page
+    view.move_to_server ();
+  }
+#endif
+
+#if SUPPORT_TWITTER
+  /**
+   * Begins the Twitter authentication.
+   */
+  public void begin_twitter_auth () {
+  }
+#endif
+
+#if SUPPORT_TWITTER_LEGACY
+  /**
+   * Begins the TwitterLegacy authentication.
+   */
+  public void begin_twitter_legacy_auth () {
+  }
+#endif
 
   /**
    * Deconstructs StartPage and it's childrens.

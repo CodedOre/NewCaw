@@ -15,7 +15,7 @@
         <child type="start">
           <object class="GtkButton" id="back_button">
             <property name="label">Cancel</property>
-            <property name="action-name">window.close</property>
+            <signal name="clicked" handler="back_button_action"/>
           </object>
         </child>
         <child type="title">
