@@ -29,6 +29,10 @@ public class Authentication.ServerPage : Gtk.Widget {
   // UI-Elements of ServerPage
   [GtkChild]
   private unowned Adw.Clamp page_content;
+  [GtkChild]
+  private unowned Gtk.Entry server_entry;
+  [GtkChild]
+  private unowned WaitingButton button_waiting;
 
   /**
    * The AuthView holding this page.
@@ -49,8 +53,52 @@ public class Authentication.ServerPage : Gtk.Widget {
    * Activated when back button is activated.
    */
   public void on_back_action () {
+    // Stop server authentication
+    stop_server_auth ();
     // Move back to the start page
     view.back_to_start ();
+  }
+
+  /**
+   * Set's the UI to waiting during an action.
+   */
+  private void set_waiting (bool waiting) {
+    button_waiting.waiting = waiting;
+    server_entry.sensitive = ! waiting;
+  }
+
+  /**
+   * Activated by the confirm button.
+   */
+  [GtkCallback]
+  private void on_confirm () {
+    // Check if authentication is already running
+    if (button_waiting.waiting) {
+      // Stop authentication
+      stop_server_auth ();
+    } else {
+      // Begin authentication
+      begin_server_auth ();
+    }
+  }
+
+  /**
+   * Begin the server authentication.
+   */
+  private void begin_server_auth () {
+    // Block the UI
+    set_waiting (true);
+  }
+
+  /**
+   * Stops the server authentication.
+   */
+  private void stop_server_auth () {
+    // Cancel async actions
+    view.cancellable.cancel ();
+
+    // Unblock the UI
+    set_waiting (false);
   }
 
   /**
