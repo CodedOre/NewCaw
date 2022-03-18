@@ -6,6 +6,7 @@ cawdepends = [
   dependency('glib-2.0',      version: '>= 2.50'),
   dependency('gtk4',          version: '>= 4.0'),
   dependency('libadwaita-1',  version: '>= 1.0'),
+  dependency('libsecret-1',   version: '>= 0.20.5'),
   # Compile with GLib Math support.
   meson.get_compiler('c').find_library('m', required: false)
 ]
