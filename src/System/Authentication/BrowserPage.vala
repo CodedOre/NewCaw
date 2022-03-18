@@ -49,6 +49,18 @@ public class Authentication.BrowserPage : Gtk.Widget {
    * Activated when back button is activated.
    */
   public void on_back_action () {
+#if SUPPORT_MASTODON
+    if (view.account is Backend.Mastodon.Account) {
+      // Move back to server page on Mastodon auth
+      view.move_to_server ();
+    } else {
+      // Move back to start page on Twitter auth
+      view.back_to_start ();
+    }
+#else
+    // Move back to the start page
+    view.back_to_start ();
+#endif
   }
 
   /**
