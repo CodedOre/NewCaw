@@ -104,7 +104,7 @@ public class Authentication.StartPage : Gtk.Widget {
    */
   private void begin_mastodon_auth () {
     // Move to server page
-    view.move_to_server ();
+    view.move_to_next ();
   }
 #endif
 
@@ -136,7 +136,7 @@ public class Authentication.StartPage : Gtk.Widget {
       string auth_url = yield view.account.init_authentication ();
       Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
       stop_twitter_auth ();
-      view.move_to_browser ();
+      view.skip_server ();
     } catch (Error e) {
       warning (@"Could not authenticate at server: $(e.message)");
       stop_twitter_auth ();
@@ -184,7 +184,7 @@ public class Authentication.StartPage : Gtk.Widget {
       string auth_url = yield view.account.init_authentication ();
       Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
       stop_twitter_legacy_auth ();
-      view.move_to_browser ();
+      view.skip_server ();
     } catch (Error e) {
       warning (@"Could not authenticate at server: $(e.message)");
       stop_twitter_legacy_auth ();

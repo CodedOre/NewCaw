@@ -47,16 +47,9 @@ public class Authentication.ServerPage : Gtk.Widget {
     if (view == null) {
       critical ("Can only be children to AuthView!");
     }
-  }
 
-  /**
-   * Activated when back button is activated.
-   */
-  public void on_back_action () {
-    // Stop server authentication
-    stop_server_auth ();
-    // Move back to the start page
-    view.back_to_start ();
+    // Connect server auth stop
+    view.moving_back.connect (stop_server_auth);
   }
 
   /**
@@ -168,7 +161,7 @@ public class Authentication.ServerPage : Gtk.Widget {
       string auth_url = yield view.account.init_authentication ();
       Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
       stop_server_auth ();
-      view.move_to_browser ();
+      view.move_to_next ();
     } catch (Error e) {
       warning (@"Could not authenticate at server: $(e.message)");
       set_error ("Could not authenticate at server.");

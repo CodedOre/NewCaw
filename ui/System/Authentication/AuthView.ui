@@ -23,39 +23,57 @@
             <property name="title">Add Account</property>
           </object>
         </child>
-        <style>
-          <class name="flat"/>
-        </style>
       </object>
     </child>
     <child>
-      <object class="AdwCarousel" id="auth_carousel">
+      <object class="AdwLeaflet" id="auth_leaflet">
         <property name="vexpand">true</property>
-        <property name="interactive">false</property>
-        <signal name="page_changed" handler="update_back_button"/>
+        <property name="can-unfold">false</property>
+        <property name="can-navigate-back">true</property>
+        <signal name="notify::visible-child" handler="on_move_back"/>
         <child>
-          <object class="AuthenticationStartPage" id="start_page">
-            <property name="view">AuthView</property>
+          <object class="AdwLeafletPage" id="start_page">
+            <property name="child">
+              <object class="AuthenticationStartPage">
+                <property name="view">AuthView</property>
+              </object>
+            </property>
           </object>
         </child>
         <child>
-          <object class="AuthenticationServerPage" id="server_page">
-            <property name="view">AuthView</property>
+          <object class="AdwLeafletPage" id="server_page">
+            <property name="child">
+              <object class="AuthenticationServerPage">
+                <property name="view">AuthView</property>
+              </object>
+            </property>
           </object>
         </child>
         <child>
-          <object class="AuthenticationBrowserPage" id="browser_page">
-            <property name="view">AuthView</property>
+          <object class="AdwLeafletPage" id="browser_page">
+            <property name="child">
+              <object class="AuthenticationBrowserPage">
+                <property name="view">AuthView</property>
+              </object>
+            </property>
           </object>
         </child>
         <child>
-          <object class="AuthenticationCodePage" id="code_page">
-            <property name="view">AuthView</property>
+          <object class="AdwLeafletPage" id="code_page">
+            <property name="child">
+              <object class="AuthenticationCodePage">
+                <property name="view">AuthView</property>
+              </object>
+            </property>
           </object>
         </child>
         <child>
-          <object class="AuthenticationFinalPage" id="final_page">
-            <property name="view">AuthView</property>
+          <object class="AdwLeafletPage" id="final_page">
+            <property name="child">
+              <object class="AuthenticationFinalPage">
+                <property name="view">AuthView</property>
+              </object>
+            </property>
           </object>
         </child>
       </object>

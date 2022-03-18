@@ -30,21 +30,21 @@ public class AuthView : Gtk.Widget {
   [GtkChild]
   private unowned Adw.HeaderBar auth_header;
   [GtkChild]
-  private unowned Adw.Carousel auth_carousel;
+  private unowned Adw.Leaflet auth_leaflet;
   [GtkChild]
   private unowned Gtk.Button back_button;
 
   // UI-Elements of the pages
   [GtkChild]
-  private unowned Authentication.StartPage start_page;
+  private unowned Adw.LeafletPage start_page;
   [GtkChild]
-  private unowned Authentication.ServerPage server_page;
+  private unowned Adw.LeafletPage server_page;
   [GtkChild]
-  private unowned Authentication.BrowserPage browser_page;
+  private unowned Adw.LeafletPage browser_page;
   [GtkChild]
-  private unowned Authentication.CodePage code_page;
+  private unowned Adw.LeafletPage code_page;
   [GtkChild]
-  private unowned Authentication.FinalPage final_page;
+  private unowned Adw.LeafletPage final_page;
 
 #if SUPPORT_MASTODON
   /**
@@ -64,6 +64,11 @@ public class AuthView : Gtk.Widget {
   public Cancellable cancellable { get; construct; }
 
   /**
+   * Signal for pages when moving backwards.
+   */
+  public signal void moving_back ();
+
+  /**
    * Creates the widget.
    */
   public AuthView () {
@@ -74,13 +79,34 @@ public class AuthView : Gtk.Widget {
   }
 
   /**
-   * Update the back button on change.
+   * Run when moving to a previous page.
    */
   [GtkCallback]
-  private void update_back_button (uint page) {
-    if (page == 0) {
+  private void on_move_back () {
+    // Signal move to pages
+    moving_back ();
+
+    // Get the current child
+    Adw.LeafletPage page = auth_leaflet.get_page (auth_leaflet.visible_child);
+
+    if (page == start_page) {
+      // Update the back button
       back_button.label = "Cancel";
+
+      // Cancel possible actions
+      cancellable.cancel ();
+
+      // Clear account and server cache
+      account = null;
+#if SUPPORT_MASTODON
+      server  = null;
+#endif
+
+      // Make page definitely navigatable
+      server_page.navigatable = true;
+      code_page.navigatable = true;
     } else {
+      // Update the back button
       back_button.label = "Back";
     }
   }
@@ -91,80 +117,44 @@ public class AuthView : Gtk.Widget {
   [GtkCallback]
   public void back_button_action () {
     // Get the currently active page
-    double current_pos = auth_carousel.position;
+    Adw.LeafletPage page = auth_leaflet.get_page (auth_leaflet.visible_child);
 
-    // Ignore action when switching pages
-    if (current_pos % 1 != 0) {
-      return;
-    }
-
-    // Run page-specific back action
-    switch ((int) current_pos) {
-      case 0:
-        start_page.on_back_action ();
-        break;
-      case 1:
-        server_page.on_back_action ();
-        break;
-      case 2:
-        browser_page.on_back_action ();
-        break;
-      case 3:
-        code_page.on_back_action ();
-        break;
-      case 4:
-        final_page.on_back_action ();
-        break;
+    if (page == start_page) {
+      // Closes the widget
+    } else {
+      // Move one page back
+      move_to_previous ();
     }
   }
 
   /**
-   * Move the view to the start page and resets the authentication.
+   * Hides the server page and therefore move to the page after.
    */
-  public void back_to_start () {
-    // Cancel possible actions
-    cancellable.cancel ();
-
-    // Clear account and server cache
-    account = null;
-#if SUPPORT_MASTODON
-    server  = null;
-#endif
-
-    // Move to start page
-    auth_carousel.scroll_to (start_page, true);
+  public void skip_server () {
+    server_page.navigatable = false;
+    auth_leaflet.navigate (FORWARD);
   }
 
   /**
-   * Move the view to the server page.
+   * Hides the code page and therefore move to the page after.
    */
-  public void move_to_server () {
-    // Move to server page
-    auth_carousel.scroll_to (server_page, true);
+  public void skip_code () {
+    code_page.navigatable = false;
+    auth_leaflet.navigate (FORWARD);
   }
 
   /**
-   * Move the view to the browser page.
+   * Move to the next page.
    */
-  public void move_to_browser () {
-    // Move to browser page
-    auth_carousel.scroll_to (browser_page, true);
+  public void move_to_next () {
+    auth_leaflet.navigate (FORWARD);
   }
 
   /**
-   * Move the view to the server page.
+   * Move to the previous page.
    */
-  public void move_to_code () {
-    // Move to code page
-    auth_carousel.scroll_to (code_page, true);
-  }
-
-  /**
-   * Move the view to the final page.
-   */
-  public void move_to_final () {
-    // Move to final page
-    auth_carousel.scroll_to (final_page, true);
+  public void move_to_previous () {
+    auth_leaflet.navigate (BACK);
   }
 
   /**
@@ -176,7 +166,7 @@ public class AuthView : Gtk.Widget {
 
     // Deconstructs childrens
     auth_header.unparent ();
-    auth_carousel.unparent ();
+    auth_leaflet.unparent ();
   }
 
 }
