@@ -49,7 +49,7 @@ public class Authentication.ServerPage : Gtk.Widget {
     }
 
     // Connect server auth stop
-    view.moving_back.connect (stop_server_auth);
+    view.moving_back.connect (clear_page);
   }
 
   /**
@@ -124,6 +124,19 @@ public class Authentication.ServerPage : Gtk.Widget {
       // Begin authentication
       run_server_auth.begin ();
     }
+  }
+
+  /**
+   * Clears the UI when moving back.
+   */
+  private void clear_page () {
+    // Stop authentication
+    stop_server_auth ();
+
+    // Reset input and warnings
+    server_entry.text = "";
+    set_warning (null);
+    set_error (null);
   }
 
   /**
