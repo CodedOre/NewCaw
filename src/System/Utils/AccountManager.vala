@@ -168,8 +168,9 @@ public class AccountManager : Object {
           assert (account != null);
           add_account (account);
 
-          // Login the account async
-          account.login.begin (account_token);
+          // Login the account
+          account.login (account_token);
+          account.load_data.begin ();
         } catch (Error e) {
           throw e;
         }
@@ -194,8 +195,9 @@ public class AccountManager : Object {
         assert (account != null);
         add_account (account);
 
-        // Login the account async
-        account.login.begin (account_token);
+        // Login the account and load data
+        account.login (account_token);
+        account.load_data.begin ();
       } catch (Error e) {
         throw e;
       }
@@ -220,8 +222,9 @@ public class AccountManager : Object {
         assert (account != null);
         add_account (account);
 
-        // Login the account async
-        account.login_with_secret.begin (account_token, account_secret);
+        // Login the account
+        account.login_with_secret (account_token, account_secret);
+        account.load_data.begin ();
       } catch (Error e) {
         throw e;
       }
