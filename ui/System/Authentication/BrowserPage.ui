@@ -13,6 +13,19 @@
         <property name="icon-name">web-browser-symbolic</property>
         <property name="title">Authenticate Cawbird</property>
         <property name="description">Continue the authentication in your browser.</property>
+        <child>
+          <object class="GtkButton" id="continue_button">
+            <property name="visible">false</property>
+            <property name="label">Continue</property>
+            <property name="halign">center</property>
+            <property name="width-request">275</property>
+            <signal name="clicked" handler="on_continue"/>
+            <style>
+              <class name="suggested-action"/>
+              <class name="pill"/>
+            </style>
+          </object>
+        </child>
       </object>
     </child>
   </template>

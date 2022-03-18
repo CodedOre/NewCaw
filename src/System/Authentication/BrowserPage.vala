@@ -29,6 +29,8 @@ public class Authentication.BrowserPage : Gtk.Widget {
   // UI-Elements of BrowserPage
   [GtkChild]
   private unowned Adw.StatusPage page_content;
+  [GtkChild]
+  private unowned Gtk.Button continue_button;
 
   /**
    * The AuthView holding this page.
@@ -42,6 +44,11 @@ public class Authentication.BrowserPage : Gtk.Widget {
     // Check if children of AuthView
     if (view == null) {
       critical ("Can only be children to AuthView!");
+    }
+
+    // Show continue button when no automatic redirect
+    if (Backend.Client.instance.redirect_uri == null) {
+      continue_button.visible = true;
     }
   }
 
@@ -61,6 +68,23 @@ public class Authentication.BrowserPage : Gtk.Widget {
     // Move back to the start page
     view.back_to_start ();
 #endif
+  }
+
+  /**
+   * Activated when automatic redirect is used.
+   */
+  public void on_redirect () {
+    // Move to the final page
+    view.move_to_final ();
+  }
+
+  /**
+   * Activated when continue button is pressed.
+   */
+  [GtkCallback]
+  public void on_continue () {
+    // Move to the code page
+    view.move_to_code ();
   }
 
   /**
