@@ -151,10 +151,8 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
    *
    * @param token The access token for the account.
    * @param secret The secret for the access token.
-   *
-   * @throws Error Any error occurring while requesting the token.
    */
-  public void login_with_secret (string token, string secret) throws Error {
+  public void login_with_secret (string token, string secret) {
     // Check if authentication is necessary
     if (authenticated) {
       error ("Already authenticated!");

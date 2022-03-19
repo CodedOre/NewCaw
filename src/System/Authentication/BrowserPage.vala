@@ -49,13 +49,62 @@ public class Authentication.BrowserPage : Gtk.Widget {
     // Show continue button when no automatic redirect
     if (Backend.Client.instance.redirect_uri == null) {
       continue_button.visible = true;
+
+      // Connect redirect callback
+      AccountManager.instance.auth_received.connect (on_redirect);
     }
   }
 
   /**
    * Activated when automatic redirect is used.
    */
-  public void on_redirect () {
+  private async void on_redirect (string query) {
+    // Get the parameters
+    HashTable<string,string> param;
+    try {
+      param = Uri.parse_params (query);
+    } catch (Error e) {
+      warning ("Failed to parse callback!");
+      view.move_to_previous ();
+      return;
+    }
+
+#if SUPPORT_TWITTER_LEGACY
+    if (view.account is Backend.TwitterLegacy.Account) {
+      // Cast the account to the sub-class
+      var legacy_account = view.account as Backend.TwitterLegacy.Account;
+
+      // Retrieve the tokens from the query
+      string? token  = param ["oauth_token"];
+      string? secret = param ["oauth_verifier"];
+
+      // Check for valid token
+      if (token == null || secret == null) {
+        warning ("Could not retrieve access tokens!");
+        view.move_to_previous ();
+        return;
+      }
+      // Authenticate the account with the token
+      legacy_account.login_with_secret (token, secret);
+    }
+#endif
+#if SUPPORT_TWITTER || SUPPORT_MASTODON
+    if (view.account is Backend.Twitter.Account || view.account is Backend.Mastodon.Account) {
+      // Retrieve the tokens from the query
+      string? code  = param ["code"];
+      string? state = param ["state"];
+
+      // Authenticate the account with the code
+      try {
+        yield view.account.authenticate (code, state);
+      } catch (Error e) {
+        warning (@"Failed to authenticate account: $(e.message)");
+        view.move_to_previous ();
+        return;
+      }
+    }
+#endif
+
     // Move to the final page
     view.skip_code ();
   }
@@ -64,7 +113,7 @@ public class Authentication.BrowserPage : Gtk.Widget {
    * Activated when continue button is pressed.
    */
   [GtkCallback]
-  public void on_continue () {
+  private void on_continue () {
     // Move to the code page
     view.move_to_next ();
   }
