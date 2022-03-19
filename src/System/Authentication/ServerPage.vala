@@ -109,6 +109,16 @@ public class Authentication.ServerPage : Gtk.Widget {
   }
 
   /**
+   * Activated by input on the server entry.
+   */
+  [GtkCallback]
+  private void on_input () {
+    // Clear possible warnings or errors
+    set_warning ();
+    set_error ();
+  }
+
+  /**
    * Activated by the confirm button.
    */
   [GtkCallback]
