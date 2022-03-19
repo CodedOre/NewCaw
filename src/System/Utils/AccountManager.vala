@@ -30,6 +30,11 @@ using GLib;
 public class AccountManager : Object {
 
   /**
+   * Called by Cawbird to notify when an authentication string was received.
+   */
+  public signal void auth_received (string query);
+
+  /**
    * The single instance of this class.
    */
   public static AccountManager instance {

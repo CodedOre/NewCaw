@@ -20,20 +20,29 @@
 
 using GLib;
 
+/**
+ * The application class, contains initialization methods.
+ */
 public class Cawbird : Adw.Application {
 
+  /**
+   * Creates the object.
+   */
   public Cawbird () {
 #if DEBUG
-    Object (application_id: "uk.co.ibboard.Cawbird.Devel");
+    Object (application_id: "uk.co.ibboard.Cawbird.Devel", flags: ApplicationFlags.HANDLES_OPEN);
     set_resource_base_path ("/uk/co/ibboard/Cawbird/");
 #else
-    Object (application_id: "uk.co.ibboard.Cawbird");
+    Object (application_id: "uk.co.ibboard.Cawbird", flags: ApplicationFlags.HANDLES_OPEN);
 #endif
   }
 
+  /**
+   * Starting without arguments.
+   */
   protected override void activate () {
     // Initializes the backend client
-    new Backend.Client ("NewCaw Development", "https://github.com/CodedOre/NewCaw");
+    new Backend.Client ("NewCaw Development", "https://github.com/CodedOre/NewCaw", "cawbird://authenticate");
 
     // Initialize the AccoutManager
     AccountManager.init ();
@@ -46,6 +55,36 @@ public class Cawbird : Adw.Application {
     win.present ();
   }
 
+  /**
+   * Handles given links.
+   */
+	public override void open (File[] links, string hint) {
+    // Check each given link
+		foreach (File link in links) {
+			string uri = link.get_uri ();
+
+			// When authentication uri
+			if (uri.has_prefix ("cawbird://authenticate")) {
+			  try {
+			    // Get query of authentication string
+          var auth = Uri.parse (uri, NONE);
+
+          // Send query to AccountManager
+          AccountManager.instance.auth_received (auth.get_query ());
+        } catch (Error e) {
+          error (@"Failed to get authentication url: $(e.message)");
+        }
+
+      // When unsupported uri
+			} else {
+			  error (@"$(uri) is an unsupported uri!");
+			}
+		}
+	}
+
+  /**
+   * The begin of the program.
+   */
   public static int main (string[] args) {
     // Setup gettext
     GLib.Intl.setlocale (GLib.LocaleCategory.ALL, "");
