@@ -172,8 +172,10 @@ public class Authentication.ServerPage : Gtk.Widget {
         cancel_auth = new Cancellable ();
         view.server = yield new Backend.Mastodon.Server.authenticate (domain, cancel_auth);
       } catch (Error e) {
-        warning (@"Could not authenticate at server: $(e.message)");
-        set_error ("Could not authenticate at server.");
+        if (! (e is GLib.IOError.CANCELLED)) {
+          warning (@"Could not authenticate at server: $(e.message)");
+          set_error ("Could not authenticate at server.");
+        }
         stop_server_auth ();
         return;
       }
@@ -187,8 +189,10 @@ public class Authentication.ServerPage : Gtk.Widget {
       stop_server_auth ();
       view.move_to_next ();
     } catch (Error e) {
-      warning (@"Could not authenticate at server: $(e.message)");
-      set_error ("Could not authenticate at server.");
+      if (! (e is GLib.IOError.CANCELLED)) {
+        warning (@"Could not authenticate at server: $(e.message)");
+        set_error ("Could not authenticate at server.");
+      }
       stop_server_auth ();
       return;
     }
