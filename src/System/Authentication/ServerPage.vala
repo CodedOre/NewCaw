@@ -169,7 +169,8 @@ public class Authentication.ServerPage : Gtk.Widget {
     // Create the server
     if (view.server == null) {
       try {
-        view.server = yield new Backend.Mastodon.Server.authenticate (domain);
+        cancel_auth = new Cancellable ();
+        view.server = yield new Backend.Mastodon.Server.authenticate (domain, cancel_auth);
       } catch (Error e) {
         warning (@"Could not authenticate at server: $(e.message)");
         set_error ("Could not authenticate at server.");
@@ -202,8 +203,10 @@ public class Authentication.ServerPage : Gtk.Widget {
    * Stops the server authentication.
    */
   private void stop_server_auth () {
-    // Cancel async actions
-    view.cancellable.cancel ();
+    // Cancel possible actions
+    if (cancel_auth != null) {
+      cancel_auth.cancel ();
+    }
 
     // Unblock the UI
     set_waiting (false);
@@ -216,5 +219,10 @@ public class Authentication.ServerPage : Gtk.Widget {
     // Deconstruct childrens
     page_content.unparent ();
   }
+
+  /**
+   * Cancels server authentications.
+   */
+  private Cancellable? cancel_auth = null;
 
 }

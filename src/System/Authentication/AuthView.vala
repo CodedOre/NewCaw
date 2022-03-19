@@ -59,24 +59,9 @@ public class AuthView : Gtk.Widget {
   public Backend.Account? account { get; set; default = null; }
 
   /**
-   * The global Cancellable used for all async actions.
-   */
-  public Cancellable cancellable { get; construct; }
-
-  /**
    * Signal for pages when moving backwards.
    */
   public signal void moving_back ();
-
-  /**
-   * Creates the widget.
-   */
-  public AuthView () {
-    // Construct the object
-    Object (
-      cancellable: new Cancellable ()
-    );
-  }
 
   /**
    * Run when moving to a previous page.
@@ -92,9 +77,6 @@ public class AuthView : Gtk.Widget {
     if (page == start_page) {
       // Update the back button
       back_button.label = "Cancel";
-
-      // Cancel possible actions
-      cancellable.cancel ();
 
       // Clear account and server cache
       account = null;
@@ -161,9 +143,6 @@ public class AuthView : Gtk.Widget {
    * Deconstructs AuthView and it's childrens.
    */
   public override void dispose () {
-    // Cancel possible actions
-    cancellable.cancel ();
-
     // Deconstructs childrens
     auth_header.unparent ();
     auth_leaflet.unparent ();

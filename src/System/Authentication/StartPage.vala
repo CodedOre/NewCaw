@@ -148,8 +148,6 @@ public class Authentication.StartPage : Gtk.Widget {
    * Stops the Twitter authentication.
    */
   private void stop_twitter_auth () {
-    // Cancel async actions
-    view.cancellable.cancel ();
 
     // Unblock the UI
     waiting_for_twitter (false);
@@ -196,8 +194,6 @@ public class Authentication.StartPage : Gtk.Widget {
    * Stops the Twitter authentication.
    */
   private void stop_twitter_legacy_auth () {
-    // Cancel async actions
-    view.cancellable.cancel ();
 
     // Unblock the UI
     waiting_for_twitter_legacy (false);
