@@ -125,20 +125,7 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
       access_secret = proxy.token_secret;
     }
 
-    // Retrieve the account user data
-    var auth_call = create_call ();
-    auth_call.set_method ("GET");
-    auth_call.set_function ("1.1/account/verify_credentials.json");
-
-    Json.Object data;
-    try {
-      data = yield server.call (auth_call);
-    } catch (Error e) {
-      throw e;
-    }
-
-    // Populate data with retrieved json
-    set_user_data (data);
+    // Finish authentication
     authenticated = true;
   }
 
@@ -152,7 +139,7 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
    *
    * @throws Error Any error occurring while requesting the token.
    */
-  public override async void login (string token) throws Error {
+  public override void login (string token) throws Error {
     critical ("Access secret not given!");
   }
 
@@ -167,7 +154,7 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
    *
    * @throws Error Any error occurring while requesting the token.
    */
-  public async void login_with_secret (string token, string secret) throws Error {
+  public void login_with_secret (string token, string secret) throws Error {
     // Check if authentication is necessary
     if (authenticated) {
       error ("Already authenticated!");
@@ -178,30 +165,29 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
     access_secret      = secret;
     proxy.token        = access_token;
     proxy.token_secret = access_secret;
+    authenticated      = true;
+  }
 
+  /**
+   * Loads the data about this Account.
+   *
+   * Needs to be run after the account is authenticated.
+   *
+   * @throws Error Any error that happened while loading the data.
+   */
+  public override async void load_data () throws Error {
     // Retrieve the account user data
     var auth_call = create_call ();
     auth_call.set_method ("GET");
     auth_call.set_function ("1.1/account/verify_credentials.json");
 
-    Json.Object data;
+    Json.Object json;
     try {
-      data = yield server.call (auth_call);
+      json = yield server.call (auth_call);
     } catch (Error e) {
       throw e;
     }
 
-    // Populate data with retrieved json
-    set_user_data (data);
-    authenticated = true;
-  }
-
-  /**
-   * Sets the User data for this Account.
-   *
-   * @param json A Json.Object retrieved from the API.
-   */
-  private void set_user_data (Json.Object json) {
     // Parse the url for avatar and header
     string  avatar_preview_url = json.get_string_member ("profile_image_url_https");
     string  avatar_media_url   = Utils.ParseUtils.parse_user_image (avatar_preview_url);
@@ -267,6 +253,9 @@ public class Backend.TwitterLegacy.Account : Backend.Account {
     if (json.get_boolean_member ("verified")) {
       flags = flags | VERIFIED;
     }
+
+    // Finalize loading
+    loaded = true;
   }
 
   /**

@@ -6,6 +6,7 @@ cawdepends = [
   dependency('glib-2.0',      version: '>= 2.50'),
   dependency('gtk4',          version: '>= 4.0'),
   dependency('libadwaita-1',  version: '>= 1.0'),
+  dependency('libsecret-1',   version: '>= 0.20.5'),
   # Compile with GLib Math support.
   meson.get_compiler('c').find_library('m', required: false)
 ]
@@ -29,13 +30,21 @@ cawfiles = [
   'Media/MediaDisplayItem.vala',
   'Media/MediaPreview.vala',
   'Media/MediaPreviewItem.vala',
-  'System/AccountManager.vala',
-  'System/KeyStorage.vala',
-  'System/PlatformEnum.vala',
+  'System/Authentication/AuthView.vala',
+  'System/Authentication/BrowserPage.vala',
+  'System/Authentication/CodePage.vala',
+  'System/Authentication/FinalPage.vala',
+  'System/Authentication/LoadPage.vala',
+  'System/Authentication/ServerPage.vala',
+  'System/Authentication/StartPage.vala',
+  'System/Utils/AccountManager.vala',
+  'System/Utils/KeyStorage.vala',
+  'System/Utils/PlatformEnum.vala',
   'Utils/DisplayUtils.vala',
   'Widgets/BadgesBox.vala',
   'Widgets/CroppedPicture.vala',
-  'Widgets/UserAvatar.vala'
+  'Widgets/UserAvatar.vala',
+  'Widgets/WaitingButton.vala'
 ]
 
 # Add build configurations

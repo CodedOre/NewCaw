@@ -51,6 +51,18 @@ button.avatar-button {
 }
 
 /**
+ * Button-styles for platform specific buttons.
+ */
+button.mastodon-accent {
+  color: white;
+  background-color: @purple_4;
+}
+button.twitter-accent {
+  color: white;
+  background-color: @blue_4;
+}
+
+/**
  * Styles for the indicator box, using a pill.
  */
 box.indicator {

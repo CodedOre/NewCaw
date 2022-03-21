@@ -55,6 +55,7 @@ public class KeyStorage : Object {
                                       );
   }
 
+#if SUPPORT_MASTODON
   /**
    * Store the access tokens for a Server.
    *
@@ -162,6 +163,7 @@ public class KeyStorage : Object {
       throw e;
     }
   }
+#endif
 
   /**
    * Store the access tokens for a Account.
@@ -177,12 +179,16 @@ public class KeyStorage : Object {
     attributes["type"]       = "Account";
     attributes["platform"]   = PlatformEnum.get_platform_for_account (account).to_string ();
 
+#if SUPPORT_MASTODON
     // Add the domain on Mastodon accounts to clearly identify them
     if (account is Backend.Mastodon.Account) {
       attributes["identifier"] = @"$(account.username)@$(account.domain)";
     } else {
       attributes["identifier"] = account.username;
     }
+#else
+    attributes["identifier"] = account.username;
+#endif
 
     // Store the access
     try {

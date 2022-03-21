@@ -131,20 +131,7 @@ public class Backend.Mastodon.Account : Backend.Account {
       access_token = proxy.access_token;
     }
 
-    // Retrieve the account user data
-    var auth_call = create_call ();
-    auth_call.set_method ("GET");
-    auth_call.set_function ("accounts/verify_credentials");
-
-    Json.Object data;
-    try {
-      data = yield server.call (auth_call);
-    } catch (Error e) {
-      throw e;
-    }
-
-    // Populate data with retrieved json
-    set_user_data (data);
+    // Finish authentication
     authenticated = true;
   }
 
@@ -155,7 +142,7 @@ public class Backend.Mastodon.Account : Backend.Account {
    *
    * @throws Error Any error occurring while requesting the token.
    */
-  public override async void login (string token) throws Error {
+  public override void login (string token) throws Error {
     // Check if authentication is necessary
     if (authenticated) {
       error ("Already authenticated!");
@@ -169,30 +156,34 @@ public class Backend.Mastodon.Account : Backend.Account {
     // Set the access token on the proxy
     access_token       = token;
     proxy.access_token = access_token;
+    authenticated      = true;
+  }
+
+  /**
+   * Loads the data about this Account.
+   *
+   * Needs to be run after the account is authenticated.
+   *
+   * @throws Error Any error that happened while loading the data.
+   */
+  public override async void load_data () throws Error {
+    // Check if authenticated
+    if (! authenticated) {
+      error ("Not authenticated!");
+    }
 
     // Retrieve the account user data
     var auth_call = create_call ();
     auth_call.set_method ("GET");
     auth_call.set_function ("accounts/verify_credentials");
 
-    Json.Object data;
+    Json.Object json;
     try {
-      data = yield server.call (auth_call);
+      json = yield server.call (auth_call);
     } catch (Error e) {
       throw e;
     }
 
-    // Populate data with retrieved json
-    set_user_data (data);
-    authenticated = true;
-  }
-
-  /**
-   * Sets the User data for this Account.
-   *
-   * @param json A Json.Object retrieved from the API.
-   */
-  private void set_user_data (Json.Object json) {
     // Get the url for avatar and header
     string avatar_url = json.get_string_member ("avatar_static");
     string header_url = json.get_string_member ("header_static");
@@ -241,6 +232,9 @@ public class Backend.Mastodon.Account : Backend.Account {
     if (json.get_boolean_member ("bot")) {
       flags = flags | BOT;
     }
+
+    // Finalize loading
+    loaded = true;
   }
 
   /**

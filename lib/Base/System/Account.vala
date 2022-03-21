@@ -40,6 +40,11 @@ public abstract class Backend.Account : Backend.User {
   public bool authenticated { get; protected set; }
 
   /**
+   * If the data for the account was successfully loaded.
+   */
+  public bool loaded { get; protected set; }
+
+  /**
    * The server this account is connected to.
    */
   public weak Server server { get; construct; }
@@ -83,7 +88,16 @@ public abstract class Backend.Account : Backend.User {
    *
    * @throws Error Any error occurring while requesting the token.
    */
-  public abstract async void login (string token) throws Error;
+  public abstract void login (string token) throws Error;
+
+  /**
+   * Loads the data about this Account.
+   *
+   * Needs to be run after the account is authenticated.
+   *
+   * @throws Error Any error that happened while loading the data.
+   */
+  public abstract async void load_data () throws Error;
 
   /**
    * Creates a Rest.ProxyCall to perform an API call.

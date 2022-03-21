@@ -14,7 +14,15 @@
     <file>Media/MediaDisplay.ui</file>
     <file>Media/MediaDisplayItem.ui</file>
     <file>Media/MediaPreviewItem.ui</file>
+    <file>System/Authentication/AuthView.ui</file>
+    <file>System/Authentication/BrowserPage.ui</file>
+    <file>System/Authentication/CodePage.ui</file>
+    <file>System/Authentication/FinalPage.ui</file>
+    <file>System/Authentication/LoadPage.ui</file>
+    <file>System/Authentication/ServerPage.ui</file>
+    <file>System/Authentication/StartPage.ui</file>
     <file>Widgets/UserAvatar.ui</file>
     <file>Widgets/BadgesBox.ui</file>
+    <file>Widgets/WaitingButton.ui</file>
   </gresource>
 </gresources>

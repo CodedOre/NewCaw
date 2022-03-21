@@ -129,22 +129,7 @@ public class Backend.Twitter.Account : Backend.Account {
       access_token = proxy.access_token;
     }
 
-    // Retrieve the account user data
-    var auth_call = create_call ();
-    auth_call.set_method ("GET");
-    auth_call.set_function ("users/me");
-    Server.append_user_fields (ref auth_call);
-
-    Json.Object json, data;
-    try {
-      json = yield server.call (auth_call);
-      Server.data_include_split (json, out data, null);
-    } catch (Error e) {
-      throw e;
-    }
-
-    // Populate data with retrieved json
-    set_user_data (data);
+    // Finish authentication
     authenticated = true;
   }
 
@@ -155,7 +140,7 @@ public class Backend.Twitter.Account : Backend.Account {
    *
    * @throws Error Any error occurring while requesting the token.
    */
-  public override async void login (string token) throws Error {
+  public override void login (string token) throws Error {
     // Check if authentication is necessary
     if (authenticated) {
       error ("Already authenticated!");
@@ -169,7 +154,17 @@ public class Backend.Twitter.Account : Backend.Account {
     // Set the access token on the proxy
     access_token       = token;
     proxy.access_token = access_token;
+    authenticated      = true;
+  }
 
+  /**
+   * Loads the data about this Account.
+   *
+   * Needs to be run after the account is authenticated.
+   *
+   * @throws Error Any error that happened while loading the data.
+   */
+  public override async void load_data () throws Error {
     // Retrieve the account user data
     var auth_call = create_call ();
     auth_call.set_method ("GET");
@@ -184,17 +179,6 @@ public class Backend.Twitter.Account : Backend.Account {
       throw e;
     }
 
-    // Populate data with retrieved json
-    set_user_data (data);
-    authenticated = true;
-  }
-
-  /**
-   * Sets the User data for this Account.
-   *
-   * @param data A Json.Object retrieved from the API.
-   */
-  private void set_user_data (Json.Object data) {
     // Get metrics object
     Json.Object metrics = data.get_object_member ("public_metrics");
 
@@ -258,6 +242,9 @@ public class Backend.Twitter.Account : Backend.Account {
     if (data.get_boolean_member ("verified")) {
       flags = flags | VERIFIED;
     }
+
+    // Finalize loading
+    loaded = true;
   }
 
   /**

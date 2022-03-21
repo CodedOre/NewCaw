@@ -65,14 +65,14 @@ public class Backend.Mastodon.Server : Backend.Server {
    *
    * @throws Error Any error that occurs while creating the client application.
    */
-  public async Server.authenticate (string domain) throws Error {
+  public async Server.authenticate (string domain, Cancellable? cancellable = null) throws Error {
     // Create the Server instance
     Object (
       domain: domain
     );
 
     // Create Rest Proxy and Call
-    var client_proxy = new Rest.Proxy (@"https://$(domain)", false);
+    var client_proxy = new Rest.Proxy (@"https://$(domain)/api/v1", false);
     var client_call  = client_proxy.new_call ();
 
     // Get Client instance and determine used redirect uri
@@ -90,7 +90,7 @@ public class Backend.Mastodon.Server : Backend.Server {
     // Authenticate client
     Json.Object client;
     try {
-      client = yield call (client_call);
+      client = yield call (client_call, cancellable);
     } catch (Error e) {
       throw e;
     }
