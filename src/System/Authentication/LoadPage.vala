@@ -43,6 +43,57 @@ public class Authentication.LoadPage : Gtk.Widget {
     if (view == null) {
       critical ("Can only be children to AuthView!");
     }
+
+    // Connect load stop
+    view.moving_back.connect (stop_load);
+  }
+
+  /**
+   * Begins the load of the page.
+   */
+  public void begin_loading () {
+    run_loading.begin ();
+  }
+
+  /**
+   * Run the loading.
+   */
+  private async void run_loading () {
+    // Load the account data
+    try {
+      yield view.account.load_data ();
+    } catch (Error e) {
+      warning (@"Failed to load account data: $(e.message)");
+      return;
+    }
+
+    // Store the final account
+    try {
+      // Add account to AccountManager
+      AccountManager.add_account (view.account);
+
+      // Add server if created for account
+      if (view.server != null) {
+        AccountManager.add_server (view.server);
+      }
+
+      // Store it
+      yield AccountManager.store_data ();
+    } catch (Error e) {
+      warning (@"Failed to store account: $(e.message)");
+      return;
+    }
+
+    // Move to the final page
+    view.move_to_next ();
+  }
+
+  /**
+   * Run when moving back.
+   */
+  private void stop_load () {
+    // Cancel possible actions
+    cancel_load.cancel ();
   }
 
   /**
@@ -52,5 +103,10 @@ public class Authentication.LoadPage : Gtk.Widget {
     // Deconstruct childrens
     page_content.unparent ();
   }
+
+  /**
+   * Cancels the loading.
+   */
+  private Cancellable? cancel_load = null;
 
 }

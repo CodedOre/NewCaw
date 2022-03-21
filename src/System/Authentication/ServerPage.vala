@@ -164,13 +164,14 @@ public class Authentication.ServerPage : Gtk.Widget {
     domain = domain.replace ("https://", "");
 
     // Look existing servers up
-    view.server = AccountManager.get_server (domain) as Backend.Mastodon.Server;
+    Backend.Mastodon.Server? server = AccountManager.get_server (domain) as Backend.Mastodon.Server;
 
-    // Create the server
-    if (view.server == null) {
+    // Create the server if not already existing
+    if (server == null) {
       try {
         cancel_auth = new Cancellable ();
         view.server = yield new Backend.Mastodon.Server.authenticate (domain, cancel_auth);
+        server      = view.server;
       } catch (Error e) {
         if (! (e is GLib.IOError.CANCELLED)) {
           warning (@"Could not authenticate at server: $(e.message)");
@@ -183,7 +184,7 @@ public class Authentication.ServerPage : Gtk.Widget {
 
     // Begin authentication
     try {
-      view.account = new Backend.Mastodon.Account (view.server);
+      view.account = new Backend.Mastodon.Account (server);
       string auth_url = yield view.account.init_authentication ();
       Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
       stop_server_auth ();
