@@ -14,7 +14,7 @@
         <child>
           <object class="AdwStatusPage">
             <property name="icon-name">dialog-password-symbolic</property>
-            <property name="title">Enter the Passcode</property>
+            <property translatable="yes" name="title">Enter the Passcode</property>
             <child>
               <object class="GtkBox">
                 <child>

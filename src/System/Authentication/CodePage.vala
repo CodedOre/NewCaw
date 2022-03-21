@@ -148,7 +148,7 @@ public class Authentication.CodePage : Gtk.Widget {
     // Get authentication code
     string code = code_entry.text;
     if (code.length == 0) {
-      set_warning ("No code set!");
+      set_warning (_("No code set!"));
       stop_code_auth ();
       return;
     }
@@ -159,7 +159,7 @@ public class Authentication.CodePage : Gtk.Widget {
     } catch (Error e) {
       if (! (e is GLib.IOError.CANCELLED)) {
         warning (@"Authentication failed: $(e.message)");
-        set_error ("Authentication failed.");
+        set_error (_("Authentication failed."));
       }
       stop_code_auth ();
       return;

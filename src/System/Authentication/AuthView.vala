@@ -84,7 +84,7 @@ public class AuthView : Gtk.Widget {
 
     if (page == start_page) {
       // Update the back button
-      back_button.label = "Cancel";
+      back_button.label = _("Cancel");
 
       // Clear account and server cache
       account = null;
@@ -101,7 +101,7 @@ public class AuthView : Gtk.Widget {
       auth_leaflet.can_navigate_back = false;
     } else {
       // Update the back button
-      back_button.label = "Back";
+      back_button.label = _("Back");
       back_button.visible = true;
     }
   }

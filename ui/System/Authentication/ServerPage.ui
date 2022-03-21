@@ -14,7 +14,8 @@
         <child>
           <object class="AdwStatusPage">
             <property name="icon-name">network-server-symbolic</property>
-            <property name="title">Set your Server</property>
+            <property translatable="yes" name="title">Set your Server</property>
+            <property translatable="yes" name="description">Set the server to your Mastodon instance</property>
             <child>
               <object class="GtkBox">
                 <child>

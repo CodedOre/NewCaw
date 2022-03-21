@@ -157,7 +157,7 @@ public class Authentication.ServerPage : Gtk.Widget {
     // Get domain and strip protocol
     string domain = server_entry.text;
     if (domain.length == 0) {
-      set_warning ("No domain set!");
+      set_warning (_("No domain set!"));
       stop_server_auth ();
       return;
     }
@@ -175,7 +175,7 @@ public class Authentication.ServerPage : Gtk.Widget {
       } catch (Error e) {
         if (! (e is GLib.IOError.CANCELLED)) {
           warning (@"Could not authenticate at server: $(e.message)");
-          set_error ("Could not authenticate at server.");
+          set_error (_("Could not authenticate at server."));
         }
         stop_server_auth ();
         return;
@@ -192,14 +192,14 @@ public class Authentication.ServerPage : Gtk.Widget {
     } catch (Error e) {
       if (! (e is GLib.IOError.CANCELLED)) {
         warning (@"Could not authenticate at server: $(e.message)");
-        set_error ("Could not authenticate at server.");
+        set_error (_("Could not authenticate at server."));
       }
       stop_server_auth ();
       return;
     }
 #else
     // Error if no Mastodon backend available
-    set_error ("Why are you even here? There is no Mastodon backend!");
+    set_error (_("Why are you even here? There is no Mastodon backend!"));
     stop_server_auth ();
 #endif
   }

@@ -11,7 +11,7 @@
       <object class="AdwStatusPage" id="page_content">
         <property name="hexpand">true</property>
         <property name="icon-name">system-users</property>
-        <property name="title">Add an Account</property>
+        <property translatable="yes" name="title">Add an Account</property>
         <child>
           <object class="AdwClamp">
             <property name="maximum-size">380</property>
@@ -23,7 +23,7 @@
                     <property name="visible">false</property>
                     <child>
                       <object class="WaitingButton" id="twitter_waiting">
-                        <property name="label">Add Twitter Account (New API)</property>
+                        <property translatable="yes" name="label">Add Twitter Account (New API)</property>
                       </object>
                     </child>
                     <style>
@@ -38,7 +38,7 @@
                     <property name="visible">false</property>
                     <child>
                       <object class="WaitingButton" id="twitter_legacy_waiting">
-                        <property name="label">Add Twitter Account</property>
+                        <property translatable="yes" name="label">Add Twitter Account</property>
                       </object>
                     </child>
                     <style>
@@ -51,7 +51,7 @@
                 <child>
                   <object class="GtkButton" id="mastodon_button">
                     <property name="visible">false</property>
-                    <property name="label">Add Mastodon Account</property>
+                    <property translatable="yes" name="label">Add Mastodon Account</property>
                     <style>
                       <class name="mastodon-accent"/>
                       <class name="pill"/>

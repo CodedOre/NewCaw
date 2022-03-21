@@ -14,13 +14,13 @@
         <property name="show-end-title-buttons">false</property>
         <child type="start">
           <object class="GtkButton" id="back_button">
-            <property name="label">Cancel</property>
+            <property translatable="yes" name="label">Cancel</property>
             <signal name="clicked" handler="back_button_action"/>
           </object>
         </child>
         <child type="title">
           <object class="AdwWindowTitle">
-            <property name="title">Add Account</property>
+            <property translatable="yes" name="title">Add Account</property>
           </object>
         </child>
       </object>
