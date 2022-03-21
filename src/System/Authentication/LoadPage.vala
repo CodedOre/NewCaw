@@ -1,4 +1,4 @@
-/* FinalPage.vala
+/* LoadPage.vala
  *
  * Copyright 2022 Frederick Schenk
  *
@@ -23,10 +23,10 @@ using GLib;
 /**
  * The first page for the authentication process.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/System/Authentication/FinalPage.ui")]
-public class Authentication.FinalPage : Gtk.Widget {
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/System/Authentication/LoadPage.ui")]
+public class Authentication.LoadPage : Gtk.Widget {
 
-  // UI-Elements of FinalPage
+  // UI-Elements of LoadPage
   [GtkChild]
   private unowned Adw.StatusPage page_content;
 
@@ -46,7 +46,7 @@ public class Authentication.FinalPage : Gtk.Widget {
   }
 
   /**
-   * Deconstructs FinalPage and it's childrens.
+   * Deconstructs LoadPage and it's childrens.
    */
   public override void dispose () {
     // Deconstruct childrens

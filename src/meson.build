@@ -34,6 +34,7 @@ cawfiles = [
   'System/Authentication/BrowserPage.vala',
   'System/Authentication/CodePage.vala',
   'System/Authentication/FinalPage.vala',
+  'System/Authentication/LoadPage.vala',
   'System/Authentication/ServerPage.vala',
   'System/Authentication/StartPage.vala',
   'System/Utils/AccountManager.vala',

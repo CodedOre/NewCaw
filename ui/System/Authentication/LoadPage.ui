@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
-  <template class="AuthenticationFinalPage" parent="GtkWidget">
+  <template class="AuthenticationLoadPage" parent="GtkWidget">
     <property name="layout-manager">
       <object class="GtkBinLayout"/>
     </property>
@@ -10,8 +10,13 @@
     <child>
       <object class="AdwStatusPage" id="page_content">
         <property name="hexpand">true</property>
-        <property name="icon-name">emblem-ok-symbolic</property>
-        <property name="title">Authentication Complete!</property>
+        <property name="icon-name">user-info-symbolic</property>
+        <property name="title">Finishing Authentication...</property>
+        <child>
+          <object class="GtkSpinner">
+            <property name="spinning">true</property>
+          </object>
+        </child>
       </object>
     </child>
   </template>
