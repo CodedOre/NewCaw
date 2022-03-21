@@ -29,6 +29,10 @@ public class Authentication.CodePage : Gtk.Widget {
   // UI-Elements of CodePage
   [GtkChild]
   private unowned Adw.Clamp page_content;
+  [GtkChild]
+  private unowned Gtk.Entry code_entry;
+  [GtkChild]
+  private unowned WaitingButton button_waiting;
 
   /**
    * The AuthView holding this page.
@@ -43,12 +47,147 @@ public class Authentication.CodePage : Gtk.Widget {
     if (view == null) {
       critical ("Can only be children to AuthView!");
     }
+
+    // Connect auth stop
+    view.moving_back.connect (clear_page);
   }
 
   /**
-   * Activated when back button is activated.
+   * Set's the UI to waiting during an action.
+   *
+   * @param waiting If the UI should be waiting.
    */
-  public void on_back_action () {
+  private void set_waiting (bool waiting) {
+    button_waiting.waiting = waiting;
+    code_entry.sensitive   = ! waiting;
+  }
+
+  /**
+   * Display a warning to the user.
+   *
+   * @param warning The warning text to display, or null to remove one.
+   */
+  private void set_warning (string? warning = null) {
+    if (warning == null) {
+      // Remove the warning
+      if (code_entry.has_css_class ("warning")) {
+        code_entry.remove_css_class ("warning");
+      }
+      code_entry.secondary_icon_name         = "";
+      code_entry.secondary_icon_tooltip_text = "";
+    } else {
+      // Add the warning
+      if (! code_entry.has_css_class ("warning")) {
+        code_entry.add_css_class ("warning");
+      }
+      code_entry.secondary_icon_name         = "dialog-warning-symbolic";
+      code_entry.secondary_icon_tooltip_text = warning;
+    }
+  }
+
+  /**
+   * Display a error to the user.
+   *
+   * @param error The error text to display, or null to remove one.
+   */
+  private void set_error (string? error = null) {
+    if (error == null) {
+      // Remove the error
+      if (code_entry.has_css_class ("error")) {
+        code_entry.remove_css_class ("error");
+      }
+      code_entry.secondary_icon_name         = "";
+      code_entry.secondary_icon_tooltip_text = "";
+    } else {
+      // Add the error
+      if (! code_entry.has_css_class ("error")) {
+        code_entry.add_css_class ("error");
+      }
+      code_entry.secondary_icon_name         = "dialog-error-symbolic";
+      code_entry.secondary_icon_tooltip_text = error;
+    }
+  }
+
+  /**
+   * Activated by input on the server entry.
+   */
+  [GtkCallback]
+  private void on_input () {
+    // Clear possible warnings or errors
+    set_warning (null);
+    set_error (null);
+  }
+
+  /**
+   * Activated by the confirm button.
+   */
+  [GtkCallback]
+  private void on_confirm () {
+    // Check if authentication is already running
+    if (button_waiting.waiting) {
+      // Stop authentication
+      stop_code_auth ();
+    } else {
+      // Block the UI
+      set_waiting (true);
+
+      // Begin authentication
+      run_code_auth.begin ();
+    }
+  }
+
+  /**
+   * Runs the authentication.
+   */
+  private async void run_code_auth () {
+    // Get authentication code
+    string code = code_entry.text;
+    if (code.length == 0) {
+      set_warning ("No code set!");
+      stop_code_auth ();
+      return;
+    }
+
+    // Run authentication
+    try {
+      yield view.account.authenticate (code);
+    } catch (Error e) {
+      if (! (e is GLib.IOError.CANCELLED)) {
+        warning (@"Authentication failed: $(e.message)");
+        set_error ("Authentication failed.");
+      }
+      stop_code_auth ();
+      return;
+    }
+
+    // Move to the final page
+    view.move_to_next ();
+  }
+
+  /**
+   * Clears the UI when moving back.
+   */
+  private void clear_page () {
+    // Stop authentication
+    stop_code_auth ();
+
+    // Reset input and warnings
+    code_entry.text = "";
+    set_warning (null);
+    set_error (null);
+  }
+
+  /**
+   * Stops the authentication.
+   */
+  private void stop_code_auth () {
+    // Cancel possible actions
+    if (cancel_auth != null) {
+      cancel_auth.cancel ();
+    }
+
+    // Unblock the UI
+    set_waiting (false);
   }
 
   /**
@@ -58,5 +197,10 @@ public class Authentication.CodePage : Gtk.Widget {
     // Deconstruct childrens
     page_content.unparent ();
   }
+
+  /**
+   * Cancels server authentications.
+   */
+  private Cancellable? cancel_auth = null;
 
 }

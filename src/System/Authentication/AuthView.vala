@@ -40,11 +40,7 @@ public class AuthView : Gtk.Widget {
   [GtkChild]
   private unowned Adw.LeafletPage server_page;
   [GtkChild]
-  private unowned Adw.LeafletPage browser_page;
-  [GtkChild]
   private unowned Adw.LeafletPage code_page;
-  [GtkChild]
-  private unowned Adw.LeafletPage final_page;
 
 #if SUPPORT_MASTODON
   /**

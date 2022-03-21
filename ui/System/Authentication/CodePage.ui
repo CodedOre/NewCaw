@@ -18,14 +18,21 @@
             <child>
               <object class="GtkBox">
                 <child>
-                  <object class="GtkEntry">
+                  <object class="GtkEntry" id="code_entry">
                     <property name="hexpand">true</property>
                     <property name="input-purpose">password</property>
+                    <signal name="changed" handler="on_input"/>
+                    <signal name="activate" handler="on_confirm"/>
                   </object>
                 </child>
                 <child>
                   <object class="GtkButton">
-                    <property name="icon-name">go-next-symbolic</property>
+                    <signal name="clicked" handler="on_confirm"/>
+                    <child>
+                      <object class="WaitingButton" id="button_waiting">
+                        <property name="icon-name">go-next-symbolic</property>
+                      </object>
+                    </child>
                     <style>
                       <class name="suggested-action"/>
                     </style>
