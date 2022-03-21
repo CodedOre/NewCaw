@@ -21,7 +21,7 @@
 using GLib;
 
 /**
- * The first page for the authentication process.
+ * The page where the account is loaded and stored.
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/System/Authentication/LoadPage.ui")]
 public class Authentication.LoadPage : Gtk.Widget {

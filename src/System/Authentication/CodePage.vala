@@ -21,7 +21,7 @@
 using GLib;
 
 /**
- * The first page for the authentication process.
+ * The page to enter the authentication code.
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/System/Authentication/CodePage.ui")]
 public class Authentication.CodePage : Gtk.Widget {

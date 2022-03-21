@@ -21,7 +21,7 @@
 using GLib;
 
 /**
- * The first page for the authentication process.
+ * The page for setting an Mastodon server.
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/System/Authentication/ServerPage.ui")]
 public class Authentication.ServerPage : Gtk.Widget {

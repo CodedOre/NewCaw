@@ -21,7 +21,7 @@
 using GLib;
 
 /**
- * The first page for the authentication process.
+ * The page showing the authentication success.
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/System/Authentication/FinalPage.ui")]
 public class Authentication.FinalPage : Gtk.Widget {
