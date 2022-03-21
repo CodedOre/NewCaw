@@ -13,9 +13,7 @@
         <property name="icon-name">user-info-symbolic</property>
         <property name="title">Finishing Authentication...</property>
         <child>
-          <object class="GtkSpinner">
-            <property name="spinning">true</property>
-          </object>
+          <object class="GtkSpinner" id="load_indicator"/>
         </child>
       </object>
     </child>

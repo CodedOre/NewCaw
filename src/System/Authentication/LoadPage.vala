@@ -29,6 +29,8 @@ public class Authentication.LoadPage : Gtk.Widget {
   // UI-Elements of LoadPage
   [GtkChild]
   private unowned Adw.StatusPage page_content;
+  [GtkChild]
+  private unowned Gtk.Spinner load_indicator;
 
   /**
    * The AuthView holding this page.
@@ -52,6 +54,10 @@ public class Authentication.LoadPage : Gtk.Widget {
    * Begins the load of the page.
    */
   public void begin_loading () {
+    // Set the load indicator
+    load_indicator.spinning = true;
+
+    // Begin the loading
     run_loading.begin ();
   }
 
@@ -94,6 +100,9 @@ public class Authentication.LoadPage : Gtk.Widget {
   private void stop_load () {
     // Cancel possible actions
     cancel_load.cancel ();
+
+    // Stop load indicator
+    load_indicator.spinning = false;
   }
 
   /**
