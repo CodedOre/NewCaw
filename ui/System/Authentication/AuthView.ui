@@ -63,6 +63,7 @@
             <property name="child">
               <object class="AuthenticationCodePage">
                 <property name="view">AuthView</property>
+                <property name="loader">load_widget</property>
               </object>
             </property>
           </object>
@@ -70,7 +71,7 @@
         <child>
           <object class="AdwLeafletPage" id="load_page">
             <property name="child">
-              <object class="AuthenticationLoadPage">
+              <object class="AuthenticationLoadPage" id="load_widget">
                 <property name="view">AuthView</property>
               </object>
             </property>

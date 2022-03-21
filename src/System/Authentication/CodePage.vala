@@ -42,7 +42,7 @@ public class Authentication.CodePage : Gtk.Widget {
   /**
    * The LoadPage displayed after this page.
    */
-  public weak LoadPage loader { get; construct; }
+  public weak LoadPage loader { get; protected set; }
 
   /**
    * Run at construction of the widget.
@@ -51,9 +51,6 @@ public class Authentication.CodePage : Gtk.Widget {
     // Check if children of AuthView
     if (view == null) {
       critical ("Can only be children to AuthView!");
-    }
-    if (loader == null) {
-      critical ("Need a following LoadPage!");
     }
 
     // Connect auth stop
@@ -170,6 +167,11 @@ public class Authentication.CodePage : Gtk.Widget {
 
     // Move to the final page and init loading
     view.move_to_next ();
+
+    // Initialize loading
+    if (loader == null) {
+      critical ("Need a following LoadPage!");
+    }
     loader.begin_loading ();
   }
 
