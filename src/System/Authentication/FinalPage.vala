@@ -46,6 +46,14 @@ public class Authentication.FinalPage : Gtk.Widget {
   }
 
   /**
+   * Finalize the authentication.
+   */
+  [GtkCallback]
+  private void on_continue () {
+    view.auth_complete ();
+  }
+
+  /**
    * Deconstructs FinalPage and it's childrens.
    */
   public override void dispose () {

@@ -41,6 +41,8 @@ public class AuthView : Gtk.Widget {
   private unowned Adw.LeafletPage server_page;
   [GtkChild]
   private unowned Adw.LeafletPage code_page;
+  [GtkChild]
+  private unowned Adw.LeafletPage final_page;
 
 #if SUPPORT_MASTODON
   /**
@@ -53,6 +55,16 @@ public class AuthView : Gtk.Widget {
    * The account which is to be authenticated.
    */
   public Backend.Account? account { get; set; default = null; }
+
+  /**
+   * Activated when authentication is done.
+   */
+  public signal void auth_complete ();
+
+  /**
+   * Activated when authentication is cancelled.
+   */
+  public signal void auth_cancelled ();
 
   /**
    * Signal for pages when moving backwards.
@@ -83,9 +95,14 @@ public class AuthView : Gtk.Widget {
       // Make page definitely navigatable
       server_page.navigatable = true;
       code_page.navigatable = true;
+    } else if (page == final_page) {
+      // Forbid navigation backwards
+      back_button.visible            = false;
+      auth_leaflet.can_navigate_back = false;
     } else {
       // Update the back button
       back_button.label = "Back";
+      back_button.visible = true;
     }
   }
 
@@ -99,6 +116,7 @@ public class AuthView : Gtk.Widget {
 
     if (page == start_page) {
       // Closes the widget
+      auth_cancelled ();
     } else {
       // Move one page back
       move_to_previous ();
