@@ -30,6 +30,14 @@ link.hashtag, link.mention, link.weblink {
 }
 
 /**
+ * Allows for a larger spinner on InitWindow.
+ */
+spinner.large {
+  min-width: 28px;
+  min-height: 28px;
+}
+
+/**
  * A smaller button used inside of content.
  */
 button.inline {

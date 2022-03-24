@@ -22,6 +22,7 @@ cawdepends += declare_dependency(
 cawfiles = [
   'config.vapi',
   'Cawbird.vala',
+  'InitWindow.vala',
   'MainWindow.vala',
   'Content/PostDisplay.vala',
   'Content/UserCard.vala',

@@ -20,8 +20,14 @@
 
 using GLib;
 
+/**
+ * The application class, initializes the application.
+ */
 public class Cawbird : Adw.Application {
 
+  /**
+   * Create the object.
+   */
   public Cawbird () {
 #if DEBUG
     Object (application_id: "uk.co.ibboard.Cawbird.Devel");
@@ -31,6 +37,9 @@ public class Cawbird : Adw.Application {
 #endif
   }
 
+  /**
+   * Initialize the client and open the first window.
+   */
   protected override void activate () {
     // Initializes the backend client
     new Backend.Client ("NewCaw Development", "https://github.com/CodedOre/NewCaw");
@@ -38,14 +47,17 @@ public class Cawbird : Adw.Application {
     // Initialize the AccoutManager
     AccountManager.init ();
 
-    // Open the MainWindow
+    // Open the InitWindow
     var win = this.active_window;
     if (win == null) {
-      win = new MainWindow (this);
+      win = new InitWindow (this);
     }
     win.present ();
   }
 
+  /**
+   * The main method.
+   */
   public static int main (string[] args) {
     // Setup gettext
     GLib.Intl.setlocale (GLib.LocaleCategory.ALL, "");
