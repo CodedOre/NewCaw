@@ -29,11 +29,33 @@ public class MainWindow : Adw.ApplicationWindow {
   private unowned Adw.Leaflet leaflet;
 
   /**
-   * Initializes a MainWindow.
+   * The account currently displayed in this window.
    */
-  public MainWindow (Gtk.Application app) {
+  public Backend.Account account { get; construct set; }
+
+  /**
+   * Initializes a MainWindow.
+   *
+   * @param app The Gtk.Application for this window.
+   * @param account The account to be assigned to this window, or null for an AuthView.
+   */
+  public MainWindow (Gtk.Application app, Backend.Account? account = null) {
     // Initializes the Object
-    Object (application: app);
+    Object (
+      application: app,
+      account:     account
+    );
+
+    // Check if account was assigned
+    if (account == null) {
+      // Open AuthView for authentication
+      leaflet.append (new AuthView ());
+    } else {
+      // Display set account
+      var user_display  = new UserDisplay ();
+      user_display.user = account;
+      leaflet.append (user_display);
+    }
 
 #if DEBUG
     // Add development style in debug
