@@ -170,7 +170,7 @@ public class AccountManager : Object {
 
           // Login the account
           account.login (account_token);
-          account.load_data.begin ();
+          yield account.load_data ();
         } catch (Error e) {
           throw e;
         }
@@ -197,7 +197,7 @@ public class AccountManager : Object {
 
         // Login the account and load data
         account.login (account_token);
-        account.load_data.begin ();
+        yield account.load_data ();
       } catch (Error e) {
         throw e;
       }
@@ -224,7 +224,7 @@ public class AccountManager : Object {
 
         // Login the account
         account.login_with_secret (account_token, account_secret);
-        account.load_data.begin ();
+        yield account.load_data ();
       } catch (Error e) {
         throw e;
       }

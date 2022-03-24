@@ -3,12 +3,26 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
   <template class="UserDisplay" parent="GtkWidget">
+    <property name="valign">start</property>
     <property name="layout-manager">
       <object class="GtkBoxLayout">
         <property name="orientation">vertical</property>
-        <property name="spacing">8</property>
       </object>
     </property>
+    <child>
+      <object class="AdwHeaderBar" id="view_header">
+        <child type="title">
+          <object class="AdwWindowTitle">
+            <property name="title">Cawbird</property>
+            <binding name="subtitle">
+              <lookup name="username">
+                <lookup name="user">UserDisplay</lookup>
+              </lookup>
+            </binding>
+          </object>
+        </child>
+      </object>
+    </child>
     <child>
       <object class="UserCard" id="user_card">
         <binding name="user">
@@ -18,6 +32,7 @@
     </child>
     <child>
       <object class="AdwClamp" id="content_clamp">
+        <property name="margin-top">8</property>
         <property name="maximum-size">1024</property>
         <property name="tightening-threshold">512</property>
         <child>
