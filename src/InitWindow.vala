@@ -28,10 +28,41 @@ public class InitWindow : Adw.ApplicationWindow {
 
   /**
    * Initializes a InitWindow.
+   *
+   * @param app The Gtk.Application for this window.
    */
   public InitWindow (Gtk.Application app) {
     // Initializes the Object
     Object (application: app);
+  }
+
+  /**
+   * Load the data and create windows for it.
+   */
+  public async void load_accounts () {
+    // Load potentially stored accounts
+    try {
+      yield AccountManager.load_data ();
+    } catch (Error e) {
+      error (@"Failed to load accounts: $(e.message)");
+    }
+
+    // Check if accounts are stored
+    Backend.Account[] accounts = AccountManager.get_accounts ();
+    if (accounts.length != 0) {
+      foreach (Backend.Account acc in accounts) {
+        // Create a MainWindow for stored accounts
+        var win = new MainWindow (application, acc);
+        win.present ();
+      }
+    } else {
+      // Create MainWindow with AuthView
+      var win = new MainWindow (application);
+      win.present ();
+    }
+
+    // Remove this window
+    this.destroy ();
   }
 
 }

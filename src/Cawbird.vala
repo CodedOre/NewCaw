@@ -53,6 +53,14 @@ public class Cawbird : Adw.Application {
       win = new InitWindow (this);
     }
     win.present ();
+
+    // Load existing accounts or open AuthView
+    var init = win as InitWindow;
+    if (init != null) {
+      init.load_accounts.begin ();
+    } else {
+      error ("InitWindow could not been initialized!");
+    }
   }
 
   /**
