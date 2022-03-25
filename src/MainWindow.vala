@@ -75,6 +75,7 @@ public class MainWindow : Adw.ApplicationWindow {
       // Set new account when authentication is complete
       auth.auth_complete.connect (() => {
         this.account = auth.account;
+        leaflet.remove (auth);
       });
 
       // Display AuthView
