@@ -31,7 +31,23 @@ public class MainWindow : Adw.ApplicationWindow {
   /**
    * The account currently displayed in this window.
    */
-  public Backend.Account account { get; construct set; }
+  public Backend.Account account {
+    get {
+      return displayed_account;
+    }
+    construct set {
+      // Set the new account
+      displayed_account = value;
+
+      // Display set account
+      if (displayed_account != null) {
+        var user_display  = new UserDisplay ();
+        user_display.user = displayed_account;
+        leaflet.append (user_display);
+        leaflet.set_visible_child (user_display);
+      }
+    }
+  }
 
   /**
    * Initializes a MainWindow.
@@ -48,13 +64,22 @@ public class MainWindow : Adw.ApplicationWindow {
 
     // Check if account was assigned
     if (account == null) {
-      // Open AuthView for authentication
-      leaflet.append (new AuthView ());
-    } else {
-      // Display set account
-      var user_display  = new UserDisplay ();
-      user_display.user = account;
-      leaflet.append (user_display);
+      // Create AuthView
+      var auth = new AuthView ();
+
+      // Close Window when authentication is cancelled
+      auth.auth_cancelled.connect (() => {
+        this.close ();
+      });
+
+      // Set new account when authentication is complete
+      auth.auth_complete.connect (() => {
+        this.account = auth.account;
+      });
+
+      // Display AuthView
+      leaflet.append (auth);
+      leaflet.set_visible_child (auth);
     }
 
 #if DEBUG
@@ -82,5 +107,10 @@ public class MainWindow : Adw.ApplicationWindow {
     display_window.set_transient_for (this);
     display_window.present ();
   }
+
+  /**
+   * Holds the displayed account.
+   */
+  private Backend.Account displayed_account;
 
 }
