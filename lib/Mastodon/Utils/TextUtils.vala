@@ -60,12 +60,14 @@ namespace Backend.Mastodon.Utils.TextUtils {
 
     // Replace html markup with parser markup
     try {
-      var user_regex = new Regex ("<span class=\"h-card\"><a href=\"(.*?)\" class=\"u-url mention\">@<span>(.*?)</span></a></span>");
-      var tag_regex  = new Regex ("<a href=\".*?\" class=\"mention hashtag\" rel=\"tag\">#<span>(.*?)</span></a>");
-      var link_regex = new Regex ("<a href=\"(.*?)\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"><span class=\"invisible\">.*?</span><span class=\"\">(.*?)</span><span class=\"invisible\"></span></a>");
-      parsed_text = user_regex.replace (parsed_text, parsed_text.length, 0, "<modbreak/><mention name=\"@\\2\" link=\"\\1\"/><modbreak/>");
-      parsed_text = tag_regex.replace  (parsed_text, parsed_text.length, 0, "<modbreak/><tag name=\"#\\1\"/><modbreak/>");
-      parsed_text = link_regex.replace (parsed_text, parsed_text.length, 0, "<modbreak/><link name=\"\\2\" link=\"\\1\"/><modbreak/>");
+      var user_regex      = new Regex ("<span class=\"h-card\"><a href=\"(.*?)\" class=\"u-url mention\">@<span>(.*?)</span></a></span>");
+      var tag_regex       = new Regex ("<a href=\".*?\" class=\"mention hashtag\" rel=\"tag\">#<span>(.*?)</span></a>");
+      var link_regex      = new Regex ("<a href=\"(.*?)\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"><span class=\"invisible\">.*?</span><span class=\"\">(.*?)</span><span class=\"invisible\"></span></a>");
+      var link_swap_regex = new Regex ("<a href=\"(.*?)\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"><span class=\"invisible\">.*?</span><span class=\"\">(.*?)</span><span class=\"invisible\"></span></a>");
+      parsed_text = user_regex.replace      (parsed_text, parsed_text.length, 0, "<modbreak/><mention name=\"@\\2\" link=\"\\1\"/><modbreak/>");
+      parsed_text = tag_regex.replace       (parsed_text, parsed_text.length, 0, "<modbreak/><tag name=\"#\\1\"/><modbreak/>");
+      parsed_text = link_regex.replace      (parsed_text, parsed_text.length, 0, "<modbreak/><link name=\"\\2\" link=\"\\1\"/><modbreak/>");
+      parsed_text = link_swap_regex.replace (parsed_text, parsed_text.length, 0, "<modbreak/><link name=\"\\2\" link=\"\\1\"/><modbreak/>");
     } catch (RegexError e) {
       error (@"Error while parsing text: $(e.message)");
     }

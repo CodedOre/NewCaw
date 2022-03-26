@@ -144,7 +144,7 @@
               <object class="GtkFlowBox" id="user_fields">
                 <property name="margin-bottom">2</property>
                 <property name="column-spacing">12</property>
-                <property name="max-children-per-line">42</property>
+                <property name="max-children-per-line">1024</property>
                 <property name="selection-mode">none</property>
               </object>
             </child>

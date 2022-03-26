@@ -65,7 +65,7 @@ namespace Backend.Mastodon.Utils.ParseUtils {
         new_field.name  = obj.get_string_member ("name");
         // Check if field contains weblink
         try {
-          var link_regex = new Regex ("<a href=\"(.*?)\" rel=\".*?\" target=\"_blank\"><span class=\"invisible\">.*?</span><span class=\"\">(.*?)</span><span class=\"invisible\"></span></a>");
+          var link_regex = new Regex ("<a href=\"(.*?)\".*?><span class=\"invisible\">.*?</span><span class=\"\">(.*?)</span><span class=\"invisible\"></span></a>");
           if (link_regex.match (obj.get_string_member ("value"))) {
             new_field.display = link_regex.replace (obj.get_string_member ("value"), obj.get_string_member ("value").length, 0, "\\2");
             new_field.target  = link_regex.replace (obj.get_string_member ("value"), obj.get_string_member ("value").length, 0, "\\1");
