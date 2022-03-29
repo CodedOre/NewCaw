@@ -126,7 +126,7 @@ public class Backend.Twitter.Account : Backend.Account {
       error ("Could not retrieve access token!");
     } else {
       // Store the access token in the property
-      access_token = proxy.access_token;
+      access_token = proxy.refresh_token;
     }
 
     // Finish authentication
@@ -151,9 +151,14 @@ public class Backend.Twitter.Account : Backend.Account {
       error ("Authentication in progress!");
     }
 
-    // Set the access token on the proxy
-    access_token       = token;
-    proxy.access_token = access_token;
+    // Use the refresh token to get an session access token
+    proxy.refresh_token = token;
+    proxy.refresh_access_token ();
+
+    // Store the new refresh token
+    access_token = proxy.refresh_token;
+
+    // Finish Login
     authenticated      = true;
   }
 

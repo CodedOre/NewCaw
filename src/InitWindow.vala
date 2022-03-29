@@ -43,6 +43,7 @@ public class InitWindow : Adw.ApplicationWindow {
     // Load potentially stored accounts
     try {
       yield AccountManager.load_data ();
+      yield AccountManager.store_data ();
     } catch (Error e) {
       error (@"Failed to load accounts: $(e.message)");
     }
