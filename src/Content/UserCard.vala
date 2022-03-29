@@ -34,6 +34,8 @@ public class UserCard : Gtk.Widget {
   [GtkChild]
   private unowned CroppedPicture user_banner;
   [GtkChild]
+  private unowned Gtk.Button banner_selector;
+  [GtkChild]
   private unowned Adw.Bin card_scrim;
   [GtkChild]
   private unowned Adw.HeaderBar card_header;
@@ -58,15 +60,21 @@ public class UserCard : Gtk.Widget {
 
         // Load and set the header
         Backend.Media header = displayed_user.header;
-        header.get_media.begin (load_cancellable, (obj, res) => {
-          try {
-            var paintable = header.get_media.end (res) as Gdk.Paintable;
-            blurred_banner.paintable = paintable;
-            user_banner.paintable = paintable;
-          } catch (Error e) {
-            warning (@"Could not load header: $(e.message)");
-          }
-        });
+        if (header != null) {
+          header.get_media.begin (load_cancellable, (obj, res) => {
+            try {
+              var paintable = header.get_media.end (res) as Gdk.Paintable;
+              blurred_banner.paintable = paintable;
+              user_banner.paintable = paintable;
+            } catch (Error e) {
+              warning (@"Could not load header: $(e.message)");
+            }
+          });
+        }
+
+        // Set header selector depending on loaded header
+        banner_selector.can_focus  = header != null;
+        banner_selector.can_target = header != null;
       }
     }
   }

@@ -30,7 +30,7 @@
               </object>
             </child>
             <child type="overlay">
-              <object class="GtkButton">
+              <object class="GtkButton" id="banner_selector">
                 <property name="action-name">UserCard.display_header</property>
                 <style>
                   <class name="flat"/>
