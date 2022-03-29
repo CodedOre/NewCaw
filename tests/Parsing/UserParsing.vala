@@ -81,5 +81,6 @@ int main (string[] args) {
   });
 #endif
 
+  Test.set_nonfatal_assertions ();
   return Test.run ();
 }

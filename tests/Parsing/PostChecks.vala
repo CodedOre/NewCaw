@@ -33,21 +33,17 @@ namespace PostChecks {
    */
   void check_basic_fields (Backend.Post post, Json.Object check) {
     // Check id, date and source
-    assert_true (post.id == check.get_string_member ("id"));
-    assert_true (post.post_type.to_string () == check.get_string_member ("post_type"));
-    assert_true (post.creation_date.equal (
-      new DateTime.from_iso8601 (
-        check.get_string_member ("creation_date"),
-        new TimeZone.utc ()
-    )));
-    assert_true (post.url    == check.get_string_member ("url"));
-    assert_true (post.domain == check.get_string_member ("domain"));
-    assert_true (post.source == check.get_string_member ("source"));
+    TestUtils.check_string ("Post ID", post.id, check.get_string_member ("id"));
+    TestUtils.check_string ("Post Type", post.post_type.to_string (), check.get_string_member ("post_type"));
+    TestUtils.check_datetime ("Post Creation Date", post.creation_date, check.get_string_member ("creation_date"));
+    TestUtils.check_string ("Post URL", post.url, check.get_string_member ("url"));
+    TestUtils.check_string ("Post Domain", post.domain, check.get_string_member ("domain"));
+    TestUtils.check_string ("Post Source", post.source, check.get_string_member ("source"));
 
     // Check public metrics
-    assert_true (post.liked_count    == check.get_int_member ("liked_count"));
-    assert_true (post.replied_count  == check.get_int_member ("replied_count"));
-    assert_true (post.reposted_count == check.get_int_member ("reposted_count"));
+    TestUtils.check_integer ("Post Likes", post.liked_count, (int) check.get_int_member ("liked_count"));
+    TestUtils.check_integer ("Post Replies", post.replied_count, (int) check.get_int_member ("replied_count"));
+    TestUtils.check_integer ("Post Reposts", post.reposted_count, (int) check.get_int_member ("reposted_count"));
   }
 
 #if DEBUG
@@ -60,16 +56,16 @@ namespace PostChecks {
   void check_text_parsing (Backend.Post post, Json.Object check) {
     Json.Array modules = check.get_array_member ("text_modules");
     Backend.TextModule[] post_modules = post.get_text_modules ();
-    assert_true (modules.get_length () == post_modules.length);
+    TestUtils.check_integer ("All TextModules Count", post_modules.length, (int) modules.get_length ());
 
     modules.foreach_element ((array, index, element) => {
       Json.Object obj         = element.get_object ();
       Backend.TextModule  mod = post_modules [index];
-      assert_true (mod.type.to_string () == obj.get_string_member     ("type"));
-      assert_true (mod.display           == obj.get_string_member     ("display"));
-      assert_true (mod.target            == obj.get_string_member     ("target"));
-      assert_true (mod.text_start        == (uint) obj.get_int_member ("text_start"));
-      assert_true (mod.text_end          == (uint) obj.get_int_member ("text_end"));
+      TestUtils.check_string ("TextModule Type", mod.type.to_string (), obj.get_string_member ("type"));
+      TestUtils.check_string ("TextModule Display", mod.display, obj.get_string_member ("display"));
+      TestUtils.check_string ("TextModule Target", mod.target, obj.get_string_member ("target"));
+      TestUtils.check_integer ("TextModule Start Position", (int) mod.text_start, (int) obj.get_int_member ("text_start"));
+      TestUtils.check_integer ("TextModule End Position", (int) mod.text_end, (int) obj.get_int_member ("text_end"));
     });
   }
 #endif
@@ -87,14 +83,14 @@ namespace PostChecks {
     Backend.Utils.TextFormats.set_format_flag (HIDE_TRAILING_TAGS, false);
     Backend.Utils.TextFormats.set_format_flag (SHOW_QUOTE_LINKS,   false);
     Backend.Utils.TextFormats.set_format_flag (SHOW_MEDIA_LINKS,   false);
-    assert_true (post.text == text_obj.get_string_member ("no_flags"));
+    TestUtils.check_string ("Post Text", post.text, text_obj.get_string_member ("no_flags"));
 
     // Check with no trailing tags set
     if (text_obj.has_member ("no_trail_tags")) {
       Backend.Utils.TextFormats.set_format_flag (HIDE_TRAILING_TAGS, true);
       Backend.Utils.TextFormats.set_format_flag (SHOW_QUOTE_LINKS,   false);
       Backend.Utils.TextFormats.set_format_flag (SHOW_MEDIA_LINKS,   false);
-      assert_true (post.text == text_obj.get_string_member ("no_trail_tags"));
+      TestUtils.check_string ("Post Text No Trail Hashtags", post.text, text_obj.get_string_member ("no_trail_tags"));
     }
 
     if (text_obj.has_member ("shown_quote_links")) {
@@ -102,7 +98,7 @@ namespace PostChecks {
       Backend.Utils.TextFormats.set_format_flag (HIDE_TRAILING_TAGS, false);
       Backend.Utils.TextFormats.set_format_flag (SHOW_QUOTE_LINKS,   true);
       Backend.Utils.TextFormats.set_format_flag (SHOW_MEDIA_LINKS,   false);
-      assert_true (post.text == text_obj.get_string_member ("shown_quote_links"));
+      TestUtils.check_string ("Post Text With Quote Links", post.text, text_obj.get_string_member ("shown_quote_links"));
     }
 
     if (text_obj.has_member ("shown_media_links")) {
@@ -110,7 +106,7 @@ namespace PostChecks {
       Backend.Utils.TextFormats.set_format_flag (HIDE_TRAILING_TAGS, false);
       Backend.Utils.TextFormats.set_format_flag (SHOW_QUOTE_LINKS,   false);
       Backend.Utils.TextFormats.set_format_flag (SHOW_MEDIA_LINKS,   true);
-      assert_true (post.text == text_obj.get_string_member ("shown_media_links"));
+      TestUtils.check_string ("Post Text With Media Links", post.text, text_obj.get_string_member ("shown_media_links"));
     }
   }
 

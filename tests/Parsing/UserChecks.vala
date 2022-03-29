@@ -33,22 +33,22 @@ namespace UserChecks {
    */
   void check_basic_fields (Backend.User user, Json.Object check) {
     // Check id from the user
-    assert_true (user.id           == check.get_string_member ("id"));
+    TestUtils.check_string ("User ID", user.id, check.get_string_member ("id"));
 
     // Check names of this user
-    assert_true (user.display_name == check.get_string_member ("display_name"));
-    assert_true (user.username     == check.get_string_member ("username"));
+    TestUtils.check_string ("User Display Name", user.display_name, check.get_string_member ("display_name"));
+    TestUtils.check_string ("User Username", user.username, check.get_string_member ("username"));
 
     // Check the avatar url for this user
-    assert_true (user.avatar.media_url == check.get_string_member ("avatar_url"));
+    TestUtils.check_string ("User Avatar URL", user.avatar.media_url, check.get_string_member ("avatar_url"));
 
     // Check the flags for this user
     if (check.has_member ("flags")) {
       Json.Object flags = check.get_object_member ("flags");
-      assert_true (user.has_flag (VERIFIED)  == flags.get_boolean_member ("verified"));
-      assert_true (user.has_flag (MODERATED) == flags.get_boolean_member ("moderated"));
-      assert_true (user.has_flag (PROTECTED) == flags.get_boolean_member ("protected"));
-      assert_true (user.has_flag (BOT)       == flags.get_boolean_member ("bot"));
+      TestUtils.check_bool ("User Verified Flag", user.has_flag (VERIFIED), flags.get_boolean_member ("verified"));
+      TestUtils.check_bool ("User Moderated Flag", user.has_flag (MODERATED), flags.get_boolean_member ("moderated"));
+      TestUtils.check_bool ("User Protected Flag", user.has_flag (PROTECTED), flags.get_boolean_member ("protected"));
+      TestUtils.check_bool ("User Bot Flag", user.has_flag (BOT), flags.get_boolean_member ("bot"));
     }
   }
 
@@ -60,24 +60,20 @@ namespace UserChecks {
    */
   void check_additional_fields (Backend.User user, Json.Object check) {
     // Check creation date and urls
-    assert_true (user.creation_date.equal (
-      new DateTime.from_iso8601 (
-        check.get_string_member ("creation_date"),
-        new TimeZone.utc ()
-    )));
-    assert_true (user.url    == check.get_string_member ("url"));
-    assert_true (user.domain == check.get_string_member ("domain"));
+    TestUtils.check_datetime ("User Creation Date", user.creation_date, check.get_string_member ("creation_date"));
+    TestUtils.check_string ("User URL", user.url, check.get_string_member ("url"));
+    TestUtils.check_string ("User Domain", user.domain, check.get_string_member ("domain"));
 
     // Check public metrics
-    assert_true (user.followers_count == check.get_int_member ("followers_count"));
-    assert_true (user.following_count == check.get_int_member ("following_count"));
-    assert_true (user.posts_count     == check.get_int_member ("posts_count"));
+    TestUtils.check_integer ("User Followers", user.followers_count, (int) check.get_int_member ("followers_count"));
+    TestUtils.check_integer ("User Following", user.following_count, (int) check.get_int_member ("following_count"));
+    TestUtils.check_integer ("User Posts", user.posts_count, (int) check.get_int_member ("posts_count"));
 
     // Check description without format flags
     Backend.Utils.TextFormats.set_format_flag (HIDE_TRAILING_TAGS, false);
     Backend.Utils.TextFormats.set_format_flag (SHOW_QUOTE_LINKS,   false);
     Backend.Utils.TextFormats.set_format_flag (SHOW_MEDIA_LINKS,   false);
-    assert_true (user.description == check.get_string_member ("description"));
+    TestUtils.check_string ("User Description", user.description, check.get_string_member ("description"));
   }
 
 #if DEBUG
@@ -90,16 +86,16 @@ namespace UserChecks {
   void check_description_parsing (Backend.User user, Json.Object check) {
     Json.Array modules = check.get_array_member ("description_modules");
     Backend.TextModule[] user_modules = user.get_description_modules ();
-    assert_true (modules.get_length () == user_modules.length);
+    TestUtils.check_integer ("All TextModules Count", user_modules.length, (int) modules.get_length ());
 
     modules.foreach_element ((array, index, element) => {
       Json.Object obj         = element.get_object ();
       Backend.TextModule  mod = user_modules [index];
-      assert_true (mod.type.to_string () == obj.get_string_member     ("type"));
-      assert_true (mod.display           == obj.get_string_member     ("display"));
-      assert_true (mod.target            == obj.get_string_member     ("target"));
-      assert_true (mod.text_start        == (uint) obj.get_int_member ("text_start"));
-      assert_true (mod.text_end          == (uint) obj.get_int_member ("text_end"));
+      TestUtils.check_string ("TextModule Type", mod.type.to_string (), obj.get_string_member ("type"));
+      TestUtils.check_string ("TextModule Display", mod.display, obj.get_string_member ("display"));
+      TestUtils.check_string ("TextModule Target", mod.target, obj.get_string_member ("target"));
+      TestUtils.check_integer ("TextModule Start Position", (int) mod.text_start, (int) obj.get_int_member ("text_start"));
+      TestUtils.check_integer ("TextModule End Position", (int) mod.text_end, (int) obj.get_int_member ("text_end"));
     });
   }
 #endif
@@ -113,15 +109,15 @@ namespace UserChecks {
   void check_data_fields (Backend.User user, Json.Object check) {
     Json.Array check_fields = check.get_array_member ("data_fields");
     Backend.UserDataField[] user_fields = user.get_data_fields ();
-    assert_true (check_fields.get_length () == user_fields.length);
+    TestUtils.check_integer ("All UserDataFields Count", user_fields.length, (int) check_fields.get_length ());
 
     check_fields.foreach_element ((array, index, element) => {
       Json.Object obj             = element.get_object ();
       Backend.UserDataField field = user_fields [index];
-      assert_true (field.type.to_string () == obj.get_string_member     ("type"));
-      assert_true (field.name              == obj.get_string_member     ("name"));
-      assert_true (field.display           == obj.get_string_member     ("display"));
-      assert_true (field.target            == obj.get_string_member     ("target"));
+      TestUtils.check_string ("DataField Type", field.type.to_string (), obj.get_string_member ("type"));
+      TestUtils.check_string ("DataField Name", field.name, obj.get_string_member ("name"));
+      TestUtils.check_string ("DataField Display", field.display, obj.get_string_member ("display"));
+      TestUtils.check_string ("DataField Target", field.target, obj.get_string_member ("target"));
     });
   }
 

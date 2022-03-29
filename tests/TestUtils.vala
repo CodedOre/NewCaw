@@ -42,6 +42,25 @@ namespace TestUtils {
   }
 
   /**
+   * Checks two booleans and puts out an error should it not match.
+   *
+   * A custom method to retrieve more feedback than simply using assert.
+   *
+   * @param name The name of the value to be checked.
+   * @param parsed The value which was parsed and to be checked.
+   * @param check The value to check the parsed value against.
+   */
+  void check_bool (string name, bool parsed, bool check) {
+    if (parsed != check) {
+      string fail;
+      fail  = @"\n\tThe parsed value for \"$(name)\" don't match the check value.\n";
+      fail += @"\tParsed Value:   \"$(parsed)\"\n";
+      fail += @"\tExpected Value: \"$(check)\"\n";
+      Test.fail_printf (fail);
+    }
+  }
+
+  /**
    * Checks two integers and puts out an error should it not match.
    *
    * A custom method to retrieve more feedback than simply using assert.

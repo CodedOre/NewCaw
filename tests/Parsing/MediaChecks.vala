@@ -1,6 +1,6 @@
 /* MediaChecks.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace MediaChecks {
     // Get all media and media checks
     Json.Array      media_checks = checks.get_array_member ("attached_media");
     Backend.Media[] media_objs   = post.get_media ();
-    assert_true (media_checks.get_length () == media_objs.length);
+    TestUtils.check_integer ("All Media Count", media_objs.length, (int) media_checks.get_length ());
 
     // Check each individual media
     media_checks.foreach_element ((array, index, element) => {
@@ -54,16 +54,14 @@ namespace MediaChecks {
    * @param check A Json.Object containing fields to check against.
    */
   void check_basic_fields (Backend.Media media, Json.Object check) {
-    // Check id and alt_text
-    assert_true (media.id == check.get_string_member ("id"));
-    assert_true (media.alt_text == check.get_string_member ("alt_text"));
-
-    // Check type
-    assert_true (media.media_type.to_string () == check.get_string_member ("type"));
+    // Check id, type and alt_text
+    TestUtils.check_string ("Media ID", media.id, check.get_string_member ("id"));
+    TestUtils.check_string ("Media Type", media.media_type.to_string (), check.get_string_member ("type"));
+    TestUtils.check_string ("Media Alt Text", media.alt_text, check.get_string_member ("alt_text"));
 
     // Check urls
-    assert_true (media.preview_url == check.get_string_member ("preview_url"));
-    assert_true (media.media_url   == check.get_string_member ("media_url"));
+    TestUtils.check_string ("Media Preview URL", media.preview_url, check.get_string_member ("preview_url"));
+    TestUtils.check_string ("Media URL", media.media_url, check.get_string_member ("media_url"));
   }
 
 }

@@ -1,6 +1,6 @@
 /* PostParsing.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -135,5 +135,6 @@ int main (string[] args) {
   });
 #endif
 
+  Test.set_nonfatal_assertions ();
   return Test.run ();
 }
