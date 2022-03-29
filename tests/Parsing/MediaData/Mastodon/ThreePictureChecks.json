@@ -3,22 +3,22 @@
   "post_type":     "BACKEND_POST_TYPE_NORMAL",
   "creation_date": "2021-10-14T12:12:22.895Z",
   "text": {
-    "no_flags": "Now let&apos;s test three images!"
+    "no_flags": "Now let&#39;s test three images!"
   },
   "text_modules": [
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
-      "display":    "Now let&apos;s test three images!",
+      "display":    "Now let&#39;s test three images!",
       "target":     null,
       "text_start": 0,
-      "text_end":   33
+      "text_end":   32
     }
   ],
   "author": {
     "id":           "106866867257179166",
     "display_name": "CawbirdTestAccount",
     "username":     "cawbird_test_account",
-    "avatar_url":   "https://mastodon.social/avatars/original/missing.png"
+    "avatar_url":   "https://files.mastodon.social/accounts/avatars/106/866/867/257/179/166/original/6bf23bd3fb731624.png"
   },
   "attached_media": [
     {
