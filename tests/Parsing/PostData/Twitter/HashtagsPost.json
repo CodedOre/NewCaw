@@ -1,12 +1,15 @@
 {
   "data": {
-    "author_id": "1303637097803382786",
+    "text": "New post, new test!\nNow, let's test for a #hashtag, but also for some at the end: #hashtag2 #hashtag3 #hashtag4",
+    "source": "Twitter Web App",
     "public_metrics": {
       "retweet_count": 0,
       "reply_count": 0,
       "like_count": 0,
       "quote_count": 0
     },
+    "id": "1439864347640139776",
+    "created_at": "2021-09-20T08:09:46.000Z",
     "entities": {
       "hashtags": [
         {
@@ -31,16 +34,28 @@
         }
       ]
     },
-    "id": "1439864347640139776",
-    "text": "New post, new test!\nNow, let's test for a #hashtag, but also for some at the end: #hashtag2 #hashtag3 #hashtag4",
-    "created_at": "2021-09-20T08:09:46.000Z",
-    "source": "Twitter Web App"
+    "author_id": "1303637097803382786"
   },
   "includes": {
     "users": [
       {
+        "public_metrics": {
+          "followers_count": 1,
+          "following_count": 1,
+          "tweet_count": 13,
+          "listed_count": 0
+        },
+        "pinned_tweet_id": "1472872096132960260",
         "verified": false,
+        "location": "org.gnome.Sdk",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/1508793016290615296/oYoUKI2J_normal.png",
         "protected": false,
+        "url": "https://t.co/nJBBsO2cRV",
+        "username": "CawbirdA",
+        "description": "This may or may not be a account from @CodedOre for testing some API's for a certain Client.",
+        "id": "1303637097803382786",
+        "name": "CawbirdTestAccount",
+        "created_at": "2020-09-09T10:11:27.000Z",
         "entities": {
           "url": {
             "urls": [
@@ -62,22 +77,7 @@
               }
             ]
           }
-        },
-        "url": "https://t.co/nJBBsO2cRV",
-        "location": "org.gnome.Sdk",
-        "description": "This may or may not be a account from @CodedOre for testing some API's for a certain Client.",
-        "id": "1303637097803382786",
-        "public_metrics": {
-          "followers_count": 1,
-          "following_count": 1,
-          "tweet_count": 13,
-          "listed_count": 0
-        },
-        "created_at": "2020-09-09T10:11:27.000Z",
-        "profile_image_url": "https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png",
-        "name": "CawbirdTestAccount",
-        "pinned_tweet_id": "1472872096132960260",
-        "username": "CawbirdA"
+        }
       }
     ]
   }

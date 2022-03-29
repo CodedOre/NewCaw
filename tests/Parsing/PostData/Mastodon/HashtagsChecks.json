@@ -3,72 +3,72 @@
   "post_type":     "BACKEND_POST_TYPE_NORMAL",
   "creation_date": "2021-09-20T08:09:44.671Z",
   "text": {
-    "no_flags": "New post, new test!\nNow, let&apos;s test for a <a href=\"#hashtag\" title=\"#hashtag\" class=\"hashtag\">#hashtag</a>, but also for some at the end: <a href=\"#hashtag2\" title=\"#hashtag2\" class=\"hashtag\">#hashtag2</a> <a href=\"#hashtag3\" title=\"#hashtag3\" class=\"hashtag\">#hashtag3</a> <a href=\"#hashtag4\" title=\"#hashtag4\" class=\"hashtag\">#hashtag4</a>",
-    "no_trail_tags": "New post, new test!\nNow, let&apos;s test for a <a href=\"#hashtag\" title=\"#hashtag\" class=\"hashtag\">#hashtag</a>, but also for some at the end:"
+    "no_flags": "New post, new test!\nNow, let&#39;s test for a <a href=\"#hashtag\" title=\"#hashtag\" class=\"hashtag\">#hashtag</a>, but also for some at the end: <a href=\"#hashtag2\" title=\"#hashtag2\" class=\"hashtag\">#hashtag2</a> <a href=\"#hashtag3\" title=\"#hashtag3\" class=\"hashtag\">#hashtag3</a> <a href=\"#hashtag4\" title=\"#hashtag4\" class=\"hashtag\">#hashtag4</a>",
+    "no_trail_tags": "New post, new test!\nNow, let&#39;s test for a <a href=\"#hashtag\" title=\"#hashtag\" class=\"hashtag\">#hashtag</a>, but also for some at the end:"
   },
   "text_modules": [
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
-      "display":    "New post, new test!\nNow, let&apos;s test for a ",
+      "display":    "New post, new test!\nNow, let&#39;s test for a ",
       "target":     null,
       "text_start": 0,
-      "text_end":   47
+      "text_end":   46
     },
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TAG",
       "display":    "#hashtag",
       "target":     "#hashtag",
-      "text_start": 47,
-      "text_end":   55
+      "text_start": 46,
+      "text_end":   54
     },
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
       "display":    ", but also for some at the end: ",
       "target":     null,
-      "text_start": 55,
-      "text_end":   87
+      "text_start": 54,
+      "text_end":   86
     },
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TRAIL_TAG",
       "display":    "#hashtag2",
       "target":     "#hashtag2",
-      "text_start": 87,
-      "text_end":   96
+      "text_start": 86,
+      "text_end":   95
     },
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
       "display":    " ",
       "target":     null,
-      "text_start": 96,
-      "text_end":   97
+      "text_start": 95,
+      "text_end":   96
     },
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TRAIL_TAG",
       "display":    "#hashtag3",
       "target":     "#hashtag3",
-      "text_start": 97,
-      "text_end":   106
+      "text_start": 96,
+      "text_end":   105
     },
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
       "display":    " ",
       "target":     null,
-      "text_start": 106,
-      "text_end":   107
+      "text_start": 105,
+      "text_end":   106
     },
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TRAIL_TAG",
       "display":    "#hashtag4",
       "target":     "#hashtag4",
-      "text_start": 107,
-      "text_end":   116
+      "text_start": 106,
+      "text_end":   115
     }
   ],
   "author": {
     "id":           "106866867257179166",
     "display_name": "CawbirdTestAccount",
     "username":     "cawbird_test_account",
-    "avatar_url":   "https://mastodon.social/avatars/original/missing.png"
+    "avatar_url":   "https://files.mastodon.social/accounts/avatars/106/866/867/257/179/166/original/6bf23bd3fb731624.png"
   },
   "domain":          "mastodon.social",
   "url":             "https://mastodon.social/@cawbird_test_account/106962969208581539",

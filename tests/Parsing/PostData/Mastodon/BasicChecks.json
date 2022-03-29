@@ -3,22 +3,22 @@
   "post_type":     "BACKEND_POST_TYPE_NORMAL",
   "creation_date": "2021-09-06T09:08:02.188Z",
   "text": {
-    "no_flags": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text."
+    "no_flags": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&#39;t expect an interesting text."
   },
   "text_modules": [
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
-      "display":    "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text.",
+      "display":    "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&#39;t expect an interesting text.",
       "target":     null,
       "text_start": 0,
-      "text_end":   156
+      "text_end":   155
     }
   ],
   "author": {
     "id":           "106866867257179166",
     "display_name": "CawbirdTestAccount",
     "username":     "cawbird_test_account",
-    "avatar_url":   "https://mastodon.social/avatars/original/missing.png"
+    "avatar_url":   "https://files.mastodon.social/accounts/avatars/106/866/867/257/179/166/original/6bf23bd3fb731624.png"
   },
   "domain":          "mastodon.social",
   "url":             "https://mastodon.social/@cawbird_test_account/106883926076492274",

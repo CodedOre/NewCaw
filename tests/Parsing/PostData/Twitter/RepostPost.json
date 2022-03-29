@@ -1,16 +1,5 @@
 {
   "data": {
-    "referenced_tweets": [
-      {
-        "type": "retweeted",
-        "id": "1434805586529505284"
-      }
-    ],
-    "created_at": "2021-09-30T10:23:46.000Z",
-    "id": "1443521950287020034",
-    "text": "RT @CawbirdA: Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don't e\u2026",
-    "source": "Twitter Web App",
-    "author_id": "1303637097803382786",
     "entities": {
       "mentions": [
         {
@@ -26,11 +15,34 @@
       "reply_count": 0,
       "like_count": 0,
       "quote_count": 0
-    }
+    },
+    "author_id": "1303637097803382786",
+    "source": "Twitter Web App",
+    "created_at": "2021-09-30T10:23:46.000Z",
+    "referenced_tweets": [
+      {
+        "type": "retweeted",
+        "id": "1434805586529505284"
+      }
+    ],
+    "id": "1443521950287020034",
+    "text": "RT @CawbirdA: Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don't e\u2026"
   },
   "includes": {
     "users": [
       {
+        "verified": false,
+        "name": "CawbirdTestAccount",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/1508793016290615296/oYoUKI2J_normal.png",
+        "created_at": "2020-09-09T10:11:27.000Z",
+        "description": "This may or may not be a account from @CodedOre for testing some API's for a certain Client.",
+        "public_metrics": {
+          "followers_count": 1,
+          "following_count": 1,
+          "tweet_count": 13,
+          "listed_count": 0
+        },
+        "location": "org.gnome.Sdk",
         "entities": {
           "url": {
             "urls": [
@@ -53,38 +65,26 @@
             ]
           }
         },
-        "profile_image_url": "https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png",
-        "name": "CawbirdTestAccount",
-        "pinned_tweet_id": "1472872096132960260",
-        "location": "org.gnome.Sdk",
-        "verified": false,
-        "description": "This may or may not be a account from @CodedOre for testing some API's for a certain Client.",
-        "public_metrics": {
-          "followers_count": 1,
-          "following_count": 1,
-          "tweet_count": 13,
-          "listed_count": 0
-        },
         "id": "1303637097803382786",
         "protected": false,
-        "url": "https://t.co/nJBBsO2cRV",
         "username": "CawbirdA",
-        "created_at": "2020-09-09T10:11:27.000Z"
+        "pinned_tweet_id": "1472872096132960260",
+        "url": "https://t.co/nJBBsO2cRV"
       }
     ],
     "tweets": [
       {
-        "created_at": "2021-09-06T09:08:03.000Z",
-        "id": "1434805586529505284",
-        "text": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don't expect an interesting text.",
-        "source": "Twitter Web App",
-        "author_id": "1303637097803382786",
         "public_metrics": {
           "retweet_count": 1,
           "reply_count": 0,
           "like_count": 0,
           "quote_count": 0
-        }
+        },
+        "author_id": "1303637097803382786",
+        "source": "Twitter Web App",
+        "created_at": "2021-09-06T09:08:03.000Z",
+        "id": "1434805586529505284",
+        "text": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don't expect an interesting text."
       }
     ]
   }
