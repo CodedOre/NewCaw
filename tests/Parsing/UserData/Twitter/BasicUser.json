@@ -1,19 +1,15 @@
 {
   "data": {
-    "url": "https://t.co/nJBBsO2cRV",
-    "verified": false,
     "location": "org.gnome.Sdk",
-    "public_metrics": {
-      "followers_count": 1,
-      "following_count": 1,
-      "tweet_count": 12,
-      "listed_count": 0
-    },
-    "protected": false,
-    "profile_image_url": "https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png",
+    "profile_image_url": "https://pbs.twimg.com/profile_images/1508793016290615296/oYoUKI2J_normal.png",
+    "id": "1303637097803382786",
     "name": "CawbirdTestAccount",
     "created_at": "2020-09-09T10:11:27.000Z",
-    "id": "1303637097803382786",
+    "pinned_tweet_id": "1472872096132960260",
+    "username": "CawbirdA",
+    "url": "https://t.co/nJBBsO2cRV",
+    "verified": false,
+    "protected": false,
     "description": "This may or may not be a account from @CodedOre for testing some API's for a certain Client.",
     "entities": {
       "url": {
@@ -37,6 +33,11 @@
         ]
       }
     },
-    "username": "CawbirdA"
+    "public_metrics": {
+      "followers_count": 1,
+      "following_count": 1,
+      "tweet_count": 13,
+      "listed_count": 0
+    }
   }
 }
