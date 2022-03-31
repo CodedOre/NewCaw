@@ -39,8 +39,11 @@ namespace UserChecks {
     TestUtils.check_string ("User Display Name", user.display_name, check.get_string_member ("display_name"));
     TestUtils.check_string ("User Username", user.username, check.get_string_member ("username"));
 
-    // Check the avatar url for this user
+    // Check the user media
     TestUtils.check_string ("User Avatar URL", user.avatar.media_url, check.get_string_member ("avatar_url"));
+    if (check.has_member ("header_url")) {
+      TestUtils.check_string ("User Header URL", user.header.media_url, check.get_string_member ("header_url"));
+    }
 
     // Check the flags for this user
     if (check.has_member ("flags")) {
@@ -88,15 +91,17 @@ namespace UserChecks {
     Backend.TextModule[] user_modules = user.get_description_modules ();
     TestUtils.check_integer ("All TextModules Count", user_modules.length, (int) modules.get_length ());
 
-    modules.foreach_element ((array, index, element) => {
-      Json.Object obj         = element.get_object ();
-      Backend.TextModule  mod = user_modules [index];
-      TestUtils.check_string ("TextModule Type", mod.type.to_string (), obj.get_string_member ("type"));
-      TestUtils.check_string ("TextModule Display", mod.display, obj.get_string_member ("display"));
-      TestUtils.check_string ("TextModule Target", mod.target, obj.get_string_member ("target"));
-      TestUtils.check_integer ("TextModule Start Position", (int) mod.text_start, (int) obj.get_int_member ("text_start"));
-      TestUtils.check_integer ("TextModule End Position", (int) mod.text_end, (int) obj.get_int_member ("text_end"));
-    });
+    if (user_modules.length == modules.get_length ()) {
+      modules.foreach_element ((array, index, element) => {
+        Json.Object obj         = element.get_object ();
+        Backend.TextModule  mod = user_modules [index];
+        TestUtils.check_string ("TextModule Type", mod.type.to_string (), obj.get_string_member ("type"));
+        TestUtils.check_string ("TextModule Display", mod.display, obj.get_string_member ("display"));
+        TestUtils.check_string ("TextModule Target", mod.target, obj.get_string_member ("target"));
+        TestUtils.check_integer ("TextModule Start Position", (int) mod.text_start, (int) obj.get_int_member ("text_start"));
+        TestUtils.check_integer ("TextModule End Position", (int) mod.text_end, (int) obj.get_int_member ("text_end"));
+      });
+    }
   }
 #endif
 
@@ -111,14 +116,16 @@ namespace UserChecks {
     Backend.UserDataField[] user_fields = user.get_data_fields ();
     TestUtils.check_integer ("All UserDataFields Count", user_fields.length, (int) check_fields.get_length ());
 
-    check_fields.foreach_element ((array, index, element) => {
-      Json.Object obj             = element.get_object ();
-      Backend.UserDataField field = user_fields [index];
-      TestUtils.check_string ("DataField Type", field.type.to_string (), obj.get_string_member ("type"));
-      TestUtils.check_string ("DataField Name", field.name, obj.get_string_member ("name"));
-      TestUtils.check_string ("DataField Display", field.display, obj.get_string_member ("display"));
-      TestUtils.check_string ("DataField Target", field.target, obj.get_string_member ("target"));
-    });
+    if (user_fields.length == check_fields.get_length ()) {
+      check_fields.foreach_element ((array, index, element) => {
+        Json.Object obj             = element.get_object ();
+        Backend.UserDataField field = user_fields [index];
+        TestUtils.check_string ("DataField Type", field.type.to_string (), obj.get_string_member ("type"));
+        TestUtils.check_string ("DataField Name", field.name, obj.get_string_member ("name"));
+        TestUtils.check_string ("DataField Display", field.display, obj.get_string_member ("display"));
+        TestUtils.check_string ("DataField Target", field.target, obj.get_string_member ("target"));
+      });
+    }
   }
 
 }

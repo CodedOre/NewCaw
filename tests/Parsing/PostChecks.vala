@@ -57,16 +57,17 @@ namespace PostChecks {
     Json.Array modules = check.get_array_member ("text_modules");
     Backend.TextModule[] post_modules = post.get_text_modules ();
     TestUtils.check_integer ("All TextModules Count", post_modules.length, (int) modules.get_length ());
-
-    modules.foreach_element ((array, index, element) => {
-      Json.Object obj         = element.get_object ();
-      Backend.TextModule  mod = post_modules [index];
-      TestUtils.check_string ("TextModule Type", mod.type.to_string (), obj.get_string_member ("type"));
-      TestUtils.check_string ("TextModule Display", mod.display, obj.get_string_member ("display"));
-      TestUtils.check_string ("TextModule Target", mod.target, obj.get_string_member ("target"));
-      TestUtils.check_integer ("TextModule Start Position", (int) mod.text_start, (int) obj.get_int_member ("text_start"));
-      TestUtils.check_integer ("TextModule End Position", (int) mod.text_end, (int) obj.get_int_member ("text_end"));
-    });
+    if (post_modules.length == modules.get_length ()) {
+      modules.foreach_element ((array, index, element) => {
+        Json.Object obj         = element.get_object ();
+        Backend.TextModule  mod = post_modules [index];
+        TestUtils.check_string ("TextModule Type", mod.type.to_string (), obj.get_string_member ("type"));
+        TestUtils.check_string ("TextModule Display", mod.display, obj.get_string_member ("display"));
+        TestUtils.check_string ("TextModule Target", mod.target, obj.get_string_member ("target"));
+        TestUtils.check_integer ("TextModule Start Position", (int) mod.text_start, (int) obj.get_int_member ("text_start"));
+        TestUtils.check_integer ("TextModule End Position", (int) mod.text_end, (int) obj.get_int_member ("text_end"));
+      });
+    }
   }
 #endif
 
