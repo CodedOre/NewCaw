@@ -34,10 +34,11 @@ namespace TestUtils {
   void check_string (string name, string? parsed, string? check) {
     if (parsed != check) {
       string fail;
-      fail  = @"\n\tThe parsed value for $(name) don't match the check value.\n";
+      fail  = @"The parsed value for $(name) don't match the check value.\n";
       fail += @"\tParsed Value:   \"$(parsed.escape ())\"\n";
       fail += @"\tExpected Value: \"$(check.escape ())\"\n";
-      Test.fail_printf (fail);
+      Test.message (fail);
+      Test.fail ();
     }
   }
 
@@ -53,10 +54,11 @@ namespace TestUtils {
   void check_bool (string name, bool parsed, bool check) {
     if (parsed != check) {
       string fail;
-      fail  = @"\n\tThe parsed value for \"$(name)\" don't match the check value.\n";
+      fail  = @"The parsed value for \"$(name)\" don't match the check value.\n";
       fail += @"\tParsed Value:   \"$(parsed)\"\n";
       fail += @"\tExpected Value: \"$(check)\"\n";
-      Test.fail_printf (fail);
+      Test.message (fail);
+      Test.fail ();
     }
   }
 
@@ -72,10 +74,11 @@ namespace TestUtils {
   void check_integer (string name, int parsed, int check) {
     if (parsed != check) {
       string fail;
-      fail  = @"\n\tThe parsed value for \"$(name)\" don't match the check value.\n";
+      fail  = @"The parsed value for \"$(name)\" don't match the check value.\n";
       fail += @"\tParsed Value:   \"$(parsed)\"\n";
       fail += @"\tExpected Value: \"$(check)\"\n";
-      Test.fail_printf (fail);
+      Test.message (fail);
+      Test.fail ();
     }
   }
 
@@ -94,10 +97,11 @@ namespace TestUtils {
     );
     if (! parsed.equal (check_time)) {
       string fail;
-      fail  = @"\n\tThe parsed value for \"$(name)\" don't match the check value.\n";
+      fail  = @"The parsed value for \"$(name)\" don't match the check value.\n";
       fail += @"\tParsed Value:   \"$(parsed)\"\n";
       fail += @"\tExpected Value: \"$(check)\"\n";
-      Test.fail_printf (fail);
+      Test.message (fail);
+      Test.fail ();
     }
   }
 
