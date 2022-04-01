@@ -81,7 +81,7 @@ namespace Backend.Utils.TextUtils {
    * @param modules An array of all modules of the text.
    */
   private void mark_trailing_tags (TextModule[] modules) {
-    bool   search_trail_tags = true;
+    bool   search_trail_tags = modules.length > 0 ? true : false;
     bool   mark_trail_tags   = false;
     size_t module_index      = modules.length - 1;
 

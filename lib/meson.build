@@ -10,6 +10,11 @@ libdepends = [
   dependency('rest-1.0',       version: '>= 0.9')
 ]
 
+# Add libxml as dependency for Mastodon
+if get_option('mastodon_backend').enabled()
+  libdepends += dependency('libxml-2.0', version: '>= 2.9.12')
+endif
+
 # Base files
 libfiles = [
   'Base/Content/Media.vala',
