@@ -35,7 +35,21 @@ namespace Backend.Mastodon.Utils.TextUtils {
   private TextModule[] parse_text (string raw_text) {
     TextModule[] final_modules = {};
 
+    // Add root node as content can have multiple roots
+    string parsed_text = @"<text>$(raw_text)</text>";
+
+    // Create XML tree from text
+    Xml.Doc* doc = Xml.Parser.parse_memory (parsed_text, parsed_text.length);
+    if (doc == null) {
+      error ("Failed to parse text to XML tree!");
+    }
+    Xml.Node* root = doc->get_root_element ();
+
+    // Mark trailing tags
     Backend.Utils.TextUtils.mark_trailing_tags (final_modules);
+
+    // Free the XML tree
+    delete doc;
 
     return final_modules;
   }
