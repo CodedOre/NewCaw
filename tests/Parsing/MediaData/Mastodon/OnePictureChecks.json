@@ -3,15 +3,29 @@
   "post_type":     "BACKEND_POST_TYPE_NORMAL",
   "creation_date": "2021-10-04T06:19:29.462Z",
   "text": {
-    "no_flags": "A new post is there!\nLet&#39;s test one picture here:"
+    "no_flags": "A new post is there!\nLet's test one picture here:"
   },
   "text_modules": [
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
-      "display":    "A new post is there!\nLet&#39;s test one picture here:",
+      "display":    "A new post is there!",
       "target":     null,
       "text_start": 0,
-      "text_end":   53
+      "text_end":   20
+    },
+    {
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+      "display":    "\n",
+      "target":     null,
+      "text_start": 20,
+      "text_end":   21
+    },
+    {
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+      "display":    "Let's test one picture here:",
+      "target":     null,
+      "text_start": 21,
+      "text_end":   49
     }
   ],
   "author": {

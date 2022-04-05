@@ -3,65 +3,79 @@
   "post_type":     "BACKEND_POST_TYPE_NORMAL",
   "creation_date": "2021-09-20T08:09:44.671Z",
   "text": {
-    "no_flags": "New post, new test!\nNow, let&#39;s test for a <a href=\"#hashtag\" title=\"#hashtag\" class=\"hashtag\">#hashtag</a>, but also for some at the end: <a href=\"#hashtag2\" title=\"#hashtag2\" class=\"hashtag\">#hashtag2</a> <a href=\"#hashtag3\" title=\"#hashtag3\" class=\"hashtag\">#hashtag3</a> <a href=\"#hashtag4\" title=\"#hashtag4\" class=\"hashtag\">#hashtag4</a>",
-    "no_trail_tags": "New post, new test!\nNow, let&#39;s test for a <a href=\"#hashtag\" title=\"#hashtag\" class=\"hashtag\">#hashtag</a>, but also for some at the end:"
+    "no_flags": "New post, new test!\nNow, let's test for a <a href=\"#hashtag\" title=\"#hashtag\" class=\"hashtag\">#hashtag</a>, but also for some at the end: <a href=\"#hashtag2\" title=\"#hashtag2\" class=\"hashtag\">#hashtag2</a> <a href=\"#hashtag3\" title=\"#hashtag3\" class=\"hashtag\">#hashtag3</a> <a href=\"#hashtag4\" title=\"#hashtag4\" class=\"hashtag\">#hashtag4</a>",
+    "no_trail_tags": "New post, new test!\nNow, let's test for a <a href=\"#hashtag\" title=\"#hashtag\" class=\"hashtag\">#hashtag</a>, but also for some at the end:"
   },
   "text_modules": [
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
-      "display":    "New post, new test!\nNow, let&#39;s test for a ",
+      "display":    "New post, new test!",
       "target":     null,
       "text_start": 0,
-      "text_end":   46
+      "text_end":   19
+    },
+    {
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+      "display":    "\n",
+      "target":     null,
+      "text_start": 19,
+      "text_end":   20
+    },
+    {
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+      "display":    "Now, let's test for a ",
+      "target":     null,
+      "text_start": 20,
+      "text_end":   42
     },
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TAG",
       "display":    "#hashtag",
       "target":     "#hashtag",
-      "text_start": 46,
-      "text_end":   54
+      "text_start": 42,
+      "text_end":   50
     },
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
       "display":    ", but also for some at the end: ",
       "target":     null,
-      "text_start": 54,
-      "text_end":   86
+      "text_start": 50,
+      "text_end":   82
     },
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TRAIL_TAG",
       "display":    "#hashtag2",
       "target":     "#hashtag2",
-      "text_start": 86,
-      "text_end":   95
+      "text_start": 82,
+      "text_end":   91
     },
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
       "display":    " ",
       "target":     null,
-      "text_start": 95,
-      "text_end":   96
+      "text_start": 91,
+      "text_end":   92
     },
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TRAIL_TAG",
       "display":    "#hashtag3",
       "target":     "#hashtag3",
-      "text_start": 96,
-      "text_end":   105
+      "text_start": 92,
+      "text_end":   101
     },
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
       "display":    " ",
       "target":     null,
-      "text_start": 105,
-      "text_end":   106
+      "text_start": 101,
+      "text_end":   102
     },
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TRAIL_TAG",
       "display":    "#hashtag4",
       "target":     "#hashtag4",
-      "text_start": 106,
-      "text_end":   115
+      "text_start": 102,
+      "text_end":   111
     }
   ],
   "author": {

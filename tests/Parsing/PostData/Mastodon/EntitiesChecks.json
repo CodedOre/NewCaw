@@ -3,20 +3,34 @@
   "post_type":     "BACKEND_POST_TYPE_NORMAL",
   "creation_date": "2021-09-14T06:10:48.555Z",
   "text": {
-    "no_flags": "So, what about a post with some entities with in?\n\nHow about a mention to <a href=\"@CodedOre@mastodon.online\" title=\"@CodedOre@mastodon.online\" class=\"mention\">@CodedOre</a>, an <a href=\"#hashtag\" title=\"#hashtag\" class=\"hashtag\">#hashtag</a> for <a href=\"#cawbird\" title=\"#cawbird\" class=\"hashtag\">#cawbird</a>, and how about a web link for last:\n\n<a href=\"https://ibboard.co.uk/cawbird/\" title=\"https://ibboard.co.uk/cawbird/\" class=\"weblink\">ibboard.co.uk/cawbird/</a>\n\nThis post contains a lot more than the last!"
+    "no_flags": "So, what about a post with some entities with in?\n\nHow about a mention to <a href=\"CodedOre@mastodon.online\" title=\"CodedOre@mastodon.online\" class=\"mention\">@CodedOre</a>, an <a href=\"#hashtag\" title=\"#hashtag\" class=\"hashtag\">#hashtag</a> for <a href=\"#cawbird\" title=\"#cawbird\" class=\"hashtag\">#cawbird</a>, and how about a web link for last:\n\n<a href=\"https://ibboard.co.uk/cawbird/\" title=\"https://ibboard.co.uk/cawbird/\" class=\"weblink\">ibboard.co.uk/cawbird/</a>\n\nThis post contains a lot more than the last!"
   },
   "text_modules": [
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
-      "display":    "So, what about a post with some entities with in?\n\nHow about a mention to ",
+      "display":    "So, what about a post with some entities with in?",
       "target":     null,
       "text_start": 0,
+      "text_end":   49
+    },
+    {
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+      "display":    "\n\n",
+      "target":     null,
+      "text_start": 49,
+      "text_end":   51
+    },
+    {
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+      "display":    "How about a mention to ",
+      "target":     null,
+      "text_start": 51,
       "text_end":   74
     },
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_MENTION",
       "display":    "@CodedOre",
-      "target":     "@CodedOre@mastodon.online",
+      "target":     "CodedOre@mastodon.online",
       "text_start": 74,
       "text_end":   83
     },
@@ -50,9 +64,16 @@
     },
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
-      "display":    ", and how about a web link for last:\n\n",
+      "display":    ", and how about a web link for last:",
       "target":     null,
       "text_start": 109,
+      "text_end":   145
+    },
+    {
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+      "display":    "\n\n",
+      "target":     null,
+      "text_start": 145,
       "text_end":   147
     },
     {
@@ -64,9 +85,16 @@
     },
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
-      "display":    "\n\nThis post contains a lot more than the last!",
+      "display":    "\n\n",
       "target":     null,
       "text_start": 169,
+      "text_end":   171
+    },
+    {
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+      "display":    "This post contains a lot more than the last!",
+      "target":     null,
+      "text_start": 171,
       "text_end":   215
     }
   ],

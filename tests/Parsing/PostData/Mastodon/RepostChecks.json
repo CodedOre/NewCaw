@@ -3,31 +3,9 @@
   "post_type":     "BACKEND_POST_TYPE_REPOST",
   "creation_date": "2021-09-30T10:23:51.196Z",
   "text": {
-    "no_flags": "RT <a href=\"@cawbird_test_account@mastodon.social\" title=\"@cawbird_test_account@mastodon.social\" class=\"mention\">@cawbird_test_account</a> Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text."
+    "no_flags": ""
   },
-  "text_modules": [
-    {
-      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
-      "display":    "RT ",
-      "target":     null,
-      "text_start": 0,
-      "text_end":   3
-    },
-    {
-      "type":       "BACKEND_TEXT_MODULE_TYPE_MENTION",
-      "display":    "@cawbird_test_account",
-      "target":     "@cawbird_test_account@mastodon.social",
-      "text_start": 3,
-      "text_end":   24
-    },
-    {
-      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
-      "display":    " Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text.",
-      "target":     null,
-      "text_start": 24,
-      "text_end":   181
-    }
-  ],
+  "text_modules": [],
   "author": {
     "id":           "106866867257179166",
     "display_name": "CawbirdTestAccount",
@@ -40,16 +18,43 @@
     "post_type":     "BACKEND_POST_TYPE_NORMAL",
     "creation_date": "2021-09-06T09:08:02.188Z",
     "text": {
-      "no_flags": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text.",
-      "no_trail_tags": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text."
+      "no_flags": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don't expect an interesting text."
     },
     "text_modules": [
       {
         "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
-        "display":    "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text.",
+        "display":    "Hello World!",
         "target":     null,
         "text_start": 0,
-        "text_end":   156
+        "text_end":   12
+      },
+      {
+        "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+        "display":    "\n\n",
+        "target":     null,
+        "text_start": 12,
+        "text_end":   14
+      },
+      {
+        "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+        "display":    "This is a basic post with some text in it. Nothing more...",
+        "target":     null,
+        "text_start": 14,
+        "text_end":   72
+      },
+      {
+        "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+        "display":    "\n\n",
+        "target":     null,
+        "text_start": 72,
+        "text_end":   74
+      },
+      {
+        "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+        "display":    "I mean, this is a test profil after all, so don't expect an interesting text.",
+        "target":     null,
+        "text_start": 74,
+        "text_end":   151
       }
     ],
     "author": {

@@ -8,9 +8,23 @@
   "text_modules": [
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
-      "display":    "Image test numero two:\nTwo images.",
+      "display":    "Image test numero two:",
       "target":     null,
       "text_start": 0,
+      "text_end":   22
+    },
+    {
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+      "display":    "\n",
+      "target":     null,
+      "text_start": 22,
+      "text_end":   23
+    },
+    {
+      "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
+      "display":    "Two images.",
+      "target":     null,
+      "text_start": 23,
       "text_end":   34
     }
   ],

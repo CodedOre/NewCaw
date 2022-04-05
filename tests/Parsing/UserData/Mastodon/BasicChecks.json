@@ -16,7 +16,7 @@
   "followers_count": 1,
   "following_count": 0,
   "posts_count":     11,
-  "description":    "This may or may not be a account from <a href=\"@CodedOre@mastodon.online\" title=\"@CodedOre@mastodon.online\" class=\"mention\">@CodedOre</a> for testing some API&#39;s for a certain Client.",
+  "description":    "This may or may not be a account from <a href=\"CodedOre@mastodon.online\" title=\"CodedOre@mastodon.online\" class=\"mention\">@CodedOre</a> for testing some API's for a certain Client.",
   "description_modules": [
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
@@ -28,16 +28,16 @@
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_MENTION",
       "display":    "@CodedOre",
-      "target":     "@CodedOre@mastodon.online",
+      "target":     "CodedOre@mastodon.online",
       "text_start": 38,
       "text_end":   47
     },
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
-      "display":    " for testing some API&#39;s for a certain Client.",
+      "display":    " for testing some API's for a certain Client.",
       "target":     null,
       "text_start": 47,
-      "text_end":   96
+      "text_end":   92
     }
   ],
   "data_fields": [
