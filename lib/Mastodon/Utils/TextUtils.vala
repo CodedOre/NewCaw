@@ -83,6 +83,11 @@ internal class Backend.Mastodon.Utils.TextParser : Object {
           add_module (TEXT, "\n");
           break;
 
+        // Parse a possible mention
+        case "span":
+          parse_mention (child);
+          break;
+
         // Anything not detected is treated as text
         default:
           add_module (TEXT, child->get_content ());
@@ -93,6 +98,63 @@ internal class Backend.Mastodon.Utils.TextParser : Object {
     // Add two linebreaks if another paragraphs follows
     if (node->next != null) {
       add_module (TEXT, "\n\n");
+    }
+  }
+
+  /**
+   * Parses an potential mention and adds it.
+   *
+   * @param node A pointer to the node being parsed.
+   */
+  private void parse_mention (Xml.Node* node) {
+    // Get the link sub-node
+    Xml.Node* mention = null;
+    for (Xml.Node* child = node->children; child != null; child = child->next) {
+      if (child->name == "a") {
+        mention = child;
+      }
+    }
+
+    // Create a simple text if detection failed
+    if (mention == null) {
+      warning ("Failed to parse a potential mention!");
+      add_module (TEXT, node->get_content ());
+      return;
+    }
+
+    // Check link properties
+    string? account_link = null;
+    for (Xml.Attr* prop = mention->properties; prop != null; prop = prop->next) {
+      // Check if link is marked as mention
+      if (prop->name == "class") {
+        string span_class = prop->children->content;
+        if (! span_class.contains ("mention")) {
+          warning ("Failed to parse a potential mention!");
+          add_module (TEXT, node->get_content ());
+          return;
+        }
+      }
+
+      // Get the link to the account
+      if (prop->name == "href") {
+        account_link = prop->children->content;
+      }
+    }
+
+    // Create a simple text if link parsing failed
+    if (account_link == null) {
+      warning ("Failed to parse a potential mention!");
+      add_module (TEXT, node->get_content ());
+      return;
+    }
+
+    // Create the mention module
+    try {
+      var    regex = new Regex ("https://(.*?)/@(.*)");
+      string acct  = regex.replace (account_link, account_link.length, 0, "\\2@\\1");
+      add_module (MENTION, node->get_content (), acct);
+    } catch (RegexError e) {
+      error (@"Error while parsing mention: $(e.message)");
     }
   }
 
