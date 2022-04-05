@@ -70,8 +70,51 @@ internal class Backend.Mastodon.Utils.TextParser : Object {
       return;
     }
 
-    // Get the displayed text
-    string paragraph_text = node->get_content ();
+    // Parse all nodes beneath this one
+    for (Xml.Node* child = node->children; child != null; child = child->next) {
+      if (node->type != ELEMENT_NODE) {
+        continue;
+      }
+
+      // Check the type of the child
+      switch (child->name) {
+        // Convert line breaks
+        case "br":
+          var text_mod        = TextModule ();
+          text_mod.type       = TEXT;
+          text_mod.display    = "\n";
+          text_mod.target     = null;
+          text_mod.text_start = text_index;
+          text_index          = text_index + text_mod.display.length;
+          text_mod.text_end   = text_index;
+          text_modules       += text_mod;
+          break;
+
+        // Anything not detected is treated as text
+        default:
+          var text_mod        = TextModule ();
+          text_mod.type       = TEXT;
+          text_mod.display    = child->get_content ();
+          text_mod.target     = null;
+          text_mod.text_start = text_index;
+          text_index          = text_index + text_mod.display.length;
+          text_mod.text_end   = text_index;
+          text_modules       += text_mod;
+          break;
+      }
+    }
+
+    // Add two linebreaks if another paragraphs follows
+    if (node->next != null) {
+      var text_mod        = TextModule ();
+      text_mod.type       = TEXT;
+      text_mod.display    = "\n\n";
+      text_mod.target     = null;
+      text_mod.text_start = text_index;
+      text_index          = text_index + text_mod.display.length;
+      text_mod.text_end   = text_index;
+      text_modules       += text_mod;
+    }
   }
 
   /**
@@ -82,6 +125,10 @@ internal class Backend.Mastodon.Utils.TextParser : Object {
    * @return A array of TextModules for format_text.
    */
   internal TextModule[] parse_text (string raw_text) {
+    // Reset fields
+    text_modules = {};
+    text_index   = 0;
+
     // Add root node as content can have multiple roots
     string parsed_text = @"<text>$(raw_text)</text>";
 
@@ -109,7 +156,7 @@ internal class Backend.Mastodon.Utils.TextParser : Object {
   /**
    * Counts the chars in the text for a modules text_start and text_end.
    */
-  private uint text_index = 0;
+  private uint text_index;
 
   /**
    * Contains the modules that were parsed from a text.
