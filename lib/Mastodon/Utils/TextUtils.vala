@@ -80,41 +80,38 @@ internal class Backend.Mastodon.Utils.TextParser : Object {
       switch (child->name) {
         // Convert line breaks
         case "br":
-          var text_mod        = TextModule ();
-          text_mod.type       = TEXT;
-          text_mod.display    = "\n";
-          text_mod.target     = null;
-          text_mod.text_start = text_index;
-          text_index          = text_index + text_mod.display.length;
-          text_mod.text_end   = text_index;
-          text_modules       += text_mod;
+          add_module (TEXT, "\n");
           break;
 
         // Anything not detected is treated as text
         default:
-          var text_mod        = TextModule ();
-          text_mod.type       = TEXT;
-          text_mod.display    = child->get_content ();
-          text_mod.target     = null;
-          text_mod.text_start = text_index;
-          text_index          = text_index + text_mod.display.length;
-          text_mod.text_end   = text_index;
-          text_modules       += text_mod;
+          add_module (TEXT, child->get_content ());
           break;
       }
     }
 
     // Add two linebreaks if another paragraphs follows
     if (node->next != null) {
-      var text_mod        = TextModule ();
-      text_mod.type       = TEXT;
-      text_mod.display    = "\n\n";
-      text_mod.target     = null;
-      text_mod.text_start = text_index;
-      text_index          = text_index + text_mod.display.length;
-      text_mod.text_end   = text_index;
-      text_modules       += text_mod;
+      add_module (TEXT, "\n\n");
     }
+  }
+
+  /**
+   * Adds a new TextModule to the array.
+   *
+   * @param type The type of this TextModule.
+   * @param display The text to be displayed.
+   * @param target A possible target for this module.
+   */
+  private void add_module (TextModuleType type, string display, string? target = null) {
+    var text_mod        = TextModule ();
+    text_mod.type       = type;
+    text_mod.display    = display;
+    text_mod.target     = target;
+    text_mod.text_start = text_index;
+    text_index          = text_index + text_mod.display.length;
+    text_mod.text_end   = text_index;
+    text_modules       += text_mod;
   }
 
   /**
