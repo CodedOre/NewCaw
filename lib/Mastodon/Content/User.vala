@@ -69,7 +69,7 @@ public class Backend.Mastodon.User : Backend.User {
     );
 
     // Parse the description into modules
-    description_modules = Utils.TextUtils.parse_text (json.get_string_member ("note"));
+    description_modules = Utils.TextParser.instance.parse_text (json.get_string_member ("note"));
 
     // First format of the description.
     description = Backend.Utils.TextUtils.format_text (description_modules);

@@ -219,7 +219,7 @@ public class Backend.Mastodon.Account : Backend.Account {
     header = new Media (PICTURE, header_url);
 
     // Parse the description into modules and create a formatted version
-    description_modules = Utils.TextUtils.parse_text (json.get_string_member ("note"));
+    description_modules = Utils.TextParser.instance.parse_text (json.get_string_member ("note"));
     description = Backend.Utils.TextUtils.format_text (description_modules);
 
     // Parses all fields

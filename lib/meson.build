@@ -42,7 +42,7 @@ if get_option('mastodon_backend').enabled()
     'Mastodon/System/Account.vala',
     'Mastodon/System/Server.vala',
     'Mastodon/Utils/ParseUtils.vala',
-    'Mastodon/Utils/TextUtils.vala'
+    'Mastodon/Utils/TextParser.vala'
   ]
 endif
 if get_option('twitter_backend').enabled()

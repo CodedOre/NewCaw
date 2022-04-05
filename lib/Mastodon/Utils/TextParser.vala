@@ -319,21 +319,3 @@ internal class Backend.Mastodon.Utils.TextParser : Object {
   private static TextParser? global_instance = null;
 
 }
-
-/**
- * Contains methods used to parse text to TextModules.
- */
-namespace Backend.Mastodon.Utils.TextUtils {
-
-  /**
-   * Parses the text into a list of TextEntities.
-   *
-   * @param raw_text The text as given by the API.
-   *
-   * @return A array of TextModules for format_text.
-   */
-  private TextModule[] parse_text (string raw_text) {
-    return TextParser.instance.parse_text (raw_text);
-  }
-
-}
