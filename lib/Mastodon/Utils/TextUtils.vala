@@ -83,6 +83,11 @@ internal class Backend.Mastodon.Utils.TextParser : Object {
           add_module (TEXT, "\n");
           break;
 
+        // Parse either weblink or hashtag
+        case "a":
+          parse_a (child);
+          break;
+
         // Parse a possible mention
         case "span":
           parse_mention (child);
@@ -99,6 +104,92 @@ internal class Backend.Mastodon.Utils.TextParser : Object {
     if (node->next != null) {
       add_module (TEXT, "\n\n");
     }
+  }
+
+  /**
+   * Parses an "a" node for a hashtag or a weblink
+   *
+   * @param node A pointer to the node being parsed.
+   */
+  private void parse_a (Xml.Node* node) {
+    // Check link properties
+    for (Xml.Attr* prop = node->properties; prop != null; prop = prop->next) {
+      // Check if link is marked as tag
+      if (prop->name == "class") {
+        string link_class = prop->children->content;
+        if (link_class.contains ("hashtag")) {
+          parse_hashtag (node);
+          return;
+        }
+      }
+
+      // Get the link to the account
+      if (prop->name == "target") {
+        string link_class = prop->children->content;
+        if (link_class.contains ("_blank")) {
+          parse_weblink (node);
+          return;
+        }
+      }
+    }
+
+    // Add node as text if parsing failed
+    warning ("Failed to parse a link node!");
+    add_module (TEXT, node->get_content ());
+    return;
+  }
+
+  /**
+   * Parses an potential hashtag and adds it.
+   *
+   * @param node A pointer to the node being parsed.
+   */
+  private void parse_hashtag (Xml.Node* node) {
+    // Create the module for the hashtag
+    add_module (TAG, node->get_content (), node->get_content ());
+  }
+
+  /**
+   * Parses an potential weblink and adds it.
+   *
+   * @param node A pointer to the node being parsed.
+   */
+  private void parse_weblink (Xml.Node* node) {
+    // Get the target from the properties
+    string? target = null;
+    for (Xml.Attr* prop = node->properties; prop != null; prop = prop->next) {
+      if (prop->name == "href") {
+        target = prop->children->content;
+      }
+    }
+
+    // Parse child nodes for display
+    string display = "";
+    for (Xml.Node* child = node->children; child != null; child = child->next) {
+      // Check if node is marked as invisible
+      bool hidden_link = false;
+      for (Xml.Attr* prop = child->properties; prop != null; prop = prop->next) {
+        if (prop->name == "class") {
+          string link_class = prop->children->content;
+          if (link_class.contains ("invisible")) {
+            hidden_link = true;
+          }
+        }
+      }
+
+      // Set the text
+      if (! hidden_link) {
+        display = display + child->get_content ();
+      } else if (child->prev != null) {
+        // Add ellipsis when we hide parts of the url
+        if (child->get_content ().length > 0) {
+          display = display + "…";
+        }
+      }
+    }
+
+    // Add the module
+    add_module (WEBLINK, display, target);
   }
 
   /**
