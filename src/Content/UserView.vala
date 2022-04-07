@@ -45,16 +45,6 @@ public class UserView : Gtk.Widget {
   }
 
   /**
-   * Set's the widget up on construction.
-   */
-  construct {
-    // Bind the settings to widget properties
-    var settings = new Settings ("uk.co.ibboard.Cawbird.experimental");
-    settings.bind ("profile-inline-header", view_header, "visible",
-                    GLib.SettingsBindFlags.INVERT_BOOLEAN);
-  }
-
-  /**
    * Deconstructs UserCard and it's childrens.
    */
   public override void dispose () {

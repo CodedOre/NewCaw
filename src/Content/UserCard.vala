@@ -34,10 +34,6 @@ public class UserCard : Gtk.Widget {
   [GtkChild]
   private unowned Gtk.Button banner_selector;
   [GtkChild]
-  private unowned Adw.Bin card_scrim;
-  [GtkChild]
-  private unowned Adw.HeaderBar card_header;
-  [GtkChild]
   private unowned Gtk.Box infobox;
   [GtkChild]
   private unowned UserAvatar user_avatar;
@@ -80,13 +76,6 @@ public class UserCard : Gtk.Widget {
    * Set's the widget up on construction.
    */
   construct {
-    // Bind the settings to widget properties
-    var settings = new Settings ("uk.co.ibboard.Cawbird.experimental");
-    settings.bind ("profile-inline-header", card_scrim, "visible",
-                    GLib.SettingsBindFlags.DEFAULT);
-    settings.bind ("profile-inline-header", card_header, "visible",
-                    GLib.SettingsBindFlags.DEFAULT);
-
     // Create a cancellable
     load_cancellable = new Cancellable ();
 
@@ -119,8 +108,6 @@ public class UserCard : Gtk.Widget {
     load_cancellable.cancel ();
     // Destructs children of UserAvatar
     banner_holder.unparent ();
-    card_scrim.unparent ();
-    card_header.unparent ();
     infobox.unparent ();
   }
 
