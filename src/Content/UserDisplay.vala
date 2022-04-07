@@ -30,7 +30,7 @@ public class UserDisplay : Gtk.Widget {
   [GtkChild]
   private unowned UserCard user_card;
   [GtkChild]
-  private unowned Adw.Clamp content_clamp;
+  private unowned Gtk.Box user_infobox;
 
   // UI-Elements for text information
   [GtkChild]
@@ -132,7 +132,7 @@ public class UserDisplay : Gtk.Widget {
   public override void dispose () {
     // Destructs children of MediaDisplay
     user_card.unparent ();
-    content_clamp.unparent ();
+    user_infobox.unparent ();
   }
 
   /**

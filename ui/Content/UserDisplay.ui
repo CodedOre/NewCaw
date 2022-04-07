@@ -17,123 +17,116 @@
       </object>
     </child>
     <child>
-      <object class="AdwClamp" id="content_clamp">
-        <property name="margin-top">8</property>
-        <property name="maximum-size">1024</property>
-        <property name="tightening-threshold">512</property>
+      <object class="GtkBox" id="user_infobox">
+        <property name="margin-start">20</property>
+        <property name="margin-end">20</property>
+        <property name="margin-bottom">16</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkBox">
-            <property name="margin-start">20</property>
-            <property name="margin-end">20</property>
-            <property name="margin-bottom">16</property>
-            <property name="orientation">vertical</property>
+            <property name="spacing">4</property>
             <child>
-              <object class="GtkBox">
-                <property name="spacing">4</property>
-                <child>
-                  <object class="GtkLabel" id="user_display_label">
-                    <property name="xalign">0.0</property>
-                    <property name="ellipsize">end</property>
-                    <style>
-                      <class name="title-1"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="BadgesBox" id="user_badges">
-                    <property name="icon-size">12</property>
-                    <property name="valign">start</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkLabel" id="user_username_label">
+              <object class="GtkLabel" id="user_display_label">
                 <property name="xalign">0.0</property>
                 <property name="ellipsize">end</property>
-                <property name="margin-bottom">8</property>
                 <style>
-                  <class name="caption"/>
-                  <class name="dim-label"/>
+                  <class name="title-1"/>
                 </style>
               </object>
             </child>
             <child>
-              <object class="GtkLabel" id="user_description_label">
-                <property name="xalign">0.0</property>
-                <property name="wrap">true</property>
-                <property name="use-markup">true</property>
-                <property name="margin-bottom">8</property>
+              <object class="BadgesBox" id="user_badges">
+                <property name="icon-size">12</property>
+                <property name="valign">start</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="user_username_label">
+            <property name="xalign">0.0</property>
+            <property name="ellipsize">end</property>
+            <property name="margin-bottom">8</property>
+            <style>
+              <class name="caption"/>
+              <class name="dim-label"/>
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="user_description_label">
+            <property name="xalign">0.0</property>
+            <property name="wrap">true</property>
+            <property name="use-markup">true</property>
+            <property name="margin-bottom">8</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkFlowBox">
+            <property name="margin-bottom">8</property>
+            <property name="column-spacing">12</property>
+            <property name="max-children-per-line">42</property>
+            <property name="selection-mode">none</property>
+            <child>
+              <object class="GtkButton">
+                <child>
+                  <object class="GtkBox">
+                    <property name="spacing">2</property>
+                    <child>
+                      <object class="GtkLabel" id="following_counter">
+                        <property name="use-markup">true</property>
+                        <style>
+                          <class name="body"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">go-next-symbolic</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <style>
+                  <class name="flat"/>
+                  <class name="inline"/>
+                </style>
               </object>
             </child>
             <child>
-              <object class="GtkFlowBox">
-                <property name="margin-bottom">8</property>
-                <property name="column-spacing">12</property>
-                <property name="max-children-per-line">42</property>
-                <property name="selection-mode">none</property>
+              <object class="GtkButton">
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkBox">
+                    <property name="spacing">2</property>
                     <child>
-                      <object class="GtkBox">
-                        <property name="spacing">2</property>
-                        <child>
-                          <object class="GtkLabel" id="following_counter">
-                            <property name="use-markup">true</property>
-                            <style>
-                              <class name="body"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkImage">
-                            <property name="icon-name">go-next-symbolic</property>
-                          </object>
-                        </child>
+                      <object class="GtkLabel" id="followers_counter">
+                        <property name="use-markup">true</property>
+                        <style>
+                          <class name="body"/>
+                        </style>
                       </object>
                     </child>
-                    <style>
-                      <class name="flat"/>
-                      <class name="inline"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton">
                     <child>
-                      <object class="GtkBox">
-                        <property name="spacing">2</property>
-                        <child>
-                          <object class="GtkLabel" id="followers_counter">
-                            <property name="use-markup">true</property>
-                            <style>
-                              <class name="body"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkImage">
-                            <property name="icon-name">go-next-symbolic</property>
-                          </object>
-                        </child>
+                      <object class="GtkImage">
+                        <property name="icon-name">go-next-symbolic</property>
                       </object>
                     </child>
-                    <style>
-                      <class name="flat"/>
-                      <class name="inline"/>
-                    </style>
                   </object>
                 </child>
+                <style>
+                  <class name="flat"/>
+                  <class name="inline"/>
+                </style>
               </object>
             </child>
-            <child>
-              <object class="GtkFlowBox" id="user_fields">
-                <property name="margin-bottom">2</property>
-                <property name="column-spacing">12</property>
-                <property name="max-children-per-line">1024</property>
-                <property name="selection-mode">none</property>
-              </object>
-            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkFlowBox" id="user_fields">
+            <property name="margin-bottom">2</property>
+            <property name="column-spacing">12</property>
+            <property name="max-children-per-line">1024</property>
+            <property name="selection-mode">none</property>
           </object>
         </child>
       </object>

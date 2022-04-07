@@ -27,10 +27,16 @@
         <property name="vexpand">true</property>
         <property name="hscrollbar-policy">never</property>
         <child>
-          <object class="UserDisplay">
-            <binding name="user">
-              <lookup name="user">UserView</lookup>
-            </binding>
+          <object class="AdwClamp">
+            <property name="maximum-size">1024</property>
+            <property name="tightening-threshold">512</property>
+            <child>
+              <object class="UserDisplay">
+                <binding name="user">
+                  <lookup name="user">UserView</lookup>
+                </binding>
+              </object>
+            </child>
           </object>
         </child>
       </object>
