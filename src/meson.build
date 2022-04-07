@@ -27,6 +27,7 @@ cawfiles = [
   'Content/PostDisplay.vala',
   'Content/UserCard.vala',
   'Content/UserDisplay.vala',
+  'Content/UserView.vala',
   'Media/MediaDisplay.vala',
   'Media/MediaDisplayItem.vala',
   'Media/MediaPreview.vala',

@@ -10,20 +10,6 @@
       </object>
     </property>
     <child>
-      <object class="AdwHeaderBar" id="view_header">
-        <child type="title">
-          <object class="AdwWindowTitle">
-            <property name="title">Cawbird</property>
-            <binding name="subtitle">
-              <lookup name="username">
-                <lookup name="user">UserDisplay</lookup>
-              </lookup>
-            </binding>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child>
       <object class="UserCard" id="user_card">
         <binding name="user">
           <lookup name="user">UserDisplay</lookup>
