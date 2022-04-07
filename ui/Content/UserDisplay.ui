@@ -3,6 +3,7 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
   <template class="UserDisplay" parent="GtkWidget">
+    <property name="overflow">hidden</property>
     <property name="valign">start</property>
     <property name="layout-manager">
       <object class="GtkBoxLayout">
