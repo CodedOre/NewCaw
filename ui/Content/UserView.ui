@@ -31,10 +31,18 @@
             <property name="maximum-size">1024</property>
             <property name="tightening-threshold">512</property>
             <child>
-              <object class="UserDisplay">
-                <binding name="user">
-                  <lookup name="user">UserView</lookup>
-                </binding>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="UserDisplay">
+                    <binding name="user">
+                      <lookup name="user">UserView</lookup>
+                    </binding>
+                  </object>
+                </child>
+                <style>
+                  <class name="detachable"/>
+                </style>
               </object>
             </child>
           </object>

@@ -15,6 +15,7 @@
           <object class="CroppedPicture" id="user_banner">
             <style>
               <class name="placeholder"/>
+              <class name="rounded"/>
             </style>
           </object>
         </child>
