@@ -55,15 +55,15 @@ public abstract class Backend.Server : Object {
   public string client_secret { get; protected set; }
 
   /**
-   * Runs the given Rest.ProxyCall and returns the result in a Json.Object.
+   * Runs the given Rest.ProxyCall and returns the result as an Json.Node.
    *
    * @param call The call to be run, create it with Account.create_call.
    *
-   * @return A Json.Object with the response of the call.
+   * @return A Json.Node with the response of the call.
    *
    * @throws Error Errors that happened either while loading or parsing.
    */
-  internal async Json.Object call (Rest.ProxyCall call, Cancellable? cancellable = null) throws Error {
+  internal async Json.Node call (Rest.ProxyCall call, Cancellable? cancellable = null) throws Error {
     // Run the call
     try {
       yield call.invoke_async (cancellable);
@@ -88,8 +88,7 @@ public abstract class Backend.Server : Object {
       throw e;
     }
 
-    Json.Node root = parser.get_root ();
-    return root.get_object ();
+    return parser.get_root ();
   }
 
   /**

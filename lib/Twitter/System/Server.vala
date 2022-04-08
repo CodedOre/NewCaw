@@ -104,32 +104,6 @@ public class Backend.Twitter.Server : Backend.Server {
   }
 
   /**
-   * Splits the received json into an data and includes object.
-   *
-   * This splits the json received from the API
-   * into an data and includes json, if available.
-   *
-   * @param json The original json object.
-   * @param data A reference where the data object will be stored.
-   * @param includes A reference where the includes object will be stored, or null if not available.
-   */
-  internal static void data_include_split (Json.Object json, out Json.Object data, out Json.Object? includes) {
-    // Retrieve the data object
-    if (json.has_member ("data")) {
-      data = json.get_object_member ("data");
-    } else {
-      error ("Could not retrieve data object");
-    }
-
-    // Retrieve the data object
-    if (json.has_member ("includes")) {
-      includes = json.get_object_member ("includes");
-    } else {
-      includes = null;
-    }
-  }
-
-  /**
    * Checks an finished Rest.ProxyCall for occurred errors.
    *
    * @param call The call as run by call.

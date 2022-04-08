@@ -176,12 +176,21 @@ public class Backend.Twitter.Account : Backend.Account {
     auth_call.set_function ("users/me");
     Server.append_user_fields (ref auth_call);
 
-    Json.Object json, data;
+    Json.Node   json;
+    Json.Object root;
     try {
       json = yield server.call (auth_call);
-      Server.data_include_split (json, out data, null);
+      root = json.get_object ();
     } catch (Error e) {
       throw e;
+    }
+
+    // Retrieve the data object
+    Json.Object data;
+    if (root.has_member ("data")) {
+      data = root.get_object_member ("data");
+    } else {
+      error ("Could not retrieve data object");
     }
 
     // Get metrics object

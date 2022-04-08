@@ -177,59 +177,61 @@ public class Backend.Mastodon.Account : Backend.Account {
     auth_call.set_method ("GET");
     auth_call.set_function ("accounts/verify_credentials");
 
-    Json.Object json;
+    Json.Node   json;
+    Json.Object data;
     try {
       json = yield server.call (auth_call);
+      data = json.get_object ();
     } catch (Error e) {
       throw e;
     }
 
     // Get the url for avatar and header
-    string avatar_url = json.get_string_member ("avatar_static");
-    string header_url = json.get_string_member ("header_static");
+    string avatar_url = data.get_string_member ("avatar_static");
+    string header_url = data.get_string_member ("header_static");
 
     // Get url and domain to this account
-    string account_url = json.get_string_member ("url");
+    string account_url = data.get_string_member ("url");
     string account_domain = Utils.ParseUtils.strip_domain (account_url);
 
     // Set the id of the account
-    id = json.get_string_member ("id");
+    id = data.get_string_member ("id");
 
     // Set the creation date for the account
     creation_date = new DateTime.from_iso8601 (
-                      json.get_string_member ("created_at"),
+                      data.get_string_member ("created_at"),
                       new TimeZone.utc ()
                     );
 
     // Set the names of the account
-    display_name = json.get_string_member ("display_name");
-    username     = json.get_string_member ("acct");
+    display_name = data.get_string_member ("display_name");
+    username     = data.get_string_member ("acct");
 
     // Set the url and domain
     url    = account_url;
     domain = account_domain;
 
     // Set metrics
-    followers_count = (int) json.get_int_member ("followers_count");
-    following_count = (int) json.get_int_member ("following_count");
-    posts_count     = (int) json.get_int_member ("statuses_count");
+    followers_count = (int) data.get_int_member ("followers_count");
+    following_count = (int) data.get_int_member ("following_count");
+    posts_count     = (int) data.get_int_member ("statuses_count");
 
     // Set the images
     avatar = new Media (PICTURE, avatar_url);
     header = new Media (PICTURE, header_url);
 
     // Parse the description into modules and create a formatted version
-    description_modules = Utils.TextParser.instance.parse_text (json.get_string_member ("note"));
+    description_modules = Utils.TextParser.instance.parse_text (data.get_string_member ("note"));
     description = Backend.Utils.TextUtils.format_text (description_modules);
 
     // Parses all fields
-    data_fields = Utils.ParseUtils.parse_data_fields (json.get_array_member ("fields"));
+    data_fields = Utils.ParseUtils.parse_data_fields (data.get_array_member ("fields"));
 
     // Get possible flags for this user
-    if (json.get_boolean_member ("locked")) {
+    if (data.get_boolean_member ("locked")) {
       flags = flags | MODERATED;
     }
-    if (json.get_boolean_member ("bot")) {
+    if (data.get_boolean_member ("bot")) {
       flags = flags | BOT;
     }
 

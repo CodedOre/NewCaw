@@ -88,9 +88,11 @@ public class Backend.Mastodon.Server : Backend.Server {
     client_call.add_param ("website", application.website);
 
     // Authenticate client
+    Json.Node   json;
     Json.Object client;
     try {
-      client = yield call (client_call, cancellable);
+      json   = yield call (client_call, cancellable);
+      client = json.get_object ();
     } catch (Error e) {
       throw e;
     }
