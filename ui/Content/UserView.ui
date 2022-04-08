@@ -33,11 +33,20 @@
             <child>
               <object class="GtkBox">
                 <property name="orientation">vertical</property>
+                <property name="spacing">20</property>
                 <child>
                   <object class="UserDisplay">
                     <binding name="user">
                       <lookup name="user">UserView</lookup>
                     </binding>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkListBox" id="post_list">
+                    <property name="selection-mode">none</property>
+                    <style>
+                      <class name="boxed-list"/>
+                    </style>
                   </object>
                 </child>
                 <style>

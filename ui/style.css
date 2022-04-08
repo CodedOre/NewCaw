@@ -131,7 +131,8 @@ clamp > .small.detachable {
 /**
  * Remove the corners from a card under a detachable widget.
  */
-clamp > .small.detachable > .card {
+clamp > .small.detachable > .card,
+clamp > .small.detachable > .boxed-list {
   border-radius: 0;
 }
 
