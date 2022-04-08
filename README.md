@@ -15,16 +15,18 @@ When the work will be completed, the code in this repo will become Cawbird 2.0.
 
 ## Building
 
-This repo is using currently WIP library (mainly libadwaita). \
-So if you want to build it yourself it is recommended to use flatpak-builder to build the included manifest.
+The recommended way to build this project is with Gnome Builder, which will use flatpak-builder to get the dependencies and build it.
 
-The recommended way would be to build it from Gnome Builder.
+If you want to build the Twitter backends, you need to supply a Client key and secret using the respective build options.
 
-**Currently NewCaw requires code not included in this repo to display a demonstration window, see the [linked discussion](https://github.com/CodedOre/NewCaw/discussions/4) for more detail.**
+If you're using flatpak-builder, you can set them by adding this to the `Cawbird` module in the manifest:
+```json
+      "config-opts": [
+        "-Dtwitter_oauth1_tokens=['CLIENT_KEY','CLIENT_SECRET']",
+        "-Dtwitter_oauth2_tokens=['CLIENT_KEY','CLIENT_SECRET']"
+      ],
+```
 
 ## Contributing
 
-You can contribute in multiple ways:
-- Review existing code for issues
-- Fix some of the `FIXME` comments in the code
-- Contribute a feature I'm yet to be working on, but please let me know in this case beforehand.
+This is a large project, so every help is appreachiated! You can always review the code or take a look at the posted issues. There are also features that are yet to be implemented where you can work on, so get in touch if you want to help with that!
