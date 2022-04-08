@@ -52,6 +52,17 @@ button.inline:hover {
 }
 
 /**
+ * Buttons used to select filters.
+ */
+button.filter-pill {
+  border-radius: 50px;
+  padding: 1px 12px;
+}
+button.filter-pill:checked {
+  color: @accent_color;
+}
+
+/**
  * A button used to select a avatar.
  */
 button.avatar-button {
@@ -111,20 +122,29 @@ widget.squared > avatar {
 }
 
 /**
- * Displays a gradient from black to transparent.
- */
-widget.scrim {
-  background: linear-gradient(alpha(black, 0.4), transparent);
-}
-headerbar.scrim {
-  color: white;
-}
-
-/**
  * Displays a grey background before a picture is shown.
  */
 .placeholder {
   background: @dark_1;
+}
+
+/**
+ * Margins on a widget which are removed on a small clamp.
+ */
+clamp > .detachable {
+  margin: 12px;
+  transition: 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+clamp > .small.detachable {
+  margin: 0;
+}
+
+/**
+ * Remove the corners from a card under a detachable widget.
+ */
+clamp > .small.detachable > .card,
+clamp > .small.detachable > .boxed-list {
+  border-radius: 0;
 }
 
 /**

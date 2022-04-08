@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="CollectionFilter" parent="GtkWidget">
+    <property name="layout-manager">
+      <object class="GtkBinLayout"/>
+    </property>
+    <child>
+      <object class="GtkFlowBox" id="filter_box">
+        <property name="column-spacing">4</property>
+        <property name="max-children-per-line">42</property>
+        <property name="selection-mode">none</property>
+        <child>
+          <object class="FilterButton">
+            <property name="active">true</property>
+            <property name="label">Posts</property>
+          </object>
+        </child>
+        <child>
+          <object class="FilterButton">
+            <property name="label">Replies</property>
+          </object>
+        </child>
+        <child>
+          <object class="FilterButton">
+            <property name="active">true</property>
+            <property name="label">Reposts</property>
+          </object>
+        </child>
+        <child>
+          <object class="FilterButton">
+            <property name="active">true</property>
+            <property name="label">Media</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

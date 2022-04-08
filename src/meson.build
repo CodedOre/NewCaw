@@ -27,6 +27,7 @@ cawfiles = [
   'Content/PostDisplay.vala',
   'Content/UserCard.vala',
   'Content/UserDisplay.vala',
+  'Content/UserView.vala',
   'Media/MediaDisplay.vala',
   'Media/MediaDisplayItem.vala',
   'Media/MediaPreview.vala',
@@ -43,6 +44,8 @@ cawfiles = [
   'System/Utils/PlatformEnum.vala',
   'Utils/DisplayUtils.vala',
   'Widgets/BadgesBox.vala',
+  'Widgets/CollectionFilter.vala',
+  'Widgets/FilterButton.vala',
   'Widgets/CroppedPicture.vala',
   'Widgets/UserAvatar.vala',
   'Widgets/WaitingButton.vala'

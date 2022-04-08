@@ -28,11 +28,9 @@ public class UserDisplay : Gtk.Widget {
 
   // General UI-Elements of UserDisplay
   [GtkChild]
-  private unowned Adw.HeaderBar view_header;
-  [GtkChild]
   private unowned UserCard user_card;
   [GtkChild]
-  private unowned Adw.Clamp content_clamp;
+  private unowned Gtk.Box user_infobox;
 
   // UI-Elements for text information
   [GtkChild]
@@ -129,23 +127,12 @@ public class UserDisplay : Gtk.Widget {
   }
 
   /**
-   * Set's the widget up on construction.
-   */
-  construct {
-    // Bind the settings to widget properties
-    var settings = new Settings ("uk.co.ibboard.Cawbird.experimental");
-    settings.bind ("profile-inline-header", view_header, "visible",
-                    GLib.SettingsBindFlags.INVERT_BOOLEAN);
-  }
-
-  /**
    * Deconstructs UserCard and it's childrens.
    */
   public override void dispose () {
     // Destructs children of MediaDisplay
-    view_header.unparent ();
     user_card.unparent ();
-    content_clamp.unparent ();
+    user_infobox.unparent ();
   }
 
   /**

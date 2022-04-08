@@ -28,19 +28,13 @@ public class UserCard : Gtk.Widget {
 
   // UI-Elements of UserCard
   [GtkChild]
-  private unowned CroppedPicture blurred_banner;
-  [GtkChild]
-  private unowned Adw.Clamp banner_clamp;
+  private unowned Gtk.Overlay banner_holder;
   [GtkChild]
   private unowned CroppedPicture user_banner;
   [GtkChild]
   private unowned Gtk.Button banner_selector;
   [GtkChild]
-  private unowned Adw.Bin card_scrim;
-  [GtkChild]
-  private unowned Adw.HeaderBar card_header;
-  [GtkChild]
-  private unowned Adw.Clamp content_clamp;
+  private unowned Gtk.Box infobox;
   [GtkChild]
   private unowned UserAvatar user_avatar;
 
@@ -64,7 +58,6 @@ public class UserCard : Gtk.Widget {
           header.get_media.begin (load_cancellable, (obj, res) => {
             try {
               var paintable = header.get_media.end (res) as Gdk.Paintable;
-              blurred_banner.paintable = paintable;
               user_banner.paintable = paintable;
             } catch (Error e) {
               warning (@"Could not load header: $(e.message)");
@@ -83,13 +76,6 @@ public class UserCard : Gtk.Widget {
    * Set's the widget up on construction.
    */
   construct {
-    // Bind the settings to widget properties
-    var settings = new Settings ("uk.co.ibboard.Cawbird.experimental");
-    settings.bind ("profile-inline-header", card_scrim, "visible",
-                    GLib.SettingsBindFlags.DEFAULT);
-    settings.bind ("profile-inline-header", card_header, "visible",
-                    GLib.SettingsBindFlags.DEFAULT);
-
     // Create a cancellable
     load_cancellable = new Cancellable ();
 
@@ -121,11 +107,8 @@ public class UserCard : Gtk.Widget {
     // Cancel possible loads
     load_cancellable.cancel ();
     // Destructs children of UserAvatar
-    blurred_banner.unparent ();
-    banner_clamp.unparent ();
-    card_scrim.unparent ();
-    card_header.unparent ();
-    content_clamp.unparent ();
+    banner_holder.unparent ();
+    infobox.unparent ();
   }
 
   /**
