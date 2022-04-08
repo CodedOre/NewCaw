@@ -23,8 +23,10 @@
     <file>System/Authentication/LoadPage.ui</file>
     <file>System/Authentication/ServerPage.ui</file>
     <file>System/Authentication/StartPage.ui</file>
-    <file>Widgets/UserAvatar.ui</file>
     <file>Widgets/BadgesBox.ui</file>
+    <file>Widgets/CollectionFilter.ui</file>
+    <file>Widgets/FilterButton.ui</file>
+    <file>Widgets/UserAvatar.ui</file>
     <file>Widgets/WaitingButton.ui</file>
   </gresource>
 </gresources>

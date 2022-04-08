@@ -52,6 +52,17 @@ button.inline:hover {
 }
 
 /**
+ * Buttons used to select filters.
+ */
+button.filter-pill {
+  border-radius: 50px;
+  padding: 1px 12px;
+}
+button.filter-pill:checked {
+  color: @accent_color;
+}
+
+/**
  * A button used to select a avatar.
  */
 button.avatar-button {
