@@ -108,13 +108,13 @@ public class CollectionList : Gtk.Widget {
     var row = new Gtk.ListBoxRow ();
     if (post.post_type == REPOST) {
       // Bind Reposts filter
-      row.bind_property ("visible", repost_filter, "active");
+      repost_filter.bind_property ("active", row, "visible");
     } else if (post.get_media ().length > 0) {
       // Bind Media filter
-      row.bind_property ("visible", media_filter, "active");
+      media_filter.bind_property ("active", row, "visible");
     } else {
       // Bind all others to Post filter
-      row.bind_property ("visible", post_filter, "active");
+      post_filter.bind_property ("active", row, "visible");
     }
 
     // Create PostDisplay
