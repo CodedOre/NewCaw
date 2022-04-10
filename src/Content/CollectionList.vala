@@ -41,6 +41,33 @@ public class CollectionList : Gtk.Widget {
   private unowned FilterButton media_filter;
 
   /**
+   * Which platform the displayed collection is on.
+   *
+   * Used to determine a few platform-specific strings.
+   */
+  public PlatformEnum displayed_platform {
+    get {
+      return set_display_platform;
+    }
+    set {
+      set_display_platform = value;
+      switch (set_display_platform) {
+        case MASTODON:
+          break;
+
+        case TWITTER:
+        case TWITTER_LEGACY:
+          post_filter.label   = "Tweets";
+          repost_filter.label = "Retweets";
+          break;
+
+        default:
+          assert_not_reached();
+      }
+    }
+  }
+
+  /**
    * The Collection being displayed in this list.
    */
   public Backend.Collection collection {
@@ -106,6 +133,11 @@ public class CollectionList : Gtk.Widget {
     filter_box.unparent ();
     post_list.unparent ();
   }
+
+  /**
+   * Store the display platform.
+   */
+  private PlatformEnum set_display_platform;
 
   /**
    * Stores the displayed Collection.

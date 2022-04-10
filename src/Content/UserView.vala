@@ -55,7 +55,8 @@ public class UserView : Gtk.Widget {
         }
 
         // Create a UserTimeline
-        switch (PlatformEnum.get_platform_for_user (displayed_user)) {
+        var platform = PlatformEnum.get_platform_for_user (displayed_user);
+        switch (platform) {
           case MASTODON:
             timeline = new Backend.Mastodon.UserTimeline (displayed_user, account);
             break;
@@ -70,7 +71,8 @@ public class UserView : Gtk.Widget {
         }
 
         // Pull the posts for the timeline async
-        collection_list.collection = timeline;
+        collection_list.displayed_platform = platform;
+        collection_list.collection         = timeline;
       } else {
         // Set timeline to null
         timeline = null;
