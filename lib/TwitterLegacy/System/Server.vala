@@ -75,6 +75,20 @@ public class Backend.TwitterLegacy.Server : Backend.Server {
   }
 
   /**
+   * Appends the parameters to retrieve the complete data for a post.
+   *
+   * This adds all parameters to a Rest.ProxyCall so
+   * it requests the complete data set for a post.
+   *
+   * @param call A reference to the call which should get the parameters.
+   */
+  internal static void append_post_fields (ref Rest.ProxyCall call) {
+    call.add_param ("tweet_mode", "extended");
+    call.add_param ("include_my_retweet", "true");
+    call.add_param ("include_ext_alt_text", "true");
+  }
+
+  /**
    * Checks an finished Rest.ProxyCall for occurred errors.
    *
    * @param call The call as run by call.

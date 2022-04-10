@@ -75,6 +75,66 @@ public class Backend.Twitter.Server : Backend.Server {
   }
 
   /**
+   * Appends the parameters to retrieve the complete data for a post.
+   *
+   * This adds all parameters to a Rest.ProxyCall so
+   * it requests the complete data set for a post.
+   *
+   * @param call A reference to the call which should get the parameters.
+   */
+  internal static void append_post_fields (ref Rest.ProxyCall call) {
+    // All fields for a Post
+    string[] post_fields = {
+      "id",
+      "created_at",
+      "text",
+      "entities",
+      "author_id",
+      "entities",
+      "source",
+      "referenced_tweets",
+      "public_metrics",
+      "attachments"
+    };
+
+    // Add Post fields
+    string post_field_param = string.joinv (",", post_fields);
+    call.add_param ("tweet.fields", post_field_param);
+
+
+    // All fields for Media
+    string[] media_fields = {
+      "media_key",
+      "type",
+      "width",
+      "height",
+      "duration_ms",
+      "preview_image_url",
+      "url",
+      "alt_text"
+    };
+
+    // Add Media fields
+    string media_field_param = string.joinv (",", media_fields);
+    call.add_param ("media.fields", media_field_param);
+
+    // Add User fields
+    append_user_fields (ref call);
+
+    // All extensions for a Post
+    string[] post_extensions = {
+      "author_id",
+      "referenced_tweets.id",
+      "referenced_tweets.id.author_id",
+      "attachments.media_keys"
+    };
+
+    // Add Post extensions
+    string post_extensions_param = string.joinv (",", post_extensions);
+    call.add_param ("expansions", post_extensions_param);
+  }
+
+  /**
    * Appends the parameters to retrieve the complete data for a user.
    *
    * This adds all parameters to a Rest.ProxyCall so
