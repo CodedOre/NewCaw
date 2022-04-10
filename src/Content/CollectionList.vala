@@ -1,4 +1,4 @@
-/* CollectionFilter.vala
+/* CollectionList.vala
  *
  * Copyright 2022 Frederick Schenk
  *
@@ -21,21 +21,24 @@
 using GLib;
 
 /**
- * Allows to user to (de-)select certain types of Posts from a Collection.
+ * Displays an Collection and allows to filter the resulting list.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Widgets/CollectionFilter.ui")]
-public class CollectionFilter : Gtk.Widget {
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/CollectionList.ui")]
+public class CollectionList : Gtk.Widget {
 
-  // UI-Elements of CollectionFilter
+  // UI-Elements of CollectionList
   [GtkChild]
   private unowned Gtk.FlowBox filter_box;
+  [GtkChild]
+  private unowned Gtk.ListBox post_list;
 
   /**
-   * Deconstructs CollectionFilter and it's childrens.
+   * Deconstructs CollectionList and it's childrens.
    */
   public override void dispose () {
-    // Destructs children of CollectionFilter
+    // Destructs children of CollectionList
     filter_box.unparent ();
+    post_list.unparent ();
   }
 
 }
