@@ -31,6 +31,8 @@ public class UserView : Gtk.Widget {
   private unowned Adw.HeaderBar view_header;
   [GtkChild]
   private unowned Gtk.ScrolledWindow view_content;
+  [GtkChild]
+  private unowned CollectionList collection_list;
 
   /**
    * The User which is displayed.
@@ -41,6 +43,40 @@ public class UserView : Gtk.Widget {
     }
     set {
       displayed_user = value;
+      if (displayed_user != null) {
+        // Get the account for this widget
+        Backend.Account account;
+        Gtk.Root display_root = this.get_root ();
+        if (display_root is MainWindow) {
+          var main_window = display_root as MainWindow;
+          account = main_window.account;
+        } else {
+          error ("UserView: Failed to get account for this view!");
+        }
+
+        // Create a UserTimeline
+        switch (PlatformEnum.get_platform_for_user (displayed_user)) {
+          case MASTODON:
+            timeline = new Backend.Mastodon.UserTimeline (displayed_user, account);
+            break;
+          case TWITTER:
+            timeline = new Backend.Twitter.UserTimeline (displayed_user, account);
+            break;
+          case TWITTER_LEGACY:
+            timeline = new Backend.TwitterLegacy.UserTimeline (displayed_user, account);
+            break;
+          default:
+            error ("UserView: Failed to find appropriate user!");
+        }
+
+        // Pull the posts for the timeline async
+        timeline.pull_posts.begin ();
+        collection_list.collection = timeline;
+      } else {
+        // Set timeline to null
+        timeline = null;
+        collection_list.collection = null;
+      }
     }
   }
 
@@ -54,8 +90,13 @@ public class UserView : Gtk.Widget {
   }
 
   /**
+   * Stores the UserTimeline displayed for this user.
+   */
+  private Backend.UserTimeline? timeline = null;
+
+  /**
    * Stores the displayed user.
    */
-  private Backend.User displayed_user;
+  private Backend.User? displayed_user = null;
 
 }

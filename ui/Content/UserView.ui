@@ -41,7 +41,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="CollectionList">
+                  <object class="CollectionList" id="collection_list">
                     <property name="margin-top">32</property>
                   </object>
                 </child>

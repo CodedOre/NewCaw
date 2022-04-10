@@ -41,9 +41,9 @@ public class MainWindow : Adw.ApplicationWindow {
 
       // Display set account
       if (displayed_account != null) {
-        var user_view  = new UserView ();
-        user_view.user = displayed_account;
+        var user_view = new UserView ();
         leaflet.append (user_view);
+        user_view.user = displayed_account;
         leaflet.set_visible_child (user_view);
       }
     }
