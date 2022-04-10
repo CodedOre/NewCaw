@@ -32,6 +32,68 @@ public class CollectionList : Gtk.Widget {
   [GtkChild]
   private unowned Gtk.ListBox post_list;
 
+  // Filters for CollectionList
+  [GtkChild]
+  private unowned FilterButton post_filter;
+  [GtkChild]
+  private unowned FilterButton repost_filter;
+  [GtkChild]
+  private unowned FilterButton media_filter;
+
+  /**
+   * The Collection being displayed in this list.
+   */
+  public Backend.Collection collection {
+    get {
+      return shown_collection;
+    }
+    set {
+      shown_collection = value;
+      if (shown_collection != null) {
+        // Bind ListModel of Collection to ListBox
+        post_list.bind_model (shown_collection.post_list, make_post_widget);
+      } else {
+        // Unbind possible existing ListModel.
+        post_list.bind_model (null, null);
+      }
+    }
+  }
+
+  /**
+   * Creates a ListRow for an object from the Collection model.
+   *
+   * @param object An Object expected to be an Post that can be displayed.
+   *
+   * @return A Gtk.Widget to be displayed in the list.
+   */
+  private Gtk.Widget make_post_widget (Object object) {
+    // Check we get an Post object
+    var post = object as Backend.Post;
+    if (post == null) {
+      error ("The Collection contained one object not being a Post!");
+    }
+
+    // Create ListBoxRow and bind visibilities
+    var row = new Gtk.ListBoxRow ();
+    if (post.post_type == REPOST) {
+      // Bind Reposts filter
+      row.bind_property ("visible", repost_filter, "active");
+    } else if (post.get_media ().length > 0) {
+      // Bind Media filter
+      row.bind_property ("visible", media_filter, "active");
+    } else {
+      // Bind all others to Post filter
+      row.bind_property ("visible", post_filter, "active");
+    }
+
+    // Create PostDisplay
+    var display = new PostDisplay (post);
+
+    // Return the new row
+    row.child = display;
+    return row;
+  }
+
   /**
    * Deconstructs CollectionList and it's childrens.
    */
@@ -40,5 +102,10 @@ public class CollectionList : Gtk.Widget {
     filter_box.unparent ();
     post_list.unparent ();
   }
+
+  /**
+   * Stores the displayed Collection.
+   */
+  private Backend.Collection? shown_collection = null;
 
 }

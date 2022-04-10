@@ -15,7 +15,7 @@
         <property name="max-children-per-line">42</property>
         <property name="selection-mode">none</property>
         <child>
-          <object class="FilterButton">
+          <object class="FilterButton" id="post_filter">
             <property name="active">true</property>
             <property name="label">Posts</property>
           </object>
@@ -26,13 +26,13 @@
           </object>
         </child>
         <child>
-          <object class="FilterButton">
+          <object class="FilterButton" id="repost_filter">
             <property name="active">true</property>
             <property name="label">Reposts</property>
           </object>
         </child>
         <child>
-          <object class="FilterButton">
+          <object class="FilterButton" id="media_filter">
             <property name="active">true</property>
             <property name="label">Media</property>
           </object>
