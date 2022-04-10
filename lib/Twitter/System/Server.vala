@@ -36,7 +36,8 @@ public class Backend.Twitter.Server : Backend.Server {
    * to identify the API to display an authentication code
    * the user needs to manually input to authenticate the client.
    */
-  internal const string OOB_REDIRECT = "oob";
+  // FIXME: Twitter does not have a out-of-band redirect
+  internal const string OOB_REDIRECT = "https://example.com";
 
   /**
    * The global instance of this server.
