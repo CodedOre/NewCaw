@@ -1,4 +1,4 @@
-/* CollectionFilter.vala
+/* Collection.vala
  *
  * Copyright 2022 Frederick Schenk
  *
@@ -21,21 +21,30 @@
 using GLib;
 
 /**
- * Allows to user to (de-)select certain types of Posts from a Collection.
+ * Base class for collections of Posts.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Widgets/CollectionFilter.ui")]
-public class CollectionFilter : Gtk.Widget {
-
-  // UI-Elements of CollectionFilter
-  [GtkChild]
-  private unowned Gtk.FlowBox filter_box;
+public abstract class Backend.Collection : Object {
 
   /**
-   * Deconstructs CollectionFilter and it's childrens.
+   * A ListModel holding all posts in this Collection.
    */
-  public override void dispose () {
-    // Destructs children of CollectionFilter
-    filter_box.unparent ();
-  }
+  public ListModel post_list { get; construct; }
+
+  /**
+   * Calls the API to get the posts for the Collection.
+   *
+   * @throws Error Any error that happened while pulling the posts.
+   */
+  public abstract async void pull_posts () throws Error;
+
+  /**
+   * The id from the latest pulled Post.
+   */
+  protected string? last_post_id = null;
+
+  /**
+   * An Account used to make the calls.
+   */
+  protected unowned Account call_account;
 
 }

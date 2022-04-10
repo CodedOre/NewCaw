@@ -41,17 +41,8 @@
                   </object>
                 </child>
                 <child>
-                  <object class="CollectionFilter">
+                  <object class="CollectionList" id="collection_list">
                     <property name="margin-top">32</property>
-                    <property name="margin-bottom">8</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkListBox" id="post_list">
-                    <property name="selection-mode">none</property>
-                    <style>
-                      <class name="boxed-list"/>
-                    </style>
                   </object>
                 </child>
                 <style>
