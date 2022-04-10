@@ -62,7 +62,8 @@ public class Backend.Mastodon.Media : Backend.Media {
         type_enum = PICTURE;
         break;
       default:
-        error ("Failed to create a Media object: Unknown media type!");
+        warning ("Failed to create a Media object: Unknown media type!");
+        return;
     }
 
     // Constructs an Object from the json

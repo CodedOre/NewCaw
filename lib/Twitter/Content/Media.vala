@@ -62,7 +62,8 @@ public class Backend.Twitter.Media : Backend.Media {
         type_enum = PICTURE;
         break;
       default:
-        error ("Failed to create a Media object: Unknown media type!");
+        warning ("Failed to create a Media object: Unknown media type!");
+        return;
     }
 
     // Get base url for preview and media
