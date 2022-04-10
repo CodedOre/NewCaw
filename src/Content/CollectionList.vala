@@ -52,6 +52,10 @@ public class CollectionList : Gtk.Widget {
       if (shown_collection != null) {
         // Bind ListModel of Collection to ListBox
         post_list.bind_model (shown_collection.post_list, make_post_widget);
+
+        // Load the posts from the Collection
+        shown_collection.pull_posts.begin (() => {
+        });
       } else {
         // Unbind possible existing ListModel.
         post_list.bind_model (null, null);

@@ -70,7 +70,6 @@ public class UserView : Gtk.Widget {
         }
 
         // Pull the posts for the timeline async
-        timeline.pull_posts.begin ();
         collection_list.collection = timeline;
       } else {
         // Set timeline to null
