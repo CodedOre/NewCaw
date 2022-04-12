@@ -1,6 +1,6 @@
 /* MediaDisplay.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,34 +21,26 @@
 using GLib;
 
 /**
- * A view widget displaying Media in full.
+ * Displays an array of media in full resolution.
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Media/MediaDisplay.ui")]
 public class MediaDisplay : Gtk.Widget {
 
-  // UI-Elements for the content
+  // UI-Elements of MediaDisplay
   [GtkChild]
   private unowned Adw.Carousel media_carousel;
   [GtkChild]
-  private unowned Adw.Bin load_indicator;
-
-  // UI-Elements for the buttons
+  private unowned Gtk.Revealer top_toolbar;
   [GtkChild]
-  private unowned Gtk.Revealer previous_controls;
+  private unowned Gtk.Revealer previous_control;
   [GtkChild]
-  private unowned Gtk.Revealer next_controls;
-
-  // UI-Elements for the bottom bar
+  private unowned Gtk.Revealer next_control;
   [GtkChild]
-  private unowned Gtk.Revealer bottom_bar;
+  private unowned Gtk.Revealer bottom_toolbar;
   [GtkChild]
   private unowned Gtk.Label description_label;
-
-  // UI-Elements for the top bar
   [GtkChild]
-  private unowned Gtk.Revealer top_bar;
-  [GtkChild]
-  private unowned Gtk.ProgressBar loading_progress;
+  private unowned Gtk.MediaControls video_controls;
 
   /**
    * If the UI should be displayed.
@@ -56,17 +48,33 @@ public class MediaDisplay : Gtk.Widget {
   public bool display_controls { get; set; default = true; }
 
   /**
-   * Creates a new instance of MediaDisplay.
+   * If the bottom bar has content that should be displayed.
+   */
+  public bool display_bottom_bar { get; set; }
+
+  /**
+   * Initializes the widget.
+   *
+   * @param media An array of media to be displayed.
+   * @param focus The index of the media that should be initially focused.
    */
   public MediaDisplay (Backend.Media[] media, int focus = 0) {
-    // Create a display for all media
+    // Create an item for all media
     foreach (Backend.Media item in media) {
       var item_display = new MediaDisplayItem (item);
-      item_display.notify["media-loaded"].connect (set_load_indicator);
       media_items     += item_display;
       media_carousel.append (item_display);
     }
 
+    // Scroll to the page
+    print (@"Do we have an MediaDisplayItem? $(media_items [focus] == null ? "NOPE" : "YEP")\n");
+    media_carousel.scroll_to (media_items [focus], false);
+  }
+
+  /**
+   * Run at construction of the widget.
+   */
+  construct {
     // Set up the "Button scroll" actions
     this.install_action ("media_display.select_previous", null, (widget, action) => {
       // Get the instance for this
@@ -97,12 +105,9 @@ public class MediaDisplay : Gtk.Widget {
     var click_controller = new Gtk.GestureClick ();
     click_controller.released.connect (() => {
       display_controls = ! display_controls;
+      display_bottom_bar = display_controls && bottom_bar_content;
     });
     media_carousel.add_controller (click_controller);
-
-    // Launch changed_page to setup the first item
-    media_carousel.scroll_to (media_items [focus], false);
-    changed_page ();
   }
 
   /**
@@ -112,44 +117,26 @@ public class MediaDisplay : Gtk.Widget {
   private void changed_page () {
     // Get the currently displayed media
     int              position = (int) media_carousel.position;
-    MediaDisplayItem display  = media_items [position];
-    Backend.Media    media    = display.displayed_media;
+    MediaDisplayItem item     = media_items [position];
+    Backend.Media    media    = item.displayed_media;
 
-    // Check loading state
-    set_load_indicator (display);
+    // Get the description of the media
+    string description      = media.alt_text;
+    description_label.label = description;
 
-    // Set up the description
-    description_label.label = media.alt_text;
+    // Determine which parts of the bottom bar are visible
+    bool   has_description   = description != null;
+    bool   has_video_control = false;
+
+    // Hide (parts of) the bottom bar
+    description_label.visible = has_description;
+    video_controls.visible    = has_video_control;
+    bottom_bar_content        = has_description || has_video_control;
+    display_bottom_bar        = display_controls && bottom_bar_content;
 
     // Disable scroll buttons if on first/last item
-    previous_controls.sensitive = ! (position == 0);
-    next_controls.sensitive     = ! (position == media_items.length - 1);
-  }
-
-  /**
-   * Set's the loading indicator for the current displayed item.
-   */
-  private void set_load_indicator (Object obj, ParamSpec? spec = null) {
-    // Get calling and selected display item
-    int              position = (int) media_carousel.position;
-    MediaDisplayItem display  = media_items [position];
-    var              item     = obj as MediaDisplayItem;
-
-    // Stop when item not currently displayed
-    if (display != item) {
-      return;
-    }
-
-    // Get loading status
-    if (display.media_loaded && show_loading) {
-      // Hide animation if loading is complete
-      load_indicator.set_css_classes ({"loading-media", "fade-out"});
-      show_loading = false;
-    } else if (! display.media_loaded && ! show_loading) {
-      // Show animation when still loading
-      load_indicator.set_css_classes ({"loading-media", "fade-in"});
-      show_loading = true;
-    }
+    previous_control.sensitive = ! (position == 0);
+    next_control.sensitive     = ! (position == media_items.length - 1);
   }
 
   /**
@@ -158,20 +145,19 @@ public class MediaDisplay : Gtk.Widget {
   public override void dispose () {
     // Destructs children of MediaDisplay
     media_carousel.unparent ();
-    load_indicator.unparent ();
-    previous_controls.unparent ();
-    next_controls.unparent ();
-    bottom_bar.unparent ();
-    top_bar.unparent ();
+    top_toolbar.unparent ();
+    previous_control.unparent ();
+    next_control.unparent ();
+    bottom_toolbar.unparent ();
   }
 
   /**
-   * If the loading animation should be shown.
+   * If the bottom bar has content that should be displayed.
    */
-  private bool show_loading = true;
+  private bool bottom_bar_content;
 
   /**
-   * The display items of this widget.
+   * The items displayed on this widget.
    */
   private MediaDisplayItem[] media_items;
 

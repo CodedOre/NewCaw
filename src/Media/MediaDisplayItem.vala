@@ -1,6 +1,6 @@
 /* MediaDisplayItem.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,8 +28,6 @@ public class MediaDisplayItem : Gtk.Widget {
 
   // UI-Elements of MediaDisplayItem
   [GtkChild]
-  private unowned Gtk.ScrolledWindow scroll_window;
-  [GtkChild]
   private unowned Gtk.Picture content;
 
   /**
@@ -40,7 +38,7 @@ public class MediaDisplayItem : Gtk.Widget {
   /**
    * The displayed media.
    */
-  public Backend.Media displayed_media { get; private set; }
+  public Backend.Media displayed_media { get; construct; }
 
   /**
    * Creates the widget.
@@ -48,8 +46,17 @@ public class MediaDisplayItem : Gtk.Widget {
    * @param media The media which is displayed in this widget.
    */
   public MediaDisplayItem (Backend.Media media) {
-    // Set media and create Cancellable
-    displayed_media  = media;
+    // Construct the object
+    Object (
+      displayed_media: media
+    );
+  }
+
+  /**
+   * Run at construction of the widget.
+   */
+  construct {
+    // Create the Cancellable
     load_cancellable = new Cancellable ();
 
     // Load the preview
@@ -83,7 +90,7 @@ public class MediaDisplayItem : Gtk.Widget {
     // Cancel possible loads
     load_cancellable.cancel ();
     // Destructs children of MediaDisplayItem
-    scroll_window.unparent ();
+    content.unparent ();
   }
 
   /**
