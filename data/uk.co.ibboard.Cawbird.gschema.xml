@@ -31,6 +31,15 @@
       <default>[]</default>
     </key>
   </schema>
+  <!-- Window Sizes -->
+	<schema id="uk.co.ibboard.Cawbird.Windows" path="/uk/co/ibboard/Cawbird/Windows/">
+	  <key type="(ii)" name="media-dialog-size">
+	    <description>
+	      The Size for the MediaDialog.
+	    </description>
+	    <default>(650,450)</default>
+	  </key>
+	</schema>
   <!-- Experimental Settings -->
 	<schema id="uk.co.ibboard.Cawbird.experimental" path="/uk/co/ibboard/Cawbird/experimental/">
 	  <key type="(ss)" name="twitter-oauth1-tokens">

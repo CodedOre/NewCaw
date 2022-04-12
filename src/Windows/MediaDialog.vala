@@ -87,4 +87,37 @@ public class MediaDialog : Adw.Window {
     });
   }
 
+  /**
+   * Run at construction of the widget.
+   */
+  construct {
+    // Load the set window size
+    var     settings      = new Settings ("uk.co.ibboard.Cawbird.Windows");
+    Variant tokens        = settings.get_value ("media-dialog-size");
+    int     set_width     = (int) tokens.get_child_value (0).get_int32 ();
+    int     set_height    = (int) tokens.get_child_value (1).get_int32 ();
+
+    // Set the default window size
+    set_default_size (set_width, set_height);
+
+    // Connect close event
+    close_request.connect (on_close);
+  }
+
+  /**
+   * Run when MediaDialog is closed.
+   */
+  private bool on_close () {
+    // Store the current window size as setting
+    var set_width  = new Variant.int32 (get_size (HORIZONTAL));
+    var set_height = new Variant.int32 (get_size (VERTICAL));
+    var set_size   = new Variant.tuple ({set_width, set_height});
+    var settings   = new Settings ("uk.co.ibboard.Cawbird.Windows");
+    settings.set_value ("media-dialog-size", set_size);
+
+    // Close the window for good
+    destroy ();
+    return true;
+  }
+
 }
