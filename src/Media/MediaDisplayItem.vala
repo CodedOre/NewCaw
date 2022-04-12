@@ -31,19 +31,76 @@ public class MediaDisplayItem : Gtk.Widget {
   private unowned Gtk.Picture content;
 
   /**
+   * If the high-res media is fully loaded.
+   */
+  public bool media_loaded { get; set; }
+
+  /**
+   * The displayed media.
+   */
+  public Backend.Media displayed_media { get; construct; }
+
+  /**
    * Creates the widget.
    *
    * @param media The media which is displayed in this widget.
    */
   public MediaDisplayItem (Backend.Media media) {
+    // Construct the object
+    Object (
+      displayed_media: media
+    );
+  }
+
+  /**
+   * Run at construction of the widget.
+   */
+  construct {
+    // Create the Cancellable
+    load_cancellable = new Cancellable ();
+
+    // Load the preview
+    displayed_media.get_preview.begin (load_cancellable, (obj, res) => {
+      try {
+        if (displayed_paintable == null) {
+          displayed_paintable = displayed_media.get_preview.end (res) as Gdk.Paintable;
+          content.paintable   = displayed_paintable;
+        }
+      } catch (Error e) {
+        warning (@"Could not load the avatar: $(e.message)");
+      }
+    });
+
+    // Load the media
+    displayed_media.get_media.begin (load_cancellable, (obj, res) => {
+      try {
+        displayed_paintable = displayed_media.get_media.end (res) as Gdk.Paintable;
+        content.paintable   = displayed_paintable;
+        media_loaded        = true;
+      } catch (Error e) {
+        warning (@"Could not load the avatar: $(e.message)");
+      }
+    });
   }
 
   /**
    * Deconstructs MediaDisplayItem and it's childrens.
    */
   public override void dispose () {
+    // Cancel possible loads
+    load_cancellable.cancel ();
     // Destructs children of MediaDisplayItem
     content.unparent ();
   }
+
+  /**
+   * A GLib.Cancellable to cancel loads when closing the item.
+   */
+  private Cancellable load_cancellable;
+
+  /**
+   * The displayed Gdk.Texture.
+   */
+  private Gdk.Paintable? displayed_paintable = null;
 
 }
