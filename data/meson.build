@@ -2,7 +2,7 @@
 
 # Install Desktop file
 desktop_file = i18n.merge_file(
-  input: 'uk.co.ibboard.Cawbird.desktop.in',
+  input: 'uk.co.ibboard.Cawbird.desktop',
   output: 'uk.co.ibboard.Cawbird.desktop',
   type: 'desktop',
   po_dir: '../subprojects/po',
@@ -19,7 +19,7 @@ endif
 
 # Install Appstream file
 appstream_file = i18n.merge_file(
-  input: 'uk.co.ibboard.Cawbird.appdata.xml.in',
+  input: 'uk.co.ibboard.Cawbird.appdata.xml',
   output: 'uk.co.ibboard.Cawbird.appdata.xml',
   po_dir: '../po',
   install: true,
