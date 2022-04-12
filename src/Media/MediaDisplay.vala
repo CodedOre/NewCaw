@@ -1,6 +1,6 @@
 /* MediaDisplay.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,5 +54,10 @@ public class MediaDisplay : Gtk.Widget {
     media_carousel.unparent ();
     media_controls.unparent ();
   }
+
+  /**
+   * The items displayed on this widget.
+   */
+  private MediaDisplayItem[] media_items;
 
 }
