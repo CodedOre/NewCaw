@@ -31,6 +31,12 @@ public class MediaDisplay : Gtk.Widget {
   private unowned Adw.Carousel media_carousel;
   [GtkChild]
   private unowned Gtk.Revealer top_toolbar;
+  [GtkChild]
+  private unowned Gtk.Revealer previous_control;
+  [GtkChild]
+  private unowned Gtk.Revealer next_control;
+  [GtkChild]
+  private unowned Gtk.Revealer bottom_toolbar;
 
   /**
    * If the UI should be displayed.
@@ -94,6 +100,9 @@ public class MediaDisplay : Gtk.Widget {
     // Destructs children of MediaDisplay
     media_carousel.unparent ();
     top_toolbar.unparent ();
+    previous_control.unparent ();
+    next_control.unparent ();
+    bottom_toolbar.unparent ();
   }
 
   /**
