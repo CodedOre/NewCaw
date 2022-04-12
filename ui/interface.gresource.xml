@@ -15,7 +15,6 @@
     <file>Content/UserDisplay.ui</file>
     <file>Content/UserView.ui</file>
     <file>Media/MediaDisplay.ui</file>
-    <file>Media/MediaDisplayItem.ui</file>
     <file>Media/MediaPreviewItem.ui</file>
     <file>System/Authentication/AuthView.ui</file>
     <file>System/Authentication/BrowserPage.ui</file>
