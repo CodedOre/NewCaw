@@ -78,9 +78,15 @@ public class UserCard : Gtk.Widget {
   construct {
     // Create a cancellable
     load_cancellable = new Cancellable ();
+  }
 
+
+  /**
+   * Runs at initialization of this class.
+   */
+  class construct {
     // Installs the header display action
-    this.install_action ("UserCard.display_header", null, (widget, action) => {
+    install_action ("UserCard.display_header", null, (widget, action) => {
       // Get the instance for this
       UserCard display = (UserCard) widget;
 
@@ -89,14 +95,9 @@ public class UserCard : Gtk.Widget {
         return;
       }
 
-      // Display the header in a MediaDisplay
+      // Display the header in a MediaDialog
       Backend.Media[] media  = { display.displayed_user.header };
-      MainWindow main_window = display.get_root () as MainWindow;
-      if (main_window != null) {
-        main_window.show_media_display (media);
-      } else {
-        error ("UserCard: Can not display MediaDisplay without MainWindow!");
-      }
+      new MediaDialog (display, media);
     });
   }
 

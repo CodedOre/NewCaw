@@ -243,9 +243,14 @@ public class PostDisplay : Gtk.Box {
         post_replies_display_box.visible = false;
       }
     }
+  }
 
+  /**
+   * Runs at initialization of this class.
+   */
+  class construct {
     // Set up "Open link" action
-    this.install_action ("post_display.open_link", null, (widget, action) => {
+    install_action ("post_display.open_link", null, (widget, action) => {
       // Get the instance for this
       PostDisplay display = (PostDisplay) widget;
 
@@ -254,7 +259,7 @@ public class PostDisplay : Gtk.Box {
     });
 
     // Set up "display media" action
-    this.install_action ("post_display.display_media", "i", (widget, action, arg) => {
+    install_action ("post_display.display_media", "i", (widget, action, arg) => {
       // Get the instance for this
       PostDisplay display = (PostDisplay) widget;
 
@@ -262,14 +267,8 @@ public class PostDisplay : Gtk.Box {
       int             focus = (int) arg.get_int32 ();
       Backend.Media[] media = display.main_post.get_media ();
 
-      // Get the MainWindow for this PostDisplay
-      Gtk.Root display_root = display.get_root ();
-      if (display_root is MainWindow) {
-        var main_window = (MainWindow) display_root;
-        main_window.show_media_display (media, focus);
-      } else {
-        error ("PostDisplay: Can not display MediaDisplay without MainWindow!");
-      }
+      // Display the media in an MediaDialog
+      new MediaDialog (display, media, focus);
     });
   }
 

@@ -1,6 +1,6 @@
 /* UserAvatar.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -90,9 +90,14 @@ public class UserAvatar : Gtk.Widget {
     var settings = new Settings ("uk.co.ibboard.Cawbird");
     settings.bind ("round-avatars", this, "rounded",
                     GLib.SettingsBindFlags.DEFAULT);
+  }
 
+  /**
+   * Runs at initialization of this class.
+   */
+  class construct {
     // Installs the media display action
-    this.install_action ("avatar.display_media", null, (widget, action) => {
+    install_action ("avatar.display_media", null, (widget, action) => {
       // Get the instance for this
       UserAvatar display = (UserAvatar) widget;
 
@@ -103,12 +108,7 @@ public class UserAvatar : Gtk.Widget {
 
       // Display the avatar in a MediaDisplay
       Backend.Media[] media  = { display.shown_avatar };
-      MainWindow main_window = display.get_root () as MainWindow;
-      if (main_window != null) {
-        main_window.show_media_display (media);
-      } else {
-        error ("UserAvatar: Can not display MediaDisplay without MainWindow!");
-      }
+      new MediaDialog (display, media);
     });
   }
 

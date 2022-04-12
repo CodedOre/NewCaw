@@ -28,5 +28,6 @@
     <file>Widgets/WaitingButton.ui</file>
     <file>Windows/InitWindow.ui</file>
     <file>Windows/MainWindow.ui</file>
+    <file>Windows/MediaDialog.ui</file>
   </gresource>
 </gresources>

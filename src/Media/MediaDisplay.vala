@@ -53,12 +53,32 @@ public class MediaDisplay : Gtk.Widget {
   public bool display_bottom_bar { get; set; }
 
   /**
-   * Initializes the widget.
+   * The currently visible media.
+   */
+  public Backend.Media visible_media {
+    get {
+      // Get the currently displayed item
+      int              position = (int) media_carousel.position;
+      MediaDisplayItem item     = media_items [position];
+
+      // Return the media from that item
+      return item.displayed_media;
+    }
+  }
+
+  /**
+   * Sets the displayed media items.
    *
    * @param media An array of media to be displayed.
    * @param focus The index of the media that should be initially focused.
    */
-  public MediaDisplay (Backend.Media[] media, int focus = 0) {
+  public void set_media (Backend.Media[] media, int focus = 0) {
+    // Clear up potential existing items
+    foreach (MediaDisplayItem item in media_items) {
+      media_carousel.remove (item);
+    }
+    media_items = {};
+
     // Create an item for all media
     foreach (Backend.Media item in media) {
       var item_display = new MediaDisplayItem (item);
@@ -71,11 +91,11 @@ public class MediaDisplay : Gtk.Widget {
   }
 
   /**
-   * Run at construction of the widget.
+   * Runs at initialization of this class.
    */
-  construct {
+  class construct {
     // Set up the "Button scroll" actions
-    this.install_action ("media_display.select_previous", null, (widget, action) => {
+    install_action ("media_display.select_previous", null, (widget, action) => {
       // Get the instance for this
       MediaDisplay display = (MediaDisplay) widget;
 
@@ -87,7 +107,7 @@ public class MediaDisplay : Gtk.Widget {
         display.media_carousel.scroll_to (display.media_items [i-1], true);
       }
     });
-    this.install_action ("media_display.select_next", null, (widget, action) => {
+    install_action ("media_display.select_next", null, (widget, action) => {
       // Get the instance for this
       MediaDisplay display = (MediaDisplay) widget;
 
@@ -99,32 +119,12 @@ public class MediaDisplay : Gtk.Widget {
         display.media_carousel.scroll_to (display.media_items [i+1], true);
       }
     });
+  }
 
-    // Set up URL actions
-    this.install_action ("media_display.copy_url", null, (widget, action) => {
-      // Get the instance for this
-      MediaDisplay display = (MediaDisplay) widget;
-
-      // Get the current media
-      int i = (int) display.media_carousel.position;
-      Backend.Media media = display.media_items [i].displayed_media;
-
-      // Get the url and places it in the clipboard
-      Gdk.Clipboard clipboard = display.get_clipboard ();
-      clipboard.set_text (media.media_url);
-    });
-    this.install_action ("media_display.open_url", null, (widget, action) => {
-      // Get the instance for this
-      MediaDisplay display = (MediaDisplay) widget;
-
-      // Get the current media
-      int i = (int) display.media_carousel.position;
-      Backend.Media media = display.media_items [i].displayed_media;
-
-      // Get the url and opens it
-      Gtk.show_uri (null, media.media_url, Gdk.CURRENT_TIME);
-    });
-
+  /**
+   * Run at construction of the widget.
+   */
+  construct {
     // Show/Hide the UI when clicking on the UI
     var click_controller = new Gtk.GestureClick ();
     click_controller.released.connect (() => {
@@ -140,9 +140,8 @@ public class MediaDisplay : Gtk.Widget {
   [GtkCallback]
   private void changed_page () {
     // Get the currently displayed media
-    int              position = (int) media_carousel.position;
-    MediaDisplayItem item     = media_items [position];
-    Backend.Media    media    = item.displayed_media;
+    int           position = (int) media_carousel.position;
+    Backend.Media media    = visible_media;
 
     // Get the description of the media
     string description      = media.alt_text;
