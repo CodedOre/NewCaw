@@ -100,6 +100,31 @@ public class MediaDisplay : Gtk.Widget {
       }
     });
 
+    // Set up URL actions
+    this.install_action ("media_display.copy_url", null, (widget, action) => {
+      // Get the instance for this
+      MediaDisplay display = (MediaDisplay) widget;
+
+      // Get the current media
+      int i = (int) display.media_carousel.position;
+      Backend.Media media = display.media_items [i].displayed_media;
+
+      // Get the url and places it in the clipboard
+      Gdk.Clipboard clipboard = display.get_clipboard ();
+      clipboard.set_text (media.media_url);
+    });
+    this.install_action ("media_display.open_url", null, (widget, action) => {
+      // Get the instance for this
+      MediaDisplay display = (MediaDisplay) widget;
+
+      // Get the current media
+      int i = (int) display.media_carousel.position;
+      Backend.Media media = display.media_items [i].displayed_media;
+
+      // Get the url and opens it
+      Gtk.show_uri (null, media.media_url, Gdk.CURRENT_TIME);
+    });
+
     // Show/Hide the UI when clicking on the UI
     var click_controller = new Gtk.GestureClick ();
     click_controller.released.connect (() => {
