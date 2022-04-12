@@ -53,6 +53,20 @@ public class MediaDisplay : Gtk.Widget {
   public bool display_bottom_bar { get; set; }
 
   /**
+   * The currently visible media.
+   */
+  public Backend.Media visible_media {
+    get {
+      // Get the currently displayed item
+      int              position = (int) media_carousel.position;
+      MediaDisplayItem item     = media_items [position];
+
+      // Return the media from that item
+      return item.displayed_media;
+    }
+  }
+
+  /**
    * Sets the displayed media items.
    *
    * @param media An array of media to be displayed.
@@ -106,31 +120,6 @@ public class MediaDisplay : Gtk.Widget {
       }
     });
 
-    // Set up URL actions
-    this.install_action ("media_display.copy_url", null, (widget, action) => {
-      // Get the instance for this
-      MediaDisplay display = (MediaDisplay) widget;
-
-      // Get the current media
-      int i = (int) display.media_carousel.position;
-      Backend.Media media = display.media_items [i].displayed_media;
-
-      // Get the url and places it in the clipboard
-      Gdk.Clipboard clipboard = display.get_clipboard ();
-      clipboard.set_text (media.media_url);
-    });
-    this.install_action ("media_display.open_url", null, (widget, action) => {
-      // Get the instance for this
-      MediaDisplay display = (MediaDisplay) widget;
-
-      // Get the current media
-      int i = (int) display.media_carousel.position;
-      Backend.Media media = display.media_items [i].displayed_media;
-
-      // Get the url and opens it
-      Gtk.show_uri (null, media.media_url, Gdk.CURRENT_TIME);
-    });
-
     // Show/Hide the UI when clicking on the UI
     var click_controller = new Gtk.GestureClick ();
     click_controller.released.connect (() => {
@@ -146,9 +135,8 @@ public class MediaDisplay : Gtk.Widget {
   [GtkCallback]
   private void changed_page () {
     // Get the currently displayed media
-    int              position = (int) media_carousel.position;
-    MediaDisplayItem item     = media_items [position];
-    Backend.Media    media    = item.displayed_media;
+    int           position = (int) media_carousel.position;
+    Backend.Media media    = visible_media;
 
     // Get the description of the media
     string description      = media.alt_text;

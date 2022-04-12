@@ -28,6 +28,8 @@ public class MediaDialog : Adw.Window {
 
   // UI-Elements of MediaDialog
   [GtkChild]
+  private unowned Adw.ToastOverlay toasts;
+  [GtkChild]
   private unowned MediaDisplay media_display;
 
   /**
@@ -52,6 +54,37 @@ public class MediaDialog : Adw.Window {
 
     // Show the dialog
     this.present ();
+  }
+
+  /**
+   * Run at construction of the widget.
+   */
+  construct {
+    // Set up URL actions
+    this.install_action ("media.copy-url", null, (widget, action) => {
+      // Get the instance for this
+      var dialog = widget as MediaDialog;
+
+      // Get the current media
+      Backend.Media media = dialog.media_display.visible_media;
+
+      // Get the url and places it in the clipboard
+      Gdk.Clipboard clipboard = dialog.get_clipboard ();
+      clipboard.set_text (media.media_url);
+
+      // Notify the user about the copied url
+      dialog.toasts.add_toast (new Adw.Toast (_("URL to media copied!")));
+    });
+    this.install_action ("media.open-url", null, (widget, action) => {
+      // Get the instance for this
+      var dialog = widget as MediaDialog;
+
+      // Get the current media
+      Backend.Media media = dialog.media_display.visible_media;
+
+      // Get the url and opens it
+      Gtk.show_uri (null, media.media_url, Gdk.CURRENT_TIME);
+    });
   }
 
 }
