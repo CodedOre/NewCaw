@@ -48,7 +48,8 @@ cawfiles = [
   'Widgets/UserAvatar.vala',
   'Widgets/WaitingButton.vala',
   'Windows/InitWindow.vala',
-  'Windows/MainWindow.vala'
+  'Windows/MainWindow.vala',
+  'Windows/MediaDialog.vala'
 ]
 
 # Add build configurations

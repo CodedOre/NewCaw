@@ -53,12 +53,18 @@ public class MediaDisplay : Gtk.Widget {
   public bool display_bottom_bar { get; set; }
 
   /**
-   * Initializes the widget.
+   * Sets the displayed media items.
    *
    * @param media An array of media to be displayed.
    * @param focus The index of the media that should be initially focused.
    */
-  public MediaDisplay (Backend.Media[] media, int focus = 0) {
+  public void set_media (Backend.Media[] media, int focus = 0) {
+    // Clear up potential existing items
+    foreach (MediaDisplayItem item in media_items) {
+      media_carousel.remove (item);
+    }
+    media_items = {};
+
     // Create an item for all media
     foreach (Backend.Media item in media) {
       var item_display = new MediaDisplayItem (item);
