@@ -37,6 +37,8 @@ public class MediaDisplay : Gtk.Widget {
   private unowned Gtk.Revealer next_control;
   [GtkChild]
   private unowned Gtk.Revealer bottom_toolbar;
+  [GtkChild]
+  private unowned Gtk.Label description_label;
 
   /**
    * If the UI should be displayed.
@@ -91,6 +93,31 @@ public class MediaDisplay : Gtk.Widget {
         display.media_carousel.scroll_to (display.media_items [i+1], true);
       }
     });
+
+    // Show/Hide the UI when clicking on the UI
+    var click_controller = new Gtk.GestureClick ();
+    click_controller.released.connect (() => {
+      display_controls = ! display_controls;
+    });
+    media_carousel.add_controller (click_controller);
+  }
+
+  /**
+   * Adapt the UI to a changed page.
+   */
+  [GtkCallback]
+  private void changed_page () {
+    // Get the currently displayed media
+    int              position = (int) media_carousel.position;
+    MediaDisplayItem item     = media_items [position];
+    Backend.Media    media    = item.displayed_media;
+
+    // Set up the description
+    description_label.label = media.alt_text;
+
+    // Disable scroll buttons if on first/last item
+    previous_control.sensitive = ! (position == 0);
+    next_control.sensitive     = ! (position == media_items.length - 1);
   }
 
   /**
