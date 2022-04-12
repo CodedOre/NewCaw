@@ -30,7 +30,7 @@ public class MediaDisplay : Gtk.Widget {
   [GtkChild]
   private unowned Adw.Carousel media_carousel;
   [GtkChild]
-  private unowned Gtk.Revealer media_controls;
+  private unowned Gtk.Revealer top_toolbar;
 
   /**
    * If the UI should be displayed.
@@ -44,6 +44,47 @@ public class MediaDisplay : Gtk.Widget {
    * @param focus The index of the media that should be initially focused.
    */
   public MediaDisplay (Backend.Media[] media, int focus = 0) {
+    // Create an item for all media
+    foreach (Backend.Media item in media) {
+      var item_display = new MediaDisplayItem (item);
+      media_items     += item_display;
+      media_carousel.append (item_display);
+    }
+
+    // Scroll to the page
+    print (@"Do we have an MediaDisplayItem? $(media_items [focus] == null ? "NOPE" : "YEP")\n");
+    media_carousel.scroll_to (media_items [focus], false);
+  }
+
+  /**
+   * Run at construction of the widget.
+   */
+  construct {
+    // Set up the "Button scroll" actions
+    this.install_action ("media_display.select_previous", null, (widget, action) => {
+      // Get the instance for this
+      MediaDisplay display = (MediaDisplay) widget;
+
+      // Get the current position of the carousel
+      int i = (int) display.media_carousel.position;
+
+      // Scroll to the previous widget
+      if (i > 0) {
+        display.media_carousel.scroll_to (display.media_items [i-1], true);
+      }
+    });
+    this.install_action ("media_display.select_next", null, (widget, action) => {
+      // Get the instance for this
+      MediaDisplay display = (MediaDisplay) widget;
+
+      // Get the current position of the carousel
+      int i = (int) display.media_carousel.position;
+
+      // Scroll to the next widget
+      if (i < display.media_items.length - 1) {
+        display.media_carousel.scroll_to (display.media_items [i+1], true);
+      }
+    });
   }
 
   /**
@@ -52,7 +93,7 @@ public class MediaDisplay : Gtk.Widget {
   public override void dispose () {
     // Destructs children of MediaDisplay
     media_carousel.unparent ();
-    media_controls.unparent ();
+    top_toolbar.unparent ();
   }
 
   /**
