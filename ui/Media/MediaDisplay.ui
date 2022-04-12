@@ -9,6 +9,9 @@
     <property name="width-request">360</property>
     <property name="height-request">450</property>
     <child>
+      <object class="AdwCarousel" id="media_carousel"/>
+    </child>
+    <child>
       <object class="GtkRevealer" id="media_controls">
         <property name="reveal-child">true</property>
         <property name="transition-type">crossfade</property>
@@ -31,6 +34,7 @@
                     </child>
                     <child type="center">
                       <object class="AdwCarouselIndicatorDots">
+                        <property name="carousel">media_carousel</property>
                       </object>
                     </child>
                     <style>
