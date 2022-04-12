@@ -39,6 +39,12 @@
                     <property name="carousel">media_carousel</property>
                   </object>
                 </child>
+                <child type="end">
+                  <object class="GtkMenuButton">
+                    <property name="icon-name">view-more-symbolic</property>
+                    <property name="menu-model">media-options</property>
+                  </object>
+                </child>
                 <style>
                   <class name="osd"/>
                   <class name="toolbar"/>
@@ -130,4 +136,20 @@
       <class name="osd"/>
     </style>
   </template>
+  <menu id="media-options">
+  <section>
+    <item>
+      <attribute name="label" translatable="yes">Save Media</attribute>
+      <attribute name="action">media_display.save_media</attribute>
+    </item>
+    <item>
+      <attribute name="label" translatable="yes">Copy Media URL</attribute>
+      <attribute name="action">media_display.copy_url</attribute>
+    </item>
+    <item>
+      <attribute name="label" translatable="yes">Open in Browser</attribute>
+      <attribute name="action">media_display.open_url</attribute>
+    </item>
+  </section>
+</menu>
 </interface>
