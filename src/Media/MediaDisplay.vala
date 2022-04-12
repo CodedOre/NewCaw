@@ -26,6 +26,17 @@ using GLib;
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Media/MediaDisplay.ui")]
 public class MediaDisplay : Gtk.Widget {
 
+  // UI-Elements of MediaDisplay
+  [GtkChild]
+  private unowned Adw.Carousel media_carousel;
+  [GtkChild]
+  private unowned Gtk.Revealer media_controls;
+
+  /**
+   * If the UI should be displayed.
+   */
+  public bool display_controls { get; set; default = true; }
+
   /**
    * Initializes the widget.
    *
@@ -33,6 +44,15 @@ public class MediaDisplay : Gtk.Widget {
    * @param focus The index of the media that should be initially focused.
    */
   public MediaDisplay (Backend.Media[] media, int focus = 0) {
+  }
+
+  /**
+   * Deconstructs MediaDisplay and it's childrens.
+   */
+  public override void dispose () {
+    // Destructs children of MediaDisplay
+    media_carousel.unparent ();
+    media_controls.unparent ();
   }
 
 }

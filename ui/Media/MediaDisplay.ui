@@ -13,7 +13,9 @@
     </child>
     <child>
       <object class="GtkRevealer" id="media_controls">
-        <property name="reveal-child">true</property>
+        <binding name="reveal-child">
+          <lookup name="display_controls">MediaDisplay</lookup>
+        </binding>
         <property name="transition-type">crossfade</property>
         <child>
           <object class="GtkCenterBox">
