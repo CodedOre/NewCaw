@@ -67,7 +67,6 @@ public class MediaDisplay : Gtk.Widget {
     }
 
     // Scroll to the page
-    print (@"Do we have an MediaDisplayItem? $(media_items [focus] == null ? "NOPE" : "YEP")\n");
     media_carousel.scroll_to (media_items [focus], false);
   }
 
