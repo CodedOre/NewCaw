@@ -1,6 +1,6 @@
 /* PostDisplay.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -107,38 +107,59 @@ public class PostDisplay : Gtk.Box {
   private unowned Gtk.MenuButton post_options_button;
 
   /**
+   * The displayed post.
+   */
+  public Backend.Post post { get; construct; }
+
+  /**
+   * How this PostDisply will display it's content.
+   */
+  public DisplayType display_type { get; construct; }
+
+  /**
+   * The Post that is displayed on the main content.
+   *
+   * Differs from post when it is a Repost, otherwise it is the same.
+   */
+  private Backend.Post main_post {
+    get {
+      return post.post_type == REPOST ? post.referenced_post : post;
+    }
+  }
+
+  /**
    * Creates a new PostDisplay widget displaying a specific Post.
    *
    * @param post The Post which is to be displayed in this widget.
+   * @param display_type The display type for this PostDisplay.
    */
   public PostDisplay (Backend.Post post, DisplayType display_type = LIST) {
-    // Store the post to display
-    displayed_post = post;
+    // Construct Object
+    Object (
+      display_type:   display_type,
+      post:           post
+    );
+  }
 
-    // Determine which post to show in main view
-    bool show_repost = false;
-    if (post.post_type == REPOST) {
-      show_repost = true;
-      main_post   = post.referenced_post;
-    } else {
-      main_post = displayed_post;
-    }
-
+  /**
+   * Run at construction of the widget.
+   */
+  construct {
     // Set up the repost display
-    if (show_repost) {
+    if (post.post_type == REPOST) {
       // Display the repost status box
       repost_status_box.visible  = true;
 
       // Set up information about the reposting user
-      repost_avatar.set_avatar (displayed_post.author.avatar);
-      repost_display_label.label = displayed_post.author.display_name;
-      repost_name_label.label    = "@" + displayed_post.author.username;
-      repost_time_label.label    = DisplayUtils.display_time_delta (displayed_post.creation_date);
+      repost_avatar.set_avatar (post.author.avatar);
+      repost_display_label.label = post.author.display_name;
+      repost_name_label.label    = "@" + post.author.username;
+      repost_time_label.label    = DisplayUtils.display_time_delta (post.creation_date);
 
       // Set up badges for the author
-      repost_badges.display_verified  = displayed_post.author.has_flag (VERIFIED);
-      repost_badges.display_bot       = displayed_post.author.has_flag (BOT);
-      repost_badges.display_protected = displayed_post.author.has_flag (PROTECTED);
+      repost_badges.display_verified  = post.author.has_flag (VERIFIED);
+      repost_badges.display_bot       = post.author.has_flag (BOT);
+      repost_badges.display_protected = post.author.has_flag (PROTECTED);
     }
 
     // Hint for the user where the post can be opened in the browser
@@ -251,15 +272,5 @@ public class PostDisplay : Gtk.Box {
       }
     });
   }
-
-  /**
-   * The displayed post.
-   */
-  private Backend.Post displayed_post;
-
-  /**
-   * The post displayed in the main view.
-   */
-  private Backend.Post main_post;
 
 }
