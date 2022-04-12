@@ -7,8 +7,6 @@
   </gresource>
   <!-- UI Files -->
   <gresource prefix="/uk/co/ibboard/Cawbird/ui">
-    <file>InitWindow.ui</file>
-    <file>MainWindow.ui</file>
     <file>Content/CollectionList.ui</file>
     <file>Content/PostDisplay.ui</file>
     <file>Content/UserCard.ui</file>
@@ -28,5 +26,7 @@
     <file>Widgets/FilterButton.ui</file>
     <file>Widgets/UserAvatar.ui</file>
     <file>Widgets/WaitingButton.ui</file>
+    <file>Windows/InitWindow.ui</file>
+    <file>Windows/MainWindow.ui</file>
   </gresource>
 </gresources>

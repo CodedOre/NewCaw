@@ -22,8 +22,6 @@ cawdepends += declare_dependency(
 cawfiles = [
   'config.vapi',
   'Cawbird.vala',
-  'InitWindow.vala',
-  'MainWindow.vala',
   'Content/CollectionList.vala',
   'Content/PostDisplay.vala',
   'Content/UserCard.vala',
@@ -48,7 +46,9 @@ cawfiles = [
   'Widgets/FilterButton.vala',
   'Widgets/CroppedPicture.vala',
   'Widgets/UserAvatar.vala',
-  'Widgets/WaitingButton.vala'
+  'Widgets/WaitingButton.vala',
+  'Windows/InitWindow.vala',
+  'Windows/MainWindow.vala'
 ]
 
 # Add build configurations

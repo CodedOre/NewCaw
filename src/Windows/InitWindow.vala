@@ -23,7 +23,7 @@ using GLib;
 /**
  * First window to open, shows a loading screen.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/InitWindow.ui")]
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Windows/InitWindow.ui")]
 public class InitWindow : Adw.ApplicationWindow {
 
   /**
