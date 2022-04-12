@@ -57,11 +57,11 @@ public class MediaDialog : Adw.Window {
   }
 
   /**
-   * Run at construction of the widget.
+   * Runs at initialization of this class.
    */
-  construct {
+  class construct {
     // Set up URL actions
-    this.install_action ("media.copy-url", null, (widget, action) => {
+    install_action ("media.copy-url", null, (widget, action) => {
       // Get the instance for this
       var dialog = widget as MediaDialog;
 
@@ -75,7 +75,7 @@ public class MediaDialog : Adw.Window {
       // Notify the user about the copied url
       dialog.toasts.add_toast (new Adw.Toast (_("URL to media copied!")));
     });
-    this.install_action ("media.open-url", null, (widget, action) => {
+    install_action ("media.open-url", null, (widget, action) => {
       // Get the instance for this
       var dialog = widget as MediaDialog;
 

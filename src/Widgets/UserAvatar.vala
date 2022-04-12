@@ -90,9 +90,14 @@ public class UserAvatar : Gtk.Widget {
     var settings = new Settings ("uk.co.ibboard.Cawbird");
     settings.bind ("round-avatars", this, "rounded",
                     GLib.SettingsBindFlags.DEFAULT);
+  }
 
+  /**
+   * Runs at initialization of this class.
+   */
+  class construct {
     // Installs the media display action
-    this.install_action ("avatar.display_media", null, (widget, action) => {
+    install_action ("avatar.display_media", null, (widget, action) => {
       // Get the instance for this
       UserAvatar display = (UserAvatar) widget;
 

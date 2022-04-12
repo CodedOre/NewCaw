@@ -78,9 +78,15 @@ public class UserCard : Gtk.Widget {
   construct {
     // Create a cancellable
     load_cancellable = new Cancellable ();
+  }
 
+
+  /**
+   * Runs at initialization of this class.
+   */
+  class construct {
     // Installs the header display action
-    this.install_action ("UserCard.display_header", null, (widget, action) => {
+    install_action ("UserCard.display_header", null, (widget, action) => {
       // Get the instance for this
       UserCard display = (UserCard) widget;
 

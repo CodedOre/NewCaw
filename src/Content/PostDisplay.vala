@@ -243,9 +243,14 @@ public class PostDisplay : Gtk.Box {
         post_replies_display_box.visible = false;
       }
     }
+  }
 
+  /**
+   * Runs at initialization of this class.
+   */
+  class construct {
     // Set up "Open link" action
-    this.install_action ("post_display.open_link", null, (widget, action) => {
+    install_action ("post_display.open_link", null, (widget, action) => {
       // Get the instance for this
       PostDisplay display = (PostDisplay) widget;
 
@@ -254,7 +259,7 @@ public class PostDisplay : Gtk.Box {
     });
 
     // Set up "display media" action
-    this.install_action ("post_display.display_media", "i", (widget, action, arg) => {
+    install_action ("post_display.display_media", "i", (widget, action, arg) => {
       // Get the instance for this
       PostDisplay display = (PostDisplay) widget;
 

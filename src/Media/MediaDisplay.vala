@@ -91,11 +91,11 @@ public class MediaDisplay : Gtk.Widget {
   }
 
   /**
-   * Run at construction of the widget.
+   * Runs at initialization of this class.
    */
-  construct {
+  class construct {
     // Set up the "Button scroll" actions
-    this.install_action ("media_display.select_previous", null, (widget, action) => {
+    install_action ("media_display.select_previous", null, (widget, action) => {
       // Get the instance for this
       MediaDisplay display = (MediaDisplay) widget;
 
@@ -107,7 +107,7 @@ public class MediaDisplay : Gtk.Widget {
         display.media_carousel.scroll_to (display.media_items [i-1], true);
       }
     });
-    this.install_action ("media_display.select_next", null, (widget, action) => {
+    install_action ("media_display.select_next", null, (widget, action) => {
       // Get the instance for this
       MediaDisplay display = (MediaDisplay) widget;
 
@@ -119,7 +119,12 @@ public class MediaDisplay : Gtk.Widget {
         display.media_carousel.scroll_to (display.media_items [i+1], true);
       }
     });
+  }
 
+  /**
+   * Run at construction of the widget.
+   */
+  construct {
     // Show/Hide the UI when clicking on the UI
     var click_controller = new Gtk.GestureClick ();
     click_controller.released.connect (() => {
