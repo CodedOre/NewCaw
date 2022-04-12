@@ -39,11 +39,18 @@ public class MediaDisplay : Gtk.Widget {
   private unowned Gtk.Revealer bottom_toolbar;
   [GtkChild]
   private unowned Gtk.Label description_label;
+  [GtkChild]
+  private unowned Gtk.MediaControls video_controls;
 
   /**
    * If the UI should be displayed.
    */
   public bool display_controls { get; set; default = true; }
+
+  /**
+   * If the bottom bar has content that should be displayed.
+   */
+  public bool display_bottom_bar { get; set; }
 
   /**
    * Initializes the widget.
@@ -98,6 +105,7 @@ public class MediaDisplay : Gtk.Widget {
     var click_controller = new Gtk.GestureClick ();
     click_controller.released.connect (() => {
       display_controls = ! display_controls;
+      display_bottom_bar = display_controls && bottom_bar_content;
     });
     media_carousel.add_controller (click_controller);
   }
@@ -112,8 +120,19 @@ public class MediaDisplay : Gtk.Widget {
     MediaDisplayItem item     = media_items [position];
     Backend.Media    media    = item.displayed_media;
 
-    // Set up the description
-    description_label.label = media.alt_text;
+    // Get the description of the media
+    string description      = media.alt_text;
+    description_label.label = description;
+
+    // Determine which parts of the bottom bar are visible
+    bool   has_description   = description != null;
+    bool   has_video_control = false;
+
+    // Hide (parts of) the bottom bar
+    description_label.visible = has_description;
+    video_controls.visible    = has_video_control;
+    bottom_bar_content        = has_description || has_video_control;
+    display_bottom_bar        = display_controls && bottom_bar_content;
 
     // Disable scroll buttons if on first/last item
     previous_control.sensitive = ! (position == 0);
@@ -131,6 +150,11 @@ public class MediaDisplay : Gtk.Widget {
     next_control.unparent ();
     bottom_toolbar.unparent ();
   }
+
+  /**
+   * If the bottom bar has content that should be displayed.
+   */
+  private bool bottom_bar_content;
 
   /**
    * The items displayed on this widget.

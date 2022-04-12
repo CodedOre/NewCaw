@@ -98,7 +98,7 @@
     <child>
       <object class="GtkRevealer" id="bottom_toolbar">
         <binding name="reveal-child">
-          <lookup name="display_controls">MediaDisplay</lookup>
+          <lookup name="display_bottom_bar">MediaDisplay</lookup>
         </binding>
         <property name="transition-type">crossfade</property>
         <property name="margin-top">12</property>
@@ -116,7 +116,7 @@
               </object>
             </child>
             <child>
-              <object class="GtkMediaControls"/>
+              <object class="GtkMediaControls" id="video_controls"/>
             </child>
             <style>
               <class name="osd"/>
