@@ -11,6 +11,7 @@
         <binding name="active">
           <lookup name="active">FilterButton</lookup>
         </binding>
+        <signal name="toggled" handler="on_toggled"/>
         <child>
           <object class="GtkBox">
             <child>

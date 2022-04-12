@@ -41,6 +41,14 @@ public class FilterButton : Gtk.Widget {
   public bool active { get; set; }
 
   /**
+   * Runs when the internal button is clicked.
+   */
+  [GtkCallback]
+  private void on_toggled () {
+    this.active = button.active;
+  }
+
+  /**
    * Deconstructs FilterButton and it's childrens.
    */
   public override void dispose () {
