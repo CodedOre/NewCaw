@@ -104,15 +104,23 @@ public class CollectionList : Gtk.Widget {
       error ("The Collection contained one object not being a Post!");
     }
 
+    // Check if a filter applies to a post
+    bool is_repost = post.post_type == REPOST;
+    bool has_media = is_repost
+                       ? post.referenced_post.get_media ().length > 0
+                       : post.get_media ().length > 0;
+
     // Create ListBoxRow and bind visibilities
     var row = new Gtk.ListBoxRow ();
-    if (post.post_type == REPOST) {
+    if (is_repost) {
       // Bind Reposts filter
       repost_filter.bind_property ("active", row, "visible");
-    } else if (post.get_media ().length > 0) {
+    }
+    if (has_media) {
       // Bind Media filter
       media_filter.bind_property ("active", row, "visible");
-    } else {
+    }
+    if (! is_repost && ! has_media) {
       // Bind all others to Post filter
       post_filter.bind_property ("active", row, "visible");
     }
