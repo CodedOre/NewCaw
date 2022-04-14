@@ -37,36 +37,46 @@ namespace Backend.Utils.TextUtils {
 
     // Iterates through all TextModules
     foreach (TextModule module in text_modules) {
+      // Escape the text not intended to be Pango markup
+      string target  = module.target != null ? Markup.escape_text (module.target) : "";
+      string display = Markup.escape_text (module.display);
+
       switch (module.type) {
         case TRAIL_TAG:
           if (Backend.Utils.TextFormats.get_format_flag (HIDE_TRAILING_TAGS)) {
             break;
           }
-          builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"hashtag\">$(module.display)</a>");
+          builder.append (@"<a href=\"$(target)\" title=\"$(target)\" class=\"hashtag\">$(display)</a>");
           break;
+
         case TAG:
-          builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"hashtag\">$(module.display)</a>");
+          builder.append (@"<a href=\"$(target)\" title=\"$(target)\" class=\"hashtag\">$(display)</a>");
           break;
+
         case MENTION:
-          builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"mention\">$(module.display)</a>");
+          builder.append (@"<a href=\"$(target)\" title=\"$(target)\" class=\"mention\">$(display)</a>");
           break;
+
         case MEDIALINK:
           if (! Backend.Utils.TextFormats.get_format_flag (SHOW_MEDIA_LINKS)) {
             break;
           }
-          builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"weblink\">$(module.display)</a>");
+          builder.append (@"<a href=\"$(target)\" title=\"$(target)\" class=\"weblink\">$(display)</a>");
           break;
+
         case QUOTELINK:
           if (! Backend.Utils.TextFormats.get_format_flag (SHOW_QUOTE_LINKS)) {
             break;
           }
-          builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"weblink\">$(module.display)</a>");
+          builder.append (@"<a href=\"$(target)\" title=\"$(target)\" class=\"weblink\">$(display)</a>");
           break;
+
         case WEBLINK:
-          builder.append (@"<a href=\"$(module.target)\" title=\"$(module.target)\" class=\"weblink\">$(module.display)</a>");
+          builder.append (@"<a href=\"$(target)\" title=\"$(target)\" class=\"weblink\">$(display)</a>");
           break;
+
         default:
-          builder.append (module.display);
+          builder.append (display);
           break;
       }
     }
