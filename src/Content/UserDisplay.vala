@@ -111,9 +111,10 @@ public class UserDisplay : Gtk.Widget {
           if (field.target != null) {
             // Escape the text not intended to be Pango markup
             string target  = Markup.escape_text (field.target);
+            string tooltip = Markup.escape_text (target);
             string display = Markup.escape_text (field.display);
             // Create a link should target have a value
-            display_label = @"<a href=\"$(target)\" title=\"$(target)\" class=\"weblink\">$(display)</a>";
+            display_label = @"<a href=\"$(target)\" title=\"$(tooltip)\" class=\"weblink\">$(display)</a>";
           } else {
             display_label = field.display;
           }
