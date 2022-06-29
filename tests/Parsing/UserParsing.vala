@@ -55,7 +55,9 @@ void run_user_test (string module, string user_json, string check_json) {
   // Check parsed user against check objects.
   UserChecks.check_basic_fields (checked_user, check_object);
   UserChecks.check_additional_fields (checked_user, check_object);
+#if DEBUG
   UserChecks.check_description_parsing (checked_user, check_object);
+#endif
   UserChecks.check_data_fields (checked_user, check_object);
 }
 
