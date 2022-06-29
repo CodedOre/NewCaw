@@ -29,11 +29,9 @@ public class Cawbird : Adw.Application {
    * Create the object.
    */
   public Cawbird () {
+    Object (application_id: Config.APPLICATION_ID);
 #if DEBUG
-    Object (application_id: "uk.co.ibboard.Cawbird.Devel");
     set_resource_base_path ("/uk/co/ibboard/Cawbird/");
-#else
-    Object (application_id: "uk.co.ibboard.Cawbird");
 #endif
   }
 
