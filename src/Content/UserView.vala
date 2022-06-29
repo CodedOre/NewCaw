@@ -57,17 +57,23 @@ public class UserView : Gtk.Widget {
         // Create a UserTimeline
         var platform = PlatformEnum.get_platform_for_user (displayed_user);
         switch (platform) {
+#if SUPPORT_MASTODON
           case MASTODON:
             timeline = new Backend.Mastodon.UserTimeline (displayed_user, account);
             break;
+#endif
+#if SUPPORT_TWITTER
           case TWITTER:
             timeline = new Backend.Twitter.UserTimeline (displayed_user, account);
             break;
+#endif
+#if SUPPORT_TWITTER_LEGACY
           case TWITTER_LEGACY:
             timeline = new Backend.TwitterLegacy.UserTimeline (displayed_user, account);
             break;
+#endif
           default:
-            error ("UserView: Failed to find appropriate user!");
+            error ("UserView: Failed to create an appropriate user timeline!");
         }
 
         // Pull the posts for the timeline async
