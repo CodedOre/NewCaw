@@ -23,21 +23,6 @@
                     <property name="visible">false</property>
                     <child>
                       <object class="WaitingButton" id="twitter_waiting">
-                        <property translatable="yes" name="label">Add Twitter Account (New API)</property>
-                      </object>
-                    </child>
-                    <style>
-                      <class name="twitter-accent"/>
-                      <class name="pill"/>
-                      <class name="opaque"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton" id="twitter_legacy_button">
-                    <property name="visible">false</property>
-                    <child>
-                      <object class="WaitingButton" id="twitter_legacy_waiting">
                         <property translatable="yes" name="label">Add Twitter Account</property>
                       </object>
                     </child>

@@ -35,10 +35,6 @@ public class Authentication.StartPage : Gtk.Widget {
   private unowned Gtk.Button twitter_button;
   [GtkChild]
   private unowned WaitingButton twitter_waiting;
-  [GtkChild]
-  private unowned Gtk.Button twitter_legacy_button;
-  [GtkChild]
-  private unowned WaitingButton twitter_legacy_waiting;
 
   /**
    * The AuthView holding this page.
@@ -79,19 +75,7 @@ public class Authentication.StartPage : Gtk.Widget {
    */
   private void waiting_for_twitter (bool block) {
     mastodon_button.sensitive       = ! block;
-    twitter_legacy_button.sensitive = ! block;
     twitter_waiting.waiting         = block;
-  }
-
-  /**
-   * Block UI for Twitter authentication.
-   *
-   * @param block If the UI should be blocked.
-   */
-  private void waiting_for_twitter_legacy (bool block) {
-    mastodon_button.sensitive       = ! block;
-    twitter_button.sensitive        = ! block;
-    twitter_legacy_waiting.waiting  = block;
   }
 
 #if SUPPORT_MASTODON
