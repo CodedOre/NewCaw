@@ -42,12 +42,6 @@
 	</schema>
   <!-- Experimental Settings -->
 	<schema id="uk.co.ibboard.Cawbird.experimental" path="/uk/co/ibboard/Cawbird/experimental/">
-	  <key type="(ss)" name="twitter-oauth1-tokens">
-	    <description>
-	      Custom client tokens to authenticate with Twitter using OAuth 1.0a.
-	    </description>
-	    <default>("","")</default>
-	  </key>
 	  <key type="(ss)" name="twitter-oauth2-tokens">
 	    <description>
 	      Custom client tokens to authenticate with Twitter using OAuth 2.0.

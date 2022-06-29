@@ -198,21 +198,6 @@ public class KeyStorage : Object {
       Secret.password_storev_sync (instance.secret_schema, attributes,
                                    Secret.COLLECTION_DEFAULT, token_label,
                                    account.access_token, null);
-
-#if SUPPORT_TWITTER_LEGACY
-      // If account is from TwitterLegacy
-      if (account is Backend.TwitterLegacy.Account) {
-        // Cast account to subclass
-        var legacy_account = account as Backend.TwitterLegacy.Account;
-
-        // Store the access secret
-        token_label          = @"Access Secret for Account \"$(account.username)\"";
-        attributes["secret"] = "true";
-        Secret.password_storev_sync (instance.secret_schema, attributes,
-                                     Secret.COLLECTION_DEFAULT, token_label,
-                                     legacy_account.access_secret, null);
-      }
-#endif
     } catch (Error e) {
       throw e;
     }
@@ -281,15 +266,6 @@ public class KeyStorage : Object {
       // Store the access token
       attributes["secret"] = "false";
       Secret.password_clearv_sync (instance.secret_schema, attributes, null);
-
-#if SUPPORT_TWITTER_LEGACY
-      // If account is from TwitterLegacy
-      if (account is Backend.TwitterLegacy.Account) {
-        // Store the access secret
-        attributes["secret"] = "true";
-        Secret.password_clearv_sync (instance.secret_schema, attributes, null);
-      }
-#endif
     } catch (Error e) {
       throw e;
     }

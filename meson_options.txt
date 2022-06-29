@@ -9,16 +9,10 @@ option(
   'twitter_backend',
   type:        'feature',
   value:       'enabled',
-  description: 'If to build the backend for Twitter v2.'
+  description: 'If to build the backend for Twitter.'
 )
 
 option(
-  'twitter_legacy_backend',
-  type:        'feature',
-  value:       'enabled',
-  description: 'If to build the backend for Twitter v1.'
-)
-
 option(
   'twitter_oauth1_tokens',
   type:        'array',

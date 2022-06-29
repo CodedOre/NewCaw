@@ -65,11 +65,6 @@ void run_media_test (string module, string post_json, string check_json) {
       checked_post = new Backend.Twitter.Post.from_json (post_data, includes);
       break;
 #endif
-#if SUPPORT_TWITTER_LEGACY
-    case "TwitterLegacy":
-      checked_post = new Backend.TwitterLegacy.Post.from_json (post_object);
-      break;
-#endif
     default:
       error ("No valid Post could be created!");
   }
@@ -117,20 +112,6 @@ int main (string[] args) {
   });
   Test.add_func ("/MediaParsing/FourPicture/Twitter", () => {
     run_media_test ("Twitter", "FourPicturePost.json", "FourPictureChecks.json");
-  });
-#endif
-#if SUPPORT_TWITTER_LEGACY
-  Test.add_func ("/MediaParsing/OnePicture/TwitterLegacy", () => {
-    run_media_test ("TwitterLegacy", "OnePicturePost.json", "OnePictureChecks.json");
-  });
-  Test.add_func ("/MediaParsing/TwoPicture/TwitterLegacy", () => {
-    run_media_test ("TwitterLegacy", "TwoPicturePost.json", "TwoPictureChecks.json");
-  });
-  Test.add_func ("/MediaParsing/ThreePicture/TwitterLegacy", () => {
-    run_media_test ("TwitterLegacy", "ThreePicturePost.json", "ThreePictureChecks.json");
-  });
-  Test.add_func ("/MediaParsing/FourPicture/TwitterLegacy", () => {
-    run_media_test ("TwitterLegacy", "FourPicturePost.json", "FourPictureChecks.json");
   });
 #endif
 

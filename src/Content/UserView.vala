@@ -67,11 +67,6 @@ public class UserView : Gtk.Widget {
             timeline = new Backend.Twitter.UserTimeline (displayed_user, account);
             break;
 #endif
-#if SUPPORT_TWITTER_LEGACY
-          case TWITTER_LEGACY:
-            timeline = new Backend.TwitterLegacy.UserTimeline (displayed_user, account);
-            break;
-#endif
           default:
             error ("UserView: Failed to create an appropriate user timeline!");
         }

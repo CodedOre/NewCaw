@@ -60,11 +60,6 @@ void run_post_test (string module, string post_json, string check_json) {
       checked_post = new Backend.Twitter.Post.from_json (post_data, includes);
       break;
 #endif
-#if SUPPORT_TWITTER_LEGACY
-    case "TwitterLegacy":
-      checked_post = new Backend.TwitterLegacy.Post.from_json (post_object);
-      break;
-#endif
     default:
       error ("No valid Post could be created!");
   }
@@ -115,23 +110,6 @@ int main (string[] args) {
   });
   Test.add_func ("/PostParsing/QuotePost/Twitter", () => {
     run_post_test ("Twitter", "QuotePost.json", "QuoteChecks.json");
-  });
-#endif
-#if SUPPORT_TWITTER_LEGACY
-  Test.add_func ("/PostParsing/BasicPost/TwitterLegacy", () => {
-    run_post_test ("TwitterLegacy", "BasicPost.json", "BasicChecks.json");
-  });
-  Test.add_func ("/PostParsing/EntitiesPost/TwitterLegacy", () => {
-    run_post_test ("TwitterLegacy", "EntitiesPost.json", "EntitiesChecks.json");
-  });
-  Test.add_func ("/PostParsing/HashtagsPost/TwitterLegacy", () => {
-    run_post_test ("TwitterLegacy", "HashtagsPost.json", "HashtagsChecks.json");
-  });
-  Test.add_func ("/PostParsing/RepostPost/TwitterLegacy", () => {
-    run_post_test ("TwitterLegacy", "RepostPost.json", "RepostChecks.json");
-  });
-  Test.add_func ("/PostParsing/QuotePost/TwitterLegacy", () => {
-    run_post_test ("TwitterLegacy", "QuotePost.json", "QuoteChecks.json");
   });
 #endif
 

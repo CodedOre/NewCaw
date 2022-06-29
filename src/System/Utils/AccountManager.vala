@@ -53,11 +53,6 @@ public class AccountManager : Object {
     // Initializes the Twitter backend
     init_twitter_server ();
 #endif
-
-#if SUPPORT_TWITTER_LEGACY
-    // Initializes the TwitterLegacy backend
-    init_twitter_legacy_server ();
-#endif
   }
 
   /**
@@ -203,33 +198,6 @@ public class AccountManager : Object {
       }
     }
 #endif
-
-#if SUPPORT_TWITTER_LEGACY
-    // Parse through all TwitterLegacy accounts
-    Variant     twitter_legacy_list = account_settings.get_value ("twitter-legacy-accounts");
-    VariantIter twitter_legacy_iter = twitter_legacy_list.iterator ();
-    string      twitter_legacy_acc;
-    while (twitter_legacy_iter.next ("s", out twitter_legacy_acc)) {
-      // Create account instance
-      try {
-        // Get account access
-        string account_token;
-        string account_secret;
-        yield KeyStorage.retrieve_account_access (TWITTER_LEGACY, twitter_legacy_acc, out account_token, out account_secret);
-
-        // Create account object
-        var account = new Backend.TwitterLegacy.Account ();
-        assert (account != null);
-        add_account (account);
-
-        // Login the account
-        account.login_with_secret (account_token, account_secret);
-        yield account.load_data ();
-      } catch (Error e) {
-        throw e;
-      }
-    }
-#endif
   }
 
   /**
@@ -273,11 +241,6 @@ public class AccountManager : Object {
     var twitter_builder        = new VariantBuilder (new VariantType ("as"));
 #endif
 
-#if SUPPORT_TWITTER_LEGACY
-    // Create VariantBuilders for TwitterLegacy shortlists
-    var twitter_legacy_builder = new VariantBuilder (new VariantType ("as"));
-#endif
-
     // Store accounts
     foreach (Backend.Account account in instance.account_list) {
       // Store access tokens
@@ -313,14 +276,6 @@ public class AccountManager : Object {
       }
 #endif
 
-#if SUPPORT_TWITTER_LEGACY
-      // Store TwitterLegacy username in shortlist
-      if (account is Backend.TwitterLegacy.Account) {
-        twitter_legacy_builder.add ("s", account.username);
-        continue;
-      }
-#endif
-
       // Fail if no platform was detected
       error (@"Account $(account.username) belongs to no platform!");
     }
@@ -349,12 +304,6 @@ public class AccountManager : Object {
     Variant twitter_shortlist        = twitter_builder.end ();
     account_settings.set_value ("twitter-accounts", twitter_shortlist);
 #endif
-
-#if SUPPORT_TWITTER_LEGACY
-    // Save the TwitterLegacy shortlists
-    Variant twitter_legacy_shortlist = twitter_legacy_builder.end ();
-    account_settings.set_value ("twitter-legacy-accounts", twitter_legacy_shortlist);
-#endif
   }
 
 #if SUPPORT_TWITTER
@@ -378,30 +327,6 @@ public class AccountManager : Object {
 
     // Initializes the server
     new Backend.Twitter.Server (oauth_key, oauth_secret);
-  }
-#endif
-
-#if SUPPORT_TWITTER_LEGACY
-  /**
-   * Initializes the Server instance for the TwitterLegacy backend.
-   */
-  private void init_twitter_legacy_server () {
-    // Look for override tokens
-    var     settings      = new Settings ("uk.co.ibboard.Cawbird.experimental");
-    Variant tokens        = settings.get_value ("twitter-oauth1-tokens");
-    string  custom_key    = tokens.get_child_value (0).get_string ();
-    string  custom_secret = tokens.get_child_value (1).get_string ();
-
-    // Determine oauth tokens
-    string oauth_key = custom_key != ""
-                         ? custom_key
-                         : Config.TWITTER_OAUTH_1_KEY;
-    string oauth_secret = custom_secret != ""
-                            ? custom_secret
-                            : Config.TWITTER_OAUTH_1_SECRET;
-
-    // Initializes the server
-    new Backend.TwitterLegacy.Server (oauth_key, oauth_secret);
   }
 #endif
 

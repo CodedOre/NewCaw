@@ -63,10 +63,6 @@ public class Authentication.StartPage : Gtk.Widget {
     // Enable the first Twitter login button
     twitter_button.visible = true;
     twitter_button.clicked.connect (begin_twitter_auth);
-#if SUPPORT_TWITTER_LEGACY
-    // Enable the first Twitter login button
-    twitter_legacy_button.visible = true;
-    twitter_legacy_button.clicked.connect (begin_twitter_legacy_auth);
 #endif
   }
 
@@ -151,52 +147,6 @@ public class Authentication.StartPage : Gtk.Widget {
 
     // Unblock the UI
     waiting_for_twitter (false);
-  }
-#endif
-
-#if SUPPORT_TWITTER_LEGACY
-  /**
-   * Begins the TwitterLegacy authentication.
-   */
-  private void begin_twitter_legacy_auth () {
-    // Check if authentication is already running
-    if (twitter_legacy_waiting.waiting) {
-      // Stop authentication
-      stop_twitter_legacy_auth ();
-    } else {
-      // Block the UI
-      waiting_for_twitter_legacy (true);
-
-      // Begin authentication
-      run_twitter_legacy_auth.begin ();
-    }
-  }
-
-  /**
-   * Runs the Twitter authentication.
-   */
-  private async void run_twitter_legacy_auth () {
-    // Begin authentication
-    try {
-      view.account = new Backend.TwitterLegacy.Account ();
-      string auth_url = yield view.account.init_authentication ();
-      Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
-      stop_twitter_legacy_auth ();
-      view.skip_server ();
-    } catch (Error e) {
-      warning (@"Could not authenticate at server: $(e.message)");
-      stop_twitter_legacy_auth ();
-      return;
-    }
-  }
-
-  /**
-   * Stops the Twitter authentication.
-   */
-  private void stop_twitter_legacy_auth () {
-
-    // Unblock the UI
-    waiting_for_twitter_legacy (false);
   }
 #endif
 

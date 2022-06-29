@@ -43,11 +43,6 @@ void run_user_test (string module, string user_json, string check_json) {
       checked_user = new Backend.Twitter.User.from_json (user_data);
       break;
 #endif
-#if SUPPORT_TWITTER_LEGACY
-    case "TwitterLegacy":
-      checked_user = new Backend.TwitterLegacy.User.from_json (user_object);
-      break;
-#endif
     default:
       error ("No valid User could be created!");
   }
@@ -75,11 +70,6 @@ int main (string[] args) {
 #if SUPPORT_TWITTER
   Test.add_func ("/UserParsing/BasicUser/Twitter", () => {
     run_user_test ("Twitter", "BasicUser.json", "BasicChecks.json");
-  });
-#endif
-#if SUPPORT_TWITTER_LEGACY
-  Test.add_func ("/UserParsing/BasicUser/TwitterLegacy", () => {
-    run_user_test ("TwitterLegacy", "BasicUser.json", "BasicChecks.json");
   });
 #endif
 

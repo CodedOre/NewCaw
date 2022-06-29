@@ -29,8 +29,7 @@ using GLib;
 public enum PlatformEnum {
 
   MASTODON,
-  TWITTER,
-  TWITTER_LEGACY;
+  TWITTER;
 
   /**
    * Converts the enum to a better readable string.
@@ -43,9 +42,6 @@ public enum PlatformEnum {
 
       case TWITTER:
         return "Twitter";
-
-      case TWITTER_LEGACY:
-        return "TwitterLegacy";
 
       default:
         assert_not_reached();
@@ -74,13 +70,6 @@ public enum PlatformEnum {
     }
 #endif
 
-#if SUPPORT_TWITTER_LEGACY
-    // Return if using TwitterLegacy
-    if (server is Backend.TwitterLegacy.Server) {
-      return TWITTER_LEGACY;
-    }
-#endif
-
     // Failing if not detected any platform
     assert_not_reached();
   }
@@ -104,13 +93,6 @@ public enum PlatformEnum {
     // Return if using Twitter
     if (account is Backend.Twitter.Account) {
       return TWITTER;
-    }
-#endif
-
-#if SUPPORT_TWITTER_LEGACY
-    // Return if using TwitterLegacy
-    if (account is Backend.TwitterLegacy.Account) {
-      return TWITTER_LEGACY;
     }
 #endif
 
@@ -143,13 +125,6 @@ public enum PlatformEnum {
     // Return if using Twitter
     if (user is Backend.Twitter.User) {
       return TWITTER;
-    }
-#endif
-
-#if SUPPORT_TWITTER_LEGACY
-    // Return if using TwitterLegacy
-    if (user is Backend.TwitterLegacy.User) {
-      return TWITTER_LEGACY;
     }
 #endif
 

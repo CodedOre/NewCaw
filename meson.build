@@ -52,17 +52,6 @@ if get_option('twitter_backend').enabled()
   endif
 endif
 
-# Configure TwitterLegacy platform
-if get_option('twitter_legacy_backend').enabled()
-  add_project_arguments('-D', 'SUPPORT_TWITTER_LEGACY', language: 'vala')
-  # Check for OAuth 1.0a tokens
-  if get_option('twitter_oauth1_tokens').length() == 0
-    error('No client token given for Twitter OAuth 1.0a!')
-  elif get_option('twitter_oauth1_tokens').length() != 2
-    error('Client token and secret required for Twitter OAuth 1.0a!')
-  endif
-endif
-
 # Build and test the backend from subdirectories
 subdir('lib')
 subdir('tests')

@@ -60,18 +60,6 @@ if get_option('twitter_backend').enabled()
     'Twitter/Utils/TextUtils.vala'
   ]
 endif
-if get_option('twitter_legacy_backend').enabled()
-  libfiles += [
-    'TwitterLegacy/Content/Media.vala',
-    'TwitterLegacy/Content/Post.vala',
-    'TwitterLegacy/Content/User.vala',
-    'TwitterLegacy/Organization/UserTimeline.vala',
-    'TwitterLegacy/System/Account.vala',
-    'TwitterLegacy/System/Server.vala',
-    'TwitterLegacy/Utils/ParseUtils.vala',
-    'TwitterLegacy/Utils/TextUtils.vala'
-  ]
-endif
 
 backendsrc = include_directories('.')
 

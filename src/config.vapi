@@ -45,16 +45,6 @@ namespace Config {
 	public const string LOCALEDIR;
 
 	/**
-	 * The access key for Twitter OAuth 1.0a.
-	 */
-	private const string TWITTER_OAUTH_1_KEY;
-
-	/**
-	 * The access secret for Twitter OAuth 1.0a.
-	 */
-	private const string TWITTER_OAUTH_1_SECRET;
-
-	/**
 	 * The access key for Twitter OAuth 2.0.
 	 */
 	private const string TWITTER_OAUTH_2_KEY;

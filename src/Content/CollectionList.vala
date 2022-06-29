@@ -56,7 +56,6 @@ public class CollectionList : Gtk.Widget {
           break;
 
         case TWITTER:
-        case TWITTER_LEGACY:
           post_filter.label   = _("Tweets");
           repost_filter.label = _("Retweets");
           break;
