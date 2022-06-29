@@ -35,6 +35,11 @@ namespace Config {
 	public const string PROJECT_VERSION;
 
 	/**
+	 * The app id for the program.
+	 */
+	public const string APPLICATION_ID;
+
+	/**
 	 * Where the localization files are located.
 	 */
 	public const string LOCALEDIR;

@@ -15,6 +15,7 @@ add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name()), la
 # Set build configuration
 if get_option('buildtype') == 'debug' or get_option('buildtype') == 'debugoptimized'
   add_project_arguments('-D', 'DEBUG', language: 'vala')
+  application_id = 'uk.co.ibboard.Cawbird.Devel'
 
   # Create a version number based on the git commit for development versions
   git = find_program('git', required : false, disabler : true)
@@ -29,6 +30,7 @@ if get_option('buildtype') == 'debug' or get_option('buildtype') == 'debugoptimi
   endif
 else
   # Use project version in release builds
+  application_id = 'uk.co.ibboard.Cawbird'
   version = meson.project_version()
 endif
 
