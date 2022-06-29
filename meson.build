@@ -44,11 +44,9 @@ endif
 # Configure Twitter platform
 if get_option('twitter_backend').enabled()
   add_project_arguments('-D', 'SUPPORT_TWITTER', language: 'vala')
-  # Check for OAuth 2.0 tokens
-  if get_option('twitter_oauth2_tokens').length() == 0
-    error('No client token given for Twitter OAuth 2.0!')
-  elif get_option('twitter_oauth2_tokens').length() != 2
-    error('Client token and secret required for Twitter OAuth 2.0!')
+  # Check for OAuth 2.0 key
+  if get_option('twitter_oauth_key') == ''
+    error('A client key needs to be provided for Twitter!')
   endif
 endif
 

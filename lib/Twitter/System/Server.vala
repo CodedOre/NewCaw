@@ -63,12 +63,12 @@ public class Backend.Twitter.Server : Backend.Server {
    * @param client_key The key to authenticate the client.
    * @param client_secret The secret to authenticate the client.
    */
-  public Server (string client_key, string client_secret) {
+  public Server (string client_key) {
     // Create the Server instance
     Object (
       domain:        "twitter.com",
       client_key:    client_key,
-      client_secret: client_secret
+      client_secret: null
     );
 
     // Set the global instance

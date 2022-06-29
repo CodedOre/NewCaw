@@ -42,11 +42,11 @@
 	</schema>
   <!-- Experimental Settings -->
 	<schema id="uk.co.ibboard.Cawbird.experimental" path="/uk/co/ibboard/Cawbird/experimental/">
-	  <key type="(ss)" name="twitter-oauth2-tokens">
+	  <key type="s" name="twitter-oauth-key">
 	    <description>
-	      Custom client tokens to authenticate with Twitter using OAuth 2.0.
+	      A custom client key to authenticate Cawbird with Twitter.
 	    </description>
-	    <default>("","")</default>
+	    <default>""</default>
 	  </key>
 	</schema>
 </schemalist>

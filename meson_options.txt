@@ -13,14 +13,7 @@ option(
 )
 
 option(
-option(
-  'twitter_oauth1_tokens',
-  type:        'array',
-  description: 'Key and Secret for a Twitter OAuth 1.0a application.'
-)
-
-option(
-  'twitter_oauth2_tokens',
-  type:        'array',
-  description: 'Key and Secret for a Twitter OAuth 2.0 application.'
+  'twitter_oauth_key',
+  type:        'string',
+  description: 'The OAuth 2.0 key to authenticate Cawbird on Twitter.'
 )

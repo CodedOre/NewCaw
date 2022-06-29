@@ -47,10 +47,5 @@ namespace Config {
 	/**
 	 * The access key for Twitter OAuth 2.0.
 	 */
-	private const string TWITTER_OAUTH_2_KEY;
-
-	/**
-	 * The access secret for Twitter OAuth 2.0.
-	 */
-	private const string TWITTER_OAUTH_2_SECRET;
+	private const string TWITTER_OAUTH_KEY;
 }

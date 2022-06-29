@@ -313,20 +313,15 @@ public class AccountManager : Object {
   private void init_twitter_server () {
     // Look for override tokens
     var     settings      = new Settings ("uk.co.ibboard.Cawbird.experimental");
-    Variant tokens        = settings.get_value ("twitter-oauth2-tokens");
-    string  custom_key    = tokens.get_child_value (0).get_string ();
-    string  custom_secret = tokens.get_child_value (1).get_string ();
+    string  custom_key    = settings.get_string ("twitter-oauth-key");
 
     // Determine oauth tokens
     string oauth_key = custom_key != ""
                          ? custom_key
-                         : Config.TWITTER_OAUTH_2_KEY;
-    string oauth_secret = custom_secret != ""
-                            ? custom_secret
-                            : Config.TWITTER_OAUTH_2_SECRET;
+                         : Config.TWITTER_OAUTH_KEY;
 
     // Initializes the server
-    new Backend.Twitter.Server (oauth_key, oauth_secret);
+    new Backend.Twitter.Server (oauth_key);
   }
 #endif
 
