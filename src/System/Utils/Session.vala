@@ -47,6 +47,10 @@ public class Session : Object {
    * Runs at construction of the instance.
    */
   construct {
+#if SUPPORT_TWITTER
+    // Initializes the Twitter server.
+    init_twitter_server ();
+#endif
   }
 
   /**
@@ -68,6 +72,25 @@ public class Session : Object {
   public static void init (Gtk.Application application) {
     global_instance = new Session (application);
   }
+
+#if SUPPORT_TWITTER
+  /**
+   * Initializes the Server instance for the Twitter backend.
+   */
+  private void init_twitter_server () {
+    // Look for override tokens
+    var     settings      = new Settings ("uk.co.ibboard.Cawbird.experimental");
+    string  custom_key    = settings.get_string ("twitter-oauth-key");
+
+    // Determine oauth tokens
+    string oauth_key = custom_key != ""
+                         ? custom_key
+                         : Config.TWITTER_OAUTH_KEY;
+
+    // Initializes the server
+    new Backend.Twitter.Server (oauth_key);
+  }
+#endif
 
   /**
    * Stores the global instance of this session.
