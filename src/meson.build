@@ -41,6 +41,7 @@ cawfiles = [
   'System/Utils/AccountManager.vala',
   'System/Utils/KeyStorage.vala',
   'System/Utils/PlatformEnum.vala',
+  'System/Utils/Session.vala',
   'Utils/DisplayUtils.vala',
   'Widgets/BadgesBox.vala',
   'Widgets/FilterButton.vala',

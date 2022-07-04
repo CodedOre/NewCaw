@@ -42,24 +42,9 @@ public class Cawbird : Adw.Application {
     // Initializes the backend client
     new Backend.Client ("NewCaw Development", "https://github.com/CodedOre/NewCaw");
 
-    // Initialize the AccoutManager
-    AccountManager.init ();
-
-    // Open the InitWindow
-    var win = this.active_window;
-    if (win == null) {
-      win = new InitWindow (this);
-    }
-    win.present ();
-
-    // Load existing accounts or open AuthView
-    var init = win as InitWindow;
-    if (init != null) {
-      init.load_accounts.begin ();
-    } else {
-      error ("InitWindow could not been initialized!");
-    }
-  }
+    // Load the session
+    Session.init (this);
+}
 
   /**
    * The main method.
