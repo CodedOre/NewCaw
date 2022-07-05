@@ -325,7 +325,7 @@ public class Session : Object {
     // Notify application that we need it running
     instance.application.hold ();
 
-    yield instance.load_data ();
+    yield instance.unpack_data ();
 
     // Check if accounts are stored
     Backend.Account[] accounts = get_accounts ();
@@ -349,12 +349,15 @@ public class Session : Object {
    * Stores the data of the session on disk.
    */
   public static async void store_session () {
+    // Create a Variant and store it
+    Variant session_store = yield instance.pack_data ();
+    yield instance.store_to_file (session_store);
   }
 
   /**
-   * Loads the data for the session.
+   * Unpacks the loaded Variant and stores the contained information.
    */
-  private async void load_data () {
+  private async void unpack_data () {
     // Load the data from the session file
     Variant loaded_data = yield load_from_file ();
     if (loaded_data == null) {
@@ -498,6 +501,58 @@ public class Session : Object {
         }
       }
     }
+  }
+
+  /**
+   * Packs managed accounts and servers into a Variant to be stored.
+   *
+   * @return A Variant holding the information to be stored.
+   */
+  private async Variant pack_data () {
+    // Build Variant for ServerData
+    var server_builder = new VariantBuilder (new VariantType ("av"));
+    foreach (ServerData server_data in servers.get_values ()) {
+      // Save access tokens for the server
+      try {
+        yield KeyStorage.store_server_access (server_data.data, server_data.uuid);
+      } catch (Error e) {
+        warning (@"Could not save access tokens for Server \"$(server_data.domain)\": $(e.message)");
+      }
+
+      // Store data in a dictionary Variant
+      var data_builder = new VariantBuilder (new VariantType ("a{ss}"));
+      data_builder.add ("{ss}", "uuid",     server_data.uuid);
+      data_builder.add ("{ss}", "platform", server_data.platform);
+      data_builder.add ("{ss}", "domain",   server_data.uuid);
+
+      server_builder.add ("v", data_builder.end ());
+    }
+
+    // Build Variant for AccountData
+    var account_builder = new VariantBuilder (new VariantType ("av"));
+    foreach (AccountData account_data in accounts.get_values ()) {
+      // Save access tokens for the server
+      try {
+        yield KeyStorage.store_account_access (account_data.data, account_data.uuid);
+      } catch (Error e) {
+        warning (@"Could not save access tokens for Account \"$(account_data.username)\": $(e.message)");
+      }
+
+      // Store data in a dictionary Variant
+      var data_builder = new VariantBuilder (new VariantType ("a{ss}"));
+      data_builder.add ("{ss}", "uuid",        account_data.uuid);
+      data_builder.add ("{ss}", "platform",    account_data.platform);
+      data_builder.add ("{ss}", "server_uuid", account_data.server_uuid);
+      data_builder.add ("{ss}", "username",    account_data.username);
+
+      account_builder.add ("v", data_builder.end ());
+    }
+
+    // Combine sub-variants to the Variant to store.
+    var store_builder = new VariantBuilder (new VariantType ("a{sv}"));
+    store_builder.add ("{sv}", "Accounts", account_builder.end ());
+    store_builder.add ("{sv}", "Servers",  server_builder.end ());
+    return store_builder.end ();
   }
 
   /**
