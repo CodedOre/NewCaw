@@ -51,6 +51,12 @@ public class Session : Object {
     // Initializes the Twitter server.
     init_twitter_server ();
 #endif
+
+    // Create data dir if not already existing
+    var data_dir = Path.build_filename (Environment.get_user_data_dir (),
+                                        Config.APPLICATION_ID,
+                                        null);
+    DirUtils.create_with_parents (data_dir, 0750);
   }
 
   /**
@@ -91,6 +97,53 @@ public class Session : Object {
     new Backend.Twitter.Server (oauth_key);
   }
 #endif
+
+  /**
+   * Loads the session data from a file.
+   */
+  private async void load_session_file () {
+    // Initializes the file storing the session
+    var file = File.new_build_filename (Environment.get_user_data_dir (),
+                                        Config.APPLICATION_ID,
+                                        "session.gvariant",
+                                        null);
+
+    try {
+      // Load the data from the file
+      uint8[] file_content;
+      string file_etag;
+      yield file.load_contents_async (null, out file_content, out file_etag);
+      // Convert the file data to an Variant and read the values from it
+      var stored_bytes   = new Bytes.take (file_content);
+      var stored_session = new Variant.from_bytes (new VariantType ("{sv}"), stored_bytes, false);
+    } catch (Error e) {
+      // Don't put warning out if the file can't be found (expected error)
+      if (! (e is IOError.NOT_FOUND)) {
+        error (@"Session file could not be loaded properly: $(e.message)");
+      }
+    }
+  }
+
+  /**
+   * Stores the session data in a file.
+   */
+  private async void store_session_file () {
+    // Initializes the file storing the session
+    var file = File.new_build_filename (Environment.get_user_data_dir (),
+                                        Config.APPLICATION_ID,
+                                        "session.gvariant",
+                                        null);
+
+    try {
+      // TODO: Store all data in one variant
+      var session_variant = new Variant ("s", "Session_test");
+      // Convert variant to Bytes and store them in file
+      Bytes session_bytes = session_variant.get_data_as_bytes ();
+      yield file.replace_contents_bytes_async (session_bytes, null, false, REPLACE_DESTINATION, null, null);
+    } catch (Error e) {
+      warning (@"Session could not be stored: $(e.message)");
+    }
+  }
 
   /**
    * Stores the global instance of this session.
