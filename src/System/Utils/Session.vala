@@ -99,35 +99,58 @@ public class Session : Object {
 #endif
 
   /**
-   * Loads the session data from a file.
+   * Loads the data for the session.
    */
-  private async void load_session_file () {
+  private async void load_data () {
+    // Notify application that we need it running
+    application.hold ();
+
+    // Load the data from the session file
+    Variant stored_data = yield load_from_file ();
+
+
+
+    // Decrease application use count from previous hold
+    application.release ();
+  }
+
+  /**
+   * Loads the data stored in the session file.
+   *
+   * @return A Variant holding the data from the file.
+   */
+  private async Variant? load_from_file () {
     // Initializes the file storing the session
     var file = File.new_build_filename (Environment.get_user_data_dir (),
                                         Config.APPLICATION_ID,
                                         "session.gvariant",
                                         null);
 
+    Variant? stored_session;
     try {
       // Load the data from the file
       uint8[] file_content;
       string file_etag;
       yield file.load_contents_async (null, out file_content, out file_etag);
       // Convert the file data to an Variant and read the values from it
-      var stored_bytes   = new Bytes.take (file_content);
-      var stored_session = new Variant.from_bytes (new VariantType ("{sv}"), stored_bytes, false);
+      var stored_bytes = new Bytes.take (file_content);
+      stored_session   = new Variant.from_bytes (new VariantType ("{sv}"), stored_bytes, false);
     } catch (Error e) {
       // Don't put warning out if the file can't be found (expected error)
       if (! (e is IOError.NOT_FOUND)) {
         error (@"Session file could not be loaded properly: $(e.message)");
       }
+      stored_session = null;
     }
+    return stored_session;
   }
 
   /**
-   * Stores the session data in a file.
+   * Stores the session data in the session file.
+   *
+   * @param variant The Variant holding the session data.
    */
-  private async void store_session_file () {
+  private async void store_to_file (Variant variant) {
     // Initializes the file storing the session
     var file = File.new_build_filename (Environment.get_user_data_dir (),
                                         Config.APPLICATION_ID,
@@ -135,11 +158,11 @@ public class Session : Object {
                                         null);
 
     try {
-      // TODO: Store all data in one variant
-      var session_variant = new Variant ("s", "Session_test");
       // Convert variant to Bytes and store them in file
-      Bytes session_bytes = session_variant.get_data_as_bytes ();
-      yield file.replace_contents_bytes_async (session_bytes, null, false, REPLACE_DESTINATION, null, null);
+      Bytes bytes = variant.get_data_as_bytes ();
+      yield file.replace_contents_bytes_async (bytes, null,
+                                               false, REPLACE_DESTINATION,
+                                               null, null);
     } catch (Error e) {
       warning (@"Session could not be stored: $(e.message)");
     }
