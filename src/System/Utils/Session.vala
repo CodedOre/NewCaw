@@ -68,7 +68,7 @@ public class Session : Object {
                                                PlatformEnum platform_prop,
                                                string       server_prop,
                                                string       username_prop,
-                                               ServerData   account_server) {
+                                               ServerData?  account_server) {
       // Create instance with known values
       var instance         = AccountData ();
       instance.uuid        = uuid_prop;
@@ -83,8 +83,14 @@ public class Session : Object {
         switch (instance.platform) {
 #if SUPPORT_MASTODON
           case MASTODON:
-            var mastodon_server = account_server.data as Backend.Mastodon.Server;
-            instance.data = new Backend.Mastodon.Account (mastodon_server);
+            var mastodon_server = account_server != null
+                                    ? account_server.data as Backend.Mastodon.Server
+                                    : null;
+            if (mastodon_server != null) {
+              instance.data = new Backend.Mastodon.Account (mastodon_server);
+            } else {
+              warning (@"Could not instance account \"$(instance.username)\": server instance missing!");
+            }
             break;
 #endif
 #if SUPPORT_TWITTER
@@ -357,7 +363,7 @@ public class Session : Object {
               platform_prop = PlatformEnum.from_name (platform_name);
               break;
             case "server_uuid":
-              prop_variant.get_child (1, "s", out server_prop);
+              prop_variant.get_child (1, "ms", out server_prop);
               break;
             case "username":
               prop_variant.get_child (1, "s", out username_prop);
@@ -368,8 +374,8 @@ public class Session : Object {
           }
 
           // Create a new ServerData instance when all properties could be retrieved
-          if (uuid_prop != null && platform_prop != null && server_prop != null && username_prop != null) {
-            ServerData account_server = servers [server_prop];
+          if (uuid_prop != null && platform_prop != null && username_prop != null) {
+            ServerData account_server = server_prop != null ? servers [server_prop] : null;
             var account_data = yield AccountData.from_data (uuid_prop, platform_prop, server_prop, username_prop, account_server);
             accounts [account_data.uuid] = account_data;
           } else {
