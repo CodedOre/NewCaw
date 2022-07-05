@@ -159,6 +159,8 @@ public class Backend.Twitter.Post : Backend.Post {
             case "retweeted":
               returned_type = REPOST;
               break;
+            case "replied_to":
+              break;
             default:
               error ("Could not create referenced_post for this Post: Unknown object type!");
           }
