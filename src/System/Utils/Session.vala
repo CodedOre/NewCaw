@@ -102,6 +102,7 @@ public class Session : Object {
             assert_not_reached ();
         }
         instance.data.login (account_token);
+        yield instance.data.load_data ();
         assert (instance.data != null);
       } catch (Error e) {
         warning (@"Failed to initialized account for \"$(instance.username)\": $(e.message)");
@@ -352,6 +353,9 @@ public class Session : Object {
   public static async void store_session () {
     // Create a Variant and store it
     Variant session_store = yield instance.pack_data ();
+    print ("\n\nWE STORE THIS VARIANT:\n");
+    print (session_store.print (true));
+    print ("\n");
     yield instance.store_to_file (session_store);
   }
 
@@ -365,141 +369,68 @@ public class Session : Object {
       return;
     }
 
-    // Parse Accounts and Servers from the data
-    VariantIter data_iter       = loaded_data.iterator ();
-    Variant     loaded_accounts = null;
-    Variant     loaded_servers  = null;
+    // Split Accounts and Servers in two Variants
+    Variant loaded_accounts = loaded_data.lookup_value ("Accounts", null);
+    Variant loaded_servers  = loaded_data.lookup_value ("Servers", null);
+
+    // Iterate through the servers
+    VariantIter server_iter = loaded_servers.iterator ();
     while (true) {
-      // Iterate through loaded data
-      Variant? iter_variant = data_iter.next_value ();
+      Variant? iter_variant = server_iter.next_value ();
       if (iter_variant == null) {
         break;
       }
 
-      // Store data variants according to the keys
-      string key;
-      iter_variant.get_child (0, "s", out key);
-      switch (key) {
-        case "Accounts":
-          iter_variant.get_child (1, "v", out loaded_accounts);
-          break;
-        case "Servers":
-          iter_variant.get_child (1, "v", out loaded_servers);
-          break;
-        default:
-          warning ("Unrecognized category found in session file!");
-          break;
+      // Get the server dictionary
+      Variant server = iter_variant.get_child_value (0);
+
+      // Load the server properties
+      string? uuid_prop;
+      string? platform_name;
+      string? domain_prop;
+      server.lookup ("uuid",     "s", out uuid_prop);
+      server.lookup ("platform", "s", out platform_name);
+      server.lookup ("domain",   "s", out domain_prop);
+
+      // Create a new ServerData instance when all properties could be retrieved
+      if (uuid_prop != null && platform_name != null && domain_prop != null) {
+        var platform_prop = PlatformEnum.from_name (platform_name);
+        var server_data   = yield ServerData.from_data (uuid_prop, platform_prop, domain_prop);
+        servers [server_data.uuid] = server_data;
+      } else {
+        warning ("A server could not be loaded: Some data were missing!");
       }
     }
 
-    // Load server data from the data
-    if (loaded_servers != null) {
-      VariantIter server_iter = loaded_servers.iterator ();
-      while (true) {
-        // Iterate through loaded servers
-        Variant? iter_variant = server_iter.next_value ();
-        if (iter_variant == null) {
-          break;
-        }
-
-        // Create ServerData and set the properties
-        string?       uuid_prop     = null;
-        PlatformEnum? platform_prop = null;
-        string?       domain_prop   = null;
-        VariantIter   prop_iter     = iter_variant.iterator ();
-        while (true) {
-          // Iterate through server properties
-          Variant? prop_variant = prop_iter.next_value ();
-          if (prop_variant == null) {
-            break;
-          }
-
-          // Set the properties according to the keys
-          string key;
-          prop_variant.get_child (0, "s", out key);
-          switch (key) {
-            case "uuid":
-              prop_variant.get_child (1, "s", out uuid_prop);
-              break;
-            case "platform":
-              string platform_name;
-              prop_variant.get_child (1, "s", out platform_name);
-              platform_prop = PlatformEnum.from_name (platform_name);
-              break;
-            case "domain":
-              prop_variant.get_child (1, "s", out domain_prop);
-              break;
-            default:
-              warning ("Unrecognized server property in session file!");
-              break;
-          }
-
-          // Create a new ServerData instance when all properties could be retrieved
-          if (uuid_prop != null && platform_prop != null && domain_prop != null) {
-            var server_data = yield ServerData.from_data (uuid_prop, platform_prop, domain_prop);
-            servers [server_data.uuid] = server_data;
-          } else {
-            warning ("A server could not be loaded: Some data were missing!");
-          }
-        }
+    // Iterate through the accounts
+    VariantIter account_iter = loaded_accounts.iterator ();
+    while (true) {
+      Variant? iter_variant = account_iter.next_value ();
+      if (iter_variant == null) {
+        break;
       }
-    }
 
-    // Load account data from the data
-    if (loaded_accounts != null) {
-      VariantIter account_iter = loaded_accounts.iterator ();
-      while (true) {
-        // Iterate through loaded accounts
-        Variant? iter_variant = account_iter.next_value ();
-        if (iter_variant == null) {
-          break;
-        }
+      // Get the account dictionary
+      Variant account = iter_variant.get_child_value (0);
 
-        // Create AccountData and set the properties
-        string?       uuid_prop     = null;
-        PlatformEnum? platform_prop = null;
-        string?       server_prop   = null;
-        string?       username_prop = null;
-        VariantIter   prop_iter     = iter_variant.iterator ();
-        while (true) {
-          // Iterate through server properties
-          Variant? prop_variant = prop_iter.next_value ();
-          if (prop_variant == null) {
-            break;
-          }
+      // Load the account properties
+      string? uuid_prop;
+      string? platform_name;
+      string? server_prop;
+      string? username_prop;
+      account.lookup ("uuid",        "ms", out uuid_prop);
+      account.lookup ("platform",    "ms", out platform_name);
+      account.lookup ("server_uuid", "ms", out server_prop);
+      account.lookup ("username",    "ms", out username_prop);
 
-          // Set the properties according to the keys
-          string key;
-          prop_variant.get_child (0, "s", out key);
-          switch (key) {
-            case "uuid":
-              prop_variant.get_child (1, "s", out uuid_prop);
-              break;
-            case "platform":
-              string platform_name;
-              prop_variant.get_child (1, "s", out platform_name);
-              platform_prop = PlatformEnum.from_name (platform_name);
-              break;
-            case "server_uuid":
-              prop_variant.get_child (1, "ms", out server_prop);
-              break;
-            case "username":
-              prop_variant.get_child (1, "s", out username_prop);
-              break;
-            default:
-              warning ("Unrecognized server property in session file!");
-              break;
-          }
-
-          // Create a new ServerData instance when all properties could be retrieved
-          if (uuid_prop != null && platform_prop != null && username_prop != null) {
-            ServerData account_server = server_prop != null ? servers [server_prop] : null;
-            var account_data = yield AccountData.from_data (uuid_prop, platform_prop, server_prop, username_prop, account_server);
-            accounts [account_data.uuid] = account_data;
-          } else {
-            warning ("A account could not be loaded: Some data were missing!");
-          }
-        }
+      // Create a new AccountData instance when all properties could be retrieved
+      if (uuid_prop != null && platform_name != null && username_prop != null) {
+        var platform_prop = PlatformEnum.from_name (platform_name);
+        ServerData account_server = server_prop != null ? servers [server_prop] : null;
+        var account_data = yield AccountData.from_data (uuid_prop, platform_prop, server_prop, username_prop, account_server);
+        accounts [account_data.uuid] = account_data;
+      } else {
+        warning ("A account could not be loaded: Some data were missing!");
       }
     }
   }
