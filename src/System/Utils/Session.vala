@@ -64,9 +64,9 @@ public class Session : Object {
      * This functions also loads the token and secret from the storage and
      * creates an authenticated Account object for the data variable.
      */
-    public static async AccountData from_data (string       uuid_prop,
+    public static async AccountData? from_data (string       uuid_prop,
                                                PlatformEnum platform_prop,
-                                               string       server_prop,
+                                               string?      server_prop,
                                                string       username_prop,
                                                ServerData?  account_server) {
       // Create instance with known values
@@ -90,6 +90,7 @@ public class Session : Object {
               instance.data = new Backend.Mastodon.Account (mastodon_server);
             } else {
               warning (@"Could not instance account \"$(instance.username)\": server instance missing!");
+              return null;
             }
             break;
 #endif
@@ -106,6 +107,7 @@ public class Session : Object {
         assert (instance.data != null);
       } catch (Error e) {
         warning (@"Failed to initialized account for \"$(instance.username)\": $(e.message)");
+        return null;
       }
       return instance;
     }
@@ -160,7 +162,7 @@ public class Session : Object {
      * This functions also loads the token and secret from the storage and
      * creates an authenticated Server object for the data variable.
      */
-    public static async ServerData from_data (string uuid_prop, PlatformEnum platform_prop, string domain_prop) {
+    public static async ServerData? from_data (string uuid_prop, PlatformEnum platform_prop, string domain_prop) {
       // Create instance with known values
       var instance      = ServerData ();
       instance.uuid     = uuid_prop;
@@ -175,6 +177,7 @@ public class Session : Object {
         assert (instance.data != null);
       } catch (Error e) {
         warning (@"Failed to initialized server for \"$(instance.domain)\": $(e.message)");
+        return null;
       }
       return instance;
     }
@@ -353,9 +356,6 @@ public class Session : Object {
   public static async void store_session () {
     // Create a Variant and store it
     Variant session_store = yield instance.pack_data ();
-    print ("\n\nWE STORE THIS VARIANT:\n");
-    print (session_store.print (true));
-    print ("\n");
     yield instance.store_to_file (session_store);
   }
 
@@ -396,7 +396,9 @@ public class Session : Object {
       if (uuid_prop != null && platform_name != null && domain_prop != null) {
         var platform_prop = PlatformEnum.from_name (platform_name);
         var server_data   = yield ServerData.from_data (uuid_prop, platform_prop, domain_prop);
-        servers [server_data.uuid] = server_data;
+        if (server_data != null) {
+          servers [server_data.uuid] = server_data;
+        }
       } else {
         warning ("A server could not be loaded: Some data were missing!");
       }
@@ -426,9 +428,11 @@ public class Session : Object {
       // Create a new AccountData instance when all properties could be retrieved
       if (uuid_prop != null && platform_name != null && username_prop != null) {
         var platform_prop = PlatformEnum.from_name (platform_name);
-        ServerData account_server = server_prop != null ? servers [server_prop] : null;
+        ServerData? account_server = server_prop != null ? servers [server_prop] : null;
         var account_data = yield AccountData.from_data (uuid_prop, platform_prop, server_prop, username_prop, account_server);
-        accounts [account_data.uuid] = account_data;
+        if (account_data != null) {
+          accounts [account_data.uuid] = account_data;
+        }
       } else {
         warning ("A account could not be loaded: Some data were missing!");
       }
