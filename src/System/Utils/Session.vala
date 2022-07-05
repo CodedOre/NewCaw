@@ -223,6 +223,7 @@ public class Session : Object {
 
     // Initializes storage hashmaps
     accounts = new HashTable<string, AccountData?> (str_hash, str_equal);
+    servers  = new HashTable<string, ServerData?>  (str_hash, str_equal);
 
     // Create data dir if not already existing
     var data_dir = Path.build_filename (Environment.get_user_data_dir (),
