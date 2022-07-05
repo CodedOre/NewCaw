@@ -34,7 +34,7 @@ public enum PlatformEnum {
   /**
    * Converts the enum to a better readable string.
    */
-  public string to_string() {
+  public string to_string () {
     switch (this) {
 
       case MASTODON:
@@ -43,6 +43,24 @@ public enum PlatformEnum {
       case TWITTER:
         return "Twitter";
 
+      default:
+        assert_not_reached();
+    }
+  }
+
+  /**
+   * Get the enum from the platform name.
+   *
+   * @param name The name of the platform.
+   *
+   * @return The enum for the named platform.
+   */
+  public static PlatformEnum from_name (string name) {
+    switch (name) {
+      case "Mastodon":
+        return MASTODON;
+      case "Twitter":
+        return TWITTER;
       default:
         assert_not_reached();
     }
