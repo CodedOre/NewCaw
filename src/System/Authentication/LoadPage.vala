@@ -73,22 +73,16 @@ public class Authentication.LoadPage : Gtk.Widget {
       return;
     }
 
-    // Store the final account
-    try {
-      // Add account to AccountManager
-      AccountManager.add_account (view.account);
-
-      // Add server if created for account
-      if (view.server != null) {
-        AccountManager.add_server (view.server);
-      }
-
-      // Store it
-      yield AccountManager.store_data ();
-    } catch (Error e) {
-      warning (@"Failed to store account: $(e.message)");
-      return;
+    // Add server if created for account
+    if (view.server != null) {
+      Session.add_server (view.server);
     }
+
+    // Add account to AccountManager
+    Session.add_account (view.account);
+
+    // Store it
+    yield Session.store_session ();
 
     // Move to the final page
     view.move_to_next ();

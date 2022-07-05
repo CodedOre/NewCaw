@@ -3,7 +3,7 @@
 # Dependencies for the client
 cawdepends = [
   dependency('gio-2.0',       version: '>= 2.50'),
-  dependency('glib-2.0',      version: '>= 2.50'),
+  dependency('glib-2.0',      version: '>= 2.7.1'),
   dependency('gtk4',          version: '>= 4.0'),
   dependency('libadwaita-1',  version: '>= 1.0'),
   dependency('libsecret-1',   version: '>= 0.20.5'),
@@ -38,16 +38,15 @@ cawfiles = [
   'System/Authentication/LoadPage.vala',
   'System/Authentication/ServerPage.vala',
   'System/Authentication/StartPage.vala',
-  'System/Utils/AccountManager.vala',
   'System/Utils/KeyStorage.vala',
   'System/Utils/PlatformEnum.vala',
+  'System/Utils/Session.vala',
   'Utils/DisplayUtils.vala',
   'Widgets/BadgesBox.vala',
   'Widgets/FilterButton.vala',
   'Widgets/CroppedPicture.vala',
   'Widgets/UserAvatar.vala',
   'Widgets/WaitingButton.vala',
-  'Windows/InitWindow.vala',
   'Windows/MainWindow.vala',
   'Windows/MediaDialog.vala'
 ]

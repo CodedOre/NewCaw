@@ -49,7 +49,6 @@ public class KeyStorage : Object {
     secret_schema = new Secret.Schema ("uk.co.ibboard.Cawbird",
                                        Secret.SchemaFlags.NONE,
                                        "type",       Secret.SchemaAttributeType.STRING,
-                                       "platform",   Secret.SchemaAttributeType.STRING,
                                        "identifier", Secret.SchemaAttributeType.STRING,
                                        "secret",     Secret.SchemaAttributeType.BOOLEAN
                                       );
@@ -60,10 +59,11 @@ public class KeyStorage : Object {
    * Store the access tokens for a Server.
    *
    * @param server The Server which tokens are to be stored.
+   * @param identifier The identifier used to store the token.
    *
    * @throws Error Any error that happens while storing the token.
    */
-  public static async void store_server_access (Backend.Server server) throws Error {
+  public static async void store_server_access (Backend.Server server, string identifier) throws Error {
     // Fail on attempting to non Mastodon servers
     if (! (server is Backend.Mastodon.Server)) {
       error ("Only Mastodon servers should be stored!");
@@ -73,10 +73,8 @@ public class KeyStorage : Object {
     string token_label;
     var    attributes        = new GLib.HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Server";
-    attributes["platform"]   = PlatformEnum.get_platform_for_server (server).to_string ();
-    attributes["identifier"] = server.domain;
+    attributes["identifier"] = identifier;
 
-    // Store the access
     try {
       // Store the client token
       token_label          = @"Client Token for Server \"$(server.domain)\"";
@@ -99,64 +97,53 @@ public class KeyStorage : Object {
   /**
    * Retrieves the access tokens for a Server.
    *
-   * @param platform The platform this server is using.
-   * @param server The domain to the Server.
+   * @param identifier The identifier used to store the tokens.
    * @param token A reference which will hold the retrieved token.
    * @param secret A reference which will hold the retrieved secret.
    *
    * @throws Error Any error that happens while retrieving the token.
    */
-  public static async void retrieve_server_access (PlatformEnum platform,
-                                                       string   server,
+  public static async void retrieve_server_access (    string   identifier,
                                                    out string   token,
                                                    out string   secret)
                                                          throws Error {
     // Create the attributes
     var attributes           = new HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Server";
-    attributes["platform"]   = platform.to_string ();
-    attributes["identifier"] = server;
+    attributes["identifier"] = identifier;
 
-    // Store the access
     try {
-      // Store the client token
+      // Load the client token
       attributes["secret"] = "false";
       token = Secret.password_lookupv_sync (instance.secret_schema, attributes, null);
 
-      // Store the client secret
+      // Load the client secret
       attributes["secret"] = "true";
       secret = Secret.password_lookupv_sync (instance.secret_schema, attributes, null);
     } catch (Error e) {
       throw e;
-    }
-
-    // Check if tokens were retrieved
-    if (token == null || secret == null) {
-      error ("Could not retrieve access tokens for server \"$(server)\"");
     }
   }
 
   /**
    * Removes the access tokens for a Server.
    *
-   * @param server The Server which tokens are to be removed.
+   * @param identifier The identifier used to store the tokens.
    *
    * @throws Error Any error that happens while removing the token.
    */
-  public static async void remove_server_access (Backend.Server server) throws Error {
+  public static async void remove_server_access (string identifier) throws Error {
     // Create the attributes
     var attributes           = new HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Server";
-    attributes["platform"]   = PlatformEnum.get_platform_for_server (server).to_string ();
-    attributes["identifier"] = server.domain;
+    attributes["identifier"] = identifier;
 
-    // Store the access
     try {
-      // Store the client token
+      // Clear the client token
       attributes["secret"] = "false";
       Secret.password_clearv_sync (instance.secret_schema, attributes, null);
 
-      // Store the client secret
+      // Clear the client secret
       attributes["secret"] = "true";
       Secret.password_clearv_sync (instance.secret_schema, attributes, null);
     } catch (Error e) {
@@ -169,32 +156,21 @@ public class KeyStorage : Object {
    * Store the access tokens for a Account.
    *
    * @param account The Account which tokens are to be stored.
+   * @param identifier The identifier used to store the token.
    *
    * @throws Error Any error that happens while storing the token.
    */
-  public static async void store_account_access (Backend.Account account) throws Error {
+  public static async void store_account_access (Backend.Account account, string identifier) throws Error {
     // Create the attributes
-    string token_label;
+    string platform_name     = PlatformEnum.get_platform_for_account (account).to_string ();
     var    attributes        = new HashTable<string,string> (str_hash, str_equal);
+    string token_label       = @"Access Token for Account \"$(account.username)\" on $(platform_name)";
     attributes["type"]       = "Account";
-    attributes["platform"]   = PlatformEnum.get_platform_for_account (account).to_string ();
+    attributes["identifier"] = identifier;
+    attributes["secret"]     = "false";
 
-#if SUPPORT_MASTODON
-    // Add the domain on Mastodon accounts to clearly identify them
-    if (account is Backend.Mastodon.Account) {
-      attributes["identifier"] = @"$(account.username)@$(account.domain)";
-    } else {
-      attributes["identifier"] = account.username;
-    }
-#else
-    attributes["identifier"] = account.username;
-#endif
-
-    // Store the access
+    // Store the access token
     try {
-      // Store the access token
-      token_label          = @"Access Token for Account \"$(account.username)\"";
-      attributes["secret"] = "false";
       Secret.password_storev_sync (instance.secret_schema, attributes,
                                    Secret.COLLECTION_DEFAULT, token_label,
                                    account.access_token, null);
@@ -210,61 +186,44 @@ public class KeyStorage : Object {
    * authenticated with OAuth 2.0, the secret parameter
    * is not needed and can be omitted.
    *
-   * @param platform The platform this server is using.
-   * @param account The username for the account, with domain when using Mastodon.
+   * @param identifier The identifier used to store the token.
    * @param token A reference which will hold the retrieved token.
-   * @param secret A reference which will hold the retrieved secret.
    *
    * @throws Error Any error that happens while retrieving the token.
    */
-  public static async void retrieve_account_access (PlatformEnum platform,
-                                                        string   account,
-                                                    out string   token,
-                                                    out string   secret)
-                                                          throws Error {
+  public static async void retrieve_account_access (    string identifier,
+                                                    out string token)
+                                                        throws Error {
     // Create the attributes
     var attributes           = new HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Account";
-    attributes["platform"]   = platform.to_string ();
-    attributes["identifier"] = account;
+    attributes["identifier"] = identifier;
+    attributes["secret"]     = "false";
 
-    // Store the access
+    // Load the client token
     try {
-      // Store the client token
-      attributes["secret"] = "false";
       token = Secret.password_lookupv_sync (instance.secret_schema, attributes, null);
-
-      // Store the client secret
-      attributes["secret"] = "true";
-      secret = Secret.password_lookupv_sync (instance.secret_schema, attributes, null);
     } catch (Error e) {
       throw e;
-    }
-
-    // Check if tokens were retrieved
-    if (token == null) {
-      error (@"Could not retrieve access tokens for account \"$(account)\"");
     }
   }
 
   /**
    * Removes the access tokens for a Account.
    *
-   * @param account The Account which tokens are to be removed.
+   * @param identifier The identifier used to store the token.
    *
    * @throws Error Any error that happens while removing the token.
    */
-  public static async void remove_account_access (Backend.Account account) throws Error {
+  public static async void remove_account_access (string identifier) throws Error {
     // Create the attributes
     var attributes           = new HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Account";
-    attributes["platform"]   = PlatformEnum.get_platform_for_account (account).to_string ();
-    attributes["identifier"] = account.username;
+    attributes["identifier"] = identifier;
+    attributes["secret"]     = "false";
 
-    // Store the access
+    // Clear the access token
     try {
-      // Store the access token
-      attributes["secret"] = "false";
       Secret.password_clearv_sync (instance.secret_schema, attributes, null);
     } catch (Error e) {
       throw e;

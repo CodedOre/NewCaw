@@ -164,7 +164,7 @@ public class Authentication.ServerPage : Gtk.Widget {
     domain = domain.replace ("https://", "");
 
     // Look existing servers up
-    Backend.Mastodon.Server? server = AccountManager.get_server (domain) as Backend.Mastodon.Server;
+    Backend.Mastodon.Server? server = Session.find_server (domain) as Backend.Mastodon.Server;
 
     // Create the server if not already existing
     if (server == null) {

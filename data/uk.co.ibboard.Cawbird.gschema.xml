@@ -9,28 +9,6 @@
       <default>true</default>
     </key>
 	</schema>
-  <!-- Account short list -->
-  <schema id="uk.co.ibboard.Cawbird.Accounts" path="/uk/co/ibboard/Cawbird/Accounts/">
-    <key type="a{sas}" name="mastodon-accounts">
-      <description>
-        A short list of accounts connected with the Mastodon platform,
-        categorized into the servers there located at.
-      </description>
-      <default>[]</default>
-    </key>
-    <key type="as" name="twitter-accounts">
-      <description>
-        A short list of accounts connected with the Twitter platform.
-      </description>
-      <default>[]</default>
-    </key>
-    <key type="as" name="twitter-legacy-accounts">
-      <description>
-        A short list of accounts connected with the TwitterLegacy platform.
-      </description>
-      <default>[]</default>
-    </key>
-  </schema>
   <!-- Window Sizes -->
 	<schema id="uk.co.ibboard.Cawbird.Windows" path="/uk/co/ibboard/Cawbird/Windows/">
 	  <key type="(ii)" name="media-dialog-size">
