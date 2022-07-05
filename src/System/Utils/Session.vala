@@ -497,7 +497,7 @@ public class Session : Object {
             var account_data = yield AccountData.from_data (uuid_prop, platform_prop, server_prop, username_prop, account_server);
             accounts [account_data.uuid] = account_data;
           } else {
-            warning ("A server could not be loaded: Some data were missing!");
+            warning ("A account could not be loaded: Some data were missing!");
           }
         }
       }
@@ -523,8 +523,8 @@ public class Session : Object {
       // Store data in a dictionary Variant
       var data_builder = new VariantBuilder (new VariantType ("a{ss}"));
       data_builder.add ("{ss}", "uuid",     server_data.uuid);
-      data_builder.add ("{ss}", "platform", server_data.platform);
-      data_builder.add ("{ss}", "domain",   server_data.uuid);
+      data_builder.add ("{ss}", "platform", server_data.platform.to_string ());
+      data_builder.add ("{ss}", "domain",   server_data.domain);
 
       server_builder.add ("v", data_builder.end ());
     }
@@ -540,11 +540,11 @@ public class Session : Object {
       }
 
       // Store data in a dictionary Variant
-      var data_builder = new VariantBuilder (new VariantType ("a{ss}"));
-      data_builder.add ("{ss}", "uuid",        account_data.uuid);
-      data_builder.add ("{ss}", "platform",    account_data.platform);
-      data_builder.add ("{ss}", "server_uuid", account_data.server_uuid);
-      data_builder.add ("{ss}", "username",    account_data.username);
+      var data_builder = new VariantBuilder (new VariantType ("a{sms}"));
+      data_builder.add ("{sms}", "uuid",        account_data.uuid);
+      data_builder.add ("{sms}", "platform",    account_data.platform.to_string ());
+      data_builder.add ("{sms}", "server_uuid", account_data.server_uuid);
+      data_builder.add ("{sms}", "username",    account_data.username);
 
       account_builder.add ("v", data_builder.end ());
     }
@@ -576,7 +576,7 @@ public class Session : Object {
       yield file.load_contents_async (null, out file_content, out file_etag);
       // Convert the file data to an Variant and read the values from it
       var stored_bytes = new Bytes.take (file_content);
-      stored_session   = new Variant.from_bytes (new VariantType ("{sv}"), stored_bytes, false);
+      stored_session   = new Variant.from_bytes (new VariantType ("a{sv}"), stored_bytes, false);
     } catch (Error e) {
       // Don't put warning out if the file can't be found (expected error)
       if (! (e is IOError.NOT_FOUND)) {
