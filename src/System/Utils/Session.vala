@@ -321,25 +321,47 @@ public class Session : Object {
   /**
    * Loads the data for the session from disk.
    */
-  public static async void load_data () {
-    yield instance.load_data_internal ();
+  public static async void load_session () {
+    // Notify application that we need it running
+    instance.application.hold ();
+
+    yield instance.load_data ();
+
+    // Check if accounts are stored
+    Backend.Account[] accounts = get_accounts ();
+    if (accounts.length != 0) {
+      foreach (Backend.Account acc in accounts) {
+        // Create a MainWindow for stored accounts
+        var win = new MainWindow (instance.application, acc);
+        win.present ();
+      }
+    } else {
+      // Create MainWindow with AuthView
+      var win = new MainWindow (instance.application);
+      win.present ();
+    }
+
+    // Decrease application use count from previous hold
+    instance.application.release ();
   }
 
   /**
    * Stores the data of the session on disk.
    */
-  public static async void store_data () {
+  public static async void store_session () {
   }
 
   /**
    * Loads the data for the session.
    */
-  private async void load_data_internal () {
-    // Notify application that we need it running
-    application.hold ();
-
+  private async void load_data () {
     // Load the data from the session file
-    Variant     loaded_data     = yield load_from_file ();
+    Variant loaded_data = yield load_from_file ();
+    if (loaded_data == null) {
+      return;
+    }
+
+    // Parse Accounts and Servers from the data
     VariantIter data_iter       = loaded_data.iterator ();
     Variant     loaded_accounts = null;
     Variant     loaded_servers  = null;
@@ -476,9 +498,6 @@ public class Session : Object {
         }
       }
     }
-
-    // Decrease application use count from previous hold
-    application.release ();
   }
 
   /**

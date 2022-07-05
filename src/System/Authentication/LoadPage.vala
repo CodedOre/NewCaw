@@ -82,7 +82,7 @@ public class Authentication.LoadPage : Gtk.Widget {
     Session.add_account (view.account);
 
     // Store it
-    yield Session.store_data ();
+    yield Session.store_session ();
 
     // Move to the final page
     view.move_to_next ();

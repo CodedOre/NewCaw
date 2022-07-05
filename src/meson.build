@@ -47,7 +47,6 @@ cawfiles = [
   'Widgets/CroppedPicture.vala',
   'Widgets/UserAvatar.vala',
   'Widgets/WaitingButton.vala',
-  'Windows/InitWindow.vala',
   'Windows/MainWindow.vala',
   'Windows/MediaDialog.vala'
 ]
