@@ -41,15 +41,11 @@ public class InitWindow : Adw.ApplicationWindow {
    */
   public async void load_accounts () {
     // Load potentially stored accounts
-    try {
-      yield AccountManager.load_data ();
-      yield AccountManager.store_data ();
-    } catch (Error e) {
-      error (@"Failed to load accounts: $(e.message)");
-    }
+    yield Session.load_data ();
+    yield Session.store_data ();
 
     // Check if accounts are stored
-    Backend.Account[] accounts = AccountManager.get_accounts ();
+    Backend.Account[] accounts = Session.get_accounts ();
     if (accounts.length != 0) {
       foreach (Backend.Account acc in accounts) {
         // Create a MainWindow for stored accounts

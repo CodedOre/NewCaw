@@ -109,6 +109,23 @@ public class Session : Object {
       return instance;
     }
 
+    /**
+     * Create a AccountData instance from an active Account object.
+     *
+     * This functions creates the required items, like the uuid, for the object.
+     */
+    public static AccountData from_object (Backend.Account account, ServerData? server) {
+      // Create instance and populate values
+      string server_uuid   = server != null ? server.uuid : null;
+      var instance         = AccountData ();
+      instance.uuid        = Uuid.string_random ();
+      instance.platform    = PlatformEnum.get_platform_for_account (account);
+      instance.username    = account.username;
+      instance.server_uuid = server_uuid;
+      instance.data        = account;
+      return instance;
+    }
+
   }
 
   /**
@@ -158,6 +175,21 @@ public class Session : Object {
       } catch (Error e) {
         warning (@"Failed to initialized server for \"$(instance.domain)\": $(e.message)");
       }
+      return instance;
+    }
+
+    /**
+     * Create a ServerData instance from an active Server object.
+     *
+     * This functions creates the required items, like the uuid, for the object.
+     */
+    public static ServerData from_object (Backend.Server server) {
+      // Create instance and populate values
+      var instance      = ServerData ();
+      instance.uuid     = Uuid.string_random ();
+      instance.platform = PlatformEnum.get_platform_for_server (server);
+      instance.domain   = server.domain;
+      instance.data     = server;
       return instance;
     }
 
@@ -217,32 +249,92 @@ public class Session : Object {
    */
   public static void init (Gtk.Application application) {
     global_instance = new Session (application);
-    instance.load_data.begin ();
   }
 
-#if SUPPORT_TWITTER
   /**
-   * Initializes the Server instance for the Twitter backend.
+   * Adds an Account to the session.
+   *
+   * @param account The account to be added.
    */
-  private void init_twitter_server () {
-    // Look for override tokens
-    var     settings      = new Settings ("uk.co.ibboard.Cawbird.experimental");
-    string  custom_key    = settings.get_string ("twitter-oauth-key");
-
-    // Determine oauth tokens
-    string oauth_key = custom_key != ""
-                         ? custom_key
-                         : Config.TWITTER_OAUTH_KEY;
-
-    // Initializes the server
-    new Backend.Twitter.Server (oauth_key);
-  }
+  public static void add_account (Backend.Account account) {
+    // When account is a Mastodon one
+    ServerData? account_server = null;
+#if SUPPORT_MASTODON
+    if (account is Backend.Mastodon.Account) {
+      // Find the ServerData for the accounts server
+      foreach (ServerData server_data in instance.servers.get_values ()) {
+        if (server_data.data == account.server) {
+          account_server = server_data;
+        }
+      }
+      if (account_server == null) {
+        error ("Could not find UUID of the server for account to add.");
+      }
+    }
 #endif
+
+    // Create a AccountData instance for the account and add it
+    var accounts_data = AccountData.from_object (account, account_server);
+    instance.accounts [accounts_data.uuid] = accounts_data;
+  }
+
+  /**
+   * Returns all managed accounts.
+   *
+   * @return An array of all accounts in Session.
+   */
+  public static Backend.Account[] get_accounts () {
+    Backend.Account[] account_list = {};
+    foreach (AccountData account_data in instance.accounts.get_values ()) {
+      account_list += account_data.data;
+    }
+    return account_list;
+  }
+
+  /**
+   * Adds an Server to the session.
+   *
+   * @param server The server to be added.
+   */
+  public static void add_server (Backend.Server server) {
+    // Create a ServerData instance for the server and add it
+    var server_data = ServerData.from_object (server);
+    instance.servers [server_data.uuid] = server_data;
+  }
+
+  /**
+   * Checks if an Server for a domain exits or not.
+   *
+   * @param domain The domain to check the existence of an server for.
+   *
+   * @return A Backend.Server if one exists for that domain, otherwise null.
+   */
+  public static Backend.Server? find_server (string domain) {
+    foreach (ServerData server_data in instance.servers.get_values ()) {
+      if (server_data.domain == domain) {
+        return server_data.data;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Loads the data for the session from disk.
+   */
+  public static async void load_data () {
+    yield instance.load_data_internal ();
+  }
+
+  /**
+   * Stores the data of the session on disk.
+   */
+  public static async void store_data () {
+  }
 
   /**
    * Loads the data for the session.
    */
-  private async void load_data () {
+  private async void load_data_internal () {
     // Notify application that we need it running
     application.hold ();
 
@@ -442,6 +534,25 @@ public class Session : Object {
       warning (@"Session could not be stored: $(e.message)");
     }
   }
+
+#if SUPPORT_TWITTER
+  /**
+   * Initializes the Server instance for the Twitter backend.
+   */
+  private void init_twitter_server () {
+    // Look for override tokens
+    var     settings      = new Settings ("uk.co.ibboard.Cawbird.experimental");
+    string  custom_key    = settings.get_string ("twitter-oauth-key");
+
+    // Determine oauth tokens
+    string oauth_key = custom_key != ""
+                         ? custom_key
+                         : Config.TWITTER_OAUTH_KEY;
+
+    // Initializes the server
+    new Backend.Twitter.Server (oauth_key);
+  }
+#endif
 
   /**
    * Stores the global instance of this session.
