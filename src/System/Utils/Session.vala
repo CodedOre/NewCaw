@@ -78,7 +78,7 @@ public class Session : Object {
       try {
         // Load token from KeyStorage
         string account_token;
-        yield KeyStorage.retrieve_account_access (instance.platform, instance.username, out account_token, null);
+        yield KeyStorage.retrieve_account_access (instance.uuid, out account_token);
         // Create the account object and login
         switch (instance.platform) {
 #if SUPPORT_MASTODON
@@ -145,7 +145,7 @@ public class Session : Object {
       try {
         // Load token and secret from KeyStorage
         string server_token, server_secret;
-        yield KeyStorage.retrieve_server_access (instance.platform, instance.domain, out server_token, out server_secret);
+        yield KeyStorage.retrieve_server_access (instance.uuid, out server_token, out server_secret);
         // Create Server object and store it in data
         instance.data = new Backend.Mastodon.Server (instance.domain, server_token, server_secret);
         assert (instance.data != null);
