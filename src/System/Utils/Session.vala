@@ -102,9 +102,12 @@ public class Session : Object {
           default:
             assert_not_reached ();
         }
+        // Log the account in
         instance.data.login (account_token);
         yield instance.data.load_data ();
         assert (instance.data != null);
+        // Resave the keys (as Twitter refreshes the token at each login)
+        yield KeyStorage.store_account_access (instance.data, instance.uuid);
       } catch (Error e) {
         warning (@"Failed to initialized account for \"$(instance.username)\": $(e.message)");
         return null;
