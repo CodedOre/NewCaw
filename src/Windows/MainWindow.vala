@@ -26,7 +26,11 @@ public class MainWindow : Adw.ApplicationWindow {
 
   // UI-Elements of MainWindow
   [GtkChild]
-  private unowned Adw.Leaflet leaflet;
+  private unowned Gtk.Stack window_stack;
+  [GtkChild]
+  private unowned AuthView auth_view;
+  [GtkChild]
+  private unowned Adw.Leaflet main_view;
 
   /**
    * The account currently displayed in this window.
@@ -39,12 +43,16 @@ public class MainWindow : Adw.ApplicationWindow {
       // Set the new account
       displayed_account = value;
 
-      // Display set account
       if (displayed_account != null) {
+        // Display set account
         var user_view = new UserView ();
-        leaflet.append (user_view);
+        main_view.append (user_view);
         user_view.user = displayed_account;
-        leaflet.set_visible_child (user_view);
+        main_view.set_visible_child (user_view);
+        this.window_stack.set_visible_child (main_view);
+      } else {
+        // Or open AuthView on non-existence
+        this.window_stack.set_visible_child (auth_view);
       }
     }
   }
@@ -61,28 +69,23 @@ public class MainWindow : Adw.ApplicationWindow {
       application: app,
       account:     account
     );
+  }
 
-    // Check if account was assigned
-    if (account == null) {
-      // Create AuthView
-      var auth = new AuthView ();
-
-      // Close Window when authentication is cancelled
-      auth.auth_cancelled.connect (() => {
+  /**
+   * Run at the construction of an window.
+   */
+  construct {
+    // Handle input when authentication is closed
+    auth_view.close_auth.connect (() => {
+      if (auth_view.account == null) {
+        // Close the window if no account was added
         this.close ();
-      });
-
-      // Set new account when authentication is complete
-      auth.auth_complete.connect (() => {
-        this.account = auth.account;
-        leaflet.remove (auth);
-      });
-
-      // Display AuthView
-      leaflet.append (auth);
-      leaflet.set_visible_child (auth);
-    }
-
+      } else {
+        // Otherwise set the new account
+        this.account      = auth_view.account;
+        auth_view.account = null;
+      }
+    });
 #if DEBUG
     // Add development style in debug
     this.add_css_class ("devel");

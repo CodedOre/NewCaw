@@ -8,9 +8,28 @@
     <property name="default-width">650</property>
     <property name="default-height">450</property>
     <child>
-      <object class="AdwLeaflet" id="leaflet">
-        <property name="can-navigate-back">true</property>
-        <property name="can-unfold">false</property>
+      <object class="GtkStack" id="window_stack">
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">auth</property>
+            <property name="title">AuthView</property>
+            <property name="child">
+              <object class="AuthView" id="auth_view"/>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">main</property>
+            <property name="title">MainView</property>
+            <property name="child">
+              <object class="AdwLeaflet" id="main_view">
+                <property name="can-navigate-back">true</property>
+                <property name="can-unfold">false</property>
+              </object>
+            </property>
+          </object>
+        </child>
       </object>
     </child>
   </template>

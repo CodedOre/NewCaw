@@ -50,7 +50,7 @@ public class Authentication.FinalPage : Gtk.Widget {
    */
   [GtkCallback]
   private void on_continue () {
-    view.auth_complete ();
+    view.close_auth ();
   }
 
   /**
