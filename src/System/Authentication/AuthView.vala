@@ -57,14 +57,9 @@ public class AuthView : Gtk.Widget {
   public Backend.Account? account { get; set; default = null; }
 
   /**
-   * Activated when authentication is done.
+   * Activated when the AuthView is done.
    */
-  public signal void auth_complete ();
-
-  /**
-   * Activated when authentication is cancelled.
-   */
-  public signal void auth_cancelled ();
+  public signal void close_auth ();
 
   /**
    * Signal for pages when moving backwards.
@@ -115,8 +110,8 @@ public class AuthView : Gtk.Widget {
     Adw.LeafletPage page = auth_leaflet.get_page (auth_leaflet.visible_child);
 
     if (page == start_page) {
-      // Closes the widget
-      auth_cancelled ();
+      // Closes the authentication
+      close_auth ();
     } else {
       // Move one page back
       move_to_previous ();
