@@ -156,6 +156,7 @@ public class Session : Object {
      */
     Backend.Server data;
 
+#if SUPPORT_MASTODON
     /**
      * Create a ServerData instance from data loaded of the session file.
      *
@@ -181,6 +182,7 @@ public class Session : Object {
       }
       return instance;
     }
+#endif
 
     /**
      * Create a ServerData instance from an active Server object.
@@ -369,12 +371,10 @@ public class Session : Object {
       return;
     }
 
-    // Split Accounts and Servers in two Variants
-    Variant loaded_accounts = loaded_data.lookup_value ("Accounts", null);
-    Variant loaded_servers  = loaded_data.lookup_value ("Servers", null);
-
+#if SUPPORT_MASTODON
     // Iterate through the servers
-    VariantIter server_iter = loaded_servers.iterator ();
+    Variant     loaded_servers  = loaded_data.lookup_value ("Servers", null);
+    VariantIter server_iter     = loaded_servers.iterator ();
     while (true) {
       Variant? iter_variant = server_iter.next_value ();
       if (iter_variant == null) {
@@ -403,9 +403,11 @@ public class Session : Object {
         warning ("A server could not be loaded: Some data were missing!");
       }
     }
+#endif
 
     // Iterate through the accounts
-    VariantIter account_iter = loaded_accounts.iterator ();
+    Variant     loaded_accounts = loaded_data.lookup_value ("Accounts", null);
+    VariantIter account_iter    = loaded_accounts.iterator ();
     while (true) {
       Variant? iter_variant = account_iter.next_value ();
       if (iter_variant == null) {
@@ -445,6 +447,9 @@ public class Session : Object {
    * @return A Variant holding the information to be stored.
    */
   private async Variant pack_data () {
+    var store_builder = new VariantBuilder (new VariantType ("a{sv}"));
+
+#if SUPPORT_MASTODON
     // Build Variant for ServerData
     var server_builder = new VariantBuilder (new VariantType ("av"));
     foreach (ServerData server_data in servers.get_values ()) {
@@ -463,6 +468,8 @@ public class Session : Object {
 
       server_builder.add ("v", data_builder.end ());
     }
+    store_builder.add ("{sv}", "Servers",  server_builder.end ());
+#endif
 
     // Build Variant for AccountData
     var account_builder = new VariantBuilder (new VariantType ("av"));
@@ -483,11 +490,8 @@ public class Session : Object {
 
       account_builder.add ("v", data_builder.end ());
     }
-
-    // Combine sub-variants to the Variant to store.
-    var store_builder = new VariantBuilder (new VariantType ("a{sv}"));
     store_builder.add ("{sv}", "Accounts", account_builder.end ());
-    store_builder.add ("{sv}", "Servers",  server_builder.end ());
+
     return store_builder.end ();
   }
 

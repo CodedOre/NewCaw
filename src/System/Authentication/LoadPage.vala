@@ -73,10 +73,12 @@ public class Authentication.LoadPage : Gtk.Widget {
       return;
     }
 
+#if SUPPORT_MASTODON
     // Add server if created for account
     if (view.server != null) {
       Session.add_server (view.server);
     }
+#endif
 
     // Add account to AccountManager
     Session.add_account (view.account);
