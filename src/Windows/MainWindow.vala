@@ -50,9 +50,11 @@ public class MainWindow : Adw.ApplicationWindow {
         user_view.user = displayed_account;
         main_view.set_visible_child (user_view);
         this.window_stack.set_visible_child (main_view);
+        this.title = @"$(Config.PROJECT_NAME) - @$(displayed_account.username)";
       } else {
         // Or open AuthView on non-existence
         this.window_stack.set_visible_child (auth_view);
+        this.title = @"$(Config.PROJECT_NAME) - Authentication";
       }
     }
   }
