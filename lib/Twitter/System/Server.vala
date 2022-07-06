@@ -152,6 +152,7 @@ public class Backend.Twitter.Server : Backend.Server {
       "description",
       "url",
       "entities",
+      "location",
       "profile_image_url",
       "verified",
       "protected",
