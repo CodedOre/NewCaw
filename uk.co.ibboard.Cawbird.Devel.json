@@ -46,6 +46,11 @@
       "name":        "Cawbird",
       "buildsystem": "meson",
       "builddir":     true,
+      "config-opts": [
+        "-Dmastodon_backend=@MASTODON_BACKEND@",
+        "-Dtwitter_backend=@TWITTER_BACKEND@",
+        "-Dtwitter_oauth_key=@TWITTER_OAUTH_KEY@"
+      ],
       "sources": [
         {
           "type": "dir",
