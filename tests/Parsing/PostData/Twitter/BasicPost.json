@@ -1,34 +1,37 @@
 {
   "data": {
     "text": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don't expect an interesting text.",
-    "author_id": "1303637097803382786",
-    "id": "1434805586529505284",
-    "created_at": "2021-09-06T09:08:03.000Z",
     "source": "Twitter Web App",
+    "author_id": "1303637097803382786",
     "public_metrics": {
       "retweet_count": 1,
       "reply_count": 0,
       "like_count": 0,
       "quote_count": 0
-    }
+    },
+    "id": "1434805586529505284",
+    "created_at": "2021-09-06T09:08:03.000Z"
   },
   "includes": {
     "users": [
       {
-        "location": "org.gnome.Sdk",
-        "created_at": "2020-09-09T10:11:27.000Z",
-        "id": "1303637097803382786",
         "verified": false,
+        "id": "1303637097803382786",
         "description": "This may or may not be a account from @CodedOre for testing some API's for a certain Client.",
+        "name": "CawbirdTestAccount",
+        "username": "CawbirdA",
+        "pinned_tweet_id": "1472872096132960260",
+        "created_at": "2020-09-09T10:11:27.000Z",
+        "protected": false,
         "entities": {
           "url": {
             "urls": [
               {
                 "start": 0,
                 "end": 23,
-                "url": "https://t.co/nJBBsO2cRV",
-                "expanded_url": "https://example.com",
-                "display_url": "example.com"
+                "url": "https://t.co/kwqDcW4vFp",
+                "expanded_url": "https://example.com/&test",
+                "display_url": "example.com/&test"
               }
             ]
           },
@@ -42,18 +45,15 @@
             ]
           }
         },
-        "protected": false,
-        "pinned_tweet_id": "1472872096132960260",
+        "url": "https://t.co/kwqDcW4vFp",
+        "location": "org.gnome.Sdk",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/1508793016290615296/oYoUKI2J_normal.png",
         "public_metrics": {
           "followers_count": 1,
           "following_count": 1,
-          "tweet_count": 13,
+          "tweet_count": 17,
           "listed_count": 0
-        },
-        "username": "CawbirdA",
-        "name": "CawbirdTestAccount",
-        "url": "https://t.co/nJBBsO2cRV",
-        "profile_image_url": "https://pbs.twimg.com/profile_images/1508793016290615296/oYoUKI2J_normal.png"
+        }
       }
     ]
   }
