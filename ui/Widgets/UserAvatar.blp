@@ -1,0 +1,20 @@
+using Gtk 4.0;
+using Adw 1;
+
+template UserAvatar : Gtk.Widget {
+  layout-manager: Gtk.BinLayout {};
+
+  Adw.Avatar avatar_holder {
+    size: bind UserAvatar.size;
+  }
+
+  Gtk.Button avatar_selector {
+    visible:     bind UserAvatar.main-mode;
+    action-name: "avatar.display_media";
+
+    styles [
+      "avatar-button",
+      "flat"
+    ]
+  }
+}

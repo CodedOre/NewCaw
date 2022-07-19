@@ -1,0 +1,30 @@
+using Gtk 4.0;
+using Adw 1;
+
+template FilterButton : Gtk.Widget {
+  layout-manager: Gtk.BinLayout {};
+
+  Gtk.ToggleButton button {
+    active: bind FilterButton.active;
+    toggled => on_toggled ();
+
+    styles [
+      "filter-pill"
+    ]
+
+    Gtk.Box {
+      Gtk.Revealer {
+        reveal-child:    bind FilterButton.active;
+        transition-type: slide_right;
+        Gtk.Image {
+          margin-end: 4;
+          icon-name:  "object-select-symbolic";
+        }
+      }
+
+      Gtk.Label {
+        label: bind FilterButton.label;
+      }
+    }
+  }
+}
