@@ -22,7 +22,7 @@
                     <property name="selection-mode">none</property>
                     <child>
                       <object class="AdwEntryRow" id="server_entry">
-                        <property name="title">Server Domain</property>
+                        <property translatable="yes" name="title">Server Domain</property>
                         <signal name="changed" handler="on_input"/>
                         <!-- FIXME: Needs libadwaita PR 595 <signal name="entry-activated" handler="on_confirm"/> -->
                         <child>

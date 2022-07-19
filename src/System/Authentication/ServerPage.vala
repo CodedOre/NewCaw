@@ -128,6 +128,7 @@ public class Authentication.ServerPage : Gtk.Widget {
     // Clear possible warnings or errors
     set_warning ();
     set_error ();
+
     // Only activate the button when there's text
     if (server_entry.text == "") {
       if (confirm_button.has_css_class ("suggested-action")) {
