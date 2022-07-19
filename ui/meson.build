@@ -9,6 +9,8 @@ blueprints = custom_target(
     'Content/UserCard.blp',
     'Content/UserDisplay.blp',
     'Content/UserView.blp',
+    'Media/MediaPreviewItem.blp',
+    'Media/MediaDisplayItem.blp',
     'System/Authentication/AuthView.blp',
     'System/Authentication/BrowserPage.blp',
     'System/Authentication/CodePage.blp',
@@ -20,7 +22,8 @@ blueprints = custom_target(
     'Widgets/FilterButton.blp',
     'Widgets/UserAvatar.blp',
     'Widgets/WaitingButton.blp',
-    'Windows/MainWindow.blp'
+    'Windows/MainWindow.blp',
+    'Windows/MediaDialog.blp'
   ),
   output: '.',
   command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@'],

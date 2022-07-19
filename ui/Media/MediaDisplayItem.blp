@@ -1,0 +1,9 @@
+using Gtk 4.0;
+
+template MediaDisplayItem : Gtk.Widget {
+  hexpand:        true;
+  vexpand:        true;
+  layout-manager: Gtk.BinLayout {};
+
+  Gtk.Picture content {}
+}
