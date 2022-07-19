@@ -30,6 +30,8 @@ public class UserView : Gtk.Widget {
   [GtkChild]
   private unowned Adw.HeaderBar view_header;
   [GtkChild]
+  private unowned Adw.WindowTitle view_title;
+  [GtkChild]
   private unowned Gtk.ScrolledWindow view_content;
   [GtkChild]
   private unowned CollectionList collection_list;
@@ -71,6 +73,8 @@ public class UserView : Gtk.Widget {
             error ("UserView: Failed to create an appropriate user timeline!");
         }
 
+        // Set the view subtitle
+        view_title.subtitle = user.username;
         // Pull the posts for the timeline async
         collection_list.displayed_platform = platform;
         collection_list.collection         = timeline;
@@ -80,6 +84,13 @@ public class UserView : Gtk.Widget {
         collection_list.collection = null;
       }
     }
+  }
+
+  /**
+   * Run at construction of the widget.
+   */
+  construct {
+    view_title.title = Config.PROJECT_NAME;
   }
 
   /**

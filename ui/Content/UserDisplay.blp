@@ -1,0 +1,122 @@
+using Gtk 4.0;
+using Adw 1;
+
+template UserDisplay : Gtk.Widget {
+  overflow:       hidden;
+  valign:         start;
+  layout-manager: Gtk.BoxLayout {
+    orientation: vertical;
+  };
+
+  styles [
+    "card"
+  ]
+
+  .UserCard user_card {
+    user: bind UserDisplay.user;
+  }
+
+  Gtk.Box user_infobox {
+    margin-start:  20;
+    margin-end:    20;
+    margin-bottom: 16;
+    orientation:   vertical;
+
+    Gtk.Box {
+      spacing: 4;
+
+      Gtk.Label user_display_label {
+        xalign:    0.0;
+        ellipsize: end;
+
+        styles [
+          "title-1"
+        ]
+      }
+
+      .BadgesBox user_badges {
+        icon-size: 12;
+        valign:    start;
+      }
+    }
+
+    Gtk.Label user_username_label {
+      xalign:        0.0;
+      ellipsize:     end;
+      margin-bottom: 8;
+
+      styles [
+        "caption",
+        "dim-label"
+      ]
+    }
+
+    Gtk.Label user_description_label {
+      xalign:        0.0;
+      wrap:          true;
+      wrap-mode:     word_char;
+      use-markup:    true;
+      margin-bottom: 8;
+    }
+
+    Gtk.FlowBox {
+      selection-mode:        none;
+      column-spacing:        8;
+      max-children-per-line: 42;
+      margin-bottom:         8;
+
+      Gtk.Button {
+        styles [
+          "flat",
+          "inline"
+        ]
+
+        Gtk.Box {
+          spacing: 2;
+
+          Gtk.Label following_counter {
+            use-markup: true;
+
+            styles [
+              "body"
+            ]
+          }
+
+          Gtk.Image {
+            icon-name: "go-next-symbolic";
+          }
+        }
+      }
+
+      Gtk.Button {
+        styles [
+          "flat",
+          "inline"
+        ]
+
+        Gtk.Box {
+          spacing: 2;
+
+          Gtk.Label followers_counter {
+            use-markup: true;
+
+            styles [
+              "body"
+            ]
+          }
+
+          Gtk.Image {
+            icon-name: "go-next-symbolic";
+          }
+        }
+      }
+    }
+
+    Gtk.FlowBox user_fields {
+      selection-mode:        none;
+      column-spacing:        8;
+      max-children-per-line: 42;
+      margin-bottom:         8;
+    }
+  }
+}

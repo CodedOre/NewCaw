@@ -4,6 +4,10 @@
 blueprints = custom_target(
   'blueprints',
   input: files(
+    'Content/CollectionList.blp',
+    'Content/UserCard.blp',
+    'Content/UserDisplay.blp',
+    'Content/UserView.blp',
     'Widgets/BadgesBox.blp',
     'Widgets/FilterButton.blp',
     'Widgets/UserAvatar.blp',
