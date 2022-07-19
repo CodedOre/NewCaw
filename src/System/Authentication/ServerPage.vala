@@ -28,9 +28,11 @@ public class Authentication.ServerPage : Gtk.Widget {
 
   // UI-Elements of ServerPage
   [GtkChild]
-  private unowned Adw.Clamp page_content;
+  private unowned Adw.ToastOverlay page_content;
   [GtkChild]
-  private unowned Gtk.Entry server_entry;
+  private unowned Adw.EntryRow server_entry;
+  [GtkChild]
+  private unowned Gtk.Button confirm_button;
   [GtkChild]
   private unowned WaitingButton button_waiting;
 
@@ -59,7 +61,7 @@ public class Authentication.ServerPage : Gtk.Widget {
    */
   private void set_waiting (bool waiting) {
     button_waiting.waiting = waiting;
-    server_entry.sensitive = ! waiting;
+    server_entry.editable  = ! waiting;
   }
 
   /**
@@ -67,21 +69,26 @@ public class Authentication.ServerPage : Gtk.Widget {
    *
    * @param warning The warning text to display, or null to remove one.
    */
-  private void set_warning (string? warning = null) {
-    if (warning == null) {
+  private void set_warning (string? warning_text = null) {
+    if (warning_text == null) {
       // Remove the warning
       if (server_entry.has_css_class ("warning")) {
         server_entry.remove_css_class ("warning");
       }
-      server_entry.secondary_icon_name         = "";
-      server_entry.secondary_icon_tooltip_text = "";
+      if (status_toast != null) {
+        status_toast.dismiss ();
+        status_toast = null;
+      }
     } else {
       // Add the warning
       if (! server_entry.has_css_class ("warning")) {
         server_entry.add_css_class ("warning");
       }
-      server_entry.secondary_icon_name         = "dialog-warning-symbolic";
-      server_entry.secondary_icon_tooltip_text = warning;
+      if (status_toast != null) {
+        status_toast.dismiss ();
+      }
+      status_toast = new Adw.Toast (warning_text);
+      page_content.add_toast (status_toast);
     }
   }
 
@@ -90,21 +97,26 @@ public class Authentication.ServerPage : Gtk.Widget {
    *
    * @param error The error text to display, or null to remove one.
    */
-  private void set_error (string? error = null) {
-    if (error == null) {
+  private void set_error (string? error_text = null) {
+    if (error_text == null) {
       // Remove the error
       if (server_entry.has_css_class ("error")) {
         server_entry.remove_css_class ("error");
       }
-      server_entry.secondary_icon_name         = "";
-      server_entry.secondary_icon_tooltip_text = "";
+      if (status_toast != null) {
+        status_toast.dismiss ();
+        status_toast = null;
+      }
     } else {
       // Add the error
       if (! server_entry.has_css_class ("error")) {
         server_entry.add_css_class ("error");
       }
-      server_entry.secondary_icon_name         = "dialog-error-symbolic";
-      server_entry.secondary_icon_tooltip_text = error;
+      if (status_toast != null) {
+        status_toast.dismiss ();
+      }
+      status_toast = new Adw.Toast (error_text);
+      page_content.add_toast (status_toast);
     }
   }
 
@@ -116,6 +128,19 @@ public class Authentication.ServerPage : Gtk.Widget {
     // Clear possible warnings or errors
     set_warning ();
     set_error ();
+
+    // Only activate the button when there's text
+    if (server_entry.text == "") {
+      if (confirm_button.has_css_class ("suggested-action")) {
+        confirm_button.remove_css_class ("suggested-action");
+      }
+      confirm_button.sensitive = false;
+    } else {
+      if (! confirm_button.has_css_class ("suggested-action")) {
+        confirm_button.add_css_class ("suggested-action");
+      }
+      confirm_button.sensitive = true;
+    }
   }
 
   /**
@@ -161,6 +186,7 @@ public class Authentication.ServerPage : Gtk.Widget {
       stop_server_auth ();
       return;
     }
+    domain = domain.replace ("http://", "");
     domain = domain.replace ("https://", "");
 
     // Look existing servers up
@@ -174,8 +200,8 @@ public class Authentication.ServerPage : Gtk.Widget {
         server      = view.server;
       } catch (Error e) {
         if (! (e is GLib.IOError.CANCELLED)) {
-          warning (@"Could not authenticate at server: $(e.message)");
-          set_error (_("Could not authenticate at server."));
+          warning (@"Could not find server $(domain): $(e.message)");
+          set_error (_("Could not find server."));
         }
         stop_server_auth ();
         return;
@@ -191,7 +217,7 @@ public class Authentication.ServerPage : Gtk.Widget {
       view.move_to_next ();
     } catch (Error e) {
       if (! (e is GLib.IOError.CANCELLED)) {
-        warning (@"Could not authenticate at server: $(e.message)");
+        warning (@"Could not authenticate at server $(domain): $(e.message)");
         set_error (_("Could not authenticate at server."));
       }
       stop_server_auth ();
@@ -229,5 +255,10 @@ public class Authentication.ServerPage : Gtk.Widget {
    * Cancels server authentications.
    */
   private Cancellable? cancel_auth = null;
+
+  /**
+   * A Adw.Toast displaying status messages.
+   */
+  private Adw.Toast? status_toast = null;
 
 }

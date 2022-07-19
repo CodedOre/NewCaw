@@ -9,7 +9,6 @@
     <property name="hexpand">true</property>
     <child>
       <object class="AdwStatusPage" id="page_content">
-        <property name="hexpand">true</property>
         <property name="icon-name">web-browser-symbolic</property>
         <property translatable="yes" name="title">Authenticate Cawbird</property>
         <property translatable="yes" name="description">Continue the authentication in your browser.</property>
