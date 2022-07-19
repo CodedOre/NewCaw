@@ -6,6 +6,7 @@ template FilterButton : Gtk.Widget {
 
   Gtk.ToggleButton button {
     active: bind FilterButton.active;
+
     toggled => on_toggled ();
 
     styles [

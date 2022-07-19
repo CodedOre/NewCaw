@@ -1,0 +1,45 @@
+using Gtk 4.0;
+using Adw 1;
+
+template AuthenticationStartPage : Gtk.Widget {
+  hexpand:        true;
+  layout-manager: Gtk.BinLayout {};
+
+  Adw.StatusPage page_content {
+    icon-name: "system-users-symbolic";
+    title:     _("Add an Account");
+
+    Adw.Clamp {
+      maximum-size: 380;
+
+      Gtk.Box {
+        orientation: vertical;
+
+        Gtk.Button twitter_button {
+          visible: false;
+
+          .WaitingButton twitter_waiting {
+            label: _("Add Twitter Account");
+          }
+
+          styles [
+            "twitter-accent",
+            "pill",
+            "opaque",
+          ]
+        }
+
+        Gtk.Button mastodon_button {
+          visible: false;
+          label: _("Add Mastodon Account");
+
+          styles [
+            "mastodon-accent",
+            "pill",
+            "opaque",
+          ]
+        }
+      }
+    }
+  }
+}
