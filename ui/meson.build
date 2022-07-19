@@ -5,6 +5,7 @@ blueprints = custom_target(
   'blueprints',
   input: files(
     'Content/CollectionList.blp',
+    'Content/PostDisplay.blp',
     'Content/UserCard.blp',
     'Content/UserDisplay.blp',
     'Content/UserView.blp',
