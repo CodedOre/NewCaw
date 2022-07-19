@@ -19,7 +19,8 @@ cawdepends += declare_dependency(
 )
 
 # Sources of the client
-cawfiles = [
+cawsources = cawresources
+cawsources += [
   'config.vapi',
   'Cawbird.vala',
   'Content/CollectionList.vala',
@@ -66,7 +67,7 @@ configure_file(
 # Build the client
 executable(
   'cawbird',
-  [ cawfiles, cawresources ],
+  cawsources,
   dependencies:  cawdepends,
   vala_args: [
     '--target-glib=2.50',
