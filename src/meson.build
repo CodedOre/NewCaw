@@ -68,6 +68,9 @@ executable(
   'cawbird',
   [ cawfiles, cawresources ],
   dependencies:  cawdepends,
-  vala_args:    '--target-glib=2.50',
+  vala_args: [
+    '--target-glib=2.50',
+    '--gresourcesdir=ui/'
+  ],
   install:       true
 )

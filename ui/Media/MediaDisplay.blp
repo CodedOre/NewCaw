@@ -1,0 +1,137 @@
+using Gtk 4.0;
+using Adw 1;
+
+template MediaDisplay : Gtk.Widget {
+  width-request:  360;
+  height-request: 450;
+  layout-manager: Gtk.BinLayout {};
+
+  styles [
+    "osd"
+  ]
+
+  Adw.Carousel media_carousel {
+    page-changed => changed_page ();
+  }
+
+  Gtk.Revealer top_toolbar {
+    reveal-child:    bind MediaDisplay.display_controls;
+    transition-type: crossfade;
+    margin-top:      12;
+    margin-bottom:   12;
+    margin-start:    12;
+    margin-end:      12;
+    valign:          start;
+
+    Gtk.WindowHandle {
+      Gtk.CenterBox {
+        styles [
+          "toolbar",
+          "osd"
+        ]
+
+        [start]
+        Gtk.Button {
+          icon-name:   "go-previous-symbolic";
+          action-name: "window.close";
+        }
+
+        [center]
+        Adw.CarouselIndicatorDots {
+          carousel: media_carousel;
+        }
+
+        [end]
+        Gtk.MenuButton {
+          icon-name:  "view-more-symbolic";
+          menu-model: media-options;
+        }
+      }
+    }
+  }
+
+  Gtk.Revealer previous_control {
+    reveal-child:    bind MediaDisplay.display_controls;
+    transition-type: crossfade;
+    margin-top:      12;
+    margin-bottom:   12;
+    margin-start:    12;
+    margin-end:      12;
+    valign:          center;
+    halign:          start;
+
+    Gtk.Button {
+      action-name: "media_display.select_previous";
+      icon-name:   "go-previous-symbolic";
+
+      styles [
+        "osd"
+      ]
+    }
+  }
+
+  Gtk.Revealer next_control {
+    reveal-child:    bind MediaDisplay.display_controls;
+    transition-type: crossfade;
+    margin-top:      12;
+    margin-bottom:   12;
+    margin-start:    12;
+    margin-end:      12;
+    valign:          center;
+    halign:          end;
+
+    Gtk.Button {
+      action-name: "media_display.select_next";
+      icon-name:   "go-next-symbolic";
+
+      styles [
+        "osd"
+      ]
+    }
+  }
+
+  Gtk.Revealer bottom_toolbar {
+    reveal-child:    bind MediaDisplay.display_bottom_bar;
+    transition-type: crossfade;
+    margin-top:      12;
+    margin-bottom:   12;
+    margin-start:    12;
+    margin-end:      12;
+    valign:          end;
+
+    Gtk.Box {
+      orientation: vertical;
+
+      styles [
+        "toolbar",
+        "osd"
+      ]
+
+      Gtk.Label description_label {
+        xalign: 0.0;
+        wrap:   true;
+      }
+
+      Gtk.MediaControls video_controls {}
+    }
+  }
+}
+
+menu media-options {
+  section {
+    item {
+      label: _("Save Media");
+      action: "media.save-media";
+    }
+
+    item {
+      label: _("Copy Media URL");
+      action: "media.copy-url";
+    }
+
+    item {
+      label: _("Open in Browser");
+      action: "media.open-url";
+    }
+  }
+}

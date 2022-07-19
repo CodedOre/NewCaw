@@ -1,0 +1,54 @@
+using Gtk 4.0;
+using Adw 1;
+
+template UserCard : Gtk.Widget {
+  height-request: 280;
+  layout-manager: Gtk.BinLayout {};
+
+  Gtk.Overlay banner_holder {
+    height-request: 220;
+    valign:         start;
+
+    .CroppedPicture user_banner {
+      styles [
+        "rounded",
+        "placeholder"
+      ]
+    }
+
+    [overlay]
+    Gtk.Button banner_selector {
+      action-name: "UserCard.display_header";
+
+      styles [
+        "flat"
+      ]
+    }
+  }
+
+  Gtk.Box infobox {
+    margin-start: 20;
+    margin-end:   20;
+    spacing:      8;
+    valign:       end;
+
+    .UserAvatar user_avatar {
+      size:      96;
+      main-mode: true;
+      hexpand:   true;
+      halign:    start;
+    }
+
+    Gtk.Button follow_button {
+      width-request: 120;
+      margin-bottom: 12;
+      valign:        end;
+    }
+
+    Gtk.MenuButton option_button {
+      icon-name:     "view-more-symbolic";
+      margin-bottom: 12;
+      valign:        end;
+    }
+  }
+}

@@ -1,0 +1,49 @@
+using Gtk 4.0;
+using Adw 1;
+
+template AuthenticationCodePage : Gtk.Widget {
+  hexpand:        true;
+  layout-manager: Gtk.BinLayout {};
+
+  Adw.ToastOverlay page_content {
+
+    Adw.StatusPage {
+      icon-name: "dialog-password-symbolic";
+      title:     _("Enter the Passcode");
+
+      Adw.Clamp {
+        maximum-size: 450;
+
+        Gtk.ListBox {
+          selection-mode: none;
+
+          styles [
+            "boxed-list",
+          ]
+
+          Adw.EntryRow code_entry {
+            title: _("Authentication Code");
+
+            changed => on_input ();
+
+            Gtk.Button confirm_button {
+              halign:    center;
+              valign:    center;
+              sensitive: false;
+
+              clicked => on_confirm ();
+
+              styles [
+                "circular",
+              ]
+
+              .WaitingButton button_waiting {
+                icon-name: "go-next-symbolic";
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

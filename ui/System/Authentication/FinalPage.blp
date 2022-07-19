@@ -1,0 +1,25 @@
+using Gtk 4.0;
+using Adw 1;
+
+template AuthenticationFinalPage : Gtk.Widget {
+  hexpand:        true;
+  layout-manager: Gtk.BinLayout {};
+
+  Adw.StatusPage page_content {
+    icon-name: "emblem-ok-symbolic";
+    title:     _("Authentication Complete!");
+
+    Gtk.Button {
+      label:         _("Continue");
+      halign:        center;
+      width-request: 275;
+
+      clicked => on_continue ();
+
+      styles [
+        "pill",
+        "suggested-action"
+      ]
+    }
+  }
+}

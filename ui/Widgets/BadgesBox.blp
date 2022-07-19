@@ -1,0 +1,42 @@
+using Gtk 4.0;
+using Adw 1;
+
+template BadgesBox : Gtk.Box {
+  visible: false;
+  halign:  center;
+  valign:  center;
+  spacing: 2;
+
+  Gtk.Image author_verified_badge {
+    visible:      bind BadgesBox.display-verified;
+    pixel-size:   bind BadgesBox.icon-size;
+    css-name:     "badge";
+    icon-name:    "emblem-ok-symbolic";
+    tooltip-text: _("Verified User");
+    styles [
+      "verified"
+    ]
+  }
+
+  Gtk.Image author_bot_badge {
+    visible:      bind BadgesBox.display-bot;
+    pixel-size:   bind BadgesBox.icon-size;
+    css-name:     "badge";
+    icon-name:    "bot-user-symbolic";
+    tooltip-text: _("Bot Account");
+    styles [
+      "bot"
+    ]
+  }
+
+  Gtk.Image author_protected_badge {
+    visible:      bind BadgesBox.display-protected;
+    pixel-size:   bind BadgesBox.icon-size;
+    css-name:     "badge";
+    icon-name:    "protected-user-symbolic";
+    tooltip-text: _("Protected User");
+    styles [
+      "protected"
+    ]
+  }
+}

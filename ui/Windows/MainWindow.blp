@@ -1,0 +1,28 @@
+using Gtk 4.0;
+using Adw 1;
+
+template MainWindow : Adw.ApplicationWindow {
+  width-request:  360;
+  height-request: 450;
+  default-width:  650;
+  default-height: 450;
+
+  Gtk.Stack window_stack {
+
+    Gtk.StackPage {
+      name:  "auth";
+      title: "AuthView";
+      child: .AuthView auth_view {};
+    }
+
+    Gtk.StackPage {
+      name:  "main";
+      title: "MainView";
+      child: Adw.Leaflet main_view {
+        can-navigate-back: true;
+        can-unfold:        false;
+      };
+    }
+
+  }
+}

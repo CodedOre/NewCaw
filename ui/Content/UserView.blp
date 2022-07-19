@@ -1,0 +1,39 @@
+using Gtk 4.0;
+using Adw 1;
+
+template UserView : Gtk.Widget {
+  layout-manager: Gtk.BoxLayout {
+    orientation: vertical;
+  };
+
+  Adw.HeaderBar view_header {
+    [title]
+    Adw.WindowTitle view_title {}
+  }
+
+  Gtk.ScrolledWindow view_content {
+    vexpand:           true;
+    hscrollbar-policy: never;
+
+    Adw.Clamp {
+      maximum-size:         1024;
+      tightening-threshold: 512;
+
+      Gtk.Box {
+        orientation: vertical;
+
+        styles [
+          "detachable"
+        ]
+
+        .UserDisplay {
+          user: bind UserView.user;
+        }
+
+        .CollectionList collection_list {
+          margin-top: 32;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+using Gtk 4.0;
+using Adw 1;
+
+template WaitingButton : Gtk.Widget {
+  layout-manager: Gtk.BinLayout {};
+
+  Gtk.Stack waiting_stack {
+    Gtk.Box button_content {
+      halign: center;
+
+      Gtk.Label {
+        label: bind WaitingButton.label;
+      }
+
+      Gtk.Image {
+        icon-name: bind WaitingButton.icon-name;
+      }
+    }
+
+    Gtk.Spinner waiting_spinner {}
+  }
+}
