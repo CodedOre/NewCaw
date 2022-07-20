@@ -13,30 +13,24 @@ jobs:
       options: --privileged
     # We run the job three times with different platforms enabled
     strategy:
+      fail-fast: false
       matrix:
-        twitter_backend: [disabled, enabled]
-        mastodon_backend: [disabled, enabled]
-        exclude:
-          - twitter_backend: disabled
-            mastodon_backend: disabled
-    continue-on-error: true
-    name: "Twitter ${{ matrix.twitter_backend }}, Mastodon ${{ matrix.mastodon_backend }}"
+        platforms: [Twitter, Mastodon, Full]
+    name: "${{ matrix.platforms }} Build"
+    env:
+      BACKENDS: ${{ matrix.platforms }}
+      TWITTER_OAUTH_KEY: ${{ secrets.TWITTER_OAUTH_KEY }}
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
         with:
           submodules: true
-      - name: Set build configuration
-        run: |
-          sed -i "s/@TWITTER_OAUTH_KEY@/${{ secrets.TWITTER_OAUTH_KEY }}/g" "uk.co.ibboard.Cawbird.Devel.json"
-          sed -i "s/@TWITTER_BACKEND@/${{ matrix.twitter_backend }}/g" "uk.co.ibboard.Cawbird.Devel.json"
-          sed -i "s/@MASTODON_BACKEND@/${{ matrix.mastodon_backend }}/g" "uk.co.ibboard.Cawbird.Devel.json"
       - name: Run Flatpak Builder
         uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v4
         with:
-          bundle: Cawbird-Devel.flatpak
+          bundle: "Cawbird-Devel-${{ matrix.platforms }}.flatpak"
           manifest-path: uk.co.ibboard.Cawbird.Devel.json
           repository-name: gnome-nightly
           repository-url: https://nightly.gnome.org/gnome-nightly.flatpakrepo
           run-tests: true
-          cache-key: flatpak-builder-${{ github.sha }}-${{ matrix.twitter_backend }}${{ matrix.mastodon_backend }}
+          cache-key: flatpak-builder-${{ matrix.platforms }}-${{ github.sha }}
