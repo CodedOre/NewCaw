@@ -1,15 +1,9 @@
 option(
-  'mastodon_backend',
-  type:        'feature',
-  value:       'enabled',
-  description: 'If to build the backend for Mastodon.'
-)
-
-option(
-  'twitter_backend',
-  type:        'feature',
-  value:       'enabled',
-  description: 'If to build the backend for Twitter.'
+  'backends',
+  type:        'combo',
+  choices:     [ 'Twitter', 'Mastodon', 'Full' ],
+  value:       'Full',
+  description: 'The backends that are included in the build.'
 )
 
 option(

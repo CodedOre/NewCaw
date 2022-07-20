@@ -1,15 +1,14 @@
 {
   "data": {
     "text": "New post, new test!\nNow, let's test for a #hashtag, but also for some at the end: #hashtag2 #hashtag3 #hashtag4",
-    "source": "Twitter Web App",
+    "created_at": "2021-09-20T08:09:46.000Z",
+    "author_id": "1303637097803382786",
     "public_metrics": {
       "retweet_count": 0,
       "reply_count": 0,
       "like_count": 0,
       "quote_count": 0
     },
-    "id": "1439864347640139776",
-    "created_at": "2021-09-20T08:09:46.000Z",
     "entities": {
       "hashtags": [
         {
@@ -34,37 +33,38 @@
         }
       ]
     },
-    "author_id": "1303637097803382786"
+    "id": "1439864347640139776",
+    "source": "Twitter Web App"
   },
   "includes": {
     "users": [
       {
+        "verified": false,
         "public_metrics": {
           "followers_count": 1,
           "following_count": 1,
-          "tweet_count": 13,
+          "tweet_count": 17,
           "listed_count": 0
         },
-        "pinned_tweet_id": "1472872096132960260",
-        "verified": false,
-        "location": "org.gnome.Sdk",
         "profile_image_url": "https://pbs.twimg.com/profile_images/1508793016290615296/oYoUKI2J_normal.png",
-        "protected": false,
-        "url": "https://t.co/nJBBsO2cRV",
         "username": "CawbirdA",
         "description": "This may or may not be a account from @CodedOre for testing some API's for a certain Client.",
-        "id": "1303637097803382786",
         "name": "CawbirdTestAccount",
+        "id": "1303637097803382786",
+        "location": "org.gnome.Sdk",
         "created_at": "2020-09-09T10:11:27.000Z",
+        "url": "https://t.co/kwqDcW4vFp",
+        "protected": false,
+        "pinned_tweet_id": "1472872096132960260",
         "entities": {
           "url": {
             "urls": [
               {
                 "start": 0,
                 "end": 23,
-                "url": "https://t.co/nJBBsO2cRV",
-                "expanded_url": "https://example.com",
-                "display_url": "example.com"
+                "url": "https://t.co/kwqDcW4vFp",
+                "expanded_url": "https://example.com/&test",
+                "display_url": "example.com/&test"
               }
             ]
           },

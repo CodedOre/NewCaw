@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2021 Frederick Schenk -->
+<!-- Copyright 2021-2022 Frederick Schenk -->
 <component type="desktop">
   <!-- Application ID and executable -->
   <id>uk.co.ibboard.Cawbird.desktop</id>
@@ -47,9 +47,18 @@
 
   <!-- Screenshots -->
   <screenshots>
+    <screenshot type="default">
+      <image>https://github.com/CodedOre/NewCaw/raw/actions/data/appdata/screenshot-1.png</image>
+      <caption>Screenshot caption</caption>
+    </screenshot>
   </screenshots>
 
   <!-- Changelog -->
   <releases>
+    <release version="devbuild" date="2022-07-18">
+      <description>
+        <p>This is a development build for the upcoming 2.0 release of Cawbird!</p>
+      </description>
+    </release>
   </releases>
 </component>
