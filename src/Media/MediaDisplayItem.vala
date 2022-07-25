@@ -33,12 +33,17 @@ public class MediaDisplayItem : Gtk.Widget {
   /**
    * If the high-res media is fully loaded.
    */
-  public bool media_loaded { get; set; }
+  public bool media_loaded { get; private set; }
 
   /**
    * The displayed media.
    */
   public Backend.Media displayed_media { get; construct; }
+
+  /**
+   * The displayed Gdk.Paintable.
+   */
+  public Gdk.Paintable? displayed_paintable { get; private set; default = null; }
 
   /**
    * Creates the widget.
@@ -105,10 +110,5 @@ public class MediaDisplayItem : Gtk.Widget {
    * A GLib.Cancellable to cancel loads when closing the item.
    */
   private Cancellable load_cancellable;
-
-  /**
-   * The displayed Gdk.Texture.
-   */
-  private Gdk.Paintable? displayed_paintable = null;
 
 }

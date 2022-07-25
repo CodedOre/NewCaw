@@ -53,13 +53,23 @@ public class MediaDisplay : Gtk.Widget {
   public bool display_bottom_bar { get; set; }
 
   /**
+   * The currently visible MediaDisplayItem.
+   */
+  public MediaDisplayItem visible_item {
+    get {
+      // Get the currently displayed item
+      int position = (int) media_carousel.position;
+      return media_items [position];
+    }
+  }
+
+  /**
    * The currently visible media.
    */
   public Backend.Media visible_media {
     get {
       // Get the currently displayed item
-      int              position = (int) media_carousel.position;
-      MediaDisplayItem item     = media_items [position];
+      MediaDisplayItem item = visible_item;
 
       // Return the media from that item
       return item.displayed_media;
@@ -84,6 +94,9 @@ public class MediaDisplay : Gtk.Widget {
       var item_display = new MediaDisplayItem (item);
       media_items     += item_display;
       media_carousel.append (item_display);
+      item_display.notify ["media-loaded"].connect ((s, p) => {
+        set_video_controls ();
+      });
     }
 
     // Scroll to the page
@@ -149,7 +162,8 @@ public class MediaDisplay : Gtk.Widget {
 
     // Determine which parts of the bottom bar are visible
     bool   has_description   = description != null;
-    bool   has_video_control = false;
+    bool   has_video_control = media.media_type == VIDEO;
+    set_video_controls ();
 
     // Hide (parts of) the bottom bar
     description_label.visible = has_description;
@@ -160,6 +174,18 @@ public class MediaDisplay : Gtk.Widget {
     // Disable scroll buttons if on first/last item
     previous_control.sensitive = ! (position == 0);
     next_control.sensitive     = ! (position == media_items.length - 1);
+  }
+
+  /**
+   * Sets the the video controls to the right control.
+   */
+  private void set_video_controls () {
+      // Get the currently displayed item
+      MediaDisplayItem item  = visible_item;
+
+      // When the full media is loaded, set the controls
+      var video = item.displayed_paintable as Gtk.MediaFile;
+      video_controls.media_stream = video;
   }
 
   /**
