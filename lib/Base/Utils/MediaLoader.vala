@@ -101,7 +101,11 @@ internal class Backend.MediaLoader : Object {
     try {
       switch (media_type) {
         case PICTURE:
-          paintable  = Gdk.Texture.from_file (media_cache);
+          paintable = Gdk.Texture.from_file (media_cache);
+          break;
+        case ANIMATED:
+        case VIDEO:
+          paintable = Gtk.MediaFile.for_file (media_cache);
           break;
         default:
           throw new MediaLoaderError.INVALID_CONVERT ("Could not create paintable");
