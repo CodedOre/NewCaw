@@ -93,12 +93,15 @@ internal class Backend.MediaLoader : Object {
       throw e;
     }
 
+    // Cache the loaded media
+    var cache_stream = media_cache.replace (null, false, FileCreateFlags.NONE);
+    cache_stream.splice (stream, CLOSE_TARGET);
+
     // Create the paintable according to media_type
     try {
       switch (media_type) {
         case PICTURE:
-          var pixbuf = new Gdk.Pixbuf.from_stream (stream);
-          paintable  = Gdk.Texture.for_pixbuf (pixbuf);
+          paintable  = Gdk.Texture.from_file (media_cache);
           break;
         default:
           throw new MediaLoaderError.INVALID_CONVERT ("Could not create paintable");
