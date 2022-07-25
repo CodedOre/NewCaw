@@ -506,7 +506,7 @@ public class Session : Object {
   private async Variant? load_from_file () {
     // Initializes the file storing the session
     var file = File.new_build_filename (Environment.get_user_data_dir (),
-                                        Config.APPLICATION_ID,
+                                        Config.PROJECT_NAME,
                                         "session.gvariant",
                                         null);
 
@@ -537,7 +537,7 @@ public class Session : Object {
   private async void store_to_file (Variant variant) {
     // Initializes the file storing the session
     var file = File.new_build_filename (Environment.get_user_data_dir (),
-                                        Config.APPLICATION_ID,
+                                        Config.PROJECT_NAME,
                                         "session.gvariant",
                                         null);
 

@@ -40,7 +40,7 @@ public class Cawbird : Adw.Application {
    */
   protected override void activate () {
     // Initializes the backend client
-    new Backend.Client ("NewCaw Development", "https://github.com/CodedOre/NewCaw");
+    new Backend.Client (Config.PROJECT_NAME, "https://github.com/CodedOre/NewCaw");
 
     // Load the session
     Session.init (this);

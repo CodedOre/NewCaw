@@ -33,12 +33,17 @@ public class MediaDisplayItem : Gtk.Widget {
   /**
    * If the high-res media is fully loaded.
    */
-  public bool media_loaded { get; set; }
+  public bool media_loaded { get; private set; }
 
   /**
    * The displayed media.
    */
   public Backend.Media displayed_media { get; construct; }
+
+  /**
+   * The displayed Gdk.Paintable.
+   */
+  public Gdk.Paintable? displayed_paintable { get; private set; default = null; }
 
   /**
    * Creates the widget.
@@ -77,6 +82,14 @@ public class MediaDisplayItem : Gtk.Widget {
         displayed_paintable = displayed_media.get_media.end (res) as Gdk.Paintable;
         content.paintable   = displayed_paintable;
         media_loaded        = true;
+        // Autoplay animated
+        if (displayed_media.media_type == ANIMATED) {
+          var animated  = displayed_paintable as Gtk.MediaFile;
+          if (animated != null) {
+            animated.loop = true;
+            animated.play ();
+          }
+        }
       } catch (Error e) {
         warning (@"Could not load the avatar: $(e.message)");
       }
@@ -97,10 +110,5 @@ public class MediaDisplayItem : Gtk.Widget {
    * A GLib.Cancellable to cancel loads when closing the item.
    */
   private Cancellable load_cancellable;
-
-  /**
-   * The displayed Gdk.Texture.
-   */
-  private Gdk.Paintable? displayed_paintable = null;
 
 }

@@ -10,6 +10,7 @@
     "--share=network",
     "--socket=wayland",
     "--socket=fallback-x11",
+    "--socket=pulseaudio",
     "--device=dri"
   ],
   "cleanup" : [
