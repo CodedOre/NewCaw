@@ -30,7 +30,33 @@ errordomain MediaLoaderError {
 /**
  * An helper class holding code for loading media from a server.
  */
+[SingleInstance]
 internal class Backend.MediaLoader : Object {
+
+  /**
+   * An instance for the MediaLoader.
+   */
+  internal static MediaLoader instance {
+    get {
+      if (global_instance == null) {
+        global_instance = new MediaLoader ();
+      }
+      return global_instance;
+    }
+  }
+
+  /**
+   * Run at construction of the class.
+   */
+  construct {
+    // Initialize session
+    soup_session = new Soup.Session ();
+    // Create cache dir if not already existing
+    var cache_dir = Path.build_filename (Environment.get_user_cache_dir (),
+                                         Client.instance.name,
+                                         null);
+    DirUtils.create_with_parents (cache_dir, 0750);
+  }
 
   /**
    * Load a media asynchronously.
@@ -50,12 +76,19 @@ internal class Backend.MediaLoader : Object {
     InputStream   stream;
     Gdk.Paintable paintable;
 
+    // Check for cached version of the media
+    uint media_hash  = url.hash ();
+    var  media_cache = File.new_build_filename (Environment.get_user_cache_dir (),
+                                                Client.instance.name,
+                                                media_hash.to_string (),
+                                                null);
+
     // Create loading message
     var message = new Soup.Message ("GET", url);
 
     // Load media from url
     try {
-      stream = yield soup_session.send_async (message, 0, null);
+      stream = yield instance.soup_session.send_async (message, 0, null);
     } catch (Error e) {
       throw e;
     }
@@ -79,22 +112,13 @@ internal class Backend.MediaLoader : Object {
   }
 
   /**
-   * A global Soup.Session for loading.
+   * The global instance of MediaLoader.
    */
-  internal static Soup.Session soup_session {
-    get {
-      if (soup_session_store == null) {
-        soup_session_store = new Soup.Session ();
-      }
-      return soup_session_store;
-    }
-  }
+  private static MediaLoader? global_instance = null;
 
   /**
-   * Stores the global Soup.Session.
-   *
-   * Only to be loaded from the property!
+   * The Soup.Session handling the loading of the media.
    */
-  private static Soup.Session? soup_session_store = null;
+  internal Soup.Session soup_session;
 
 }
