@@ -111,7 +111,8 @@ public class Backend.Twitter.Server : Backend.Server {
       "duration_ms",
       "preview_image_url",
       "url",
-      "alt_text"
+      "alt_text",
+      "variants"
     };
 
     // Add Media fields

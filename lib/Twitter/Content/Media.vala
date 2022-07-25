@@ -61,24 +61,54 @@ public class Backend.Twitter.Media : Backend.Media {
       case "photo":
         type_enum = PICTURE;
         break;
+      case "animated_gif":
+        type_enum = ANIMATED;
+        break;
       default:
         warning ("Failed to create a Media object: Unknown media type!");
         return;
     }
 
-    // Get base url for preview and media
-    string base_url = json.get_string_member ("url");
+    string? preview_url = null, media_url = null;
+
+    // Get the url for images
+    if (type_enum == PICTURE) {
+      string base_url = json.get_string_member ("url");
+      preview_url = @"$(base_url)?name=small";
+      media_url   = @"$(base_url)?name=large";
+    }
+
+    // Get the url to the video if animated or video
+    if (type_enum == ANIMATED || type_enum == VIDEO) {
+      // Iterate trough all variants to retrieve the best one
+      string     best_variant = null;
+      int64      best_bitrate = -1;
+      Json.Array media_variants = json.get_array_member ("variants");
+      media_variants.foreach_element ((array, index, element) => {
+        if (element.get_node_type () == OBJECT) {
+          Json.Object obj = element.get_object ();
+          int64 bitrate   = obj.has_member ("bit_rate") ? obj.get_int_member ("bit_rate") : 0;
+          if (bitrate > best_bitrate) {
+            best_bitrate = bitrate;
+            best_variant = obj.get_string_member ("url");
+          }
+        }
+      });
+      // Store the new urls
+      preview_url = json.get_string_member ("preview_image_url");
+      media_url   = best_variant;
+    }
 
     // Constructs an Object from the json
     Object (
       // Set basic information
       id:         json.get_string_member ("media_key"),
-      media_type:  type_enum,
+      media_type: type_enum,
       alt_text:   json.has_member ("alt_text") ? json.get_string_member ("alt_text") : null,
 
       // Create MediaLoaders from base_url
-      preview_url: @"$(base_url)?name=small",
-      media_url:   @"$(base_url)?name=large"
+      preview_url: preview_url,
+      media_url:   media_url
     );
   }
 
