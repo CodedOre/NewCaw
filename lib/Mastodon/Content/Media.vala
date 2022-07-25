@@ -61,6 +61,9 @@ public class Backend.Mastodon.Media : Backend.Media {
       case "image":
         type_enum = PICTURE;
         break;
+      case "gifv":
+        type_enum = ANIMATED;
+        break;
       default:
         warning ("Failed to create a Media object: Unknown media type!");
         return;
