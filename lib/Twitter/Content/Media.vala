@@ -64,6 +64,9 @@ public class Backend.Twitter.Media : Backend.Media {
       case "animated_gif":
         type_enum = ANIMATED;
         break;
+      case "video":
+        type_enum = VIDEO;
+        break;
       default:
         warning ("Failed to create a Media object: Unknown media type!");
         return;
