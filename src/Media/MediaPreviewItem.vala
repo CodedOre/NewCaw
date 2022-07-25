@@ -1,6 +1,6 @@
 /* MediaPreviewItem.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -84,6 +84,10 @@ public class MediaPreviewItem : Gtk.Widget {
       alt_text_indicator.visible = true;
     }
 
+    // Set additional type indicators if appropriate
+    animated_type_indicator.visible = displayed_media.media_type == ANIMATED;
+    video_type_indicator.visible    = displayed_media.media_type == VIDEO;
+
     // Make media_indicator_box visible when a indicator is set
     media_indicator_box.visible = animated_type_indicator.visible || video_type_indicator.visible || alt_text_indicator.visible;
   }
@@ -163,11 +167,6 @@ public class MediaPreviewItem : Gtk.Widget {
    * The displayed Media object.
    */
   private Backend.Media displayed_media;
-
-  /**
-   * The displayed Gdk.Texture.
-   */
-  Gdk.Texture? displayed_texture = null;
 
   /**
    * A GLib.Cancellable to cancel loads when closing the item.

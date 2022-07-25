@@ -77,6 +77,12 @@ public class MediaDisplayItem : Gtk.Widget {
         displayed_paintable = displayed_media.get_media.end (res) as Gdk.Paintable;
         content.paintable   = displayed_paintable;
         media_loaded        = true;
+        // Autoplay animated
+        if (displayed_media.media_type == ANIMATED) {
+          var animated  = displayed_paintable as Gtk.MediaFile;
+          animated.loop = true;
+          animated.play ();
+        }
       } catch (Error e) {
         warning (@"Could not load the avatar: $(e.message)");
       }
