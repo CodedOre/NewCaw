@@ -3,7 +3,7 @@
   "post_type":     "BACKEND_POST_TYPE_NORMAL",
   "creation_date": "2021-09-06T09:08:03.000Z",
   "text": {
-    "no_flags": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don't expect an interesting text."
+    "no_flags": "Hello World!\n\nThis is a basic post with some text in it. Nothing more...\n\nI mean, this is a test profil after all, so don&apos;t expect an interesting text."
   },
   "text_modules": [
     {
