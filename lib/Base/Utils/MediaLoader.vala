@@ -52,10 +52,7 @@ internal class Backend.MediaLoader : Object {
     // Initialize session
     soup_session = new Soup.Session ();
     // Create cache dir if not already existing
-    var cache_dir = Path.build_filename (Environment.get_user_cache_dir (),
-                                         Client.instance.name,
-                                         null);
-    DirUtils.create_with_parents (cache_dir, 0750);
+    DirUtils.create_with_parents (cache_path, 0750);
   }
 
   /**
@@ -119,6 +116,25 @@ internal class Backend.MediaLoader : Object {
   }
 
   /**
+   * Cleans the cache up on closing the client.
+   */
+  internal void shutdown () {
+    try {
+      // Enter the Cache directory
+      var cache_dir = Dir.open (cache_path, 0);
+
+      // Iterate through all filename
+      string? filename;
+      while ((filename = cache_dir.read_name ()) != null) {
+        var file = File.new_build_filename (cache_path, filename);
+        file.delete ();
+      }
+    } catch (Error e) {
+      error (@"Error while cleaning cache dir: $(e.message)");
+    }
+  }
+
+  /**
    * The global instance of MediaLoader.
    */
   private static MediaLoader? global_instance = null;
@@ -127,5 +143,12 @@ internal class Backend.MediaLoader : Object {
    * The Soup.Session handling the loading of the media.
    */
   internal Soup.Session soup_session;
+
+  /**
+   * The path to the directory holding the media cache.
+   */
+  private string cache_path = Path.build_filename (Environment.get_user_cache_dir (),
+                                                   Client.instance.name,
+                                                   null);
 
 }

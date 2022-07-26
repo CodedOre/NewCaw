@@ -37,10 +37,10 @@ public class Backend.Client : Object {
    */
   public static Client? instance {
     get {
-      if (_instance == null) {
+      if (global_instance == null) {
         critical ("Client was not initialized!");
       }
-      return _instance;
+      return global_instance;
     }
   }
 
@@ -86,12 +86,19 @@ public class Backend.Client : Object {
     );
 
     // Set the global instance
-    _instance = this;
+    global_instance = this;
+  }
+
+  /**
+   * Cleans up backend-related stuff when the client is exited.
+   */
+  public void shutdown () {
+    MediaLoader.instance.shutdown ();
   }
 
   /**
    * Stores the global instance of Client.
    */
-  private static Client? _instance = null;
+  private static Client? global_instance = null;
 
 }

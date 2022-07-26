@@ -48,6 +48,14 @@ public class Cawbird : Adw.Application {
   }
 
   /**
+   * Run when the program is closed.
+   */
+  protected override void shutdown () {
+    Backend.Client.instance.shutdown ();
+    base.shutdown ();
+  }
+
+  /**
    * The main method.
    */
   public static int main (string[] args) {
