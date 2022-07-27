@@ -95,6 +95,71 @@ public class MainWindow : Adw.ApplicationWindow {
   }
 
   /**
+   * Runs at initialization of this class.
+   */
+  class construct {
+    // Set up about action
+    install_action ("app.about", null, show_about_window);
+  }
+
+  /**
+   * Displays an AboutWindow for the application.
+   *
+   * Activated by the action "app.about".
+   *
+   * @param widget The widget that called the action.
+   */
+  private static void show_about_window (Gtk.Widget widget) {
+    // Get the parent window of the widget
+    Gtk.Root widget_root   = widget.get_root ();
+    var      parent_window = widget_root as Gtk.Window;
+
+    // Init the About Window
+    var about_window = new Adw.AboutWindow ();
+
+    // Set information on main page
+    about_window.application_name = Config.PROJECT_NAME;
+    about_window.application_icon = Config.APPLICATION_ID;
+    about_window.version          = Config.PROJECT_VERSION;
+
+    // Set information on details page
+    about_window.website = "https://ibboard.co.uk/cawbird";
+
+    // Set information on credits page
+    about_window.developers = {
+      "Frederick Schenk https://github.com/CodedOre",
+      "IBBoard"
+    };
+    about_window.designers = {
+      "Frederick Schenk https://github.com/CodedOre",
+      "The GNOME Design Team"
+    };
+    about_window.artists = {
+      "Micah Ilbery (Application Icon)"
+    };
+    about_window.translator_credits = _("Translators: Add your name here!");
+    about_window.add_credit_section (
+      _("Based on Corebird, created by"),
+      { "Timm Bäder" }
+    );
+
+    // Set information on legal page
+    about_window.copyright    = "© 2022, The Cawbird Developers";
+    about_window.license_type = GPL_3_0;
+
+    // Set information for debug
+    about_window.issue_url = "https://github.com/CodedOre/NewCaw/issues";
+
+    // Connect the AboutWindow to the parent window
+    if (parent_window != null) {
+      about_window.set_transient_for (parent_window);
+    }
+
+    // Display the AboutWindow
+    about_window.show ();
+  }
+
+  /**
    * Holds the displayed account.
    */
   private Backend.Account displayed_account;
