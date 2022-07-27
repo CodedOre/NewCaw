@@ -42,7 +42,8 @@ template AuthView : Gtk.Widget {
 
     Adw.LeafletPage browser_page {
       child: .AuthenticationBrowserPage {
-        view: AuthView;
+        view:   AuthView;
+        loader: load_widget;
       };
     }
 

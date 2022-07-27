@@ -38,6 +38,11 @@ public class Authentication.BrowserPage : Gtk.Widget {
   public weak AuthView view { get; construct; }
 
   /**
+   * The LoadPage displayed after this page.
+   */
+  public weak LoadPage loader { get; protected set; }
+
+  /**
    * Run at construction of the widget.
    */
   construct {
@@ -71,6 +76,12 @@ public class Authentication.BrowserPage : Gtk.Widget {
       warning (@"Failed to authenticate account: $(e.message)");
       view.move_to_previous ();
     }
+
+    // Initialize loading
+    if (loader == null) {
+      critical ("Need a following LoadPage!");
+    }
+    loader.begin_loading ();
   }
 
   /**
