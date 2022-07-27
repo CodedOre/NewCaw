@@ -16,7 +16,8 @@ jobs:
       fail-fast: false
       matrix:
         platforms: [Twitter, Mastodon, Full]
-    name: "${{ matrix.platforms }} Build"
+        arch: [x86_64, aarch64]
+    name: "${{ matrix.platforms }} Build - ${{ matrix.arch }}"
     env:
       BACKENDS: ${{ matrix.platforms }}
       TWITTER_OAUTH_KEY: ${{ secrets.TWITTER_OAUTH_KEY }}
@@ -25,10 +26,21 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: true
+      # Installing docker for setup-qemu-action
+      - name: Install deps
+        run: |
+          dnf -y install docker
+      # Using QEMU to cross-compile for ARM
+      - name: Set up QEMU
+        id: qemu
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: arm64
       - name: Run Flatpak Builder
         uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v4
         with:
-          bundle: "Cawbird-Devel-${{ matrix.platforms }}.flatpak"
+          arch: ${{ matrix.arch }}
+          bundle: "Cawbird-Devel-${{ matrix.platforms }}-${{ matrix.arch }}.flatpak"
           manifest-path: uk.co.ibboard.Cawbird.Devel.json
           repository-name: gnome-nightly
           repository-url: https://nightly.gnome.org/gnome-nightly.flatpakrepo
