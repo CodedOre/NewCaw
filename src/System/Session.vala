@@ -241,7 +241,7 @@ public class Session : Object {
 
     // Create data dir if not already existing
     var data_dir = Path.build_filename (Environment.get_user_data_dir (),
-                                        Config.APPLICATION_ID,
+                                        Config.PROJECT_NAME,
                                         null);
     DirUtils.create_with_parents (data_dir, 0750);
   }

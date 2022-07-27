@@ -40,7 +40,7 @@ jobs:
         uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v4
         with:
           arch: ${{ matrix.arch }}
-          bundle: "Cawbird-Devel-${{ matrix.platforms }}-${{ matrix.arch }}.flatpak"
+          bundle: "Cawbird-Devel-${{ matrix.platforms }}.flatpak"
           manifest-path: uk.co.ibboard.Cawbird.Devel.json
           repository-name: gnome-nightly
           repository-url: https://nightly.gnome.org/gnome-nightly.flatpakrepo
