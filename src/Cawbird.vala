@@ -40,7 +40,7 @@ public class Cawbird : Adw.Application {
    */
   protected override void activate () {
     // Initializes the backend client
-    new Backend.Client (Config.PROJECT_NAME, "https://github.com/CodedOre/NewCaw");
+    new Backend.Client (Config.PROJECT_NAME, "https://github.com/CodedOre/NewCaw", "cawbird://authenticate");
 
     // Load the session
     Session.init (this);
@@ -63,9 +63,40 @@ public class Cawbird : Adw.Application {
         if (files.length > 1) {
           error ("Not allowed to pass multiple cawbird:// uris at once.");
         }
+        on_cawbird_uri (uri);
       } else {
         warning (@"$(uri) can't be opened by Cawbird.");
       }
+    }
+  }
+
+  /**
+   * Run when a cawbird uri was opened.
+   *
+   * @param uri The uri given by open.
+   */
+  private void on_cawbird_uri (string uri) {
+    // Parse the uri
+    try {
+      HashTable <string,string> uri_param;
+      var data  = Uri.parse (uri, NONE);
+      uri_param = Uri.parse_params (data.get_query ());
+
+      switch (data.get_host ()) {
+        case "authenticate":
+          string? state = uri_param ["state"];
+          string? code  = uri_param ["code"];
+          if (state != null && code != null) {
+          } else {
+            warning ("Failed to get authentication secrets from callback.");
+          }
+          break;
+        default:
+          warning (@"$(uri) is a invalid cawbird uri.");
+          break;
+      }
+    } catch (Error e) {
+      error (@"Failed to parse $(uri): $(e.message)");
     }
   }
 
