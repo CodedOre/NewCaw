@@ -87,6 +87,7 @@ public class Cawbird : Adw.Application {
           string? state = uri_param ["state"];
           string? code  = uri_param ["code"];
           if (state != null && code != null) {
+            Session.instance.auth_callback (state, code);
           } else {
             warning ("Failed to get authentication secrets from callback.");
           }

@@ -222,6 +222,11 @@ public class Session : Object {
   public Gtk.Application application { get; construct; }
 
   /**
+   * Emitted when an authentication callback was received.
+   */
+  public signal void auth_callback (string state, string code);
+
+  /**
    * Runs at construction of the instance.
    */
   construct {
