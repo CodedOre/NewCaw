@@ -38,6 +38,11 @@ public class Authentication.BrowserPage : Gtk.Widget {
   public weak AuthView view { get; construct; }
 
   /**
+   * The LoadPage displayed after this page.
+   */
+  public weak LoadPage loader { get; protected set; }
+
+  /**
    * Run at construction of the widget.
    */
   construct {
@@ -50,14 +55,33 @@ public class Authentication.BrowserPage : Gtk.Widget {
     if (Backend.Client.instance.redirect_uri == null) {
       continue_button.visible = true;
     }
+
+    // Connect to the authentication callback signal
+    Session.instance.auth_callback.connect (on_callback);
   }
 
   /**
-   * Activated when automatic redirect is used.
+   * Activated when a callback was received.
    */
-  public void on_redirect () {
-    // Move to the final page
-    view.skip_code ();
+  public async void on_callback (string state, string code) {
+    // Only continue if an authentication is running
+    if (view.account == null) {
+      return;
+    }
+    try {
+      // Authenticate the account
+      yield view.account.authenticate (code, state);
+      view.skip_code ();
+    } catch (Error e) {
+      warning (@"Failed to authenticate account: $(e.message)");
+      view.move_to_previous ();
+    }
+
+    // Initialize loading
+    if (loader == null) {
+      critical ("Need a following LoadPage!");
+    }
+    loader.begin_loading ();
   }
 
   /**
