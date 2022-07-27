@@ -1,4 +1,4 @@
-/* UserView.vala
+/* UserPage.vala
  *
  * Copyright 2022 Frederick Schenk
  *
@@ -23,16 +23,16 @@ using GLib;
 /**
  * Displays an User and Posts related to him.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/UserView.ui")]
-public class UserView : Gtk.Widget {
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Pages/UserPage.ui")]
+public class UserPage : Gtk.Widget {
 
-  // General UI-Elements of UserView
+  // General UI-Elements of UserPage
   [GtkChild]
-  private unowned Adw.HeaderBar view_header;
+  private unowned Adw.HeaderBar page_header;
   [GtkChild]
-  private unowned Adw.WindowTitle view_title;
+  private unowned Adw.WindowTitle page_title;
   [GtkChild]
-  private unowned Gtk.ScrolledWindow view_content;
+  private unowned Gtk.ScrolledWindow page_content;
   [GtkChild]
   private unowned CollectionList collection_list;
 
@@ -53,7 +53,7 @@ public class UserView : Gtk.Widget {
           var main_window = display_root as MainWindow;
           account = main_window.account;
         } else {
-          error ("UserView: Failed to get account for this view!");
+          error ("UserPage: Failed to get account for this view!");
         }
 
         // Create a UserTimeline
@@ -70,11 +70,11 @@ public class UserView : Gtk.Widget {
             break;
 #endif
           default:
-            error ("UserView: Failed to create an appropriate user timeline!");
+            error ("UserPage: Failed to create an appropriate user timeline!");
         }
 
         // Set the view subtitle
-        view_title.subtitle = user.username;
+        page_title.subtitle = user.username;
         // Pull the posts for the timeline async
         collection_list.displayed_platform = platform;
         collection_list.collection         = timeline;
@@ -90,16 +90,16 @@ public class UserView : Gtk.Widget {
    * Run at construction of the widget.
    */
   construct {
-    view_title.title = Config.PROJECT_NAME;
+    page_title.title = Config.PROJECT_NAME;
   }
 
   /**
-   * Deconstructs UserCard and it's childrens.
+   * Deconstructs UserPage and it's childrens.
    */
   public override void dispose () {
-    // Destructs children of MediaDisplay
-    view_header.unparent ();
-    view_content.unparent ();
+    // Destructs children of UserPage
+    page_header.unparent ();
+    page_content.unparent ();
   }
 
   /**

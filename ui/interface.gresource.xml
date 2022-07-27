@@ -18,10 +18,10 @@
     <file>Content/PostDisplay.ui</file>
     <file>Content/UserCard.ui</file>
     <file>Content/UserDisplay.ui</file>
-    <file>Content/UserView.ui</file>
     <file>Media/MediaDisplay.ui</file>
     <file>Media/MediaDisplayItem.ui</file>
     <file>Media/MediaPreviewItem.ui</file>
+    <file>Pages/UserPage.ui</file>
     <file>Widgets/BadgesBox.ui</file>
     <file>Widgets/FilterButton.ui</file>
     <file>Widgets/UserAvatar.ui</file>

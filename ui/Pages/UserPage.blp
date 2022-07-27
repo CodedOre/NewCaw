@@ -1,17 +1,17 @@
 using Gtk 4.0;
 using Adw 1;
 
-template UserView : Gtk.Widget {
+template UserPage : Gtk.Widget {
   layout-manager: Gtk.BoxLayout {
     orientation: vertical;
   };
 
-  Adw.HeaderBar view_header {
+  Adw.HeaderBar page_header {
     [title]
-    Adw.WindowTitle view_title {}
+    Adw.WindowTitle page_title {}
   }
 
-  Gtk.ScrolledWindow view_content {
+  Gtk.ScrolledWindow page_content {
     vexpand:           true;
     hscrollbar-policy: never;
 
@@ -27,7 +27,7 @@ template UserView : Gtk.Widget {
         ]
 
         .UserDisplay {
-          user: bind UserView.user;
+          user: bind UserPage.user;
         }
 
         .CollectionList collection_list {
