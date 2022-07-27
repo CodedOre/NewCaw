@@ -7,6 +7,13 @@
   </gresource>
   <!-- UI Files -->
   <gresource prefix="/uk/co/ibboard/Cawbird/ui">
+    <file>Authentication/AuthView.ui</file>
+    <file>Authentication/BrowserPage.ui</file>
+    <file>Authentication/CodePage.ui</file>
+    <file>Authentication/FinalPage.ui</file>
+    <file>Authentication/LoadPage.ui</file>
+    <file>Authentication/ServerPage.ui</file>
+    <file>Authentication/StartPage.ui</file>
     <file>Content/CollectionList.ui</file>
     <file>Content/PostDisplay.ui</file>
     <file>Content/UserCard.ui</file>
@@ -15,13 +22,6 @@
     <file>Media/MediaDisplay.ui</file>
     <file>Media/MediaDisplayItem.ui</file>
     <file>Media/MediaPreviewItem.ui</file>
-    <file>System/Authentication/AuthView.ui</file>
-    <file>System/Authentication/BrowserPage.ui</file>
-    <file>System/Authentication/CodePage.ui</file>
-    <file>System/Authentication/FinalPage.ui</file>
-    <file>System/Authentication/LoadPage.ui</file>
-    <file>System/Authentication/ServerPage.ui</file>
-    <file>System/Authentication/StartPage.ui</file>
     <file>Widgets/BadgesBox.ui</file>
     <file>Widgets/FilterButton.ui</file>
     <file>Widgets/UserAvatar.ui</file>

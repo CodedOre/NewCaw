@@ -23,7 +23,7 @@ using GLib;
 /**
  * The first page for the authentication process.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/System/Authentication/StartPage.ui")]
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Authentication/StartPage.ui")]
 public class Authentication.StartPage : Gtk.Widget {
 
   // UI-Elements of StartPage

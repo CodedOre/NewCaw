@@ -1,4 +1,4 @@
-/* ServerPage.vala
+/* CodePage.vala
  *
  * Copyright 2022 Frederick Schenk
  *
@@ -21,16 +21,16 @@
 using GLib;
 
 /**
- * The page for setting an Mastodon server.
+ * The page to enter the authentication code.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/System/Authentication/ServerPage.ui")]
-public class Authentication.ServerPage : Gtk.Widget {
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Authentication/CodePage.ui")]
+public class Authentication.CodePage : Gtk.Widget {
 
-  // UI-Elements of ServerPage
+  // UI-Elements of CodePage
   [GtkChild]
   private unowned Adw.ToastOverlay page_content;
   [GtkChild]
-  private unowned Adw.EntryRow server_entry;
+  private unowned Adw.EntryRow code_entry;
   [GtkChild]
   private unowned Gtk.Button confirm_button;
   [GtkChild]
@@ -42,6 +42,11 @@ public class Authentication.ServerPage : Gtk.Widget {
   public weak AuthView view { get; construct; }
 
   /**
+   * The LoadPage displayed after this page.
+   */
+  public weak LoadPage loader { get; protected set; }
+
+  /**
    * Run at construction of the widget.
    */
   construct {
@@ -50,7 +55,7 @@ public class Authentication.ServerPage : Gtk.Widget {
       critical ("Can only be children to AuthView!");
     }
 
-    // Connect server auth stop
+    // Connect auth stop
     view.moving_back.connect (clear_page);
   }
 
@@ -61,7 +66,7 @@ public class Authentication.ServerPage : Gtk.Widget {
    */
   private void set_waiting (bool waiting) {
     button_waiting.waiting = waiting;
-    server_entry.editable  = ! waiting;
+    code_entry.editable    = ! waiting;
   }
 
   /**
@@ -72,8 +77,8 @@ public class Authentication.ServerPage : Gtk.Widget {
   private void set_warning (string? warning_text = null) {
     if (warning_text == null) {
       // Remove the warning
-      if (server_entry.has_css_class ("warning")) {
-        server_entry.remove_css_class ("warning");
+      if (code_entry.has_css_class ("warning")) {
+        code_entry.remove_css_class ("warning");
       }
       if (status_toast != null) {
         status_toast.dismiss ();
@@ -81,8 +86,8 @@ public class Authentication.ServerPage : Gtk.Widget {
       }
     } else {
       // Add the warning
-      if (! server_entry.has_css_class ("warning")) {
-        server_entry.add_css_class ("warning");
+      if (! code_entry.has_css_class ("warning")) {
+        code_entry.add_css_class ("warning");
       }
       if (status_toast != null) {
         status_toast.dismiss ();
@@ -100,8 +105,8 @@ public class Authentication.ServerPage : Gtk.Widget {
   private void set_error (string? error_text = null) {
     if (error_text == null) {
       // Remove the error
-      if (server_entry.has_css_class ("error")) {
-        server_entry.remove_css_class ("error");
+      if (code_entry.has_css_class ("error")) {
+        code_entry.remove_css_class ("error");
       }
       if (status_toast != null) {
         status_toast.dismiss ();
@@ -109,8 +114,8 @@ public class Authentication.ServerPage : Gtk.Widget {
       }
     } else {
       // Add the error
-      if (! server_entry.has_css_class ("error")) {
-        server_entry.add_css_class ("error");
+      if (! code_entry.has_css_class ("error")) {
+        code_entry.add_css_class ("error");
       }
       if (status_toast != null) {
         status_toast.dismiss ();
@@ -126,11 +131,11 @@ public class Authentication.ServerPage : Gtk.Widget {
   [GtkCallback]
   private void on_input () {
     // Clear possible warnings or errors
-    set_warning ();
-    set_error ();
+    set_warning (null);
+    set_error (null);
 
     // Only activate the button when there's text
-    if (server_entry.text == "") {
+    if (code_entry.text == "") {
       if (confirm_button.has_css_class ("suggested-action")) {
         confirm_button.remove_css_class ("suggested-action");
       }
@@ -151,14 +156,48 @@ public class Authentication.ServerPage : Gtk.Widget {
     // Check if authentication is already running
     if (button_waiting.waiting) {
       // Stop authentication
-      stop_server_auth ();
+      stop_code_auth ();
     } else {
       // Block the UI
       set_waiting (true);
 
       // Begin authentication
-      run_server_auth.begin ();
+      run_code_auth.begin ();
     }
+  }
+
+  /**
+   * Runs the authentication.
+   */
+  private async void run_code_auth () {
+    // Get authentication code
+    string code = code_entry.text;
+    if (code.length == 0) {
+      set_warning (_("No code set!"));
+      stop_code_auth ();
+      return;
+    }
+
+    // Run authentication
+    try {
+      yield view.account.authenticate (code);
+    } catch (Error e) {
+      if (! (e is GLib.IOError.CANCELLED)) {
+        warning (@"Authentication failed: $(e.message)");
+        set_error (_("Authentication failed."));
+      }
+      stop_code_auth ();
+      return;
+    }
+
+    // Move to the final page and init loading
+    view.move_to_next ();
+
+    // Initialize loading
+    if (loader == null) {
+      critical ("Need a following LoadPage!");
+    }
+    loader.begin_loading ();
   }
 
   /**
@@ -166,74 +205,18 @@ public class Authentication.ServerPage : Gtk.Widget {
    */
   private void clear_page () {
     // Stop authentication
-    stop_server_auth ();
+    stop_code_auth ();
 
     // Reset input and warnings
-    server_entry.text = "";
+    code_entry.text = "";
     set_warning (null);
     set_error (null);
   }
 
   /**
-   * Runs the server authentication.
+   * Stops the authentication.
    */
-  private async void run_server_auth () {
-#if SUPPORT_MASTODON
-    // Get domain and strip protocol
-    string domain = server_entry.text;
-    if (domain.length == 0) {
-      set_warning (_("No domain set!"));
-      stop_server_auth ();
-      return;
-    }
-    domain = domain.replace ("http://", "");
-    domain = domain.replace ("https://", "");
-
-    // Look existing servers up
-    Backend.Mastodon.Server? server = Session.find_server (domain) as Backend.Mastodon.Server;
-
-    // Create the server if not already existing
-    if (server == null) {
-      try {
-        cancel_auth = new Cancellable ();
-        view.server = yield new Backend.Mastodon.Server.authenticate (domain, cancel_auth);
-        server      = view.server;
-      } catch (Error e) {
-        if (! (e is GLib.IOError.CANCELLED)) {
-          warning (@"Could not find server $(domain): $(e.message)");
-          set_error (_("Could not find server."));
-        }
-        stop_server_auth ();
-        return;
-      }
-    }
-
-    // Begin authentication
-    try {
-      view.account = new Backend.Mastodon.Account (server);
-      string auth_url = yield view.account.init_authentication ();
-      Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
-      stop_server_auth ();
-      view.move_to_next ();
-    } catch (Error e) {
-      if (! (e is GLib.IOError.CANCELLED)) {
-        warning (@"Could not authenticate at server $(domain): $(e.message)");
-        set_error (_("Could not authenticate at server."));
-      }
-      stop_server_auth ();
-      return;
-    }
-#else
-    // Error if no Mastodon backend available
-    set_error (_("Why are you even here? There is no Mastodon backend!"));
-    stop_server_auth ();
-#endif
-  }
-
-  /**
-   * Stops the server authentication.
-   */
-  private void stop_server_auth () {
+  private void stop_code_auth () {
     // Cancel possible actions
     if (cancel_auth != null) {
       cancel_auth.cancel ();
@@ -244,7 +227,7 @@ public class Authentication.ServerPage : Gtk.Widget {
   }
 
   /**
-   * Deconstructs ServerPage and it's childrens.
+   * Deconstructs CodePage and it's childrens.
    */
   public override void dispose () {
     // Deconstruct childrens

@@ -23,7 +23,7 @@ using GLib;
 /**
  * The page redirecting to the browser.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/System/Authentication/BrowserPage.ui")]
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Authentication/BrowserPage.ui")]
 public class Authentication.BrowserPage : Gtk.Widget {
 
   // UI-Elements of BrowserPage

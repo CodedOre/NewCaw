@@ -23,7 +23,7 @@ using GLib;
 /**
  * The page where the account is loaded and stored.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/System/Authentication/LoadPage.ui")]
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Authentication/LoadPage.ui")]
 public class Authentication.LoadPage : Gtk.Widget {
 
   // UI-Elements of LoadPage
