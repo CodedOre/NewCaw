@@ -1,12 +1,12 @@
 [Desktop Entry]
-Name=Cawbird
+Name=@app_name@
 GenericName=Twitter Client
 Comment=A window to the social world
 # TRANSLATORS: Search terms to find this application, separated by semicolons. The list must end with a semicolon!
 Keywords=twitter;
 Exec=cawbird %U
 Type=Application
-Icon=uk.co.ibboard.Cawbird
+Icon=@app_id@
 Categories=Network;GTK;
 # DBusActivatable=true
 StartupNotify=true

@@ -1,12 +1,30 @@
 # Cawbird data build file
 
-# Install Desktop file
+# Add an "Development Version" on debug builds
+desktop_name = meson.project_name ()
+if dev_build
+  desktop_name += ' (Development Version)'
+endif
+
+# Configure application informations
+application_info = configuration_data()
+application_info.set('app_id',   application_id)
+application_info.set('app_name', desktop_name)
+
+# Configure Desktop file
+desktop_file_config = configure_file(
+          input: 'uk.co.ibboard.Cawbird.desktop',
+         output: '@0@.desktop.in'.format(application_id),
+  configuration: application_info
+)
+
+# Install translated Desktop file
 desktop_file = i18n.merge_file(
-  input: ('@0@.desktop').format(application_id),
-  output: ('@0@.desktop').format(application_id),
-  type: 'desktop',
-  po_dir: '../subprojects/po',
-  install: true,
+        input: desktop_file_config,
+       output: ('@0@.desktop').format(application_id),
+         type: 'desktop',
+       po_dir: '../subprojects/po',
+      install: true,
   install_dir: join_paths(get_option('datadir'), 'applications')
 )
 
@@ -17,13 +35,20 @@ if desktop_utils.found()
   )
 endif
 
-# Install Appstream file
+# Configure Appstream file
+appstream_file_config = configure_file(
+          input: 'uk.co.ibboard.Cawbird.appdata.xml',
+         output: '@0@.appdata.xml.in'.format(application_id),
+  configuration: application_info
+)
+
+# Install translated Appstream file
 appstream_file = i18n.merge_file(
-  input: 'uk.co.ibboard.Cawbird.appdata.xml',
-  output: ('@0@.appdata.xml').format(application_id),
-  po_dir: '../po',
-  install: true,
-  install_dir: join_paths(get_option('datadir'), 'appdata')
+        input: appstream_file_config,
+       output: ('@0@.appdata.xml').format(application_id),
+       po_dir: '../subprojects/po',
+      install: true,
+  install_dir: join_paths(get_option('datadir'), 'metainfo')
 )
 
 appstream_util = find_program('appstream-util', required: false)

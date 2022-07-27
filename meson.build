@@ -13,7 +13,8 @@ i18n  = import('i18n')
 add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name()), language:'c')
 
 # Set build configuration
-if get_option('buildtype') == 'debug' or get_option('buildtype') == 'debugoptimized'
+dev_build = get_option('buildtype') == 'debug' or get_option('buildtype') == 'debugoptimized'
+if dev_build
   add_project_arguments('-D', 'DEBUG', language: 'vala')
   application_id = 'uk.co.ibboard.Cawbird.Devel'
 
