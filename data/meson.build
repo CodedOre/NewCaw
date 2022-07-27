@@ -26,13 +26,12 @@ appstream_file = i18n.merge_file(
   install_dir: join_paths(get_option('datadir'), 'appdata')
 )
 
-# FIXME: Disabled until appstream-util is fixed
-# appstream_util = find_program('appstream-util', required: false)
-# if appstream_util.found()
-#   test('Validate appstream file', appstream_util,
-#     args: ['validate', appstream_file]
-#   )
-# endif
+appstream_util = find_program('appstream-util', required: false)
+if appstream_util.found()
+  test('Validate appstream file', appstream_util,
+    args: ['validate', appstream_file]
+  )
+endif
 
 # Install GSettings schema
 install_data('uk.co.ibboard.Cawbird.gschema.xml',
