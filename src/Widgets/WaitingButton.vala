@@ -32,6 +32,10 @@ public class WaitingButton : Gtk.Widget {
   [GtkChild]
   private unowned Gtk.Box button_content;
   [GtkChild]
+  private unowned Gtk.Image button_icon;
+  [GtkChild]
+  private unowned Gtk.Label button_label;
+  [GtkChild]
   private unowned Gtk.Spinner waiting_spinner;
 
   /**
@@ -54,12 +58,32 @@ public class WaitingButton : Gtk.Widget {
   /**
    * The label of this button.
    */
-  public string label { get; set; default = ""; }
+  public string label {
+    get {
+      return internal_label;
+    }
+    set {
+      internal_label     = value;
+      button_label.label = internal_label;
+      // Hide the Gtk.Label when label is empty
+      button_label.visible = internal_label != "" && internal_label != null;
+    }
+  }
 
   /**
    * The name of an icon for this button.
    */
-  public string icon_name { get; set; }
+  public string icon_name {
+    get {
+      return internal_icon_name;
+    }
+    set {
+      internal_icon_name    = value;
+      button_icon.icon_name = internal_icon_name;
+      // Hide the Gtk.Label when label is empty
+      button_icon.visible = internal_icon_name != "" && internal_icon_name != null;
+    }
+  }
 
   /**
    * Deconstructs WaitingButton and it's childrens.
@@ -68,5 +92,15 @@ public class WaitingButton : Gtk.Widget {
     // Deconstruct childrens
     waiting_stack.unparent ();
   }
+
+  /**
+   * Contains the label for this button.
+   */
+  private string? internal_label = null;
+
+  /**
+   * Contains the icon_name for this button.
+   */
+  private string? internal_icon_name = null;
 
 }
