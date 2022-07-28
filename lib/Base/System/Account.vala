@@ -71,8 +71,8 @@ public abstract class Backend.Account : Backend.User {
    * After completion, you should save the access token retrieved
    * from the platform so you can use the login method on following runs.
    *
-   * The optional state parameter must be provided for OAuth 2.0 authentications
-   * when the Client has an redirect uri set, but is irrelevant on TwitterLegacy.
+   * When authenticating with an automatic callback using a redirect_url, it
+   * is highly recommended to pass the state parameter on to improve security.
    *
    * @param auth_code The authentication code for the user.
    * @param state An additional code verified locally.
