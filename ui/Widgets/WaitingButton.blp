@@ -6,14 +6,17 @@ template WaitingButton : Gtk.Widget {
 
   Gtk.Stack waiting_stack {
     Gtk.Box button_content {
-      halign: center;
+      halign:  center;
+      spacing: 8;
 
-      Gtk.Label {
-        label: bind WaitingButton.label;
+      Gtk.Image button_icon {
+        visible:   false;
+        icon-name: bind WaitingButton.icon-name;
       }
 
-      Gtk.Image {
-        icon-name: bind WaitingButton.icon-name;
+      Gtk.Label button_label {
+        visible: false;
+        label:   bind WaitingButton.label;
       }
     }
 
