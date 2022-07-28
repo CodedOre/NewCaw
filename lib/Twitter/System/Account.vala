@@ -44,16 +44,10 @@ public class Backend.Twitter.Account : Backend.Account {
       authenticated: false
     );
 
-    // Get Client instance and determine used redirect uri
-    Client application    = Client.instance;
-    string used_redirects = application.redirect_uri != null
-                              ? application.redirect_uri
-                              : Server.OOB_REDIRECT;
-
     // Create proxy
     proxy = new Rest.OAuth2Proxy (@"https://twitter.com/i/oauth2/authorize",
                                   @"https://api.$(server.domain)/2/oauth2/token",
-                                   used_redirects,
+                                   Server.OOB_REDIRECT,
                                    server.client_key,
                                    server.client_secret,
                                   @"https://api.$(server.domain)/2/");
@@ -62,15 +56,23 @@ public class Backend.Twitter.Account : Backend.Account {
   /**
    * Prepares the link to launch the authentication of a new Account.
    *
+   * @param use_redirect Use the clients redirect uri for authentication callback.
+   *
    * @return The link with the site to authenticate the user.
    *
    * @throws Error Any error occurring while requesting the token.
    */
-  public override async string init_authentication () throws Error {
+  public override async string init_authentication (bool use_redirect = true) throws Error {
     // Check if authentication is necessary
     if (authenticated) {
       error ("Already authenticated!");
     }
+
+    // Check which redirect uri to use
+    Client application = Client.instance;
+    proxy.redirect_uri = use_redirect && application.redirect_uri != null
+                           ? application.redirect_uri
+                           : Server.OOB_REDIRECT;
 
     // Create code challenge
     auth_challenge = new Rest.PkceCodeChallenge.random ();
@@ -90,7 +92,7 @@ public class Backend.Twitter.Account : Backend.Account {
    * After completion, you should save the access token retrieved
    * from the platform so you can use the login method on following runs.
    *
-   * When authenticating with an automatic callback using a redirect_url, it
+   * When authenticating with an automatic callback using a redirect uri, it
    * is highly recommended to pass the state parameter on to improve security.
    *
    * @param auth_code The authentication code for the user.

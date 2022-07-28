@@ -56,11 +56,13 @@ public abstract class Backend.Account : Backend.User {
    * user can generate a authentication code
    * that can be given to the authenticate method.
    *
+   * @param use_redirect Use the clients redirect uri for authentication callback.
+   *
    * @return The link with the site to authenticate the user.
    *
    * @throws Error Any error occurring while requesting the token.
    */
-  public abstract async string init_authentication () throws Error;
+  public abstract async string init_authentication (bool use_redirect = true) throws Error;
 
   /**
    * Authenticates the account with an code.
@@ -71,7 +73,7 @@ public abstract class Backend.Account : Backend.User {
    * After completion, you should save the access token retrieved
    * from the platform so you can use the login method on following runs.
    *
-   * When authenticating with an automatic callback using a redirect_url, it
+   * When authenticating with an automatic callback using a redirect uri, it
    * is highly recommended to pass the state parameter on to improve security.
    *
    * @param auth_code The authentication code for the user.
