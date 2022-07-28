@@ -10,6 +10,10 @@ template AuthView : Gtk.Widget {
     show-start-title-buttons: false;
     show-end-title-buttons:   false;
 
+    styles [
+      "flat"
+    ]
+
     [start]
     Gtk.Button back_button {
       label: _("Cancel");
@@ -26,6 +30,7 @@ template AuthView : Gtk.Widget {
     vexpand:           true;
     can-unfold:        false;
     can-navigate-back: true;
+    transition-type:   slide;
     notify::visible-child => on_move_back ();
 
     Adw.LeafletPage start_page {
