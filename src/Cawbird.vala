@@ -36,6 +36,20 @@ public class Cawbird : Adw.Application {
   }
 
   /**
+   * Run at the construction of an object.
+   */
+  construct {
+    // Define app actions
+    ActionEntry[] action_entries = {
+      { "about", this.show_about_window },
+      { "quit",  this.quit }
+    };
+    this.add_action_entries (action_entries, this);
+    // Set keyboard shortcuts for these actions
+    this.set_accels_for_action ("app.quit", {"<primary>q"});
+  }
+
+  /**
    * Initialize the client and open the first window.
    */
   protected override void activate () {
@@ -107,6 +121,57 @@ public class Cawbird : Adw.Application {
   protected override void shutdown () {
     Backend.Client.instance.shutdown ();
     base.shutdown ();
+  }
+
+  /**
+   * Displays an AboutWindow for the application.
+   *
+   * Activated by the action "app.about".
+   */
+  private void show_about_window () {
+    // Create the About Window
+    var about_window = new Adw.AboutWindow () {
+      // Information on the main page
+      application_name = Config.PROJECT_NAME,
+      application_icon = Config.APPLICATION_ID,
+      version          = Config.PROJECT_VERSION,
+
+      // Information on the details page
+      website = "https://ibboard.co.uk/cawbird",
+
+      // Information on the credits page
+      developers = {
+        "Frederick Schenk https://github.com/CodedOre",
+        "IBBoard"
+      },
+      designers = {
+        "Frederick Schenk https://github.com/CodedOre",
+        "The GNOME Design Team"
+      },
+      artists = {
+        "Micah Ilbery (Application Icon)"
+      },
+      translator_credits = _("Translators: Add your name here!"),
+
+      // Information on the legal page
+      copyright    = "© 2022, The Cawbird Developers",
+      license_type = GPL_3_0,
+
+      // Information on the debug page
+      issue_url = "https://github.com/CodedOre/NewCaw/issues/new",
+
+      // Connect to the active window
+      transient_for = this.active_window
+    };
+
+    // Add an credit for Corebird
+    about_window.add_credit_section (
+      _("Based on Corebird, created by"),
+      { "Timm Bäder" }
+    );
+
+    // Display the AboutWindow
+    about_window.present ();
   }
 
   /**
