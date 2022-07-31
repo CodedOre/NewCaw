@@ -68,5 +68,9 @@ subdir('src')
 # Add the translations
 subproject('po')
 
-# Add post-install script
-meson.add_install_script('build-aux/meson-postinstall.py')
+# Run post-install actions
+gnome.post_install(
+     glib_compile_schemas: true,
+    gtk_update_icon_cache: true,
+  update_desktop_database: true
+)
