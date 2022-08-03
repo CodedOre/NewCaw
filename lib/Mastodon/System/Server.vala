@@ -77,7 +77,10 @@ public class Backend.Mastodon.Server : Backend.Server {
 
     // Get Client instance and determine used redirect uri
     Client application    = Client.instance;
-    string used_redirects = application.redirect_uri != null ? application.redirect_uri : OOB_REDIRECT;
+    string used_redirects = OOB_REDIRECT;
+    if (application.redirect_uri != null) {
+      used_redirects += "\n" + application.redirect_uri;
+    }
 
     // Set up authentication
     client_call.set_method ("POST");
