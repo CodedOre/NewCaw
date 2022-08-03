@@ -113,7 +113,7 @@ public class Authentication.StartPage : Gtk.Widget {
     // Begin authentication
     try {
       view.account = new Backend.Twitter.Account ();
-      string auth_url = yield view.account.init_authentication ();
+      string auth_url = view.account.init_authentication ();
       Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
       stop_twitter_auth ();
       view.skip_server ();

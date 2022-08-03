@@ -62,7 +62,7 @@ public class Backend.Twitter.Account : Backend.Account {
    *
    * @throws Error Any error occurring while requesting the token.
    */
-  public override async string init_authentication (bool use_redirect = true) throws Error {
+  public override string init_authentication (bool use_redirect = true) throws Error {
     // Check if authentication is necessary
     if (authenticated) {
       error ("Already authenticated!");

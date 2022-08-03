@@ -62,7 +62,7 @@ public abstract class Backend.Account : Backend.User {
    *
    * @throws Error Any error occurring while requesting the token.
    */
-  public abstract async string init_authentication (bool use_redirect = true) throws Error;
+  public abstract string init_authentication (bool use_redirect = true) throws Error;
 
   /**
    * Authenticates the account with an code.
