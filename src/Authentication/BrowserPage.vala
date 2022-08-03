@@ -31,6 +31,8 @@ public class Authentication.BrowserPage : Gtk.Widget {
   private unowned Adw.StatusPage page_content;
   [GtkChild]
   private unowned Gtk.Button continue_button;
+  [GtkChild]
+  private unowned WaitingButton retry_waiting;
 
   /**
    * The AuthView holding this page.
@@ -63,7 +65,7 @@ public class Authentication.BrowserPage : Gtk.Widget {
   /**
    * Activated when a callback was received.
    */
-  public async void on_callback (string state, string code) {
+  private async void on_callback (string state, string code) {
     // Only continue if an authentication is running
     if (view.account == null) {
       return;
@@ -85,10 +87,34 @@ public class Authentication.BrowserPage : Gtk.Widget {
   }
 
   /**
+   * Activated when the retry button is pressed.
+   */
+  [GtkCallback]
+  private void on_retry () {
+    // Blocks the UI
+    retry_waiting.waiting = true;
+
+    // Create new authentication url without redirect
+    try {
+      string auth_url = view.account.init_authentication (false);
+      Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
+      view.move_to_next ();
+    } catch (Error e) {
+      if (! (e is GLib.IOError.CANCELLED)) {
+        warning (@"Could not retry authentication: $(e.message)");
+      }
+      return;
+    } finally {
+      // Unblocks the UI
+      retry_waiting.waiting = false;
+    }
+  }
+
+  /**
    * Activated when continue button is pressed.
    */
   [GtkCallback]
-  public void on_continue () {
+  private void on_continue () {
     // Move to the code page
     view.move_to_next ();
   }

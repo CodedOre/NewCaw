@@ -211,7 +211,7 @@ public class Authentication.ServerPage : Gtk.Widget {
     // Begin authentication
     try {
       view.account = new Backend.Mastodon.Account (server);
-      string auth_url = yield view.account.init_authentication ();
+      string auth_url = view.account.init_authentication ();
       Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
       stop_server_auth ();
       view.move_to_next ();
