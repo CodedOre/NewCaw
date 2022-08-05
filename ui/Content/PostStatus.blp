@@ -34,6 +34,7 @@ template PostStatus : Gtk.Widget {
     }
 
     Gtk.Label time_spacer {
+      visible: bind PostStatus.show-time;
       label: "·";
 
       styles [
@@ -42,6 +43,8 @@ template PostStatus : Gtk.Widget {
     }
 
     Gtk.Label time_label {
+      visible: bind PostStatus.show-time;
+
       styles [
         "dim-label"
       ]

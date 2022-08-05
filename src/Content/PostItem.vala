@@ -29,7 +29,7 @@ public class PostItem : Gtk.Widget {
   /**
    * How the content will be displayed.
    */
-  public enum DisplayType {
+  public enum DisplayMode {
     /**
      * Will be normally displayed, designed for use in a list.
      */
@@ -52,6 +52,8 @@ public class PostItem : Gtk.Widget {
   [GtkChild]
   private unowned Gtk.Box content_box;
   [GtkChild]
+  private unowned Adw.Bin next_line_bin;
+  [GtkChild]
   private unowned Gtk.Label info_label;
   [GtkChild]
   private unowned Gtk.Label text_label;
@@ -63,7 +65,28 @@ public class PostItem : Gtk.Widget {
   /**
    * How this PostDisply will display it's content.
    */
-  public DisplayType display_type { get; set; default = LIST; }
+  public DisplayMode display_mode {
+    get {
+      return set_display_mode;
+    }
+    set {
+      set_display_mode = value;
+
+      info_label.visible         = set_display_mode == MAIN;
+      text_label.selectable      = set_display_mode == MAIN;
+      post_status.show_time      = set_display_mode != MAIN;
+      post_status.display_inline = set_display_mode == QUOTE;
+      next_line_bin.visible      = ! (set_display_mode != LIST);
+      content_box.margin_top     = set_display_mode != LIST ? 8 : 0;
+
+      if (set_display_mode == QUOTE && ! text_label.has_css_class ("caption")) {
+        text_label.add_css_class ("caption");
+      }
+      if (! (set_display_mode == QUOTE) && text_label.has_css_class ("caption")) {
+        text_label.remove_css_class ("caption");
+      }
+    }
+  }
 
   /**
    * The post displayed in this widget.
@@ -111,9 +134,9 @@ public class PostItem : Gtk.Widget {
       }
 
       // Add quotes in the quote button
-      if (has_quote && display_type != QUOTE) {
+      if (has_quote && display_mode != QUOTE) {
         var quote_item          = new PostItem ();
-        quote_item.display_type = QUOTE;
+        quote_item.display_mode = QUOTE;
         quote_item.post         = quote;
         quote_button.child      = quote_item;
       }
@@ -130,6 +153,11 @@ public class PostItem : Gtk.Widget {
     post_status.unparent ();
     content_box.unparent ();
   }
+
+  /**
+   * Stores the set display mode.
+   */
+  private DisplayMode set_display_mode = LIST;
 
   /**
    * Stores the displayed repost.

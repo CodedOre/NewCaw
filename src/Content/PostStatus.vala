@@ -41,6 +41,11 @@ public class PostStatus : Gtk.Widget {
   private unowned Gtk.Label time_label;
 
   /**
+   * If the time label(s) should be displayed.
+   */
+  public bool show_time { get; set; }
+
+  /**
    * If this button is for a repost.
    */
   public bool is_repost { get; set; }
