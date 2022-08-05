@@ -20,6 +20,24 @@
 
 using GLib;
 
+/**
+ * Displayed over an PostItem and shows the information about the reposting user.
+ */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/RepostStatus.ui")]
 public class RepostStatus : Gtk.Widget {
+
+  // UI-Elements of RepostStatus
+  [GtkChild]
+  private unowned Adw.Bin previous_line_bin;
+  [GtkChild]
+  private unowned Gtk.Box information_box;
+
+  /**
+   * Deconstructs RepostStatus and it's childrens.
+   */
+  public override void dispose () {
+    // Destructs children of RepostStatus
+    previous_line_bin.unparent ();
+    information_box.unparent ();
+  }
 }

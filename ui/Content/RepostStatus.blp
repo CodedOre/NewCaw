@@ -6,4 +6,46 @@ template RepostStatus : Gtk.Widget {
   layout-manager: Gtk.BoxLayout {
     orientation: vertical;
   };
+
+  Adw.Bin previous_line_bin {
+    width-request: 48;
+    height-request: 12;
+    halign: start;
+
+    Gtk.Separator previous_line {
+      visible: false;
+      halign: center;
+      orientation: vertical;
+    }
+  }
+
+  Gtk.Box information_box {
+    spacing: 8;
+
+    .UserAvatar user_avatar {
+      width-request: 48;
+      halign: center;
+      size: 24;
+    }
+
+    .UserButton user_button {
+      is-repost: true;
+    }
+
+    Gtk.Label {
+      label: "·";
+
+      styles [
+        "caption",
+        "dim-label"
+      ]
+    }
+
+    Gtk.Label time_label {
+      styles [
+        "caption",
+        "dim-label"
+      ]
+    }
+  }
 }
