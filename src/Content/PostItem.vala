@@ -31,6 +31,10 @@ public class PostItem : Gtk.Widget {
   private unowned PostStatus repost_status;
   [GtkChild]
   private unowned PostStatus post_status;
+  [GtkChild]
+  private unowned Gtk.Box content_box;
+  [GtkChild]
+  private unowned Gtk.Label info_label;
 
   /**
    * The post displayed in this widget.
@@ -51,12 +55,15 @@ public class PostItem : Gtk.Widget {
       bool          has_quote  = main_post != null && main_post.post_type == QUOTE;
       Backend.Post? quote      = has_quote ? main_post.referenced_post : null;
 
-      // Set the repost status
-      repost_status.visible = ! has_repost;
+      // Set the PostStatus widgets
+      repost_status.visible = has_repost;
       repost_status.post    = repost;
+      post_status.post      = main_post;
 
       // Set the main post information
-      post_status.post = main_post;
+      string post_date   = main_post != null ? main_post.creation_date.format ("%x, %X") : "(null)";
+      string post_source = main_post != null ? main_post.source : "(null)";
+      info_label.label   = _("%s using %s").printf (post_date, post_source);
     }
   }
 
@@ -67,6 +74,7 @@ public class PostItem : Gtk.Widget {
     // Destructs children of PostItem
     repost_status.unparent ();
     post_status.unparent ();
+    content_box.unparent ();
   }
 
   /**

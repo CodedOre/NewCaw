@@ -14,4 +14,28 @@ template PostItem : Gtk.Widget {
   }
 
   .PostStatus post_status {}
+
+  Gtk.Box content_box {
+    spacing: 8;
+
+    Adw.Bin next_line_bin {
+      width-request: 48;
+
+      Gtk.Separator next_line {
+        visible: false;
+        halign: center;
+        orientation: vertical;
+      }
+    }
+
+    Gtk.Label info_label {
+      use-markup: true;
+      xalign: 0.0;
+
+      styles [
+        "caption",
+        "dim-label"
+      ]
+    }
+  }
 }
