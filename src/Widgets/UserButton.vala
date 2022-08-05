@@ -98,7 +98,7 @@ public class UserButton : Gtk.Button {
 
       // Set the UI elements to the user
       display_label.label           = displayed_user != null ? displayed_user.display_name         : "(null)";
-      username_label.label          = displayed_user != null ? displayed_user.username             : "(null)";
+      username_label.label          = displayed_user != null ? "@" + displayed_user.username       : "(null)";
       user_badges.display_verified  = displayed_user != null ? displayed_user.has_flag (VERIFIED)  : false;
       user_badges.display_bot       = displayed_user != null ? displayed_user.has_flag (BOT)       : false;
       user_badges.display_protected = displayed_user != null ? displayed_user.has_flag (PROTECTED) : false;
