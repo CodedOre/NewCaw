@@ -37,6 +37,11 @@ public class UserButton : Gtk.Button {
   private unowned Gtk.Label username_label;
 
   /**
+   * If this button is for a repost.
+   */
+  public bool is_repost { get; set; }
+
+  /**
    * If the button should use the inline style.
    *
    * Also changes the label styles to use "caption".
