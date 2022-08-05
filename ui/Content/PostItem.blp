@@ -8,7 +8,10 @@ template PostItem : Gtk.Widget {
     orientation: vertical;
   };
 
-  .PostStatus repost_status {}
+  .PostStatus repost_status {
+    display-inline: true;
+    is-repost: true;
+  }
 
   .PostStatus post_status {}
 }

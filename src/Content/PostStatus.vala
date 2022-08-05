@@ -36,7 +36,50 @@ public class PostStatus : Gtk.Widget {
   [GtkChild]
   private unowned UserButton user_button;
   [GtkChild]
+  private unowned Gtk.Label time_spacer;
+  [GtkChild]
   private unowned Gtk.Label time_label;
+
+  /**
+   * If this button is for a repost.
+   */
+  public bool is_repost { get; set; }
+
+  /**
+   * If the button should use the inline style.
+   *
+   * Also changes the label styles to use "caption".
+   */
+  public bool display_inline {
+    get {
+      return use_inline;
+    }
+    set {
+      use_inline = value;
+
+      // Set the size of the avatar
+      user_avatar.size = use_inline ? 24 : 48;
+
+      // Set the inline style on the button
+      user_button.display_inline = use_inline;
+
+      // Set the styles on the time spacer
+      if (use_inline && ! time_spacer.has_css_class ("caption")) {
+        time_spacer.add_css_class ("caption");
+      }
+      if (! use_inline && time_spacer.has_css_class ("caption")) {
+        time_spacer.remove_css_class ("caption");
+      }
+
+      // Set the styles on the time label
+      if (use_inline && ! time_label.has_css_class ("caption")) {
+        time_label.add_css_class ("caption");
+      }
+      if (! use_inline && time_label.has_css_class ("caption")) {
+        time_label.remove_css_class ("caption");
+      }
+    }
+  }
 
   /**
    * The post to be displayed.
@@ -65,6 +108,11 @@ public class PostStatus : Gtk.Widget {
     previous_line_bin.unparent ();
     information_box.unparent ();
   }
+
+  /**
+   * Stores the inline style property.
+   */
+  private bool use_inline = false;
 
   /**
    * Stores the displayed post.

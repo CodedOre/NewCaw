@@ -25,25 +25,24 @@ template PostStatus : Gtk.Widget {
     .UserAvatar user_avatar {
       width-request: 48;
       halign: center;
-      size: 24;
+      size: 48;
     }
 
     .UserButton user_button {
-      is-repost: true;
+      valign: center;
+      is-repost: bind PostStatus.is-repost;
     }
 
-    Gtk.Label {
+    Gtk.Label time_spacer {
       label: "·";
 
       styles [
-        "caption",
         "dim-label"
       ]
     }
 
     Gtk.Label time_label {
       styles [
-        "caption",
         "dim-label"
       ]
     }
