@@ -2,7 +2,7 @@
 <!-- Copyright 2021-2022 Frederick Schenk -->
 <component type="desktop">
   <!-- Application ID and executable -->
-  <id>@app_id@.desktop</id>
+  <id>@app_id@</id>
   <translation type="gettext">cawbird</translation>
   <launchable type="desktop-id">@app_id@.desktop</launchable>
   <provides>
