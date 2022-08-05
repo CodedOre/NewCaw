@@ -26,6 +26,24 @@ using GLib;
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/PostItem.ui")]
 public class PostItem : Gtk.Widget {
 
+  /**
+   * How the content will be displayed.
+   */
+  public enum DisplayType {
+    /**
+     * Will be normally displayed, designed for use in a list.
+     */
+    LIST,
+    /**
+     * Text selectable and additional information, designed for selected posts.
+     */
+    MAIN,
+    /**
+     * Smaller display, used for quoted posts.
+     */
+    QUOTE
+  }
+
   // UI-Elements of PostItem
   [GtkChild]
   private unowned PostStatus repost_status;
@@ -39,6 +57,13 @@ public class PostItem : Gtk.Widget {
   private unowned Gtk.Label text_label;
   [GtkChild]
   private unowned MediaPreview media_previewer;
+  [GtkChild]
+  private unowned Gtk.Button quote_button;
+
+  /**
+   * How this PostDisply will display it's content.
+   */
+  public DisplayType display_type { get; set; default = LIST; }
 
   /**
    * The post displayed in this widget.
@@ -78,6 +103,21 @@ public class PostItem : Gtk.Widget {
       if (has_media) {
         media_previewer.display_media (main_post.get_media ());
       }
+
+      // Clear existing quote from quote button
+      if (quote_button.child != null) {
+        quote_button.child.unparent ();
+        quote_button.child = null;
+      }
+
+      // Add quotes in the quote button
+      if (has_quote && display_type != QUOTE) {
+        var quote_item          = new PostItem ();
+        quote_item.display_type = QUOTE;
+        quote_item.post         = quote;
+        quote_button.child      = quote_item;
+      }
+      quote_button.visible = has_quote;
     }
   }
 
