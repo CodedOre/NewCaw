@@ -83,6 +83,11 @@ public class UserAvatar : Gtk.Widget {
       // Store the displayed avatar
       shown_avatar = value;
 
+      if (shown_avatar == null) {
+        avatar_holder.custom_image = null;
+        return;
+      }
+
       // Load and set the avatar
       if (! main_mode && shown_avatar.preview_url != null) {
         shown_avatar.get_preview.begin (load_cancellable, (obj, res) => {
