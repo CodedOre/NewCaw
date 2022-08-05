@@ -28,14 +28,29 @@ template PostItem : Gtk.Widget {
       }
     }
 
-    Gtk.Label info_label {
-      use-markup: true;
-      xalign: 0.0;
+    Gtk.Box {
+      orientation: vertical;
+      margin-bottom: 12;
+      margin-start: 4;
+      margin-end: 4;
+      spacing: 8;
 
-      styles [
-        "caption",
-        "dim-label"
-      ]
+      Gtk.Label info_label {
+        use-markup: true;
+        xalign: 0.0;
+
+        styles [
+          "caption",
+          "dim-label"
+        ]
+      }
+
+      Gtk.Label text_label {
+        xalign: 0.0;
+        use-markup: true;
+        wrap: true;
+        wrap-mode: word_char;
+      }
     }
   }
 }

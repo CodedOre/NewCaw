@@ -35,6 +35,8 @@ public class PostItem : Gtk.Widget {
   private unowned Gtk.Box content_box;
   [GtkChild]
   private unowned Gtk.Label info_label;
+  [GtkChild]
+  private unowned Gtk.Label text_label;
 
   /**
    * The post displayed in this widget.
@@ -64,6 +66,9 @@ public class PostItem : Gtk.Widget {
       string post_date   = main_post != null ? main_post.creation_date.format ("%x, %X") : "(null)";
       string post_source = main_post != null ? main_post.source : "(null)";
       info_label.label   = _("%s using %s").printf (post_date, post_source);
+
+      // Set the main post content
+      text_label.label = main_post != null ? main_post.text : "(null)";
     }
   }
 
