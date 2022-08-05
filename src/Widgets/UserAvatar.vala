@@ -73,6 +73,40 @@ public class UserAvatar : Gtk.Widget {
   }
 
   /**
+   * The avatar that is displayed.
+   */
+  public Backend.Media avatar {
+    get {
+      return shown_avatar;
+    }
+    set {
+      // Store the displayed avatar
+      shown_avatar = value;
+
+      // Load and set the avatar
+      if (! main_mode && shown_avatar.preview_url != null) {
+        shown_avatar.get_preview.begin (load_cancellable, (obj, res) => {
+          try {
+            var paintable = shown_avatar.get_preview.end (res) as Gdk.Paintable;
+            avatar_holder.custom_image = paintable;
+          } catch (Error e) {
+            warning (@"Could not load the avatar: $(e.message)");
+          }
+        });
+      } else {
+        shown_avatar.get_media.begin (load_cancellable, (obj, res) => {
+          try {
+            var paintable = shown_avatar.get_media.end (res) as Gdk.Paintable;
+            avatar_holder.custom_image = paintable;
+          } catch (Error e) {
+            warning (@"Could not load the avatar: $(e.message)");
+          }
+        });
+      }
+    }
+  }
+
+  /**
    * Creates a new object of this widget.
    */
   public UserAvatar (bool main_avatar = false) {
@@ -110,35 +144,6 @@ public class UserAvatar : Gtk.Widget {
       Backend.Media[] media  = { display.shown_avatar };
       new MediaDialog (display, media);
     });
-  }
-
-  /**
-   * Sets and load the avatar.
-   */
-  public void set_avatar (Backend.Media avatar) {
-    // Store the displayed avatar
-    shown_avatar = avatar;
-
-    // Load and set the avatar
-    if (! main_mode && shown_avatar.preview_url != null) {
-      shown_avatar.get_preview.begin (load_cancellable, (obj, res) => {
-        try {
-          var paintable = shown_avatar.get_preview.end (res) as Gdk.Paintable;
-          avatar_holder.custom_image = paintable;
-        } catch (Error e) {
-          warning (@"Could not load the avatar: $(e.message)");
-        }
-      });
-    } else {
-      shown_avatar.get_media.begin (load_cancellable, (obj, res) => {
-        try {
-          var paintable = shown_avatar.get_media.end (res) as Gdk.Paintable;
-          avatar_holder.custom_image = paintable;
-        } catch (Error e) {
-          warning (@"Could not load the avatar: $(e.message)");
-        }
-      });
-    }
   }
 
   /**

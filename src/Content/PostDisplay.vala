@@ -151,7 +151,7 @@ public class PostDisplay : Gtk.Box {
       repost_status_box.visible  = true;
 
       // Set up information about the reposting user
-      repost_avatar.set_avatar (post.author.avatar);
+      repost_avatar.avatar       = post.author.avatar;
       repost_display_label.label = post.author.display_name;
       repost_name_label.label    = "@" + post.author.username;
       repost_time_label.label    = DisplayUtils.display_time_delta (post.creation_date);
@@ -166,7 +166,7 @@ public class PostDisplay : Gtk.Box {
     string open_link_label = _("Open on %s").printf (main_post.domain);
 
     // Set up the author avatar
-    author_avatar.set_avatar (main_post.author.avatar);
+    author_avatar.avatar = main_post.author.avatar;
 
     // Set up badges for the author
     author_badges.display_verified  = main_post.author.has_flag (VERIFIED);
