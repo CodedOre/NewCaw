@@ -31,7 +31,7 @@ template PostItem : Gtk.Widget {
     Gtk.Box {
       orientation: vertical;
       margin-bottom: 12;
-      margin-start: 4;
+      margin-start: 10;
       margin-end: 4;
       spacing: 8;
 
@@ -51,6 +51,8 @@ template PostItem : Gtk.Widget {
         wrap: true;
         wrap-mode: word_char;
       }
+
+      .MediaPreview media_previewer {}
     }
   }
 }

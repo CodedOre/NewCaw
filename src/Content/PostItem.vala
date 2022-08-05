@@ -37,6 +37,8 @@ public class PostItem : Gtk.Widget {
   private unowned Gtk.Label info_label;
   [GtkChild]
   private unowned Gtk.Label text_label;
+  [GtkChild]
+  private unowned MediaPreview media_previewer;
 
   /**
    * The post displayed in this widget.
@@ -69,6 +71,13 @@ public class PostItem : Gtk.Widget {
 
       // Set the main post content
       text_label.label = main_post != null ? main_post.text : "(null)";
+
+      // Set the media previews
+      bool has_media          = main_post != null && main_post.get_media ().length > 0;
+      media_previewer.visible = has_media;
+      if (has_media) {
+        media_previewer.display_media (main_post.get_media ());
+      }
     }
   }
 
