@@ -13,6 +13,7 @@ blueprints = custom_target(
     'Authentication/StartPage.blp',
     'Content/CollectionList.blp',
     'Content/PostDisplay.blp',
+    'Content/PostItem.blp',
     'Content/UserCard.blp',
     'Content/UserDisplay.blp',
     'Media/MediaDisplay.blp',

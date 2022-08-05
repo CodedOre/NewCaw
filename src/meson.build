@@ -32,6 +32,7 @@ cawsources += [
   'Authentication/StartPage.vala',
   'Content/CollectionList.vala',
   'Content/PostDisplay.vala',
+  'Content/PostItem.vala',
   'Content/UserCard.vala',
   'Content/UserDisplay.vala',
   'Media/MediaDisplay.vala',
