@@ -28,7 +28,7 @@ public class PostItem : Gtk.Widget {
 
   // UI-Elements of PostItem
   [GtkChild]
-  private unowned RepostStatus repost_status;
+  private unowned PostStatus repost_status;
 
   /**
    * The post displayed in this widget.
@@ -51,7 +51,7 @@ public class PostItem : Gtk.Widget {
 
       // Set the repost status
       repost_status.visible = has_repost;
-      repost_status.repost  = repost;
+      repost_status.post    = repost;
     }
   }
 

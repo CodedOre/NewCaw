@@ -1,4 +1,4 @@
-/* RepostStatus.vala
+/* PostStatus.vala
  *
  * Copyright 2022 Frederick Schenk
  *
@@ -21,12 +21,12 @@
 using GLib;
 
 /**
- * Displayed over an PostItem and shows the information about the reposting user.
+ * Displayed over an PostItem and shows the information about the posting user.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/RepostStatus.ui")]
-public class RepostStatus : Gtk.Widget {
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/PostStatus.ui")]
+public class PostStatus : Gtk.Widget {
 
-  // UI-Elements of RepostStatus
+  // UI-Elements of PostStatus
   [GtkChild]
   private unowned Adw.Bin previous_line_bin;
   [GtkChild]
@@ -39,35 +39,35 @@ public class RepostStatus : Gtk.Widget {
   private unowned Gtk.Label time_label;
 
   /**
-   * The repost to be displayed.
+   * The post to be displayed.
    */
-  public Backend.Post repost {
+  public Backend.Post post {
     get {
-      return displayed_repost;
+      return displayed_post;
     }
     set {
-      displayed_repost = value;
+      displayed_post = value;
 
       // Set the information in the UI
-      user_avatar.avatar = displayed_repost != null ? displayed_repost.author.avatar : null;
-      user_button.user   = displayed_repost != null ? displayed_repost.author        : null;
-      time_label.label   = displayed_repost != null
-                             ? DisplayUtils.display_time_delta (displayed_repost.creation_date)
+      user_avatar.avatar = displayed_post != null ? displayed_post.author.avatar : null;
+      user_button.user   = displayed_post != null ? displayed_post.author        : null;
+      time_label.label   = displayed_post != null
+                             ? DisplayUtils.display_time_delta (displayed_post.creation_date)
                              : "(null)";
     }
   }
 
   /**
-   * Deconstructs RepostStatus and it's childrens.
+   * Deconstructs PostStatus and it's childrens.
    */
   public override void dispose () {
-    // Destructs children of RepostStatus
+    // Destructs children of PostStatus
     previous_line_bin.unparent ();
     information_box.unparent ();
   }
 
   /**
-   * Stores the displayed repost.
+   * Stores the displayed post.
    */
-  private Backend.Post? displayed_repost = null;
+  private Backend.Post? displayed_post = null;
 }
