@@ -33,6 +33,7 @@ cawsources += [
   'Content/CollectionList.vala',
   'Content/PostDisplay.vala',
   'Content/PostItem.vala',
+  'Content/RepostStatus.vala',
   'Content/UserCard.vala',
   'Content/UserDisplay.vala',
   'Media/MediaDisplay.vala',
@@ -48,6 +49,7 @@ cawsources += [
   'Widgets/FilterButton.vala',
   'Widgets/CroppedPicture.vala',
   'Widgets/UserAvatar.vala',
+  'Widgets/UserButton.vala',
   'Widgets/WaitingButton.vala',
   'Windows/MainWindow.vala',
   'Windows/MediaDialog.vala'

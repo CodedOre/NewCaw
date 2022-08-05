@@ -14,6 +14,7 @@ blueprints = custom_target(
     'Content/CollectionList.blp',
     'Content/PostDisplay.blp',
     'Content/PostItem.blp',
+    'Content/RepostStatus.blp',
     'Content/UserCard.blp',
     'Content/UserDisplay.blp',
     'Media/MediaDisplay.blp',
@@ -23,6 +24,7 @@ blueprints = custom_target(
     'Widgets/BadgesBox.blp',
     'Widgets/FilterButton.blp',
     'Widgets/UserAvatar.blp',
+    'Widgets/UserButton.blp',
     'Widgets/WaitingButton.blp',
     'Windows/MainWindow.blp',
     'Windows/MediaDialog.blp'
