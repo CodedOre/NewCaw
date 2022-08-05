@@ -11,23 +11,31 @@ template CollectionList : Gtk.Widget {
     max-children-per-line: 42;
     selection-mode:        none;
 
-    .FilterButton post_filter {
+    .FilterButton generic_filter {
       active: true;
       label:  _("Posts");
+
+      toggled => on_filter_changed ();
     }
 
     .FilterButton replies_filter {
       label:  _("Replies");
+
+      toggled => on_filter_changed ();
     }
 
     .FilterButton repost_filter {
       active: true;
       label:  _("Reposts");
+
+      toggled => on_filter_changed ();
     }
 
     .FilterButton media_filter {
       active: true;
       label:  _("Media");
+
+      toggled => on_filter_changed ();
     }
   }
 

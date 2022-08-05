@@ -129,7 +129,6 @@ public class PostItem : Gtk.Widget {
 
       // Clear existing quote from quote button
       if (quote_button.child != null) {
-        quote_button.child.unparent ();
         quote_button.child = null;
       }
 

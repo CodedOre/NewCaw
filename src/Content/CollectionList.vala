@@ -34,7 +34,7 @@ public class CollectionList : Gtk.Widget {
 
   // Filters for CollectionList
   [GtkChild]
-  private unowned FilterButton post_filter;
+  private unowned FilterButton generic_filter;
   [GtkChild]
   private unowned FilterButton repost_filter;
   [GtkChild]
@@ -56,8 +56,8 @@ public class CollectionList : Gtk.Widget {
           break;
 
         case TWITTER:
-          post_filter.label   = _("Tweets");
-          repost_filter.label = _("Retweets");
+          generic_filter.label = _("Tweets");
+          repost_filter.label  = _("Retweets");
           break;
 
         default:
@@ -76,11 +76,14 @@ public class CollectionList : Gtk.Widget {
     set {
       shown_collection = value;
 
-      // Bind the collection to the list
-      list_model = shown_collection != null
-                     ? new Gtk.NoSelection (shown_collection.post_list)
-                     : null;
-      post_list.set_model (list_model);
+      if (shown_collection != null) {
+        // Bind the collection to the list
+        var filter_list = new Gtk.FilterListModel (shown_collection.post_list, post_filter);
+        var list_model = new Gtk.NoSelection (filter_list);
+        post_list.set_model (list_model);
+      } else {
+         post_list.set_model (null);
+      }
 
       // Pull the posts from the list
       shown_collection.pull_posts.begin ();
@@ -91,12 +94,23 @@ public class CollectionList : Gtk.Widget {
    * Run at construction of an widget.
    */
   construct {
+    // Create a filter list from the collection
+    post_filter = new Gtk.CustomFilter (filter_posts);
+
     // Create the ListFactory and bind the signals
     var list_factory  = new Gtk.SignalListItemFactory ();
     post_list.factory = list_factory;
     list_factory.setup.connect (on_setup);
     list_factory.bind.connect (on_bind);
     list_factory.unbind.connect (on_unbind);
+  }
+
+  /**
+   * Run when a FilterButton was changed.
+   */
+  [GtkCallback]
+  private void on_filter_changed () {
+    post_filter.changed (DIFFERENT);
   }
 
   /**
@@ -137,6 +151,36 @@ public class CollectionList : Gtk.Widget {
   }
 
   /**
+   * Determines if an object should be displayed.
+   *
+   * @param object The object to check.
+   *
+   * @return If the post should be displayed.
+   */
+  private bool filter_posts (Object object) {
+    // Cast the object to a post and return false if failing
+    var post = object as Backend.Post;
+    if (post == null) {
+      return false;
+    }
+
+    // Determine the type of the post
+    bool is_repost = post.post_type == REPOST;
+    bool has_media = is_repost
+                       ? post.referenced_post.get_media ().length > 0
+                       : post.get_media ().length > 0;
+
+    // Check the type against the filters
+    if (is_repost) {
+      return repost_filter.active;
+    }
+    if (has_media) {
+      return media_filter.active;
+    }
+    return generic_filter.active;
+  }
+
+  /**
    * Deconstructs CollectionList and it's childrens.
    */
   public override void dispose () {
@@ -151,9 +195,9 @@ public class CollectionList : Gtk.Widget {
   private PlatformEnum set_display_platform;
 
   /**
-   * Stores the used Gtk.ListModel.
+   * The Gtk.Filter used to filter the posts.
    */
-  private Gtk.NoSelection? list_model = null;
+  private Gtk.Filter post_filter;
 
   /**
    * Stores the displayed Collection.

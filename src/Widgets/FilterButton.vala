@@ -41,11 +41,17 @@ public class FilterButton : Gtk.Widget {
   public bool active { get; set; }
 
   /**
+   * Activated when the button is toggled.
+   */
+  public signal void toggled ();
+
+  /**
    * Runs when the internal button is clicked.
    */
   [GtkCallback]
   private void on_toggled () {
     this.active = button.active;
+    toggled ();
   }
 
   /**
