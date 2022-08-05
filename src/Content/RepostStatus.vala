@@ -31,6 +31,31 @@ public class RepostStatus : Gtk.Widget {
   private unowned Adw.Bin previous_line_bin;
   [GtkChild]
   private unowned Gtk.Box information_box;
+  [GtkChild]
+  private unowned UserAvatar user_avatar;
+  [GtkChild]
+  private unowned UserButton user_button;
+  [GtkChild]
+  private unowned Gtk.Label time_label;
+
+  /**
+   * The repost to be displayed.
+   */
+  public Backend.Post repost {
+    get {
+      return displayed_repost;
+    }
+    set {
+      displayed_repost = value;
+
+      // Set the information in the UI
+      user_avatar.avatar = displayed_repost != null ? displayed_repost.author.avatar : null;
+      user_button.user   = displayed_repost != null ? displayed_repost.author        : null;
+      time_label.label   = displayed_repost != null
+                             ? DisplayUtils.display_time_delta (displayed_repost.creation_date)
+                             : "(null)";
+    }
+  }
 
   /**
    * Deconstructs RepostStatus and it's childrens.
@@ -40,4 +65,9 @@ public class RepostStatus : Gtk.Widget {
     previous_line_bin.unparent ();
     information_box.unparent ();
   }
+
+  /**
+   * Stores the displayed repost.
+   */
+  private Backend.Post? displayed_repost = null;
 }
