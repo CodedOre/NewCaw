@@ -20,6 +20,56 @@
 
 using GLib;
 
+/**
+ * A button displaying the name of an user in a PostItem.
+ */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Widgets/UserButton.ui")]
-public class UserButton : Gtk.Widget {
+public class UserButton : Gtk.Button {
+
+  // UI-Elements of UserButton
+  [GtkChild]
+  private unowned Gtk.Box button_content;
+  [GtkChild]
+  private unowned Gtk.Label display_label;
+  [GtkChild]
+  private unowned BadgesBox user_badges;
+  [GtkChild]
+  private unowned Gtk.Label username_label;
+
+  /**
+   * If this button is for a repost.
+   */
+  public bool is_repost { get; set; }
+
+  /**
+   * The user displayed in this button.
+   */
+  public Backend.User user {
+    get {
+      return displayed_user;
+    }
+    set {
+      displayed_user = value;
+      // Set the UI elements to the user
+      display_label.label           = displayed_user != null ? displayed_user.display_name         : "(null)";
+      username_label.label          = displayed_user != null ? displayed_user.username             : "(null)";
+      user_badges.display_verified  = displayed_user != null ? displayed_user.has_flag (VERIFIED)  : false;
+      user_badges.display_bot       = displayed_user != null ? displayed_user.has_flag (BOT)       : false;
+      user_badges.display_protected = displayed_user != null ? displayed_user.has_flag (PROTECTED) : false;
+    }
+  }
+
+  /**
+   * Deconstructs UserButton and it's childrens.
+   */
+  public override void dispose () {
+    // Destructs children of UserButton
+    button_content.unparent ();
+  }
+
+  /**
+   * Stores the displayed user.
+   */
+  private Backend.User? displayed_user = null;
+
 }
