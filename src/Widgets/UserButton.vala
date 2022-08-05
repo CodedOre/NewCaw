@@ -37,9 +37,54 @@ public class UserButton : Gtk.Button {
   private unowned Gtk.Label username_label;
 
   /**
-   * If this button is for a repost.
+   * If the button should use the inline style.
+   *
+   * Also changes the label styles to use "caption".
    */
-  public bool is_repost { get; set; }
+  public bool display_inline {
+    get {
+      return use_inline;
+    }
+    set {
+      use_inline = value;
+
+      // Set the inline style on the button
+      if (use_inline && ! this.has_css_class ("inline")) {
+        this.add_css_class ("inline");
+      }
+      if (! use_inline && this.has_css_class ("inline")) {
+        this.remove_css_class ("inline");
+      }
+
+      // Set the caption-heading style on the display label
+      if (use_inline && ! display_label.has_css_class ("caption-heading")) {
+        display_label.add_css_class ("caption-heading");
+      }
+      if (! use_inline && display_label.has_css_class ("caption-heading")) {
+        display_label.remove_css_class ("caption-heading");
+      }
+      if (! use_inline && display_label.has_css_class ("heading")) {
+        display_label.add_css_class ("heading");
+      }
+      if (use_inline && ! display_label.has_css_class ("heading")) {
+        display_label.remove_css_class ("heading");
+      }
+
+      // Set the caption-heading style on the username label
+      if (use_inline && ! username_label.has_css_class ("caption")) {
+        username_label.add_css_class ("caption");
+      }
+      if (! use_inline && username_label.has_css_class ("caption")) {
+        username_label.remove_css_class ("caption");
+      }
+      if (! use_inline && username_label.has_css_class ("body")) {
+        username_label.add_css_class ("body");
+      }
+      if (use_inline && ! username_label.has_css_class ("body")) {
+        username_label.remove_css_class ("body");
+      }
+    }
+  }
 
   /**
    * The user displayed in this button.
@@ -50,6 +95,7 @@ public class UserButton : Gtk.Button {
     }
     set {
       displayed_user = value;
+
       // Set the UI elements to the user
       display_label.label           = displayed_user != null ? displayed_user.display_name         : "(null)";
       username_label.label          = displayed_user != null ? displayed_user.username             : "(null)";
@@ -66,6 +112,11 @@ public class UserButton : Gtk.Button {
     // Destructs children of UserButton
     button_content.unparent ();
   }
+
+  /**
+   * Stores the inline style property.
+   */
+  private bool use_inline = false;
 
   /**
    * Stores the displayed user.
