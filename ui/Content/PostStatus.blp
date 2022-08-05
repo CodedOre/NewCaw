@@ -13,7 +13,7 @@ template PostStatus : Gtk.Widget {
     halign: start;
 
     Gtk.Separator previous_line {
-      visible: false;
+      visible: bind PostStatus.show_previous;
       halign: center;
       orientation: vertical;
     }

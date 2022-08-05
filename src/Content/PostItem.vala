@@ -108,9 +108,10 @@ public class PostItem : Gtk.Widget {
       Backend.Post? quote      = has_quote ? main_post.referenced_post : null;
 
       // Set the PostStatus widgets
-      repost_status.visible = has_repost;
-      repost_status.post    = repost;
-      post_status.post      = main_post;
+      repost_status.visible     = has_repost;
+      repost_status.post        = repost;
+      post_status.post          = main_post;
+      post_status.show_previous = has_repost;
 
       // Set the main post information
       string post_date   = main_post != null ? main_post.creation_date.format ("%x, %X") : "(null)";

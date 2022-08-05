@@ -46,9 +46,14 @@ public class PostStatus : Gtk.Widget {
   public bool show_time { get; set; }
 
   /**
-   * If this button is for a repost.
+   * If this widget is for a repost.
    */
   public bool is_repost { get; set; }
+
+  /**
+   * If the line to the previous item should be active.
+   */
+  public bool show_previous { get; set; }
 
   /**
    * If the button should use the inline style.
