@@ -29,6 +29,8 @@ public class PostItem : Gtk.Widget {
   // UI-Elements of PostItem
   [GtkChild]
   private unowned PostStatus repost_status;
+  [GtkChild]
+  private unowned PostStatus post_status;
 
   /**
    * The post displayed in this widget.
@@ -50,8 +52,11 @@ public class PostItem : Gtk.Widget {
       Backend.Post? quote      = has_quote ? main_post.referenced_post : null;
 
       // Set the repost status
-      repost_status.visible = has_repost;
+      repost_status.visible = ! has_repost;
       repost_status.post    = repost;
+
+      // Set the main post information
+      post_status.post = main_post;
     }
   }
 
@@ -61,6 +66,7 @@ public class PostItem : Gtk.Widget {
   public override void dispose () {
     // Destructs children of PostItem
     repost_status.unparent ();
+    post_status.unparent ();
   }
 
   /**
