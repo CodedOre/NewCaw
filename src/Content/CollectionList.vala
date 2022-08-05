@@ -30,7 +30,7 @@ public class CollectionList : Gtk.Widget {
   [GtkChild]
   private unowned Gtk.FlowBox filter_box;
   [GtkChild]
-  private unowned Gtk.ListBox post_list;
+  private unowned Gtk.ListView post_list;
 
   // Filters for CollectionList
   [GtkChild]
@@ -75,61 +75,65 @@ public class CollectionList : Gtk.Widget {
     }
     set {
       shown_collection = value;
-      if (shown_collection != null) {
-        // Bind ListModel of Collection to ListBox
-        post_list.bind_model (shown_collection.post_list, make_post_widget);
 
-        // Load the posts from the Collection
-        shown_collection.pull_posts.begin (() => {
-        });
-      } else {
-        // Unbind possible existing ListModel.
-        post_list.bind_model (null, null);
-      }
+      // Bind the collection to the list
+      list_model = shown_collection != null
+                     ? new Gtk.NoSelection (shown_collection.post_list)
+                     : null;
+      post_list.set_model (list_model);
+
+      // Pull the posts from the list
+      shown_collection.pull_posts.begin ();
     }
   }
 
   /**
-   * Creates a ListRow for an object from the Collection model.
-   *
-   * @param object An Object expected to be an Post that can be displayed.
-   *
-   * @return A Gtk.Widget to be displayed in the list.
+   * Run at construction of an widget.
    */
-  private Gtk.Widget make_post_widget (Object object) {
-    // Check we get an Post object
-    var post = object as Backend.Post;
-    if (post == null) {
-      error ("The Collection contained one object not being a Post!");
-    }
+  construct {
+    // Create the ListFactory and bind the signals
+    var list_factory  = new Gtk.SignalListItemFactory ();
+    post_list.factory = list_factory;
+    list_factory.setup.connect (on_setup);
+    list_factory.bind.connect (on_bind);
+    list_factory.unbind.connect (on_unbind);
+  }
 
-    // Check if a filter applies to a post
-    bool is_repost = post.post_type == REPOST;
-    bool has_media = is_repost
-                       ? post.referenced_post.get_media ().length > 0
-                       : post.get_media ().length > 0;
+  /**
+   * Run when a new ListItem was created.
+   *
+   * @param item The Gtk.ListItem that was created.
+   */
+  private void on_setup (Gtk.ListItem item) {
+    // Create an empty PostItem and set it as child
+    var post_item = new PostItem ();
+    item.set_child (post_item);
+  }
 
-    // Create ListBoxRow and bind visibilities
-    var row = new Gtk.ListBoxRow ();
-    if (is_repost) {
-      // Bind Reposts filter
-      repost_filter.bind_property ("active", row, "visible");
+  /**
+   * Run when a ListItem is set to a new post to display.
+   *
+   * @param item The Gtk.ListItem to be updated.
+   */
+  private void on_bind (Gtk.ListItem item) {
+    // Get the widget and post
+    var widget = item.child as PostItem;
+    var post   = item.item  as Backend.Post;
+    // Assign the post to the item
+    if (widget != null) {
+      widget.post = post;
     }
-    if (has_media) {
-      // Bind Media filter
-      media_filter.bind_property ("active", row, "visible");
-    }
-    if (! is_repost && ! has_media) {
-      // Bind all others to Post filter
-      post_filter.bind_property ("active", row, "visible");
-    }
+    // TODO: Make the filters work with ListView
+  }
 
-    // Create PostDisplay
-    var display = new PostDisplay (post);
-
-    // Return the new row
-    row.child = display;
-    return row;
+  /**
+   * Run when a post is removed from a ListItem.
+   *
+   * @param item The Gtk.ListItem to be updated.
+   */
+  private void on_unbind (Gtk.ListItem item) {
+    var widget = item.child as PostItem;
+    widget.post = null;
   }
 
   /**
@@ -145,6 +149,11 @@ public class CollectionList : Gtk.Widget {
    * Store the display platform.
    */
   private PlatformEnum set_display_platform;
+
+  /**
+   * Stores the used Gtk.ListModel.
+   */
+  private Gtk.NoSelection? list_model = null;
 
   /**
    * Stores the displayed Collection.

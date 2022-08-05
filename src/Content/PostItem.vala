@@ -69,7 +69,7 @@ public class PostItem : Gtk.Widget {
     get {
       return set_display_mode;
     }
-    set {
+    construct set {
       set_display_mode = value;
 
       info_label.visible         = set_display_mode == MAIN;
@@ -142,6 +142,17 @@ public class PostItem : Gtk.Widget {
       }
       quote_button.visible = has_quote;
     }
+  }
+
+  /**
+   * Creates a new PostItem with an specific display_mode.
+   *
+   * @param mode The display mode for this PostDisplay.
+   */
+  public PostItem (DisplayMode mode = LIST) {
+    Object (
+      display_mode: mode
+    );
   }
 
   /**

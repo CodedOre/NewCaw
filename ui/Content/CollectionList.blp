@@ -32,11 +32,9 @@ template CollectionList : Gtk.Widget {
     }
   }
 
-  Gtk.ListBox post_list {
-    selection-mode: none;
-
+  Gtk.ListView post_list {
     styles [
-      "boxed-list"
+      "post-list"
     ]
   }
 }
