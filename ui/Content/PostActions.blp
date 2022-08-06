@@ -1,0 +1,53 @@
+using Gtk 4.0;
+using Adw 1;
+
+template PostActions : Gtk.Widget {
+  layout-manager: Gtk.BoxLayout {
+    spacing: 8;
+  };
+
+  Gtk.Button likes_button {
+    sensitive: false;
+
+    styles [
+      "flat"
+    ]
+
+    Adw.ButtonContent likes_counter {
+      icon-name: "not-liked-symbolic";
+    }
+  }
+
+  Gtk.Button reposts_button {
+    sensitive: false;
+
+    styles [
+      "flat"
+    ]
+
+    Adw.ButtonContent reposts_counter {
+      icon-name: "repost-symbolic";
+    }
+  }
+
+  Gtk.Button replies_button {
+    sensitive: false;
+
+    styles [
+      "flat"
+    ]
+
+    Adw.ButtonContent replies_counter {
+      icon-name: "reply-symbolic";
+    }
+  }
+
+  Gtk.MenuButton options_button {
+    direction: up;
+    icon-name: "view-more-symbolic";
+
+    styles [
+      "flat"
+    ]
+  }
+}

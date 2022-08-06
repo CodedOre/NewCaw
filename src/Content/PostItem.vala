@@ -63,6 +63,8 @@ public class PostItem : Gtk.Widget {
   private unowned Gtk.Button quote_button;
   [GtkChild]
   private unowned PostMetrics post_metrics;
+  [GtkChild]
+  private unowned PostActions post_actions;
 
   /**
    * How this PostDisply will display it's content.
@@ -146,6 +148,7 @@ public class PostItem : Gtk.Widget {
 
       // Set the metrics widgets
       post_metrics.post = main_post;
+      post_actions.post = main_post;
     }
   }
 
