@@ -100,6 +100,7 @@ public class UserPage : Gtk.Widget {
     // Destructs children of UserPage
     page_header.unparent ();
     page_content.unparent ();
+    base.dispose ();
   }
 
   /**

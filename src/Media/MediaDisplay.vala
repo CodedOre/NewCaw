@@ -198,6 +198,7 @@ public class MediaDisplay : Gtk.Widget {
     previous_control.unparent ();
     next_control.unparent ();
     bottom_toolbar.unparent ();
+    base.dispose ();
   }
 
   /**

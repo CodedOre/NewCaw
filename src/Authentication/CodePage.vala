@@ -232,6 +232,7 @@ public class Authentication.CodePage : Gtk.Widget {
   public override void dispose () {
     // Deconstruct childrens
     page_content.unparent ();
+    base.dispose ();
   }
 
   /**

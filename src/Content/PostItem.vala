@@ -195,6 +195,7 @@ public class PostItem : Gtk.Widget {
     repost_status.unparent ();
     post_status.unparent ();
     content_box.unparent ();
+    base.dispose ();
   }
 
   /**

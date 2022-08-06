@@ -110,6 +110,7 @@ public class UserCard : Gtk.Widget {
     // Destructs children of UserAvatar
     banner_holder.unparent ();
     infobox.unparent ();
+    base.dispose ();
   }
 
   /**

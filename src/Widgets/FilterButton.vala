@@ -60,6 +60,7 @@ public class FilterButton : Gtk.Widget {
   public override void dispose () {
     // Destructs children of FilterButton
     button.unparent ();
+    base.dispose ();
   }
 
 }

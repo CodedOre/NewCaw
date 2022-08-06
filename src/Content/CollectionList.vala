@@ -187,6 +187,7 @@ public class CollectionList : Gtk.Widget {
     // Destructs children of CollectionList
     filter_box.unparent ();
     post_list.unparent ();
+    base.dispose ();
   }
 
   /**

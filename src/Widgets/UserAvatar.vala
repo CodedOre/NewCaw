@@ -160,6 +160,7 @@ public class UserAvatar : Gtk.Widget {
     // Destructs children of UserAvatar
     avatar_holder.unparent ();
     avatar_selector.unparent ();
+    base.dispose ();
   }
 
   /**

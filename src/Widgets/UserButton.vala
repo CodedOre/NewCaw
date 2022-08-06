@@ -116,6 +116,7 @@ public class UserButton : Gtk.Button {
   public override void dispose () {
     // Destructs children of UserButton
     button_content.unparent ();
+    base.dispose ();
   }
 
   /**

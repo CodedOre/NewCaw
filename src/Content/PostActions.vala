@@ -79,6 +79,7 @@ public class PostActions : Gtk.Widget {
     reposts_button.unparent ();
     replies_button.unparent ();
     options_button.unparent ();
+    base.dispose ();
   }
 
   /**

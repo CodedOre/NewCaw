@@ -161,6 +161,7 @@ public class MediaPreviewItem : Gtk.Widget {
     preview.unparent ();
     selector.unparent ();
     media_indicator_box.unparent ();
+    base.dispose ();
   }
 
   /**

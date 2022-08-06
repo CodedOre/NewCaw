@@ -117,6 +117,7 @@ public class PostStatus : Gtk.Widget {
     // Destructs children of PostStatus
     previous_line_bin.unparent ();
     information_box.unparent ();
+    base.dispose ();
   }
 
   /**

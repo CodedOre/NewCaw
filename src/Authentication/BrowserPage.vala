@@ -125,6 +125,7 @@ public class Authentication.BrowserPage : Gtk.Widget {
   public override void dispose () {
     // Deconstruct childrens
     page_content.unparent ();
+    base.dispose ();
   }
 
 }

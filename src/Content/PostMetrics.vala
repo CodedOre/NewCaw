@@ -65,6 +65,7 @@ public class PostMetrics : Gtk.Widget {
     likes_box.unparent ();
     repost_box.unparent ();
     replies_box.unparent ();
+    base.dispose ();
   }
 
   /**

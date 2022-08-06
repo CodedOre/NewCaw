@@ -140,6 +140,7 @@ public class Authentication.StartPage : Gtk.Widget {
   public override void dispose () {
     // Deconstruct childrens
     page_content.unparent ();
+    base.dispose ();
   }
 
 }
