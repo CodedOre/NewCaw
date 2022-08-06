@@ -80,6 +80,8 @@ public class PostItem : Gtk.Widget {
       text_label.selectable      = set_display_mode == MAIN;
       post_status.show_time      = set_display_mode != MAIN;
       post_status.display_inline = set_display_mode == QUOTE;
+      post_metrics.visible       = set_display_mode == QUOTE;
+      post_actions.visible       = set_display_mode != QUOTE;
       next_line_bin.visible      = ! (set_display_mode != LIST);
       content_box.margin_top     = set_display_mode != LIST ? 8 : 0;
 
