@@ -1,0 +1,50 @@
+using Gtk 4.0;
+using Adw 1;
+
+template PostMetrics : Gtk.Widget {
+  layout-manager: Gtk.BoxLayout {
+    spacing: 16;
+  };
+
+  Gtk.Box {
+    spacing: 6;
+
+    Gtk.Image {
+      icon-name: "not-liked-symbolic";
+    }
+
+    Gtk.Label likes_counter {
+      styles [
+        "heading"
+      ]
+    }
+  }
+
+  Gtk.Box {
+    spacing: 6;
+
+    Gtk.Image {
+      icon-name: "repost-symbolic";
+    }
+
+    Gtk.Label repost_counter {
+      styles [
+        "heading"
+      ]
+    }
+  }
+
+  Gtk.Box {
+    spacing: 6;
+
+    Gtk.Image {
+      icon-name: "reply-symbolic";
+    }
+
+    Gtk.Label replies_counter {
+      styles [
+        "heading"
+      ]
+    }
+  }
+}

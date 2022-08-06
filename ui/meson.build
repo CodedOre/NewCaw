@@ -14,6 +14,7 @@ blueprints = custom_target(
     'Content/CollectionList.blp',
     'Content/PostDisplay.blp',
     'Content/PostItem.blp',
+    'Content/PostMetrics.blp',
     'Content/PostStatus.blp',
     'Content/UserCard.blp',
     'Content/UserDisplay.blp',

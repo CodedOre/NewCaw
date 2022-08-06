@@ -61,6 +61,8 @@ public class PostItem : Gtk.Widget {
   private unowned MediaPreview media_previewer;
   [GtkChild]
   private unowned Gtk.Button quote_button;
+  [GtkChild]
+  private unowned PostMetrics post_metrics;
 
   /**
    * How this PostDisply will display it's content.
@@ -141,6 +143,9 @@ public class PostItem : Gtk.Widget {
         quote_button.child      = quote_item;
       }
       quote_button.visible = has_quote;
+
+      // Set the metrics widgets
+      post_metrics.post = main_post;
     }
   }
 
