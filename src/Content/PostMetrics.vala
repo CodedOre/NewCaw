@@ -28,6 +28,12 @@ public class PostMetrics : Gtk.Widget {
 
   // UI-Elements of PostMetrics
   [GtkChild]
+  private unowned Gtk.Box likes_box;
+  [GtkChild]
+  private unowned Gtk.Box repost_box;
+  [GtkChild]
+  private unowned Gtk.Box replies_box;
+  [GtkChild]
   private unowned Gtk.Label likes_counter;
   [GtkChild]
   private unowned Gtk.Label repost_counter;
@@ -56,9 +62,9 @@ public class PostMetrics : Gtk.Widget {
    */
   public override void dispose () {
     // Destructs children of PostItem
-    likes_counter.unparent ();
-    repost_counter.unparent ();
-    replies_counter.unparent ();
+    likes_box.unparent ();
+    repost_box.unparent ();
+    replies_box.unparent ();
   }
 
   /**
