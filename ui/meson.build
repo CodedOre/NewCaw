@@ -13,7 +13,6 @@ blueprints = custom_target(
     'Authentication/StartPage.blp',
     'Content/CollectionList.blp',
     'Content/PostActions.blp',
-    'Content/PostDisplay.blp',
     'Content/PostItem.blp',
     'Content/PostMetrics.blp',
     'Content/PostStatus.blp',
