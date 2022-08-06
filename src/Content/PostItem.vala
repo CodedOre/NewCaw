@@ -85,12 +85,7 @@ public class PostItem : Gtk.Widget {
       next_line_bin.visible      = ! (set_display_mode != LIST);
       content_box.margin_top     = set_display_mode != LIST ? 8 : 0;
 
-      if (set_display_mode == QUOTE && ! text_label.has_css_class ("caption")) {
-        text_label.add_css_class ("caption");
-      }
-      if (! (set_display_mode == QUOTE) && text_label.has_css_class ("caption")) {
-        text_label.remove_css_class ("caption");
-      }
+      DisplayUtils.conditional_css (set_display_mode == QUOTE, text_label, "caption");
     }
   }
 

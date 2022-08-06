@@ -53,41 +53,12 @@ public class UserButton : Gtk.Button {
     set {
       use_inline = value;
 
-      // Set the inline style on the button
-      if (use_inline && ! this.has_css_class ("inline")) {
-        this.add_css_class ("inline");
-      }
-      if (! use_inline && this.has_css_class ("inline")) {
-        this.remove_css_class ("inline");
-      }
-
-      // Set the caption-heading style on the display label
-      if (use_inline && ! display_label.has_css_class ("caption-heading")) {
-        display_label.add_css_class ("caption-heading");
-      }
-      if (! use_inline && display_label.has_css_class ("caption-heading")) {
-        display_label.remove_css_class ("caption-heading");
-      }
-      if (! use_inline && display_label.has_css_class ("heading")) {
-        display_label.add_css_class ("heading");
-      }
-      if (use_inline && ! display_label.has_css_class ("heading")) {
-        display_label.remove_css_class ("heading");
-      }
-
-      // Set the caption-heading style on the username label
-      if (use_inline && ! username_label.has_css_class ("caption")) {
-        username_label.add_css_class ("caption");
-      }
-      if (! use_inline && username_label.has_css_class ("caption")) {
-        username_label.remove_css_class ("caption");
-      }
-      if (! use_inline && username_label.has_css_class ("body")) {
-        username_label.add_css_class ("body");
-      }
-      if (use_inline && ! username_label.has_css_class ("body")) {
-        username_label.remove_css_class ("body");
-      }
+      // Set the css for the widgets
+      DisplayUtils.conditional_css (use_inline,   this,           "inline");
+      DisplayUtils.conditional_css (use_inline,   display_label,  "caption-heading");
+      DisplayUtils.conditional_css (use_inline,   username_label, "caption");
+      DisplayUtils.conditional_css (! use_inline, display_label,  "heading");
+      DisplayUtils.conditional_css (! use_inline, username_label, "body");
     }
   }
 

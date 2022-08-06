@@ -73,21 +73,9 @@ public class PostStatus : Gtk.Widget {
       // Set the inline style on the button
       user_button.display_inline = use_inline;
 
-      // Set the styles on the time spacer
-      if (use_inline && ! time_spacer.has_css_class ("caption")) {
-        time_spacer.add_css_class ("caption");
-      }
-      if (! use_inline && time_spacer.has_css_class ("caption")) {
-        time_spacer.remove_css_class ("caption");
-      }
-
-      // Set the styles on the time label
-      if (use_inline && ! time_label.has_css_class ("caption")) {
-        time_label.add_css_class ("caption");
-      }
-      if (! use_inline && time_label.has_css_class ("caption")) {
-        time_label.remove_css_class ("caption");
-      }
+      // Set the styles on the time labels
+      DisplayUtils.conditional_css (use_inline, time_spacer, "caption");
+      DisplayUtils.conditional_css (use_inline, time_label,  "caption");
     }
   }
 

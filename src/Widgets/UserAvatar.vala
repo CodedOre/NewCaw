@@ -52,23 +52,9 @@ public class UserAvatar : Gtk.Widget {
     }
     set {
       is_rounded = value;
-      if (is_rounded) {
-        if (avatar_holder.has_css_class ("squared")) {
-          avatar_holder.remove_css_class ("squared");
-        }
-        if (avatar_selector.has_css_class ("squared")) {
-          avatar_selector.remove_css_class ("squared");
-          avatar_selector.add_css_class ("avatar-button");
-        }
-      } else {
-        if (! avatar_holder.has_css_class ("squared")) {
-          avatar_holder.add_css_class ("squared");
-        }
-        if (! avatar_selector.has_css_class ("squared")) {
-          avatar_selector.remove_css_class ("avatar-button");
-          avatar_selector.add_css_class ("squared");
-        }
-      }
+      DisplayUtils.conditional_css (! is_rounded, avatar_holder,   "squared");
+      DisplayUtils.conditional_css (! is_rounded, avatar_selector, "squared");
+      DisplayUtils.conditional_css (is_rounded,   avatar_selector, "avatar-button");
     }
   }
 
