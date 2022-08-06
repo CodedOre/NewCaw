@@ -56,6 +56,17 @@ public class PostActions : Gtk.Widget {
       likes_counter.label   = displayed_post != null ? displayed_post.liked_count.to_string ("%'d")    : "(null)";
       reposts_counter.label = displayed_post != null ? displayed_post.reposted_count.to_string ("%'d") : "(null)";
       replies_counter.label = displayed_post != null ? displayed_post.replied_count.to_string ("%'d")  : "(null)";
+
+      // Set up options menu
+      if (displayed_post != null) {
+        string open_link_label   = _("Open on %s").printf (displayed_post.domain);
+        var    post_options_menu = new Menu ();
+        post_options_menu.append (open_link_label, "post.open-url");
+        post_options_menu.append (_("Copy Link to Clipboard"), "post.copy-url");
+        options_button.menu_model = post_options_menu;
+      } else {
+        options_button.menu_model = null;
+      }
     }
   }
 

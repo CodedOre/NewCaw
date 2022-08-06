@@ -166,6 +166,28 @@ public class PostItem : Gtk.Widget {
   }
 
   /**
+   * Run at initialization of the class.
+   */
+  class construct {
+    // Set up URL actions
+    install_action ("post.copy-url", null, (widget, action) => {
+      // Get the instance for this
+      var item = widget as PostItem;
+
+      // Get the url and places it in the clipboard
+      Gdk.Clipboard clipboard = item.get_clipboard ();
+      clipboard.set_text (item.post.url);
+    });
+    install_action ("post.open-url", null, (widget, action) => {
+      // Get the instance for this
+      var item = widget as PostItem;
+
+      // Get the url and opens it
+      Gtk.show_uri (null, item.post.url, Gdk.CURRENT_TIME);
+    });
+  }
+
+  /**
    * Deconstructs PostItem and it's childrens.
    */
   public override void dispose () {
