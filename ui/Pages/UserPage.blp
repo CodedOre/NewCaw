@@ -15,6 +15,10 @@ template UserPage : Gtk.Widget {
     vexpand:           true;
     hscrollbar-policy: never;
 
+    styles [
+      "view"
+    ]
+
     Adw.Clamp {
       maximum-size:         1024;
       tightening-threshold: 512;
@@ -29,6 +33,8 @@ template UserPage : Gtk.Widget {
         .UserDisplay {
           user: bind UserPage.user;
         }
+
+        Gtk.Separator {}
 
         .CollectionList collection_list {
           margin-top: 32;
