@@ -137,6 +137,7 @@ public class UserDisplay : Gtk.Widget {
     // Destructs children of MediaDisplay
     user_card.unparent ();
     user_infobox.unparent ();
+    base.dispose ();
   }
 
   /**

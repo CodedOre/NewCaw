@@ -30,11 +30,11 @@ public class CollectionList : Gtk.Widget {
   [GtkChild]
   private unowned Gtk.FlowBox filter_box;
   [GtkChild]
-  private unowned Gtk.ListBox post_list;
+  private unowned Gtk.ListView post_list;
 
   // Filters for CollectionList
   [GtkChild]
-  private unowned FilterButton post_filter;
+  private unowned FilterButton generic_filter;
   [GtkChild]
   private unowned FilterButton repost_filter;
   [GtkChild]
@@ -56,8 +56,8 @@ public class CollectionList : Gtk.Widget {
           break;
 
         case TWITTER:
-          post_filter.label   = _("Tweets");
-          repost_filter.label = _("Retweets");
+          generic_filter.label = _("Tweets");
+          repost_filter.label  = _("Retweets");
           break;
 
         default:
@@ -75,61 +75,109 @@ public class CollectionList : Gtk.Widget {
     }
     set {
       shown_collection = value;
-      if (shown_collection != null) {
-        // Bind ListModel of Collection to ListBox
-        post_list.bind_model (shown_collection.post_list, make_post_widget);
 
-        // Load the posts from the Collection
-        shown_collection.pull_posts.begin (() => {
-        });
+      if (shown_collection != null) {
+        // Bind the collection to the list
+        var filter_list = new Gtk.FilterListModel (shown_collection.post_list, post_filter);
+        var list_model = new Gtk.NoSelection (filter_list);
+        post_list.set_model (list_model);
       } else {
-        // Unbind possible existing ListModel.
-        post_list.bind_model (null, null);
+         post_list.set_model (null);
       }
+
+      // Pull the posts from the list
+      shown_collection.pull_posts.begin ();
     }
   }
 
   /**
-   * Creates a ListRow for an object from the Collection model.
-   *
-   * @param object An Object expected to be an Post that can be displayed.
-   *
-   * @return A Gtk.Widget to be displayed in the list.
+   * Run at construction of an widget.
    */
-  private Gtk.Widget make_post_widget (Object object) {
-    // Check we get an Post object
+  construct {
+    // Create a filter list from the collection
+    post_filter = new Gtk.CustomFilter (filter_posts);
+
+    // Create the ListFactory and bind the signals
+    var list_factory  = new Gtk.SignalListItemFactory ();
+    post_list.factory = list_factory;
+    list_factory.setup.connect (on_setup);
+    list_factory.bind.connect (on_bind);
+    list_factory.unbind.connect (on_unbind);
+  }
+
+  /**
+   * Run when a FilterButton was changed.
+   */
+  [GtkCallback]
+  private void on_filter_changed () {
+    post_filter.changed (DIFFERENT);
+  }
+
+  /**
+   * Run when a new ListItem was created.
+   *
+   * @param item The Gtk.ListItem that was created.
+   */
+  private void on_setup (Gtk.ListItem item) {
+    // Create an empty PostItem and set it as child
+    var post_item = new PostItem ();
+    item.set_child (post_item);
+  }
+
+  /**
+   * Run when a ListItem is set to a new post to display.
+   *
+   * @param item The Gtk.ListItem to be updated.
+   */
+  private void on_bind (Gtk.ListItem item) {
+    // Get the widget and post
+    var widget = item.child as PostItem;
+    var post   = item.item  as Backend.Post;
+    // Assign the post to the item
+    if (widget != null) {
+      widget.post = post;
+    }
+    // TODO: Make the filters work with ListView
+  }
+
+  /**
+   * Run when a post is removed from a ListItem.
+   *
+   * @param item The Gtk.ListItem to be updated.
+   */
+  private void on_unbind (Gtk.ListItem item) {
+    var widget = item.child as PostItem;
+    widget.post = null;
+  }
+
+  /**
+   * Determines if an object should be displayed.
+   *
+   * @param object The object to check.
+   *
+   * @return If the post should be displayed.
+   */
+  private bool filter_posts (Object object) {
+    // Cast the object to a post and return false if failing
     var post = object as Backend.Post;
     if (post == null) {
-      error ("The Collection contained one object not being a Post!");
+      return false;
     }
 
-    // Check if a filter applies to a post
+    // Determine the type of the post
     bool is_repost = post.post_type == REPOST;
     bool has_media = is_repost
                        ? post.referenced_post.get_media ().length > 0
                        : post.get_media ().length > 0;
 
-    // Create ListBoxRow and bind visibilities
-    var row = new Gtk.ListBoxRow ();
+    // Check the type against the filters
     if (is_repost) {
-      // Bind Reposts filter
-      repost_filter.bind_property ("active", row, "visible");
+      return repost_filter.active;
     }
     if (has_media) {
-      // Bind Media filter
-      media_filter.bind_property ("active", row, "visible");
+      return media_filter.active;
     }
-    if (! is_repost && ! has_media) {
-      // Bind all others to Post filter
-      post_filter.bind_property ("active", row, "visible");
-    }
-
-    // Create PostDisplay
-    var display = new PostDisplay (post);
-
-    // Return the new row
-    row.child = display;
-    return row;
+    return generic_filter.active;
   }
 
   /**
@@ -139,12 +187,18 @@ public class CollectionList : Gtk.Widget {
     // Destructs children of CollectionList
     filter_box.unparent ();
     post_list.unparent ();
+    base.dispose ();
   }
 
   /**
    * Store the display platform.
    */
   private PlatformEnum set_display_platform;
+
+  /**
+   * The Gtk.Filter used to filter the posts.
+   */
+  private Gtk.Filter post_filter;
 
   /**
    * Stores the displayed Collection.

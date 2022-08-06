@@ -1,6 +1,6 @@
 /* DisplayUtils.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,6 +75,24 @@ namespace DisplayUtils {
       } else {
         return datetime.format (_("%e %b %y"));
       }
+    }
+  }
+
+  /**
+   * Adds or removes a css class from a widget according to a given condition.
+   *
+   * @param condition If this is true, the css class will be added to the widget.
+   * @param widget The widget for which the css class should be evaluated.
+   * @param css_class The CSS-class to be added or removed.
+   */
+  public void conditional_css (bool condition, Gtk.Widget widget, string css_class) {
+    // Add css when not on widget and condition is true
+    if (condition && ! widget.has_css_class (css_class)) {
+      widget.add_css_class (css_class);
+    }
+    // Remove css when on widget and condition is false
+    if (! condition && widget.has_css_class (css_class)) {
+      widget.remove_css_class (css_class);
     }
   }
 

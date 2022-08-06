@@ -1,0 +1,53 @@
+using Gtk 4.0;
+using Adw 1;
+
+template PostStatus : Gtk.Widget {
+  height-request: 36;
+  layout-manager: Gtk.BoxLayout {
+    orientation: vertical;
+  };
+
+  Adw.Bin previous_line_bin {
+    width-request: 48;
+    height-request: 12;
+    halign: start;
+
+    Gtk.Separator previous_line {
+      visible: bind PostStatus.show_previous;
+      halign: center;
+      orientation: vertical;
+    }
+  }
+
+  Gtk.Box information_box {
+    spacing: 8;
+
+    .UserAvatar user_avatar {
+      width-request: 48;
+      halign: center;
+      size: 48;
+    }
+
+    .UserButton user_button {
+      valign: center;
+      is-repost: bind PostStatus.is-repost;
+    }
+
+    Gtk.Label time_spacer {
+      visible: bind PostStatus.show-time;
+      label: "·";
+
+      styles [
+        "dim-label"
+      ]
+    }
+
+    Gtk.Label time_label {
+      visible: bind PostStatus.show-time;
+
+      styles [
+        "dim-label"
+      ]
+    }
+  }
+}

@@ -1,0 +1,72 @@
+using Gtk 4.0;
+using Adw 1;
+
+template PostItem : Gtk.Widget {
+  margin-start: 12;
+  margin-end: 12;
+  layout-manager: Gtk.BoxLayout {
+    orientation: vertical;
+  };
+
+  .PostStatus repost_status {
+    display-inline: true;
+    show-time: true;
+    is-repost: true;
+  }
+
+  .PostStatus post_status {}
+
+  Gtk.Box content_box {
+    spacing: 8;
+
+    Adw.Bin next_line_bin {
+      width-request: 48;
+
+      Gtk.Separator next_line {
+        visible: false;
+        halign: center;
+        orientation: vertical;
+      }
+    }
+
+    Gtk.Box {
+      hexpand: true;
+      orientation: vertical;
+      margin-bottom: 12;
+      margin-start: 10;
+      margin-end: 4;
+      spacing: 8;
+
+      Gtk.Label info_label {
+        use-markup: true;
+        xalign: 0.0;
+
+        styles [
+          "caption",
+          "dim-label"
+        ]
+      }
+
+      Gtk.Label text_label {
+        xalign: 0.0;
+        use-markup: true;
+        wrap: true;
+        wrap-mode: word_char;
+      }
+
+      .MediaPreview media_previewer {}
+
+      Gtk.Button quote_button {
+        styles [
+          "no-padding",
+          "flat",
+          "frame"
+        ]
+      }
+
+      .PostMetrics post_metrics {}
+
+      .PostActions post_actions {}
+    }
+  }
+}

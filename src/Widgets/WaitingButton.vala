@@ -91,6 +91,7 @@ public class WaitingButton : Gtk.Widget {
   public override void dispose () {
     // Deconstruct childrens
     waiting_stack.unparent ();
+    base.dispose ();
   }
 
   /**

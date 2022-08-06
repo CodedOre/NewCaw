@@ -75,23 +75,17 @@ public class Authentication.CodePage : Gtk.Widget {
    * @param warning The warning text to display, or null to remove one.
    */
   private void set_warning (string? warning_text = null) {
-    if (warning_text == null) {
-      // Remove the warning
-      if (code_entry.has_css_class ("warning")) {
-        code_entry.remove_css_class ("warning");
-      }
-      if (status_toast != null) {
-        status_toast.dismiss ();
-        status_toast = null;
-      }
-    } else {
-      // Add the warning
-      if (! code_entry.has_css_class ("warning")) {
-        code_entry.add_css_class ("warning");
-      }
-      if (status_toast != null) {
-        status_toast.dismiss ();
-      }
+    // Reset any existing status toast
+    if (status_toast != null) {
+      status_toast.dismiss ();
+      status_toast = null;
+    }
+
+    // Apply css to widgets
+    DisplayUtils.conditional_css (warning_text != null, code_entry, "warning");
+
+    // Add new toast if a warning exists
+    if (warning_text != null) {
       status_toast = new Adw.Toast (warning_text);
       page_content.add_toast (status_toast);
     }
@@ -103,23 +97,17 @@ public class Authentication.CodePage : Gtk.Widget {
    * @param error The error text to display, or null to remove one.
    */
   private void set_error (string? error_text = null) {
-    if (error_text == null) {
-      // Remove the error
-      if (code_entry.has_css_class ("error")) {
-        code_entry.remove_css_class ("error");
-      }
-      if (status_toast != null) {
-        status_toast.dismiss ();
-        status_toast = null;
-      }
-    } else {
-      // Add the error
-      if (! code_entry.has_css_class ("error")) {
-        code_entry.add_css_class ("error");
-      }
-      if (status_toast != null) {
-        status_toast.dismiss ();
-      }
+    // Reset any existing status toast
+    if (status_toast != null) {
+      status_toast.dismiss ();
+      status_toast = null;
+    }
+
+    // Apply css to widgets
+    DisplayUtils.conditional_css (error_text != null, code_entry, "error");
+
+    // Add new toast if a warning exists
+    if (error_text != null) {
       status_toast = new Adw.Toast (error_text);
       page_content.add_toast (status_toast);
     }
@@ -135,17 +123,8 @@ public class Authentication.CodePage : Gtk.Widget {
     set_error (null);
 
     // Only activate the button when there's text
-    if (code_entry.text == "") {
-      if (confirm_button.has_css_class ("suggested-action")) {
-        confirm_button.remove_css_class ("suggested-action");
-      }
-      confirm_button.sensitive = false;
-    } else {
-      if (! confirm_button.has_css_class ("suggested-action")) {
-        confirm_button.add_css_class ("suggested-action");
-      }
-      confirm_button.sensitive = true;
-    }
+    confirm_button.sensitive = code_entry.text != "";
+    DisplayUtils.conditional_css (code_entry.text != "", code_entry, "suggested-action");
   }
 
   /**
@@ -232,6 +211,7 @@ public class Authentication.CodePage : Gtk.Widget {
   public override void dispose () {
     // Deconstruct childrens
     page_content.unparent ();
+    base.dispose ();
   }
 
   /**

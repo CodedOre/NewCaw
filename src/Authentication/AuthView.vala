@@ -155,6 +155,7 @@ public class AuthView : Gtk.Widget {
     // Deconstructs childrens
     auth_header.unparent ();
     auth_leaflet.unparent ();
+    base.dispose ();
   }
 
 }

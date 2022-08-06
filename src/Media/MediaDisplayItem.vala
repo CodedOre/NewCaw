@@ -104,6 +104,7 @@ public class MediaDisplayItem : Gtk.Widget {
     load_cancellable.cancel ();
     // Destructs children of MediaDisplayItem
     content.unparent ();
+    base.dispose ();
   }
 
   /**

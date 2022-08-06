@@ -15,7 +15,10 @@
     <file>Authentication/ServerPage.ui</file>
     <file>Authentication/StartPage.ui</file>
     <file>Content/CollectionList.ui</file>
-    <file>Content/PostDisplay.ui</file>
+    <file>Content/PostActions.ui</file>
+    <file>Content/PostItem.ui</file>
+    <file>Content/PostMetrics.ui</file>
+    <file>Content/PostStatus.ui</file>
     <file>Content/UserCard.ui</file>
     <file>Content/UserDisplay.ui</file>
     <file>Media/MediaDisplay.ui</file>
@@ -25,6 +28,7 @@
     <file>Widgets/BadgesBox.ui</file>
     <file>Widgets/FilterButton.ui</file>
     <file>Widgets/UserAvatar.ui</file>
+    <file>Widgets/UserButton.ui</file>
     <file>Widgets/WaitingButton.ui</file>
     <file>Windows/MainWindow.ui</file>
     <file>Windows/MediaDialog.ui</file>

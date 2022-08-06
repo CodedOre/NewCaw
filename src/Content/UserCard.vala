@@ -50,7 +50,7 @@ public class UserCard : Gtk.Widget {
       // Set's the UI for the new user
       if (displayed_user != null) {
         // Set the user images
-        user_avatar.set_avatar (displayed_user.avatar);
+        user_avatar.avatar = displayed_user.avatar;
 
         // Load and set the header
         Backend.Media header = displayed_user.header;
@@ -110,6 +110,7 @@ public class UserCard : Gtk.Widget {
     // Destructs children of UserAvatar
     banner_holder.unparent ();
     infobox.unparent ();
+    base.dispose ();
   }
 
   /**
