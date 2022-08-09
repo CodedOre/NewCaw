@@ -25,6 +25,7 @@ template AuthenticationCodePage : Gtk.Widget {
             title: _("Authentication Code");
 
             changed => on_input ();
+            entry-activated => on_confirm ();
 
             Gtk.Button confirm_button {
               halign:    center;
