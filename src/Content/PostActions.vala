@@ -53,9 +53,9 @@ public class PostActions : Gtk.Widget {
       displayed_post = value;
 
       // Set the information on the UI
-      likes_counter.label   = displayed_post != null ? displayed_post.liked_count.to_string ("%'d")    : "(null)";
-      reposts_counter.label = displayed_post != null ? displayed_post.reposted_count.to_string ("%'d") : "(null)";
-      replies_counter.label = displayed_post != null ? displayed_post.replied_count.to_string ("%'d")  : "(null)";
+      likes_counter.label   = displayed_post != null ? DisplayUtils.shortened_metric (displayed_post.liked_count)    : "(null)";
+      reposts_counter.label = displayed_post != null ? DisplayUtils.shortened_metric (displayed_post.reposted_count) : "(null)";
+      replies_counter.label = displayed_post != null ? DisplayUtils.shortened_metric (displayed_post.replied_count)  : "(null)";
 
       // Set up options menu
       if (displayed_post != null) {

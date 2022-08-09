@@ -96,4 +96,34 @@ namespace DisplayUtils {
     }
   }
 
+  /**
+   * Returns a string for a shortened version of the metric.
+   *
+   * @param metric The metric to be displayed.
+   *
+   * @return A string containing a short version of the number.
+   */
+  public string shortened_metric (int metric) {
+    // If metric small enough, just print the integer
+    if (metric < 10000) {
+      return ("%'d").printf (metric);
+    }
+    // If not, shorten the metric and add intentifier for size
+    string[] extension = { "K", "M", "B" };
+    float number = metric;
+    int extension_index = -1;
+    while (number > 1000 && extension_index < extension.length) {
+      number /= 1000;
+      extension_index += 1;
+    }
+    // Return a string that contains not more than 5 characters
+    if (number > 100) {
+      return ("%'.0f%s").printf (number, extension [extension_index]);
+    } else if (number > 10) {
+      return ("%'.1f%s").printf (number, extension [extension_index]);
+    } else {
+      return ("%'.2f%s").printf (number, extension [extension_index]);
+    }
+  }
+
 }
