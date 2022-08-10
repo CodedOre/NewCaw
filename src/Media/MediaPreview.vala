@@ -123,6 +123,8 @@ public class MediaPreview : Gtk.Widget {
       // Display the preview in a MediaSelector
       var media_item   = new MediaSelector ();
       media_item.media = displayed_media [i];
+      media_item.set_action_name ("post.display_media");
+      media_item.set_action_target ("i", i);
 
       // Positions the frame in the grid
       media_grid.attach (media_item, item_column, item_row, item_width, item_height);
