@@ -40,7 +40,6 @@ cawsources += [
   'Media/MediaDisplay.vala',
   'Media/MediaDisplayItem.vala',
   'Media/MediaPreview.vala',
-  'Media/MediaPreviewItem.vala',
   'Media/MediaSelector.vala',
   'Pages/UserPage.vala',
   'System/KeyStorage.vala',
