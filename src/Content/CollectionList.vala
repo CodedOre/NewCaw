@@ -114,22 +114,34 @@ public class CollectionList : Gtk.Widget {
   }
 
   /**
-   * Run when a new ListItem was created.
+   * Run when a new widget in the list is created.
    *
-   * @param item The Gtk.ListItem that was created.
+   * @param object The new object returned by the ListFactory.
    */
-  private void on_setup (Gtk.ListItem item) {
+  private void on_setup (Object object) {
+    // Cast the object to a Gtk.ListItem
+    var item = object as Gtk.ListItem;
+    if (item == null) {
+      warning ("Unknown widget returned by ListView!");
+      return;
+    }
     // Create an empty PostItem and set it as child
     var post_item = new PostItem ();
     item.set_child (post_item);
   }
 
   /**
-   * Run when a ListItem is set to a new post to display.
+   * Run when a widget is set to display a specific post.
    *
-   * @param item The Gtk.ListItem to be updated.
+   * @param object The object returned by the ListFactory.
    */
-  private void on_bind (Gtk.ListItem item) {
+  private void on_bind (Object object) {
+    // Cast the object to a Gtk.ListItem
+    var item = object as Gtk.ListItem;
+    if (item == null) {
+      warning ("Unknown widget returned by ListView!");
+      return;
+    }
     // Get the widget and post
     var widget = item.child as PostItem;
     var post   = item.item  as Backend.Post;
@@ -140,11 +152,18 @@ public class CollectionList : Gtk.Widget {
   }
 
   /**
-   * Run when a post is removed from a ListItem.
+   * Run when a widget has its displayed post unset.
    *
-   * @param item The Gtk.ListItem to be updated.
+   * @param object The object returned by the ListFactory.
    */
-  private void on_unbind (Gtk.ListItem item) {
+  private void on_unbind (Object object) {
+    // Cast the object to a Gtk.ListItem
+    var item = object as Gtk.ListItem;
+    if (item == null) {
+      warning ("Unknown widget returned by ListView!");
+      return;
+    }
+    // Get the widget and unset the post
     var widget = item.child as PostItem;
     widget.post = null;
   }
