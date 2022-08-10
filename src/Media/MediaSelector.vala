@@ -64,6 +64,9 @@ public class MediaSelector : Gtk.Button {
       // Make media_indicator_box visible when a indicator is set
       media_indicator_box.visible = animated_type_indicator.visible || video_type_indicator.visible || alt_text_indicator.visible;
 
+      // Don't allow the button to be pressed without media
+      this.sensitive = displayed_media != null;
+
       // Clear media holder and only load media if there is some
       media_holder.paintable = null;
       if (displayed_media == null) {
