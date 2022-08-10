@@ -24,11 +24,9 @@ using GLib;
  * A widget previewing a media and allowing to select it.
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Media/MediaSelector.ui")]
-public class MediaSelector : Gtk.Widget {
+public class MediaSelector : Gtk.Button {
 
   // UI-Elements of MediaSelector
-  [GtkChild]
-  private unowned Gtk.Button selector;
   [GtkChild]
   private unowned CroppedPicture media_holder;
   [GtkChild]
@@ -87,7 +85,6 @@ public class MediaSelector : Gtk.Widget {
     // Cancel possible loads
     load_cancellable.cancel ();
     // Destructs children of MediaSelector
-    selector.unparent ();
     base.dispose ();
   }
 
