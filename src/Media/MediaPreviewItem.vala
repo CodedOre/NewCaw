@@ -29,7 +29,7 @@ public class MediaPreviewItem : Gtk.Widget {
   /**
    * The minimum width of this widget.
    */
-  private const int MINIMUM_WIDTH = 150;
+  private const int MINIMUM_WIDTH = 100;
 
   /**
    * The ratio between height and width.

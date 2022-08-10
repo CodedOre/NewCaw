@@ -137,7 +137,6 @@ public class CollectionList : Gtk.Widget {
     if (widget != null) {
       widget.post = post;
     }
-    // TODO: Make the filters work with ListView
   }
 
   /**
