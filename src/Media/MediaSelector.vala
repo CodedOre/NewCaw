@@ -81,12 +81,12 @@ public class MediaSelector : Gtk.Widget {
   }
 
   /**
-   * Deconstructs MediaPreviewItem and it's childrens
+   * Deconstructs MediaSelector and it's childrens
    */
   public override void dispose () {
     // Cancel possible loads
     load_cancellable.cancel ();
-    // Destructs children of MediaPreviewItem
+    // Destructs children of MediaSelector
     selector.unparent ();
     base.dispose ();
   }

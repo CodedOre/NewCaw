@@ -1,6 +1,6 @@
 /* MediaPreview.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2022 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ public class MediaPreview : Gtk.Grid {
       {1, 0, 1, 1},
       {0, 1, 1, 1},
       {1, 1, 1, 1}
-    },
+    }
   };
 
   /**
@@ -67,23 +67,36 @@ public class MediaPreview : Gtk.Grid {
   private const int ITEM_SPACING = 6;
 
   /**
-   * Set the media to be displayed in this widget.
-   *
-   * @param media An Array with the media to be displayed.
+   * Run at construction of the widget.
    */
-  public void display_media (Backend.Media[] media) {
+  construct {
     // Set some basic properties
     this.column_homogeneous = true;
     this.column_spacing     = ITEM_SPACING;
     this.row_homogeneous    = true;
     this.row_spacing        = ITEM_SPACING;
+  }
 
-    // Set internal fields
-    if (media.length > 4) {
-      warning ("MediaPreview: More than 4 images detected! Only displaying the first 4...");
-      displayed_media = media [:3];
-    } else {
-      displayed_media = media;
+  /**
+   * Set the media to be displayed in this widget.
+   *
+   * @param media An Array with the media to be displayed.
+   */
+  public void display_media (Backend.Media[]? media) {
+
+    // Check that we have not more than 4 media to display
+    displayed_media = media != null
+                        ? media.length > 4 ? media [:3] : media
+                        : null;
+
+    // Clear out existing items
+    foreach (Gtk.Widget widget in displayed_widgets) {
+      this.remove (widget);
+    }
+
+    // Return if no media can be set
+    if (media == null) {
+      return;
     }
 
     // Arrange media on the grid
@@ -94,8 +107,9 @@ public class MediaPreview : Gtk.Grid {
       int item_width  = PREVIEW_GRID_LAYOUT [displayed_media.length - 1, i, 2];
       int item_height = PREVIEW_GRID_LAYOUT [displayed_media.length - 1, i, 3];
 
-      // Create a Frame to hold a media preview
-      var media_item   = new MediaPreviewItem (displayed_media [i], i, item_width, item_height, ITEM_SPACING);
+      // Display the preview in a MediaSelector
+      var media_item   = new MediaSelector ();
+      media_item.media = displayed_media [i];
 
       // Positions the frame in the grid
       this.attach (media_item, item_column, item_row, item_width, item_height);
@@ -103,8 +117,13 @@ public class MediaPreview : Gtk.Grid {
   }
 
   /**
+   * Stores currently displayed items.
+   */
+  private Gtk.Widget[] displayed_widgets = {};
+
+  /**
    * The Media array which is displayed.
    */
-  private Backend.Media[] displayed_media;
+  private Backend.Media[]? displayed_media;
 
 }

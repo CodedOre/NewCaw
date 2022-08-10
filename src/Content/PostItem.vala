@@ -127,6 +127,8 @@ public class PostItem : Gtk.Widget {
       media_previewer.visible = has_media;
       if (has_media) {
         media_previewer.display_media (main_post.get_media ());
+      } else {
+        media_previewer.display_media (null);
       }
 
       // Clear existing quote from quote button
