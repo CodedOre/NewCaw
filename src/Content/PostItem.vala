@@ -127,6 +127,8 @@ public class PostItem : Gtk.Widget {
       media_previewer.visible = has_media;
       if (has_media) {
         media_previewer.display_media (main_post.get_media ());
+      } else {
+        media_previewer.display_media (null);
       }
 
       // Clear existing quote from quote button
@@ -179,6 +181,24 @@ public class PostItem : Gtk.Widget {
 
       // Get the url and opens it
       Gtk.show_uri (null, item.post.url, Gdk.CURRENT_TIME);
+    });
+    // Set up "display media" action
+    install_action ("post.display_media", "i", (widget, action, arg) => {
+      // Get the instance for this
+      var item = widget as PostItem;
+
+      // Return if post is null
+      if (item.post == null) {
+        return;
+      }
+
+      // Get the parameters
+      int             focus     = (int) arg.get_int32 ();
+      Backend.Post    main_post = item.post.post_type == REPOST ? item.post.referenced_post : item.post;
+      Backend.Media[] media     = main_post.get_media ();
+
+      // Display the media in an MediaDialog
+      new MediaDialog (item, media, focus);
     });
   }
 

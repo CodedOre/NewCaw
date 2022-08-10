@@ -28,11 +28,7 @@ public class UserCard : Gtk.Widget {
 
   // UI-Elements of UserCard
   [GtkChild]
-  private unowned Gtk.Overlay banner_holder;
-  [GtkChild]
-  private unowned CroppedPicture user_banner;
-  [GtkChild]
-  private unowned Gtk.Button banner_selector;
+  private unowned MediaSelector user_banner;
   [GtkChild]
   private unowned Gtk.Box infobox;
   [GtkChild]
@@ -47,28 +43,10 @@ public class UserCard : Gtk.Widget {
     }
     set {
       displayed_user = value;
+
       // Set's the UI for the new user
-      if (displayed_user != null) {
-        // Set the user images
-        user_avatar.avatar = displayed_user.avatar;
-
-        // Load and set the header
-        Backend.Media header = displayed_user.header;
-        if (header != null) {
-          header.get_media.begin (load_cancellable, (obj, res) => {
-            try {
-              var paintable = header.get_media.end (res) as Gdk.Paintable;
-              user_banner.paintable = paintable;
-            } catch (Error e) {
-              warning (@"Could not load header: $(e.message)");
-            }
-          });
-        }
-
-        // Set header selector depending on loaded header
-        banner_selector.can_focus  = header != null;
-        banner_selector.can_target = header != null;
-      }
+      user_avatar.avatar = displayed_user != null ? displayed_user.avatar : null;
+      user_banner.media  = displayed_user != null ? displayed_user.header : null;
     }
   }
 
@@ -108,7 +86,7 @@ public class UserCard : Gtk.Widget {
     // Cancel possible loads
     load_cancellable.cancel ();
     // Destructs children of UserAvatar
-    banner_holder.unparent ();
+    user_banner.unparent ();
     infobox.unparent ();
     base.dispose ();
   }

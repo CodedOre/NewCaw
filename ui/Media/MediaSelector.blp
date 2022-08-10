@@ -1,0 +1,52 @@
+using Gtk 4.0;
+using Adw 1;
+
+template MediaSelector : Gtk.Button {
+  overflow: hidden;
+
+  styles [
+    "no-padding",
+    "frame"
+  ]
+
+  Gtk.Overlay {
+    Gtk.Spinner load_indicator {
+      halign: center;
+      valign: center;
+    }
+
+    [overlay]
+    .CroppedPicture media_holder {}
+
+    [overlay]
+    Gtk.Box media_indicator_box {
+      visible:       false;
+      halign:        end;
+      valign:        end;
+      margin-end:    8;
+      margin-bottom: 8;
+
+      styles [
+        "osd",
+        "indicator"
+      ]
+
+      Gtk.Image animated_type_indicator {
+        visible:      false;
+        icon-name:    "animated-symbolic";
+        tooltip-text: _("Animated GIF");
+      }
+
+      Gtk.Image video_type_indicator {
+        visible:      false;
+        icon-name:    "camera-video-symbolic";
+        tooltip-text: _("Video");
+      }
+
+      Gtk.Image alt_text_indicator {
+        visible:   false;
+        icon-name: "accessories-text-editor-symbolic";
+      }
+    }
+  }
+}

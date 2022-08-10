@@ -5,27 +5,15 @@ template UserCard : Gtk.Widget {
   height-request: 280;
   layout-manager: Gtk.BinLayout {};
 
-  Gtk.Overlay banner_holder {
+  .MediaSelector user_banner {
     height-request: 220;
     valign:         start;
+    only-preview:   false;
+    action-name:    "UserCard.display_header";
 
-    .CroppedPicture user_banner {
-      overflow: hidden;
-
-      styles [
-        "roundable",
-        "placeholder"
-      ]
-    }
-
-    [overlay]
-    Gtk.Button banner_selector {
-      action-name: "UserCard.display_header";
-
-      styles [
-        "flat"
-      ]
-    }
+    styles [
+      "roundable"
+    ]
   }
 
   Gtk.Box infobox {

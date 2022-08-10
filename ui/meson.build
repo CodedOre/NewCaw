@@ -20,7 +20,7 @@ blueprints = custom_target(
     'Content/UserDisplay.blp',
     'Media/MediaDisplay.blp',
     'Media/MediaDisplayItem.blp',
-    'Media/MediaPreviewItem.blp',
+    'Media/MediaSelector.blp',
     'Pages/UserPage.blp',
     'Widgets/BadgesBox.blp',
     'Widgets/FilterButton.blp',
