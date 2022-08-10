@@ -61,11 +61,25 @@ public class MediaSelector : Gtk.Button {
       displayed_media.get_preview.begin (load_cancellable, (obj, res) => {
         try {
           var paintable = displayed_media.get_preview.end (res) as Gdk.Paintable;
-          media_holder.paintable = paintable;
+          if (media_holder.paintable == null) {
+            media_holder.paintable = paintable;
+          }
         } catch (Error e) {
           warning (@"Could not load media preview: $(e.message)");
         }
       });
+
+      // Load the full media if property is set
+      if (! only_preview) {
+        displayed_media.get_media.begin (load_cancellable, (obj, res) => {
+          try {
+            var paintable = displayed_media.get_media.end (res) as Gdk.Paintable;
+            media_holder.paintable = paintable;
+          } catch (Error e) {
+            warning (@"Could not load media: $(e.message)");
+          }
+        });
+      }
 
       // Set the media indicators
       animated_type_indicator.visible = displayed_media != null ? displayed_media.media_type == ANIMATED : false;
@@ -77,6 +91,11 @@ public class MediaSelector : Gtk.Button {
       media_indicator_box.visible = animated_type_indicator.visible || video_type_indicator.visible || alt_text_indicator.visible;
     }
   }
+
+  /**
+   * If only the preview should be loaded.
+   */
+  public bool only_preview { get; set; default = true; }
 
   /**
    * Deconstructs MediaSelector and it's childrens
