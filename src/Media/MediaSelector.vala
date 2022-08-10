@@ -28,6 +28,8 @@ public class MediaSelector : Gtk.Button {
 
   // UI-Elements of MediaSelector
   [GtkChild]
+  private unowned Gtk.Spinner load_indicator;
+  [GtkChild]
   private unowned CroppedPicture media_holder;
   [GtkChild]
   private unowned Gtk.Box media_indicator_box;
@@ -70,9 +72,12 @@ public class MediaSelector : Gtk.Button {
       // Clear media holder and only load media if there is some
       media_holder.paintable = null;
       if (displayed_media == null) {
+        load_indicator.spinning = false;
         return;
       }
 
+      // Activate the load indicator
+      load_indicator.spinning = true;
 
       // Load the preview image
       displayed_media.get_preview.begin (load_cancellable, (obj, res) => {
@@ -83,6 +88,8 @@ public class MediaSelector : Gtk.Button {
           }
         } catch (Error e) {
           warning (@"Could not load media preview: $(e.message)");
+        } finally {
+          load_indicator.spinning = false;
         }
       });
 
@@ -94,6 +101,8 @@ public class MediaSelector : Gtk.Button {
             media_holder.paintable = paintable;
           } catch (Error e) {
             warning (@"Could not load media: $(e.message)");
+          } finally {
+            load_indicator.spinning = false;
           }
         });
       }
