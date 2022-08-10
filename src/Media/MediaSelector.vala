@@ -55,7 +55,21 @@ public class MediaSelector : Gtk.Button {
       }
       load_cancellable = new Cancellable ();
 
+      // Set the media indicators
+      animated_type_indicator.visible = displayed_media != null ? displayed_media.media_type == ANIMATED : false;
+      video_type_indicator.visible    = displayed_media != null ? displayed_media.media_type == VIDEO    : false;
+      alt_text_indicator.visible      = displayed_media != null ? displayed_media.alt_text != null       : false;
+      alt_text_indicator.tooltip_text = displayed_media != null ? displayed_media.alt_text               : null;
+
+      // Make media_indicator_box visible when a indicator is set
+      media_indicator_box.visible = animated_type_indicator.visible || video_type_indicator.visible || alt_text_indicator.visible;
+
+      // Clear media holder and only load media if there is some
       media_holder.paintable = null;
+      if (displayed_media == null) {
+        return;
+      }
+
 
       // Load the preview image
       displayed_media.get_preview.begin (load_cancellable, (obj, res) => {
@@ -80,15 +94,6 @@ public class MediaSelector : Gtk.Button {
           }
         });
       }
-
-      // Set the media indicators
-      animated_type_indicator.visible = displayed_media != null ? displayed_media.media_type == ANIMATED : false;
-      video_type_indicator.visible    = displayed_media != null ? displayed_media.media_type == VIDEO    : false;
-      alt_text_indicator.visible      = displayed_media != null ? displayed_media.alt_text != null       : false;
-      alt_text_indicator.tooltip_text = displayed_media != null ? displayed_media.alt_text               : null;
-
-      // Make media_indicator_box visible when a indicator is set
-      media_indicator_box.visible = animated_type_indicator.visible || video_type_indicator.visible || alt_text_indicator.visible;
     }
   }
 
