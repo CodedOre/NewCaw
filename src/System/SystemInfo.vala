@@ -39,6 +39,7 @@ namespace SystemInfo {
     info_string += get_client_info () + "\n";
     info_string += get_library_info () + "\n";
     info_string += get_system_info () + "\n";
+    info_string += get_gtk_info () + "\n";
 
     return info_string;
   }
@@ -123,12 +124,80 @@ namespace SystemInfo {
 
     string os_name    = Environment.get_os_info ("NAME");
     string os_version = Environment.get_os_info ("VERSION");
+    bool   in_flatpak = FileUtils.test ("/.flatpak-info", EXISTS);
 
     info_string += "System:\n";
     info_string += @"- Name: $(os_name)\n";
     info_string += @"- Version: $(os_version)\n";
+    info_string += @"- Flatpak: $(in_flatpak)\n";
 
     return info_string;
+  }
+
+  /**
+   * Adds information about the GTK backend.
+   */
+  private string get_gtk_info () {
+    string info_string = "";
+
+    string gtk_backend, gtk_renderer;
+    retrieve_gtk_info (out gtk_backend, out gtk_renderer);
+
+    info_string += "GTK:\n";
+    info_string += @"- Backend: $(gtk_backend)\n";
+    info_string += @"- Renderer: $(gtk_renderer)\n";
+
+    return info_string;
+  }
+
+  /**
+   * Retrieves information from GTK about backend and renderer.
+   *
+   * Adapted from libadwaita/demo/adw-demo-debug-info.c
+   */
+  private void retrieve_gtk_info (out string backend, out string renderer) {
+    // Get the Gdk.Display and read out it's type for the backend
+    var display = Gdk.Display.get_default ();
+    switch (display.get_type ().name ()) {
+      case "GdkX11Display":
+        backend = "X11";
+        break;
+      case "GdkWaylandDisplay":
+        backend = "Wayland";
+        break;
+      case "GdkBroadwayDisplay":
+        backend = "Broadway";
+        break;
+      case "GdkWin32Display":
+        backend = "Win32";
+        break;
+      case "GdkMacosDisplay":
+        backend = "macOS";
+        break;
+      default:
+        backend = display.get_type ().name ();
+        break;
+    }
+
+    // Create a new Gdk.Surface and Renderer and read its type
+    var surface        = new Gdk.Surface.toplevel (display);
+    var surface_render = Gsk.Renderer.for_surface (surface);
+    switch (surface_render.get_type ().name ()) {
+      case "GskVulkanRenderer":
+        renderer = "Vulkan";
+        break;
+      case "GskGLRenderer":
+        renderer = "OpenGL";
+        break;
+      case "GskCairoRenderer":
+        renderer = "Cairo";
+        break;
+      default:
+        renderer = surface_render.get_type ().name ();
+        break;
+    }
+    surface_render.unrealize ();
+    surface.destroy ();
   }
 
 }
