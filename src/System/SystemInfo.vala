@@ -37,6 +37,8 @@ namespace SystemInfo {
     info_string += get_application_info () + "\n";
     info_string += get_backends_info () + "\n";
     info_string += get_client_info () + "\n";
+    info_string += get_library_info () + "\n";
+    info_string += get_system_info () + "\n";
 
     return info_string;
   }
@@ -89,6 +91,42 @@ namespace SystemInfo {
     info_string += @"- Name: $(Backend.Client.instance.name)\n";
     info_string += @"- Website: $(Backend.Client.instance.website)\n";
     info_string += @"- Redirect-URI: $(redirect_uri)\n";
+
+    return info_string;
+  }
+
+  /**
+   * Adds information about the used libraries.
+   */
+  private string get_library_info () {
+    string info_string = "";
+
+    string glib_version = @"$(GLib.Version.major).$(GLib.Version.minor).$(GLib.Version.micro)";
+    string gtk_version  = @"$(Gtk.get_major_version ()).$(Gtk.get_minor_version ()).$(Gtk.get_micro_version ())";
+    string adw_version  = @"$(Adw.get_major_version ()).$(Adw.get_minor_version ()).$(Adw.get_micro_version ())";
+    string soup_version = @"$(Soup.get_major_version ()).$(Soup.get_minor_version ()).$(Soup.get_micro_version ())";
+
+    info_string += "Running against:\n";
+    info_string += @"- GLib: Version $(glib_version)\n";
+    info_string += @"- GTK: Version $(gtk_version)\n";
+    info_string += @"- Adwaita: Version $(adw_version)\n";
+    info_string += @"- Soup: Version $(soup_version)\n";
+
+    return info_string;
+  }
+
+  /**
+   * Adds information about the used libraries.
+   */
+  private string get_system_info () {
+    string info_string = "";
+
+    string os_name    = Environment.get_os_info ("NAME");
+    string os_version = Environment.get_os_info ("VERSION");
+
+    info_string += "System:\n";
+    info_string += @"- Name: $(os_name)\n";
+    info_string += @"- Version: $(os_version)\n";
 
     return info_string;
   }
