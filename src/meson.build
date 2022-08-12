@@ -44,6 +44,7 @@ cawsources += [
   'Pages/UserPage.vala',
   'System/KeyStorage.vala',
   'System/Session.vala',
+  'System/SystemInfo.vala',
   'Utils/DisplayUtils.vala',
   'Utils/PlatformEnum.vala',
   'Widgets/BadgesBox.vala',

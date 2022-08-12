@@ -158,7 +158,8 @@ public class Cawbird : Adw.Application {
       license_type = GPL_3_0,
 
       // Information on the debug page
-      issue_url = "https://github.com/CodedOre/NewCaw/issues/new",
+      issue_url  = "https://github.com/CodedOre/NewCaw/issues/new",
+      debug_info = SystemInfo.display_info (),
 
       // Connect to the active window
       transient_for = this.active_window
