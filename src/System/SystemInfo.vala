@@ -23,16 +23,74 @@ using GLib;
 /**
  * Provides system information for debug and troubleshooting.
  */
-[SingleInstance]
-public class SystemInfo : Object {
+namespace SystemInfo {
 
   /**
    * Returns all information for display.
    *
    * @return A string containing all system information.
    */
-  public static string display_info () {
-    return "";
+  public string display_info () {
+    string info_string = "";
+
+    // Add the information
+    info_string += get_application_info () + "\n";
+    info_string += get_backends_info () + "\n";
+    info_string += get_client_info () + "\n";
+
+    return info_string;
+  }
+
+  /**
+   * Adds information about the application.
+   */
+  private string get_application_info () {
+    string info_string = "";
+
+    info_string += "Application:\n";
+    info_string += @"\tID: $(Config.APPLICATION_ID)\n";
+    info_string += @"\tVersion: $(Config.PROJECT_VERSION)\n";
+
+    return info_string;
+  }
+
+  /**
+   * Adds information about the backends.
+   */
+  private string get_backends_info () {
+    string info_string = "";
+
+    info_string += "Backends:\n";
+#if SUPPORT_MASTODON
+    info_string += "\tMastodon: enabled\n";
+#else
+    info_string += "\tMastodon: disabled\n";
+#endif
+#if SUPPORT_TWITTER
+    info_string += "\tTwitter: enabled\n";
+#else
+    info_string += "\tTwitter: disabled\n";
+#endif
+
+    return info_string;
+  }
+
+  /**
+   * Adds information about the backend client.
+   */
+  private string get_client_info () {
+    string info_string = "";
+
+    string redirect_uri = Backend.Client.instance.redirect_uri != null
+                            ? Backend.Client.instance.redirect_uri
+                            : "(none)";
+
+    info_string += "Backend Client:\n";
+    info_string += @"\tName: $(Backend.Client.instance.name)\n";
+    info_string += @"\tWebsite: $(Backend.Client.instance.website)\n";
+    info_string += @"\tRedirect-URI: $(redirect_uri)\n";
+
+    return info_string;
   }
 
 }
