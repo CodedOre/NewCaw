@@ -48,8 +48,8 @@ namespace SystemInfo {
     string info_string = "";
 
     info_string += "Application:\n";
-    info_string += @"\tID: $(Config.APPLICATION_ID)\n";
-    info_string += @"\tVersion: $(Config.PROJECT_VERSION)\n";
+    info_string += @"- ID: $(Config.APPLICATION_ID)\n";
+    info_string += @"- Version: $(Config.PROJECT_VERSION)\n";
 
     return info_string;
   }
@@ -62,14 +62,14 @@ namespace SystemInfo {
 
     info_string += "Backends:\n";
 #if SUPPORT_MASTODON
-    info_string += "\tMastodon: enabled\n";
+    info_string += "- Mastodon: enabled\n";
 #else
-    info_string += "\tMastodon: disabled\n";
+    info_string += "- Mastodon: disabled\n";
 #endif
 #if SUPPORT_TWITTER
-    info_string += "\tTwitter: enabled\n";
+    info_string += "- Twitter: enabled\n";
 #else
-    info_string += "\tTwitter: disabled\n";
+    info_string += "- Twitter: disabled\n";
 #endif
 
     return info_string;
@@ -86,9 +86,9 @@ namespace SystemInfo {
                             : "(none)";
 
     info_string += "Backend Client:\n";
-    info_string += @"\tName: $(Backend.Client.instance.name)\n";
-    info_string += @"\tWebsite: $(Backend.Client.instance.website)\n";
-    info_string += @"\tRedirect-URI: $(redirect_uri)\n";
+    info_string += @"- Name: $(Backend.Client.instance.name)\n";
+    info_string += @"- Website: $(Backend.Client.instance.website)\n";
+    info_string += @"- Redirect-URI: $(redirect_uri)\n";
 
     return info_string;
   }
