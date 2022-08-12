@@ -40,6 +40,7 @@ namespace SystemInfo {
     info_string += get_library_info () + "\n";
     info_string += get_system_info () + "\n";
     info_string += get_gtk_info () + "\n";
+    info_string += get_env_info ();
 
     return info_string;
   }
@@ -146,6 +147,39 @@ namespace SystemInfo {
     info_string += "GTK:\n";
     info_string += @"- Backend: $(gtk_backend)\n";
     info_string += @"- Renderer: $(gtk_renderer)\n";
+
+    return info_string;
+  }
+
+  /**
+   * Adds information about the Environment.
+   */
+  private string get_env_info () {
+    string info_string = "";
+
+    string? desktop         = Environment.get_variable ("XDG_CURRENT_DESKTOP");
+    string? session_desktop = Environment.get_variable ("XDG_CURRENT_DESKTOP");
+    string? session_type    = Environment.get_variable ("XDG_CURRENT_DESKTOP");
+    string? lang            = Environment.get_variable ("LANG");
+    string? gtk_debug       = Environment.get_variable ("GTK_DEBUG");
+    string? gtk_theme       = Environment.get_variable ("GTK_THEME");
+
+    info_string += "Environment:\n";
+    if (desktop != null) {
+      info_string += @"- Desktop: $(desktop)\n";
+    }
+    if (session_desktop != null && session_type != null) {
+      info_string += @"- Session: $(session_desktop) ($(session_type))\n";
+    }
+    if (lang != null) {
+      info_string += @"- Language: $(lang)\n";
+    }
+    if (gtk_debug != null) {
+      info_string += @"- GTK Debug: $(gtk_debug)\n";
+    }
+    if (gtk_theme != null) {
+      info_string += @"- GTK Theme: $(gtk_theme)\n";
+    }
 
     return info_string;
   }
