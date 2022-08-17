@@ -259,12 +259,30 @@ public class CollectionView : Gtk.Widget {
    */
   private bool filter_items (Object item) {
     // Check if the item is a post
-    var post = item as Backend.Post;
-    if (post == null) {
-      // If not, display it always
-      return true;
+    if (item is Backend.Post) {
+      return filter_posts (item as Backend.Post);
     }
 
+    // Only display the header and separator if a header is set
+    var pseudo = item as Backend.PseudoItem;
+    if (pseudo != null) {
+      if (pseudo.description == "header" || pseudo.description == "separator") {
+        return header != null;
+      }
+    }
+
+    // Display anything else
+    return true;
+  }
+
+  /**
+   * Determines if an post should be displayed.
+   *
+   * @param post The post to check.
+   *
+   * @return If the post should be displayed.
+   */
+  private bool filter_posts (Backend.Post post) {
     // Determine the type of the post
     bool is_repost = post.post_type == REPOST;
     bool has_media = is_repost
