@@ -91,7 +91,6 @@ public class CollectionView : Gtk.Widget {
     // Initialize additional widgets
     list_separator = new Gtk.Separator (HORIZONTAL);
     filter_options = new CollectionFilter ();
-    list_separator.margin_bottom = 32;
 
     // Create a list filter from the collection
     list_filter = new Gtk.CustomFilter (filter_items);
