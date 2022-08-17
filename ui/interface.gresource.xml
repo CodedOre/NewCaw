@@ -14,6 +14,7 @@
     <file>Authentication/LoadPage.ui</file>
     <file>Authentication/ServerPage.ui</file>
     <file>Authentication/StartPage.ui</file>
+    <file>Content/CollectionFilter.ui</file>
     <file>Content/CollectionList.ui</file>
     <file>Content/PostActions.ui</file>
     <file>Content/PostItem.ui</file>
