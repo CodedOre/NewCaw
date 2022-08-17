@@ -50,7 +50,15 @@ public class CollectionView : Gtk.Widget {
    *
    * Used to determine a few platform-specific strings.
    */
-  public PlatformEnum displayed_platform { get; set; }
+  public PlatformEnum displayed_platform {
+    get {
+      return set_display_platform;
+    }
+    set {
+      set_display_platform = value;
+      filter_options.displayed_platform = set_display_platform;
+    }
+  }
 
   /**
    * The collection which is to be displayed.
@@ -266,6 +274,11 @@ public class CollectionView : Gtk.Widget {
     scroll_window.unparent ();
     base.dispose ();
   }
+
+  /**
+   * Store the display platform.
+   */
+  private PlatformEnum set_display_platform;
 
   /**
    * The Gtk.Filter used to filter the posts.

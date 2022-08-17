@@ -3,6 +3,11 @@ using Adw 1;
 
 template CollectionView : Gtk.Widget {
   layout-manager: Gtk.BinLayout {};
+  vexpand: true;
+
+  styles [
+    "view"
+  ]
 
   Gtk.ScrolledWindow scroll_window {
     hscrollbar-policy: never;

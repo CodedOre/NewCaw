@@ -32,9 +32,7 @@ public class UserPage : Gtk.Widget {
   [GtkChild]
   private unowned Adw.WindowTitle page_title;
   [GtkChild]
-  private unowned Gtk.ScrolledWindow page_content;
-  [GtkChild]
-  private unowned CollectionList collection_list;
+  private unowned CollectionView collection_view;
 
   /**
    * The User which is displayed.
@@ -61,12 +59,12 @@ public class UserPage : Gtk.Widget {
         switch (platform) {
 #if SUPPORT_MASTODON
           case MASTODON:
-            timeline = new Backend.Mastodon.UserTimeline (displayed_user, account);
+            timeline = new Backend.Mastodon.UserTimeline (displayed_user, account, CollectionView.HEADERS);
             break;
 #endif
 #if SUPPORT_TWITTER
           case TWITTER:
-            timeline = new Backend.Twitter.UserTimeline (displayed_user, account);
+            timeline = new Backend.Twitter.UserTimeline (displayed_user, account, CollectionView.HEADERS);
             break;
 #endif
           default:
@@ -76,12 +74,12 @@ public class UserPage : Gtk.Widget {
         // Set the view subtitle
         page_title.subtitle = user.username;
         // Pull the posts for the timeline async
-        collection_list.displayed_platform = platform;
-        collection_list.collection         = timeline;
+        collection_view.displayed_platform = platform;
+        collection_view.collection         = timeline;
       } else {
         // Set timeline to null
         timeline = null;
-        collection_list.collection = null;
+        collection_view.collection = null;
       }
     }
   }
@@ -99,7 +97,7 @@ public class UserPage : Gtk.Widget {
   public override void dispose () {
     // Destructs children of UserPage
     page_header.unparent ();
-    page_content.unparent ();
+    collection_view.unparent ();
     base.dispose ();
   }
 
