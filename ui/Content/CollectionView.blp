@@ -1,0 +1,26 @@
+using Gtk 4.0;
+using Adw 1;
+
+template CollectionView : Gtk.Widget {
+  layout-manager: Gtk.BinLayout {};
+  vexpand: true;
+
+  styles [
+    "view"
+  ]
+
+  Gtk.ScrolledWindow scroll_window {
+    hscrollbar-policy: never;
+
+    Adw.ClampScrollable {
+      maximum-size:         1024;
+      tightening-threshold: 512;
+
+      Gtk.ListView listview {
+        styles [
+          "post-list"
+        ]
+      }
+    }
+  }
+}

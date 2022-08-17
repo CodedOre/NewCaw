@@ -28,18 +28,31 @@ public class Backend.Twitter.UserTimeline : Backend.UserTimeline {
   /**
    * Creates a UserTimeline for a User.
    *
+   * In order to allow a ListView to include widgets before the posts,
+   * the headers parameter can be added. For each string in that list
+   * an PseudoItem will be created with the string as description.
+   *
    * @param user The User for which the timeline is to be created.
    * @param account The Account used for making the API calls.
+   * @param headers Descriptions for header items to be added.
    */
-  public UserTimeline (Backend.User user, Backend.Account account) {
+  public UserTimeline (Backend.User user, Backend.Account account, string[] headers = {}) {
     // Construct the object
     Object (
-      post_list: new ListStore (typeof (Backend.Post)),
+      post_list: new ListStore (typeof (Object)),
       user: user
     );
 
     // Set the call_account
     call_account = account;
+
+    // Add PseudoItems for the headers
+    header_items = headers.length;
+    var store    = post_list as ListStore;
+    foreach (string name in headers) {
+      var item = new PseudoItem (name);
+      store.append (item);
+    }
   }
 
   /**
@@ -89,9 +102,14 @@ public class Backend.Twitter.UserTimeline : Backend.UserTimeline {
         // Create a new post object
         Json.Object obj   = element.get_object ();
         var         post  = new Post.from_json (obj, includes);
-        store.insert (index, post);
+        store.insert (index + header_items, post);
       }
     });
   }
+
+  /**
+   * The amount of added header items.
+   */
+  private uint header_items = 0;
 
 }

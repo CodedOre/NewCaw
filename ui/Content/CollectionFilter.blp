@@ -1,10 +1,10 @@
 using Gtk 4.0;
 using Adw 1;
 
-template CollectionList : Gtk.Widget {
-  layout-manager: Gtk.BoxLayout {
-    orientation: vertical;
-  };
+template CollectionFilter : Gtk.Widget {
+  layout-manager: Gtk.BinLayout {};
+  margin-top: 24;
+  margin-bottom: 16;
 
   Gtk.FlowBox filter_box {
     column-spacing:        4;
@@ -15,33 +15,27 @@ template CollectionList : Gtk.Widget {
       active: true;
       label:  _("Posts");
 
-      toggled => on_filter_changed ();
+      toggled => on_filters_changed ();
     }
 
     .FilterButton replies_filter {
       label:  _("Replies");
 
-      toggled => on_filter_changed ();
+      toggled => on_filters_changed ();
     }
 
-    .FilterButton repost_filter {
+    .FilterButton reposts_filter {
       active: true;
       label:  _("Reposts");
 
-      toggled => on_filter_changed ();
+      toggled => on_filters_changed ();
     }
 
     .FilterButton media_filter {
       active: true;
       label:  _("Media");
 
-      toggled => on_filter_changed ();
+      toggled => on_filters_changed ();
     }
-  }
-
-  Gtk.ListView post_list {
-    styles [
-      "post-list"
-    ]
   }
 }
