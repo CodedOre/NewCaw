@@ -5,8 +5,7 @@ template MediaSelector : Gtk.Button {
   overflow: hidden;
 
   styles [
-    "no-padding",
-    "frame"
+    "no-padding"
   ]
 
   Gtk.Overlay {
@@ -21,6 +20,15 @@ template MediaSelector : Gtk.Button {
 
     [overlay]
     .CroppedPicture media_holder {}
+
+    [overlay]
+    Adw.Bin {
+      css-name: "button";
+
+      styles [
+        "flat"
+      ]
+    }
 
     [overlay]
     Gtk.Box media_indicator_box {
