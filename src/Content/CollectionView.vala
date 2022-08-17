@@ -69,6 +69,18 @@ public class CollectionView : Gtk.Widget {
     }
     set {
       shown_collection = value;
+
+      if (shown_collection != null) {
+        // Bind the collection to the list
+        var filter_list = new Gtk.FilterListModel (shown_collection.post_list, list_filter);
+        var list_model = new Gtk.NoSelection (filter_list);
+        listview.set_model (list_model);
+      } else {
+         listview.set_model (null);
+      }
+
+      // Pull the posts from the list
+      shown_collection.pull_posts.begin ();
     }
   }
 
@@ -181,14 +193,13 @@ public class CollectionView : Gtk.Widget {
    */
   private void bind_post (Gtk.ListItem item, Backend.Post post) {
     // Check that an PostItem is available
-    Gtk.Widget? widget = item.child;
-    if (! (widget is PostItem)) {
+    if (! (item.child is PostItem)) {
       item.child = new PostItem ();
     }
 
     // Display the post
     var post_item = item.child as PostItem;
-    if (post_item == null) {
+    if (post_item != null) {
       post_item.post = post;
     }
   }
@@ -230,7 +241,7 @@ public class CollectionView : Gtk.Widget {
     Gtk.Widget? widget = item.child;
     if (widget == header || widget == list_separator || widget == filter_options) {
       item.child = null;
-    } else {
+    } else if (widget != null) {
       widget.unparent ();
     }
   }
