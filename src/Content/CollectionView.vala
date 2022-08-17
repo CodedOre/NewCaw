@@ -137,6 +137,7 @@ public class CollectionView : Gtk.Widget {
       warning ("Unsupported widget returned by ListView!");
       return;
     }
+
     // Check the type of object to be displayed
     Object data = item.item;
     if (data is Backend.PseudoItem) {
@@ -146,6 +147,10 @@ public class CollectionView : Gtk.Widget {
     } else {
       warning ("Unsupported object to be displayed by ListView!");
     }
+
+    // Only make posts selectable
+    item.activatable = data is Backend.Post;
+    item.selectable  = data is Backend.Post;
   }
 
   /**
