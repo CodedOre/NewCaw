@@ -25,6 +25,7 @@ libfiles = [
   'Base/Content/UserDataField.vala',
   'Base/Content/UserEnums.vala',
   'Base/Organization/Collection.vala',
+  'Base/Organization/PseudoItem.vala',
   'Base/Organization/UserTimeline.vala',
   'Base/System/Account.vala',
   'Base/System/Client.vala',
