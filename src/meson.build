@@ -31,7 +31,7 @@ cawsources += [
   'Authentication/ServerPage.vala',
   'Authentication/StartPage.vala',
   'Content/CollectionFilter.vala',
-  'Content/CollectionList.vala',
+  'Content/CollectionView.vala',
   'Content/PostActions.vala',
   'Content/PostItem.vala',
   'Content/PostMetrics.vala',
