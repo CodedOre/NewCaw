@@ -1,7 +1,8 @@
 [Desktop Entry]
+# TRANSLATORS: Set by meson, do not translate
 Name=@app_name@
 GenericName=Twitter Client
-Comment=A window to the social world
+Comment=Your window to the social world
 # TRANSLATORS: Search terms to find this application, separated by semicolons. The list must end with a semicolon!
 Keywords=twitter;
 Exec=cawbird %U
