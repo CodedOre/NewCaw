@@ -58,6 +58,34 @@ public class Backend.Mastodon.HomeTimeline : Backend.HomeTimeline {
    * @throws Error Any error that happened while pulling the posts.
    */
   public override async void pull_posts () throws Error {
+    // Create the proxy call
+    Rest.ProxyCall call = call_account.create_call ();
+    call.set_method ("GET");
+    call.set_function (@"timelines/home");
+    call.add_param ("limit", "100");
+    if (last_post_id != null) {
+      call.add_param ("min_id", last_post_id);
+    }
+
+    // Load the timeline
+    Json.Node json;
+    try {
+      json = yield call_account.server.call (call);
+    } catch (Error e) {
+      throw e;
+    }
+    Json.Array list = json.get_array ();
+
+    // Parse the posts from the json
+    var store = post_list as ListStore;
+    list.foreach_element ((array, index, element) => {
+      if (element.get_node_type () == OBJECT) {
+        // Create a new post object
+        Json.Object obj  = element.get_object ();
+        var         post = new Post.from_json (obj);
+        store.insert (index + header_items, post);
+      }
+    });
   }
 
   /**
