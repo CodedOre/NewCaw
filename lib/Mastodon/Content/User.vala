@@ -64,8 +64,8 @@ public class Backend.Mastodon.User : Backend.User {
       posts_count:     (int) json.get_int_member ("statuses_count"),
 
       // Set the images
-      avatar: new Media (PICTURE, avatar_url),
-      header: new Media (PICTURE, header_url)
+      avatar: avatar_url.length > 0 ? new Media (PICTURE, avatar_url) : null,
+      header: header_url.length > 0 ? new Media (PICTURE, header_url) : null
     );
 
     // Parse the description into modules
