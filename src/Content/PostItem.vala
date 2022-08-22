@@ -143,7 +143,7 @@ public class PostItem : Gtk.Widget {
         quote_item.post         = quote;
         quote_button.child      = quote_item;
       }
-      quote_button.visible = has_quote;
+      quote_button.visible = has_quote && display_mode != QUOTE;
 
       // Set the metrics widgets
       post_metrics.post = main_post;
