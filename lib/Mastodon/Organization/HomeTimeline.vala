@@ -39,6 +39,7 @@ public class Backend.Mastodon.HomeTimeline : Backend.HomeTimeline {
     // Construct the object
     Object (
       post_list: new ListStore (typeof (Object)),
+      call_account: account,
       account: account
     );
     

@@ -29,6 +29,11 @@ public abstract class Backend.Collection : Object {
    * A ListModel holding all posts in this Collection.
    */
   public ListModel post_list { get; construct; }
+  
+  /**
+   * An Account used to make the API calls.
+   */
+  protected Account call_account { get; set; }
 
   /**
    * Calls the API to get the posts for the Collection.
@@ -41,10 +46,5 @@ public abstract class Backend.Collection : Object {
    * The id from the latest pulled Post.
    */
   protected string? last_post_id = null;
-
-  /**
-   * An Account used to make the calls.
-   */
-  protected unowned Account call_account;
 
 }

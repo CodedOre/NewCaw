@@ -40,11 +40,9 @@ public class Backend.Twitter.UserTimeline : Backend.UserTimeline {
     // Construct the object
     Object (
       post_list: new ListStore (typeof (Object)),
+      call_account: account,
       user: user
     );
-
-    // Set the call_account
-    call_account = account;
 
     // Add PseudoItems for the headers
     header_items = headers.length;
