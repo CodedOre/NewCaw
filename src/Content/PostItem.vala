@@ -171,16 +171,36 @@ public class PostItem : Gtk.Widget {
       // Get the instance for this
       var item = widget as PostItem;
 
+      // Stop if post is null
+      if (item.post == null) {
+        return;
+      }
+
+      // Get the main post of the item
+      Backend.Post? main_post  = item.post.post_type == REPOST
+                                   ? item.post.referenced_post
+                                   : item.post;
+
       // Get the url and places it in the clipboard
       Gdk.Clipboard clipboard = item.get_clipboard ();
-      clipboard.set_text (item.post.url);
+      clipboard.set_text (main_post.url);
     });
     install_action ("post.open-url", null, (widget, action) => {
       // Get the instance for this
       var item = widget as PostItem;
 
+      // Stop if post is null
+      if (item.post == null) {
+        return;
+      }
+
+      // Get the main post of the item
+      Backend.Post? main_post  = item.post.post_type == REPOST
+                                   ? item.post.referenced_post
+                                   : item.post;
+
       // Get the url and opens it
-      Gtk.show_uri (null, item.post.url, Gdk.CURRENT_TIME);
+      Gtk.show_uri (null, main_post.url, Gdk.CURRENT_TIME);
     });
     // Set up "display media" action
     install_action ("post.display_media", "i", (widget, action, arg) => {
