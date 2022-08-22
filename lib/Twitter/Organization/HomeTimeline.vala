@@ -1,4 +1,4 @@
-/* UserTimeline.vala
+/* HomeTimeline.vala
  *
  * Copyright 2022 Frederick Schenk
  *
@@ -21,29 +21,28 @@
 using GLib;
 
 /**
- * The timeline of Posts a certain User has created.
+ * The reverse chronological timeline with posts from all followed users.
  */
-public class Backend.Twitter.UserTimeline : Backend.UserTimeline {
+public class Backend.Twitter.HomeTimeline : Backend.HomeTimeline {
 
   /**
-   * Creates a UserTimeline for a User.
+   * Creates a HomeTimeline for a Account.
    *
    * In order to allow a ListView to include widgets before the posts,
    * the headers parameter can be added. For each string in that list
    * an PseudoItem will be created with the string as description.
    *
-   * @param user The User for which the timeline is to be created.
-   * @param account The Account used for making the API calls.
+   * @param account The Account for which the timeline is to be created.
    * @param headers Descriptions for header items to be added.
    */
-  public UserTimeline (Backend.User user, Backend.Account account, string[] headers = {}) {
+  public HomeTimeline (Backend.Account account, string[] headers) {
     // Construct the object
     Object (
       post_list: new ListStore (typeof (Object)),
       call_account: account,
-      user: user
+      account: account
     );
-
+    
     // Add PseudoItems for the headers
     header_items = headers.length;
     var store    = post_list as ListStore;
@@ -52,7 +51,7 @@ public class Backend.Twitter.UserTimeline : Backend.UserTimeline {
       store.append (item);
     }
   }
-
+  
   /**
    * Calls the API to get the posts for the Collection.
    *
@@ -62,7 +61,7 @@ public class Backend.Twitter.UserTimeline : Backend.UserTimeline {
     // Create the proxy call
     Rest.ProxyCall call = call_account.create_call ();
     call.set_method ("GET");
-    call.set_function (@"users/$(user.id)/tweets");
+    call.set_function (@"users/$(account.id)/timelines/reverse_chronological");
     if (last_post_id != null) {
       call.add_param ("since_id", last_post_id);
     }

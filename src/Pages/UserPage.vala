@@ -45,13 +45,12 @@ public class UserPage : Gtk.Widget {
       displayed_user = value;
       if (displayed_user != null) {
         // Get the account for this widget
-        Backend.Account account;
-        Gtk.Root display_root = this.get_root ();
-        if (display_root is MainWindow) {
-          var main_window = display_root as MainWindow;
-          account = main_window.account;
-        } else {
-          error ("UserPage: Failed to get account for this view!");
+        var main_window = this.get_root () as MainWindow;
+        Backend.Account account = main_window != null
+                                    ? main_window.account
+                                    : null;
+        if (account == null) {
+          error ("Failed to get account for this view!");
         }
 
         // Create a UserTimeline
@@ -73,7 +72,7 @@ public class UserPage : Gtk.Widget {
 
         // Set the view subtitle
         page_title.subtitle = user.username;
-        // Pull the posts for the timeline async
+        // Display the collection in the CollectionView
         collection_view.displayed_platform = platform;
         collection_view.collection         = timeline;
       } else {

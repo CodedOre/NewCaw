@@ -1,4 +1,4 @@
-/* Collection.vala
+/* HomeTimeline.vala
  *
  * Copyright 2022 Frederick Schenk
  *
@@ -21,30 +21,13 @@
 using GLib;
 
 /**
- * Base class for collections of Posts.
+ * The reverse chronological timeline with posts from all followed users.
  */
-public abstract class Backend.Collection : Object {
+public abstract class Backend.HomeTimeline : Backend.Collection {
 
   /**
-   * A ListModel holding all posts in this Collection.
+   * The Account which timeline is presented.
    */
-  public ListModel post_list { get; construct; }
-  
-  /**
-   * An Account used to make the API calls.
-   */
-  protected Account call_account { get; set; }
-
-  /**
-   * Calls the API to get the posts for the Collection.
-   *
-   * @throws Error Any error that happened while pulling the posts.
-   */
-  public abstract async void pull_posts () throws Error;
-
-  /**
-   * The id from the latest pulled Post.
-   */
-  protected string? last_post_id = null;
+  public Account account { get; construct; }
 
 }

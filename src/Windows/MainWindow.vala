@@ -45,10 +45,10 @@ public class MainWindow : Adw.ApplicationWindow {
 
       if (displayed_account != null) {
         // Display set account
-        var user_page = new UserPage ();
-        main_view.append (user_page);
-        user_page.user = displayed_account;
-        main_view.set_visible_child (user_page);
+        var main_page = new MainPage ();
+        main_view.append (main_page);
+        main_view.set_visible_child (main_page);
+        main_page.account = displayed_account;
         this.window_stack.set_visible_child (main_view);
         this.title = @"$(Config.PROJECT_NAME) - @$(displayed_account.username)";
       } else {
