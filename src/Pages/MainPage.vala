@@ -25,4 +25,81 @@ using GLib;
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Pages/MainPage.ui")]
 public class MainPage : Gtk.Widget {
+
+  // UI-Elements of MainPage
+  [GtkChild]
+  private unowned Adw.HeaderBar page_header;
+  [GtkChild]
+  private unowned Adw.WindowTitle page_title;
+  [GtkChild]
+  private unowned CollectionView home_collection;
+
+  /**
+   * Run at construction of the widget.
+   */
+  construct {
+    page_title.title = Config.PROJECT_NAME;
+  }
+
+  /**
+   * The Account which is displayed.
+   */
+  public Backend.Account account {
+    get {
+      return displayed_account;
+    }
+    set {
+      displayed_account = value;
+      if (displayed_account != null) {
+        // Create a HomeTimeline
+        var platform = PlatformEnum.get_platform_for_account (displayed_account);
+        switch (platform) {
+#if SUPPORT_MASTODON
+          case MASTODON:
+            timeline = new Backend.Mastodon.HomeTimeline (displayed_account, CollectionView.HEADERS);
+            break;
+#endif
+#if SUPPORT_TWITTER
+          case TWITTER:
+            timeline = new Backend.Twitter.HomeTimeline (displayed_account, CollectionView.HEADERS);
+            break;
+#endif
+          default:
+            error ("MainPage: Failed to create an appropriate home timeline!");
+        }
+
+        // Set the view subtitle
+        page_title.subtitle = account.username;
+        // Display the collection in the CollectionView
+        home_collection.displayed_platform = platform;
+        home_collection.collection         = timeline;
+      } else {
+        // Set timeline to null
+        timeline = null;
+        page_title.subtitle = null;
+        home_collection.collection = null;
+      }
+    }
+  }
+
+  /**
+   * Deconstructs MainPage and it's childrens.
+   */
+  public override void dispose () {
+    // Destructs children of MainPage
+    page_header.unparent ();
+    home_collection.unparent ();
+    base.dispose ();
+  }
+
+  /**
+   * Stores the HomeTimeline displayed
+   */
+  private Backend.HomeTimeline? timeline = null;
+
+  /**
+   * Stores the displayed account.
+   */
+  private Backend.Account? displayed_account = null;
+
 }

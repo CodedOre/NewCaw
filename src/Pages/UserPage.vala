@@ -72,7 +72,7 @@ public class UserPage : Gtk.Widget {
 
         // Set the view subtitle
         page_title.subtitle = user.username;
-        // Pull the posts for the timeline async
+        // Display the collection in the CollectionView
         collection_view.displayed_platform = platform;
         collection_view.collection         = timeline;
       } else {

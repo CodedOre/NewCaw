@@ -2,4 +2,29 @@ using Gtk 4.0;
 using Adw 1;
 
 template MainPage : Gtk.Widget {
+  layout-manager: Gtk.BoxLayout {
+    orientation: vertical;
+  };
+
+  Adw.HeaderBar page_header {
+    [title]
+    Adw.WindowTitle page_title {}
+
+    [end]
+    Gtk.MenuButton {
+      icon-name: "open-menu-symbolic";
+      menu-model: main-menu;
+    }
+  }
+
+  .CollectionView home_collection {
+    vexpand: true;
+  }
+}
+
+menu main-menu {
+  item {
+    label: _("About");
+    action: "app.about";
+  }
 }
