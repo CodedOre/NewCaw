@@ -95,6 +95,58 @@ public class MainWindow : Adw.ApplicationWindow {
   }
 
   /**
+   * Run at initialization of the class.
+   */
+  class construct {
+    // Set up back button action
+    install_action ("main.move-back", null, (widget, action) => {
+      var window = widget as MainWindow;
+      if (window != null) {
+        window.main_view.navigate (BACK);
+      }
+    });
+  }
+
+  /**
+   * Display a user in a new UserPage.
+   *
+   * @param user The user to be displayed.
+   */
+  public void display_user (Backend.User user) {
+    // Check if a UserPage is active
+    var current_page = main_view.visible_child as UserPage;
+    if (current_page != null) {
+      // Check if the user is already displayed
+      if (current_page.user == user) {
+        return;
+      }
+    }
+
+    // Create the new page and make it visible
+    var user_page = new UserPage ();
+    main_view.append (user_page);
+    user_page.user = user;
+    main_view.set_visible_child (user_page);
+  }
+
+  /**
+   * Removes the page the user has left.
+   */
+  [GtkCallback]
+  private void on_transition () {
+    // Do nothing while a transition is running
+    if (main_view.child_transition_running) {
+      return;
+    }
+
+    // Get the page the user left and removes it
+    Gtk.Widget? left_page = main_view.get_adjacent_child (FORWARD);
+    if (left_page != null) {
+      main_view.remove (left_page);
+    }
+  }
+
+  /**
    * Holds the displayed account.
    */
   private Backend.Account displayed_account;

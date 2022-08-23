@@ -21,6 +21,8 @@ template MainWindow : Adw.ApplicationWindow {
       child: Adw.Leaflet main_view {
         can-navigate-back: true;
         can-unfold:        false;
+
+        notify::child-transition-running => on_transition ();
       };
     }
 

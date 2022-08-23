@@ -59,7 +59,7 @@ public class Backend.Mastodon.Post : Backend.Post {
       reposted_count: (int) json.get_int_member ("reblogs_count"),
 
       // Set the author
-      author: new User.from_json (json.get_object_member ("account")),
+      author: User.from_json (json.get_object_member ("account")),
 
       // Set PostType and referenced post
       post_type: json.get_null_member ("reblog") ? PostType.NORMAL : PostType.REPOST,

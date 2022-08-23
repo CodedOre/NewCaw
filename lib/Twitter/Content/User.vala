@@ -26,12 +26,43 @@ using GLib;
 public class Backend.Twitter.User : Backend.User {
 
   /**
+   * Returns a User object for a given Json.Object.
+   *
+   * If the object was already created, the object is returned, otherwise a
+   * new one is created.
+   *
+   * @param data The Json.Object containing the specific User.
+   * @param includes A Json.Object including additional objects which may be related to this User.
+   */
+  public static User from_json (Json.Object data, Json.Object? includes = null) {
+    // Initialize the storage if needed
+    if (all_users == null) {
+      all_users = new HashTable <string, User> (str_hash, str_equal);
+    }
+
+    // Attempt to retrieve the user from storage
+    string id   = data.get_string_member ("username");
+    User?  user = all_users.contains (id)
+                    ? all_users [id]
+                    : null;
+
+    // Create new object if not in storage
+    if (user == null) {
+      user = new User (data, includes);
+      all_users [id] = user;
+    }
+
+    // Return the object
+    return user;
+  }
+
+  /**
    * Parses an given Json.Object and creates an User object.
    *
-   * @param data The Json.Object containing the specific Post.
-   * @param includes A Json.Object including additional objects which may be related to this Post.
+   * @param data The Json.Object containing the specific User.
+   * @param includes A Json.Object including additional objects which may be related to this User.
    */
-  public User.from_json (Json.Object data, Json.Object? includes = null) {
+  private User (Json.Object data, Json.Object? includes = null) {
     // Get metrics object
     Json.Object metrics = data.get_object_member ("public_metrics");
 
@@ -102,5 +133,10 @@ public class Backend.Twitter.User : Backend.User {
       flags = flags | VERIFIED;
     }
   }
+
+  /**
+   * Stores a reference to each user currently in memory.
+   */
+  private static HashTable <string, User> all_users;
 
 }

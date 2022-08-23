@@ -26,11 +26,44 @@ using GLib;
 public class Backend.Mastodon.User : Backend.User {
 
   /**
+   * Returns a User object for a given Json.Object.
+   *
+   * If the object was already created, the object is returned, otherwise a
+   * new one is created.
+   *
+   * @param json A Json.Object retrieved from the API.
+   */
+  public static User from_json (Json.Object json) {
+    // Initialize the storage if needed
+    if (all_users == null) {
+      all_users = new HashTable <string, User> (str_hash, str_equal);
+    }
+
+    // Attempt to retrieve the user from storage
+    string url    = json.get_string_member ("url");
+    string domain = Utils.ParseUtils.strip_domain (url);
+    string name   = json.get_string_member ("username");
+    string id     = @"$(name)@$(domain)";
+    User?  user   = all_users.contains (id)
+                      ? all_users [id]
+                      : null;
+
+    // Create new object if not in storage
+    if (user == null) {
+      user = new User (json);
+      all_users [id] = user;
+    }
+
+    // Return the object
+    return user;
+  }
+
+  /**
    * Parses an given Json.Object and creates an User object.
    *
    * @param json A Json.Object retrieved from the API.
    */
-  public User.from_json (Json.Object json) {
+  private User (Json.Object json) {
     // Get the url for avatar and header
     string avatar_url = json.get_string_member ("avatar_static");
     string header_url = json.get_string_member ("header_static");
@@ -85,5 +118,10 @@ public class Backend.Mastodon.User : Backend.User {
       flags = flags | BOT;
     }
   }
+
+  /**
+   * Stores a reference to each user currently in memory.
+   */
+  private static HashTable <string, User> all_users;
 
 }
