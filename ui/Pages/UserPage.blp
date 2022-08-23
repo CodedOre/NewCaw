@@ -7,6 +7,12 @@ template UserPage : Gtk.Widget {
   };
 
   Adw.HeaderBar page_header {
+    [start]
+    Gtk.Button {
+      icon-name: "go-previous-symbolic";
+      action-name: "main.move-back";
+    }
+
     [title]
     Adw.WindowTitle page_title {}
   }
