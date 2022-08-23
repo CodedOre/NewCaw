@@ -34,7 +34,7 @@ void run_user_test (string module, string user_json, string check_json) {
   switch (module) {
 #if SUPPORT_MASTODON
     case "Mastodon":
-      checked_user = new Backend.Mastodon.User.from_json (user_object);
+      checked_user = Backend.Mastodon.User.from_json (user_object);
       break;
 #endif
 #if SUPPORT_TWITTER
