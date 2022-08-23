@@ -24,11 +24,11 @@ using GLib;
  * A button displaying the name of an user in a PostItem.
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Widgets/UserButton.ui")]
-public class UserButton : Gtk.Button {
+public class UserButton : Gtk.Widget {
 
   // UI-Elements of UserButton
   [GtkChild]
-  private unowned Gtk.Box button_content;
+  private unowned Gtk.Button selector;
   [GtkChild]
   private unowned Gtk.Label display_label;
   [GtkChild]
@@ -54,7 +54,7 @@ public class UserButton : Gtk.Button {
       use_inline = value;
 
       // Set the css for the widgets
-      DisplayUtils.conditional_css (use_inline,   this,           "inline");
+      DisplayUtils.conditional_css (use_inline,   selector,       "inline");
       DisplayUtils.conditional_css (use_inline,   display_label,  "caption-heading");
       DisplayUtils.conditional_css (use_inline,   username_label, "caption");
       DisplayUtils.conditional_css (! use_inline, display_label,  "heading");
@@ -82,11 +82,29 @@ public class UserButton : Gtk.Button {
   }
 
   /**
+   * Opens the displayed user in a new page.
+   */
+  [GtkCallback]
+  private void on_selected () {
+    // Get the MainWindow
+    var main_window = this.get_root () as MainWindow;
+    if (main_window == null) {
+      warning ("UserButton not in a MainWindow, action not possible!");
+      return;
+    }
+
+    // Display the user if not null
+    if (user != null) {
+      main_window.display_user (user);
+    }
+  }
+
+  /**
    * Deconstructs UserButton and it's childrens.
    */
   public override void dispose () {
     // Destructs children of UserButton
-    button_content.unparent ();
+    selector.unparent ();
     base.dispose ();
   }
 

@@ -95,6 +95,20 @@ public class MainWindow : Adw.ApplicationWindow {
   }
 
   /**
+   * Display a user in a new UserPage.
+   *
+   * @param user The user to be displayed.
+   */
+  public void display_user (Backend.User user) {
+    // Create the new page and make it visible
+    var user_page = new UserPage ();
+    main_view.append (user_page);
+    user_page.user = user;
+    main_view.set_visible_child (user_page);
+  }
+
+
+  /**
    * Holds the displayed account.
    */
   private Backend.Account displayed_account;

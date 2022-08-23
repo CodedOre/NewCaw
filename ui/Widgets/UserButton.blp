@@ -1,32 +1,38 @@
 using Gtk 4.0;
 using Adw 1;
 
-template UserButton : Gtk.Button {
-  styles [
-    "flat"
-  ]
+template UserButton : Gtk.Widget {
+  layout-manager: Gtk.BinLayout {};
 
-  Gtk.Box button_content {
-    spacing: 4;
+  Gtk.Button selector {
+    clicked => on_selected ();
 
-    Gtk.Image {
-      visible: bind UserButton.is-repost;
-      icon-name: "repost-symbolic";
-    }
+    styles [
+      "flat"
+    ]
 
-    Gtk.Label display_label {
-      ellipsize: end;
-    }
+    Gtk.Box button_content {
+      spacing: 4;
 
-    .BadgesBox user_badges {}
+      Gtk.Image {
+        visible: bind UserButton.is-repost;
+        icon-name: "repost-symbolic";
+      }
 
-    Gtk.Label username_label {
-      ellipsize: end;
+      Gtk.Label display_label {
+        ellipsize: end;
+      }
 
-      styles [
-        "body",
-        "dim-label"
-      ]
+      .BadgesBox user_badges {}
+
+      Gtk.Label username_label {
+        ellipsize: end;
+
+        styles [
+          "body",
+          "dim-label"
+        ]
+      }
     }
   }
 }
