@@ -40,7 +40,7 @@ void run_user_test (string module, string user_json, string check_json) {
 #if SUPPORT_TWITTER
     case "Twitter":
       Json.Object user_data = user_object.get_object_member ("data");
-      checked_user = new Backend.Twitter.User.from_json (user_data);
+      checked_user = Backend.Twitter.User.from_json (user_data);
       break;
 #endif
     default:
