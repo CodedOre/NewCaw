@@ -113,6 +113,15 @@ public class MainWindow : Adw.ApplicationWindow {
    * @param user The user to be displayed.
    */
   public void display_user (Backend.User user) {
+    // Check if a UserPage is active
+    var current_page = main_view.visible_child as UserPage;
+    if (current_page != null) {
+      // Check if the user is already displayed
+      if (current_page.user == user) {
+        return;
+      }
+    }
+
     // Create the new page and make it visible
     var user_page = new UserPage ();
     main_view.append (user_page);
