@@ -132,6 +132,22 @@ public class Session : Object {
       return instance;
     }
 
+    /**
+     * Retrieves the uuid for an active Account object.
+     */
+    public static string? get_uuid (Backend.Account account) {
+      // Check the account storage
+      string account_uuid = null;
+      Session.instance.accounts.foreach ((uuid, data) => {
+        if (data.data == account) {
+          account_uuid = uuid;
+        }
+      });
+
+      // Return null when not found
+      return account_uuid;
+    }
+
   }
 
   /**
@@ -246,12 +262,17 @@ public class Session : Object {
      *
      * This functions creates the required items, like the uuid, for the object.
      */
-    public static WindowData from_object (MainWindow window) {
+    public static WindowData? from_object (MainWindow window) {
       // Create instance and populate values
       var instance     = WindowData ();
       instance.uuid    = Uuid.string_random ();
+      instance.account = AccountData.get_uuid (window.account);
       window.get_default_size (out instance.width, out instance.height);
-      return instance;
+
+      // Only return WindowData if an account is available
+      return instance.account != null
+               ? instance
+               : null;
     }
 
   }
