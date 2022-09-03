@@ -636,8 +636,8 @@ public class Session : Object {
    */
   private void init_twitter_server () {
     // Look for override tokens
-    var     settings      = new Settings ("uk.co.ibboard.Cawbird.experimental");
-    string  custom_key    = settings.get_string ("twitter-oauth-key");
+    var    settings   = new Settings ("uk.co.ibboard.Cawbird.debug");
+    string custom_key = settings.get_string ("twitter-oauth-key");
 
     // Determine oauth tokens
     string oauth_key = custom_key != ""

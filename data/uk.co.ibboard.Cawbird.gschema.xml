@@ -18,8 +18,8 @@
 	    <default>(650,450)</default>
 	  </key>
 	</schema>
-  <!-- Experimental Settings -->
-	<schema id="uk.co.ibboard.Cawbird.experimental" path="/uk/co/ibboard/Cawbird/experimental/">
+  <!-- Debugging Settings -->
+	<schema id="uk.co.ibboard.Cawbird.debug" path="/uk/co/ibboard/Cawbird/debug/">
 	  <key type="s" name="twitter-oauth-key">
 	    <description>
 	      A custom client key to authenticate Cawbird with Twitter.
