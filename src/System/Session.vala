@@ -205,6 +205,58 @@ public class Session : Object {
   }
 
   /**
+   * Internal structure holding information about a window.
+   */
+  private struct WindowData {
+
+    /**
+     * The UUID assigned in the storage.
+     */
+    string uuid;
+
+    /**
+     * The UUID of the account displayed in the window.
+     */
+    string account;
+
+    /**
+     * The width of the window.
+     */
+    int width;
+
+    /**
+     * The height of the window.
+     */
+    int height;
+
+    /**
+     * Create a WindowData instance from data loaded of the session file.
+     */
+    public static WindowData from_data (string uuid_prop, string account_prop, int width_prop, int height_prop) {
+      var instance     = WindowData ();
+      instance.uuid    = uuid_prop;
+      instance.account = account_prop;
+      instance.width   = width_prop;
+      instance.height  = height_prop;
+      return instance;
+    }
+
+    /**
+     * Create a WindowData instance from an active Server object.
+     *
+     * This functions creates the required items, like the uuid, for the object.
+     */
+    public static WindowData from_object (MainWindow window) {
+      // Create instance and populate values
+      var instance     = WindowData ();
+      instance.uuid    = Uuid.string_random ();
+      window.get_default_size (out instance.width, out instance.height);
+      return instance;
+    }
+
+  }
+
+  /**
    * The instance of this session.
    */
   public static Session instance {
