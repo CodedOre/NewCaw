@@ -64,11 +64,11 @@ public class Session : Object {
      * This functions also loads the token and secret from the storage and
      * creates an authenticated Account object for the data variable.
      */
-    public static async AccountData? from_data (string       uuid_prop,
-                                               PlatformEnum platform_prop,
-                                               string?      server_prop,
-                                               string       username_prop,
-                                               ServerData?  account_server) {
+    public static AccountData? from_data (string       uuid_prop,
+                                          PlatformEnum platform_prop,
+                                          string?      server_prop,
+                                          string       username_prop,
+                                          ServerData?  account_server) {
       // Create instance with known values
       var instance         = AccountData ();
       instance.uuid        = uuid_prop;
@@ -78,7 +78,7 @@ public class Session : Object {
       try {
         // Load token from KeyStorage
         string account_token;
-        yield KeyStorage.retrieve_account_access (instance.uuid, out account_token);
+        KeyStorage.retrieve_account_access (instance.uuid, out account_token);
         // Create the account object and login
         switch (instance.platform) {
 #if SUPPORT_MASTODON
@@ -104,10 +104,9 @@ public class Session : Object {
         }
         // Log the account in
         instance.data.login (account_token);
-        yield instance.data.load_data ();
         assert (instance.data != null);
         // Resave the keys (as Twitter refreshes the token at each login)
-        yield KeyStorage.store_account_access (instance.data, instance.uuid);
+        KeyStorage.store_account_access (instance.data, instance.uuid);
       } catch (Error e) {
         warning (@"Failed to initialized account for \"$(instance.username)\": $(e.message)");
         return null;
@@ -130,6 +129,22 @@ public class Session : Object {
       instance.server_uuid = server_uuid;
       instance.data        = account;
       return instance;
+    }
+
+    /**
+     * Retrieves the uuid for an active Account object.
+     */
+    public static string? get_uuid (Backend.Account account) {
+      // Check the account storage
+      string account_uuid = null;
+      Session.instance.accounts.foreach ((uuid, data) => {
+        if (data.data == account) {
+          account_uuid = uuid;
+        }
+      });
+
+      // Return null when not found
+      return account_uuid;
     }
 
   }
@@ -166,7 +181,7 @@ public class Session : Object {
      * This functions also loads the token and secret from the storage and
      * creates an authenticated Server object for the data variable.
      */
-    public static async ServerData? from_data (string uuid_prop, PlatformEnum platform_prop, string domain_prop) {
+    public static ServerData? from_data (string uuid_prop, PlatformEnum platform_prop, string domain_prop) {
       // Create instance with known values
       var instance      = ServerData ();
       instance.uuid     = uuid_prop;
@@ -175,7 +190,7 @@ public class Session : Object {
       try {
         // Load token and secret from KeyStorage
         string server_token, server_secret;
-        yield KeyStorage.retrieve_server_access (instance.uuid, out server_token, out server_secret);
+        KeyStorage.retrieve_server_access (instance.uuid, out server_token, out server_secret);
         // Create Server object and store it in data
         instance.data = new Backend.Mastodon.Server (instance.domain, server_token, server_secret);
         assert (instance.data != null);
@@ -200,6 +215,58 @@ public class Session : Object {
       instance.domain   = server.domain;
       instance.data     = server;
       return instance;
+    }
+
+  }
+
+  /**
+   * Internal structure holding information about a window.
+   */
+  private struct WindowData {
+
+    /**
+     * The UUID of the account displayed in the window.
+     */
+    string account;
+
+    /**
+     * The width of the window.
+     */
+    int width;
+
+    /**
+     * The height of the window.
+     */
+    int height;
+
+    /**
+     * Create a WindowData instance from data loaded of the session file.
+     */
+    public static WindowData? from_data (string account_prop, int width_prop, int height_prop) {
+      var instance     = WindowData ();
+      instance.account = account_prop;
+      instance.width   = width_prop;
+      instance.height  = height_prop;
+      return instance;
+    }
+
+    /**
+     * Create a WindowData instance from an active Server object.
+     *
+     * This functions creates the required items, like the uuid, for the object.
+     */
+    public static WindowData? from_object (MainWindow window) {
+      // Create instance and populate values
+      var instance     = WindowData ();
+      instance.account = AccountData.get_uuid (window.account);
+      window.get_default_size (out instance.width, out instance.height);
+
+      // Only return WindowData if an account is available
+      if (instance.account != null) {
+        return instance;
+      } else {
+        return null;
+      }
     }
 
   }
@@ -336,20 +403,36 @@ public class Session : Object {
   /**
    * Loads the data for the session from disk.
    */
-  public static async void load_session () {
+  public static void load_session () {
     // Notify application that we need it running
     instance.application.hold ();
 
-    yield instance.unpack_data ();
+    // Load the data from the session file
+    WindowData[] windows     = {};
+    Variant      stored_data = instance.load_from_file ();
+    if (stored_data != null) {
+      instance.unpack_data (stored_data, out windows);
+    }
 
-    // Check if accounts are stored
+    // Open the windows
     Backend.Account[] accounts = get_accounts ();
-    if (accounts.length != 0) {
-      foreach (Backend.Account acc in accounts) {
-        // Create a MainWindow for stored accounts
-        var win = new MainWindow (instance.application, acc);
-        win.present ();
+    if (windows.length > 0) {
+      foreach (WindowData data in windows) {
+        // Retrieve the account for the window
+        AccountData? acc = instance.accounts [data.account];
+        if (acc != null) {
+          // Create a MainWindow for the Account
+          var win = new MainWindow (instance.application, acc.data);
+          win.set_default_size (data.width, data.height);
+          win.present ();
+        } else {
+          warning ("Account for window not found in session!");
+        }
       }
+    } else if (accounts.length > 0) {
+      // If no window is stored, but we have accounts, use one account for a window
+      var win = new MainWindow (instance.application, accounts [0]);
+      win.present ();
     } else {
       // Create MainWindow with AuthView
       var win = new MainWindow (instance.application);
@@ -363,22 +446,19 @@ public class Session : Object {
   /**
    * Stores the data of the session on disk.
    */
-  public static async void store_session () {
+  public static void store_session () {
     // Create a Variant and store it
-    Variant session_store = yield instance.pack_data ();
-    yield instance.store_to_file (session_store);
+    Variant session_store = instance.pack_data ();
+    instance.store_to_file (session_store);
   }
 
   /**
    * Unpacks the loaded Variant and stores the contained information.
+   *
+   * @param loaded_data The variant loaded and to be unpacked.
+   * @param windows An array where the WindowData is unpacked to.
    */
-  private async void unpack_data () {
-    // Load the data from the session file
-    Variant loaded_data = yield load_from_file ();
-    if (loaded_data == null) {
-      return;
-    }
-
+  private void unpack_data (Variant loaded_data, out WindowData[] windows) {
 #if SUPPORT_MASTODON
     // Iterate through the servers
     Variant     loaded_servers  = loaded_data.lookup_value ("Servers", null);
@@ -403,7 +483,7 @@ public class Session : Object {
       // Create a new ServerData instance when all properties could be retrieved
       if (uuid_prop != null && platform_name != null && domain_prop != null) {
         var platform_prop = PlatformEnum.from_name (platform_name);
-        var server_data   = yield ServerData.from_data (uuid_prop, platform_prop, domain_prop);
+        var server_data   = ServerData.from_data (uuid_prop, platform_prop, domain_prop);
         if (server_data != null) {
           servers [server_data.uuid] = server_data;
         }
@@ -439,7 +519,7 @@ public class Session : Object {
       if (uuid_prop != null && platform_name != null && username_prop != null) {
         var platform_prop = PlatformEnum.from_name (platform_name);
         ServerData? account_server = server_prop != null ? servers [server_prop] : null;
-        var account_data = yield AccountData.from_data (uuid_prop, platform_prop, server_prop, username_prop, account_server);
+        var account_data = AccountData.from_data (uuid_prop, platform_prop, server_prop, username_prop, account_server);
         if (account_data != null) {
           accounts [account_data.uuid] = account_data;
         }
@@ -447,6 +527,41 @@ public class Session : Object {
         warning ("A account could not be loaded: Some data were missing!");
       }
     }
+
+    // Iterate through the windows
+    WindowData[] packed_windows = {};
+    Variant      loaded_windows = loaded_data.lookup_value ("Windows", null);
+    VariantIter  window_iter    = loaded_windows.iterator ();
+    while (true) {
+      Variant? iter_variant = window_iter.next_value ();
+      if (iter_variant == null) {
+        break;
+      }
+
+      // Get the account dictionary
+      Variant window = iter_variant.get_child_value (0);
+
+      // Load the account properties
+      Variant? account_variant = window.lookup_value ("account", new VariantType ("s"));
+      Variant? width_variant   = window.lookup_value ("width",   new VariantType ("i"));
+      Variant? height_variant  = window.lookup_value ("height",  new VariantType ("i"));
+
+      // Create a new AccountData instance when all properties could be retrieved
+      if (account_variant != null && width_variant != null && height_variant != null) {
+        string account_prop = account_variant.get_string ();
+        int    width_prop   = width_variant.get_int32 ();
+        int    height_prop  = height_variant.get_int32 ();
+        var    window_data  = WindowData.from_data (account_prop, width_prop, height_prop);
+        if (window_data != null) {
+          packed_windows += window_data;
+        }
+      } else {
+        warning ("A window could not be loaded: Some data were missing!");
+      }
+    }
+
+    // Return the unpacked WindowData over the out parameter
+    windows = packed_windows;
   }
 
   /**
@@ -454,7 +569,7 @@ public class Session : Object {
    *
    * @return A Variant holding the information to be stored.
    */
-  private async Variant pack_data () {
+  private Variant pack_data () {
     var store_builder = new VariantBuilder (new VariantType ("a{sv}"));
 
 #if SUPPORT_MASTODON
@@ -463,7 +578,7 @@ public class Session : Object {
     foreach (ServerData server_data in servers.get_values ()) {
       // Save access tokens for the server
       try {
-        yield KeyStorage.store_server_access (server_data.data, server_data.uuid);
+        KeyStorage.store_server_access (server_data.data, server_data.uuid);
       } catch (Error e) {
         warning (@"Could not save access tokens for Server \"$(server_data.domain)\": $(e.message)");
       }
@@ -484,7 +599,7 @@ public class Session : Object {
     foreach (AccountData account_data in accounts.get_values ()) {
       // Save access tokens for the server
       try {
-        yield KeyStorage.store_account_access (account_data.data, account_data.uuid);
+        KeyStorage.store_account_access (account_data.data, account_data.uuid);
       } catch (Error e) {
         warning (@"Could not save access tokens for Account \"$(account_data.username)\": $(e.message)");
       }
@@ -500,6 +615,29 @@ public class Session : Object {
     }
     store_builder.add ("{sv}", "Accounts", account_builder.end ());
 
+    // Build Variant for WindowData
+    var window_builder = new VariantBuilder (new VariantType ("av"));
+    foreach (Gtk.Window window in instance.application.get_windows ()) {
+      // Only store MainWindows
+      var main = window as MainWindow;
+      if (main == null) {
+        continue;
+      }
+
+      // Create a data object
+      var window_data = WindowData.from_object (main);
+
+      // Store data in a dictionary Variant
+      var data_builder = new VariantBuilder (new VariantType ("a{sv}"));
+      data_builder.add ("{sv}", "account", new Variant.string (window_data.account));
+      data_builder.add ("{sv}", "width",   new Variant.int32 (window_data.width));
+      data_builder.add ("{sv}", "height",  new Variant.int32 (window_data.height));
+
+      window_builder.add ("v", data_builder.end ());
+    }
+    store_builder.add ("{sv}", "Windows", window_builder.end ());
+
+    // Return the full session variant
     return store_builder.end ();
   }
 
@@ -508,7 +646,7 @@ public class Session : Object {
    *
    * @return A Variant holding the data from the file.
    */
-  private async Variant? load_from_file () {
+  private Variant? load_from_file () {
     // Initializes the file storing the session
     var file = File.new_build_filename (Environment.get_user_data_dir (),
                                         Config.PROJECT_NAME,
@@ -520,7 +658,7 @@ public class Session : Object {
       // Load the data from the file
       uint8[] file_content;
       string file_etag;
-      yield file.load_contents_async (null, out file_content, out file_etag);
+      file.load_contents (null, out file_content, out file_etag);
       // Convert the file data to an Variant and read the values from it
       var stored_bytes = new Bytes.take (file_content);
       stored_session   = new Variant.from_bytes (new VariantType ("a{sv}"), stored_bytes, false);
@@ -539,7 +677,7 @@ public class Session : Object {
    *
    * @param variant The Variant holding the session data.
    */
-  private async void store_to_file (Variant variant) {
+  private void store_to_file (Variant variant) {
     // Initializes the file storing the session
     var file = File.new_build_filename (Environment.get_user_data_dir (),
                                         Config.PROJECT_NAME,
@@ -549,9 +687,9 @@ public class Session : Object {
     try {
       // Convert variant to Bytes and store them in file
       Bytes bytes = variant.get_data_as_bytes ();
-      yield file.replace_contents_bytes_async (bytes, null,
-                                               false, REPLACE_DESTINATION,
-                                               null, null);
+      file.replace_contents (bytes.get_data (), null,
+                             false, REPLACE_DESTINATION,
+                             null, null);
     } catch (Error e) {
       warning (@"Session could not be stored: $(e.message)");
     }
@@ -563,8 +701,8 @@ public class Session : Object {
    */
   private void init_twitter_server () {
     // Look for override tokens
-    var     settings      = new Settings ("uk.co.ibboard.Cawbird.experimental");
-    string  custom_key    = settings.get_string ("twitter-oauth-key");
+    var    settings   = new Settings ("uk.co.ibboard.Cawbird.debug");
+    string custom_key = settings.get_string ("twitter-oauth-key");
 
     // Determine oauth tokens
     string oauth_key = custom_key != ""

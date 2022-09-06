@@ -58,7 +58,7 @@ public class Cawbird : Adw.Application {
 
     // Load the session
     Session.init (this);
-    Session.load_session.begin ();
+    Session.load_session ();
   }
 
   /**
@@ -120,6 +120,7 @@ public class Cawbird : Adw.Application {
    */
   protected override void shutdown () {
     Backend.Client.instance.shutdown ();
+    Session.store_session ();
     base.shutdown ();
   }
 
