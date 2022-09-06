@@ -1,0 +1,50 @@
+using Gtk 4.0;
+using Adw 1;
+
+template AccountSidebar : Gtk.Widget {
+  margin-top: 8;
+  margin-bottom: 8;
+  margin-start: 8;
+  margin-end: 8;
+  layout-manager: Gtk.BoxLayout {
+    orientation: vertical;
+    spacing: 12;
+  };
+
+  Gtk.ListBox active_list {
+    selection-mode: none;
+
+    styles [
+      "account-list"
+    ]
+
+    .AccountRow {
+      account: bind AccountSidebar.active-account;
+      show-actions: false;
+    }
+
+    Adw.ActionRow {
+      activatable: true;
+      icon-name: "person-symbolic";
+      title: _("Display Account");
+
+      activated => display_active_account ();
+
+      styles [
+        "option-row"
+      ]
+    }
+  }
+
+  Gtk.Separator {}
+
+  Gtk.ListBox account_list {
+    selection-mode: none;
+
+    row-activated => change_active_account ();
+
+    styles [
+      "account-list"
+    ]
+  }
+}

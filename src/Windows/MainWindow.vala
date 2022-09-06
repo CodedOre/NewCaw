@@ -31,6 +31,8 @@ public class MainWindow : Adw.ApplicationWindow {
   private unowned AuthView auth_view;
   [GtkChild]
   private unowned Adw.Leaflet main_view;
+  [GtkChild]
+  private unowned MainPage main_page;
 
   /**
    * The account currently displayed in this window.
@@ -45,9 +47,6 @@ public class MainWindow : Adw.ApplicationWindow {
 
       if (displayed_account != null) {
         // Display set account
-        var main_page = new MainPage ();
-        main_view.append (main_page);
-        main_view.set_visible_child (main_page);
         main_page.account = displayed_account;
         this.window_stack.set_visible_child (main_view);
         this.title = @"$(Config.PROJECT_NAME) - @$(displayed_account.username)";

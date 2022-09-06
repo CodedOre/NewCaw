@@ -23,6 +23,8 @@ template MainWindow : Adw.ApplicationWindow {
         can-unfold:        false;
 
         notify::child-transition-running => on_transition ();
+
+        .MainPage main_page {}
       };
     }
 

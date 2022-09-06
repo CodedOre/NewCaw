@@ -30,6 +30,8 @@ public class UserAvatar : Gtk.Widget {
   [GtkChild]
   private unowned Adw.Avatar avatar_holder;
   [GtkChild]
+  private unowned Gtk.Image platform_indicator;
+  [GtkChild]
   private unowned Gtk.Button avatar_selector;
 
   /**
@@ -42,6 +44,12 @@ public class UserAvatar : Gtk.Widget {
    * and if this can be selected.
    */
   public bool main_mode { get; construct; }
+
+  /**
+   * If the widget should display an indicator for the
+   * platform the user is on.
+   */
+  public bool indicate_platform { get; set; default = false; }
 
   /**
    * If this avatar is rounded.
@@ -59,41 +67,57 @@ public class UserAvatar : Gtk.Widget {
   }
 
   /**
-   * The avatar that is displayed.
+   * The user for which to display the avatar.
    */
-  public Backend.Media avatar {
+  public Backend.User user {
     get {
-      return shown_avatar;
+      return displayed_user;
     }
     set {
-      // Store the displayed avatar
-      shown_avatar = value;
+      // Store the displayed user
+      displayed_user = value;
 
-      if (shown_avatar == null) {
+      if (displayed_user == null) {
         avatar_holder.custom_image = null;
         return;
       }
 
       // Load and set the avatar
-      if (! main_mode && shown_avatar.preview_url != null) {
-        shown_avatar.get_preview.begin (load_cancellable, (obj, res) => {
+      if (! main_mode && displayed_user.avatar.preview_url != null) {
+        displayed_user.avatar.get_preview.begin (load_cancellable, (obj, res) => {
           try {
-            var paintable = shown_avatar.get_preview.end (res) as Gdk.Paintable;
+            var paintable = displayed_user.avatar.get_preview.end (res) as Gdk.Paintable;
             avatar_holder.custom_image = paintable;
           } catch (Error e) {
             warning (@"Could not load the avatar: $(e.message)");
           }
         });
       } else {
-        shown_avatar.get_media.begin (load_cancellable, (obj, res) => {
+        displayed_user.avatar.get_media.begin (load_cancellable, (obj, res) => {
           try {
-            var paintable = shown_avatar.get_media.end (res) as Gdk.Paintable;
+            var paintable = displayed_user.avatar.get_media.end (res) as Gdk.Paintable;
             avatar_holder.custom_image = paintable;
           } catch (Error e) {
             warning (@"Could not load the avatar: $(e.message)");
           }
         });
       }
+
+      // Set the platform indicator
+      var platform = PlatformEnum.get_platform_for_user (displayed_user);
+      switch (platform) {
+        case MASTODON:
+          platform_indicator.icon_name = "platform-mastodon-symbolic";
+          break;
+        case TWITTER:
+          platform_indicator.icon_name = "platform-twitter-symbolic";
+          break;
+        default:
+          warning ("Failed to set the appropriate platform indicator!");
+          break;
+      }
+      DisplayUtils.conditional_css (platform == MASTODON, platform_indicator, "mastodon-background");
+      DisplayUtils.conditional_css (platform == TWITTER,  platform_indicator, "twitter-background");
     }
   }
 
@@ -127,12 +151,12 @@ public class UserAvatar : Gtk.Widget {
       UserAvatar display = (UserAvatar) widget;
 
       // Return if no avatar is set
-      if (display.shown_avatar == null) {
+      if (display.displayed_user == null) {
         return;
       }
 
       // Display the avatar in a MediaDisplay
-      Backend.Media[] media  = { display.shown_avatar };
+      Backend.Media[] media  = { display.displayed_user.avatar };
       new MediaDialog (display, media);
     });
   }
@@ -145,14 +169,15 @@ public class UserAvatar : Gtk.Widget {
     load_cancellable.cancel ();
     // Destructs children of UserAvatar
     avatar_holder.unparent ();
+    platform_indicator.unparent ();
     avatar_selector.unparent ();
     base.dispose ();
   }
 
   /**
-   * The displayed avatar.
+   * The displayed user.
    */
-  private Backend.Media? shown_avatar = null;
+  private Backend.User? displayed_user = null;
 
   /**
    * A GLib.Cancellable to cancel loads when closing the item.

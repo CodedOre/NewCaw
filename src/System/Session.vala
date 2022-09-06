@@ -289,6 +289,11 @@ public class Session : Object {
   public Gtk.Application application { get; construct; }
 
   /**
+   * Provides a list of the managed accounts.
+   */
+  public ListModel account_list { get; construct; }
+
+  /**
    * Emitted when an authentication callback was received.
    */
   public signal void auth_callback (string state, string code);
@@ -320,7 +325,8 @@ public class Session : Object {
    */
   private Session (Gtk.Application application) {
     Object (
-      application: application
+      application:  application,
+      account_list: new ListStore (typeof (Backend.Account))
     );
   }
 
@@ -358,6 +364,8 @@ public class Session : Object {
     // Create a AccountData instance for the account and add it
     var accounts_data = AccountData.from_object (account, account_server);
     instance.accounts [accounts_data.uuid] = accounts_data;
+    var account_store = instance.account_list as ListStore;
+    account_store.append (account);
   }
 
   /**
@@ -366,11 +374,11 @@ public class Session : Object {
    * @return An array of all accounts in Session.
    */
   public static Backend.Account[] get_accounts () {
-    Backend.Account[] account_list = {};
+    Backend.Account[] account_array = {};
     foreach (AccountData account_data in instance.accounts.get_values ()) {
-      account_list += account_data.data;
+      account_array += account_data.data;
     }
-    return account_list;
+    return account_array;
   }
 
   /**
@@ -531,6 +539,8 @@ public class Session : Object {
         var account_data = AccountData.from_data (uuid_prop, platform_prop, server_prop, username_prop, account_server);
         if (account_data != null) {
           accounts [account_data.uuid] = account_data;
+          var account_store = instance.account_list as ListStore;
+          account_store.append (account_data.data);
         }
       } else {
         warning ("A account could not be loaded: Some data were missing!");

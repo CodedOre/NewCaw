@@ -8,6 +8,16 @@ template UserAvatar : Gtk.Widget {
     size: bind UserAvatar.size;
   }
 
+  Gtk.Image platform_indicator {
+    visible: bind UserAvatar.indicate-platform;
+    halign: end;
+    valign: end;
+
+    styles [
+      "platform-indicator"
+    ]
+  }
+
   Gtk.Button avatar_selector {
     visible:     bind UserAvatar.main-mode;
     action-name: "avatar.display_media";

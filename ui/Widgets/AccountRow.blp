@@ -1,0 +1,26 @@
+using Gtk 4.0;
+using Adw 1;
+
+template AccountRow : Adw.ActionRow {
+  activatable: true;
+
+  [prefix]
+  .UserAvatar account_avatar {
+    indicate-platform: true;
+    size: 42;
+  }
+
+  Gtk.Button {
+    halign: center;
+    valign: center;
+    icon-name: "window-new-symbolic";
+    tooltip-text: _("Open in new Window");
+    visible: bind AccountRow.show-actions;
+
+    clicked => open_in_window ();
+
+    styles [
+      "flat"
+    ]
+  }
+}
