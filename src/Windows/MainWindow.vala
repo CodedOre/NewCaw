@@ -92,6 +92,8 @@ public class MainWindow : Adw.ApplicationWindow {
     // Add development style in debug
     this.add_css_class ("devel");
 #endif
+    // Increase the window count
+    window_count++;
   }
 
   /**
@@ -130,6 +132,30 @@ public class MainWindow : Adw.ApplicationWindow {
   }
 
   /**
+   * Activated when the window should be closed.
+   *
+   * This quits the application when the last window is closed, so that at least
+   * one window will be store in the session file.
+   * As an TODO, this will likely need to be changed when the background
+   * functionality is added, so see this as a temporarily solution so I can
+   * move to other stuff first.
+   *
+   * @return true to stop other handlers from being invoked for the signal
+   */
+  public override bool close_request () {
+    // Decrease the window count.
+    window_count--;
+    if (window_count > 0) {
+      // Closes the window when more than one window is open
+      this.destroy ();
+    } else {
+      // Quits the application when no window remains
+      this.application.quit ();
+    }
+    return true;
+  }
+
+  /**
    * Removes the page the user has left.
    */
   [GtkCallback]
@@ -150,5 +176,10 @@ public class MainWindow : Adw.ApplicationWindow {
    * Holds the displayed account.
    */
   private Backend.Account displayed_account;
+
+  /**
+   * Counts how many MainWindows are opened.
+   */
+  private static int window_count = 0;
 
 }
