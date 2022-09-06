@@ -78,7 +78,7 @@ public class Session : Object {
       try {
         // Load token from KeyStorage
         string account_token;
-        yield KeyStorage.retrieve_account_access (instance.uuid, out account_token);
+        KeyStorage.retrieve_account_access (instance.uuid, out account_token);
         // Create the account object and login
         switch (instance.platform) {
 #if SUPPORT_MASTODON
@@ -107,7 +107,7 @@ public class Session : Object {
         yield instance.data.load_data ();
         assert (instance.data != null);
         // Resave the keys (as Twitter refreshes the token at each login)
-        yield KeyStorage.store_account_access (instance.data, instance.uuid);
+        KeyStorage.store_account_access (instance.data, instance.uuid);
       } catch (Error e) {
         warning (@"Failed to initialized account for \"$(instance.username)\": $(e.message)");
         return null;
@@ -191,7 +191,7 @@ public class Session : Object {
       try {
         // Load token and secret from KeyStorage
         string server_token, server_secret;
-        yield KeyStorage.retrieve_server_access (instance.uuid, out server_token, out server_secret);
+        KeyStorage.retrieve_server_access (instance.uuid, out server_token, out server_secret);
         // Create Server object and store it in data
         instance.data = new Backend.Mastodon.Server (instance.domain, server_token, server_secret);
         assert (instance.data != null);
@@ -270,9 +270,11 @@ public class Session : Object {
       window.get_default_size (out instance.width, out instance.height);
 
       // Only return WindowData if an account is available
-      return instance.account != null
-               ? instance
-               : null;
+      if (instance.account != null) {
+        return instance;
+      } else {
+        return null;
+      }
     }
 
   }
@@ -536,7 +538,7 @@ public class Session : Object {
     foreach (ServerData server_data in servers.get_values ()) {
       // Save access tokens for the server
       try {
-        yield KeyStorage.store_server_access (server_data.data, server_data.uuid);
+        KeyStorage.store_server_access (server_data.data, server_data.uuid);
       } catch (Error e) {
         warning (@"Could not save access tokens for Server \"$(server_data.domain)\": $(e.message)");
       }
@@ -557,7 +559,7 @@ public class Session : Object {
     foreach (AccountData account_data in accounts.get_values ()) {
       // Save access tokens for the server
       try {
-        yield KeyStorage.store_account_access (account_data.data, account_data.uuid);
+        KeyStorage.store_account_access (account_data.data, account_data.uuid);
       } catch (Error e) {
         warning (@"Could not save access tokens for Account \"$(account_data.username)\": $(e.message)");
       }
