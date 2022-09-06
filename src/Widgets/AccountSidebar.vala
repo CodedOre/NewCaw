@@ -35,7 +35,27 @@ public class AccountSidebar : Gtk.Widget {
   /**
    * The currently active account.
    */
-  public Backend.Account active_account { get; set; }
+  public Backend.Account active_account {
+    get {
+      return stored_active_account;
+    }
+    set {
+      stored_active_account = value;
+
+      // Iterate through the account list
+      int i = 0;
+      while (true) {
+        var row = account_list.get_row_at_index (i);
+        if (row == null) {
+          break;
+        }
+        var account_row = row as AccountRow;
+        // Hide the row displaying the current account
+        account_row.visible = account_row.account != stored_active_account;
+        i++;
+      }
+    }
+  }
 
   /**
    * Run at construction of an widget.
@@ -90,5 +110,10 @@ public class AccountSidebar : Gtk.Widget {
     account_list.unparent ();
     base.dispose ();
   }
+
+  /**
+   * Stores the active account in the sidebar.
+   */
+  private Backend.Account? stored_active_account;
 
 }
