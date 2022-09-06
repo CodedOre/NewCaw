@@ -408,19 +408,31 @@ public class Session : Object {
     instance.application.hold ();
 
     // Load the data from the session file
-    Variant stored_data = instance.load_from_file ();
+    WindowData[] windows     = {};
+    Variant      stored_data = instance.load_from_file ();
     if (stored_data != null) {
-      instance.unpack_data (stored_data);
+      instance.unpack_data (stored_data, out windows);
     }
 
-    // Check if accounts are stored
+    // Open the windows
     Backend.Account[] accounts = get_accounts ();
-    if (accounts.length != 0) {
-      foreach (Backend.Account acc in accounts) {
-        // Create a MainWindow for stored accounts
-        var win = new MainWindow (instance.application, acc);
-        win.present ();
+    if (windows.length > 0) {
+      foreach (WindowData data in windows) {
+        // Retrieve the account for the window
+        AccountData? acc = instance.accounts [data.account];
+        if (acc != null) {
+          // Create a MainWindow for the Account
+          var win = new MainWindow (instance.application, acc.data);
+          win.set_default_size (data.width, data.height);
+          win.present ();
+        } else {
+          warning ("Account for window not found in session!");
+        }
       }
+    } else if (accounts.length > 0) {
+      // If no window is stored, but we have accounts, use one account for a window
+      var win = new MainWindow (instance.application, accounts [0]);
+      win.present ();
     } else {
       // Create MainWindow with AuthView
       var win = new MainWindow (instance.application);
@@ -444,8 +456,9 @@ public class Session : Object {
    * Unpacks the loaded Variant and stores the contained information.
    *
    * @param loaded_data The variant loaded and to be unpacked.
+   * @param windows An array where the WindowData is unpacked to.
    */
-  private void unpack_data (Variant loaded_data) {
+  private void unpack_data (Variant loaded_data, out WindowData[] windows) {
 #if SUPPORT_MASTODON
     // Iterate through the servers
     Variant     loaded_servers  = loaded_data.lookup_value ("Servers", null);
@@ -516,8 +529,9 @@ public class Session : Object {
     }
 
     // Iterate through the windows
-    Variant     loaded_windows = loaded_data.lookup_value ("Windows", null);
-    VariantIter window_iter    = loaded_windows.iterator ();
+    WindowData[] packed_windows = {};
+    Variant      loaded_windows = loaded_data.lookup_value ("Windows", null);
+    VariantIter  window_iter    = loaded_windows.iterator ();
     while (true) {
       Variant? iter_variant = window_iter.next_value ();
       if (iter_variant == null) {
@@ -539,12 +553,15 @@ public class Session : Object {
         int    height_prop  = height_variant.get_int32 ();
         var    window_data  = WindowData.from_data (account_prop, width_prop, height_prop);
         if (window_data != null) {
-          windows += window_data;
+          packed_windows += window_data;
         }
       } else {
         warning ("A window could not be loaded: Some data were missing!");
       }
     }
+
+    // Return the unpacked WindowData over the out parameter
+    windows = packed_windows;
   }
 
   /**
@@ -711,10 +728,5 @@ public class Session : Object {
    * Stores servers managed by the Session class.
    */
   private HashTable<string, ServerData?> servers;
-
-  /**
-   * Stores windows managed by the Session class.
-   */
-  private WindowData[] windows;
 
 }
