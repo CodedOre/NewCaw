@@ -242,7 +242,7 @@ public class Session : Object {
     /**
      * Create a WindowData instance from data loaded of the session file.
      */
-    public static WindowData from_data (string account_prop, int width_prop, int height_prop) {
+    public static WindowData? from_data (string account_prop, int width_prop, int height_prop) {
       var instance     = WindowData ();
       instance.account = account_prop;
       instance.width   = width_prop;
@@ -514,6 +514,37 @@ public class Session : Object {
         warning ("A account could not be loaded: Some data were missing!");
       }
     }
+
+    // Iterate through the windows
+    Variant     loaded_windows = loaded_data.lookup_value ("Windows", null);
+    VariantIter window_iter    = loaded_windows.iterator ();
+    while (true) {
+      Variant? iter_variant = window_iter.next_value ();
+      if (iter_variant == null) {
+        break;
+      }
+
+      // Get the account dictionary
+      Variant window = iter_variant.get_child_value (0);
+
+      // Load the account properties
+      Variant? account_variant = window.lookup_value ("account", new VariantType ("s"));
+      Variant? width_variant   = window.lookup_value ("width",   new VariantType ("i"));
+      Variant? height_variant  = window.lookup_value ("height",  new VariantType ("i"));
+
+      // Create a new AccountData instance when all properties could be retrieved
+      if (account_variant != null && width_variant != null && height_variant != null) {
+        string account_prop = account_variant.get_string ();
+        int    width_prop   = width_variant.get_int32 ();
+        int    height_prop  = height_variant.get_int32 ();
+        var    window_data  = WindowData.from_data (account_prop, width_prop, height_prop);
+        if (window_data != null) {
+          windows += window_data;
+        }
+      } else {
+        warning ("A window could not be loaded: Some data were missing!");
+      }
+    }
   }
 
   /**
@@ -680,5 +711,10 @@ public class Session : Object {
    * Stores servers managed by the Session class.
    */
   private HashTable<string, ServerData?> servers;
+
+  /**
+   * Stores windows managed by the Session class.
+   */
+  private WindowData[] windows;
 
 }
