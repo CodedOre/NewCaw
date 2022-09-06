@@ -574,6 +574,30 @@ public class Session : Object {
     }
     store_builder.add ("{sv}", "Accounts", account_builder.end ());
 
+    // Build Variant for WindowData
+    var window_builder = new VariantBuilder (new VariantType ("av"));
+    foreach (Gtk.Window window in instance.application.get_windows ()) {
+      // Only store MainWindows
+      var main = window as MainWindow;
+      if (main == null) {
+        continue;
+      }
+
+      // Create a data object
+      var window_data = WindowData.from_object (main);
+
+      // Store data in a dictionary Variant
+      var data_builder = new VariantBuilder (new VariantType ("a{sv}"));
+      data_builder.add ("{sv}", "uuid",    new Variant.string (window_data.uuid));
+      data_builder.add ("{sv}", "account", new Variant.string (window_data.account));
+      data_builder.add ("{sv}", "width",   new Variant.int32 (window_data.width));
+      data_builder.add ("{sv}", "height",  new Variant.int32 (window_data.height));
+
+      window_builder.add ("v", data_builder.end ());
+    }
+    store_builder.add ("{sv}", "Windows", window_builder.end ());
+
+    // Return the full session variant
     return store_builder.end ();
   }
 
