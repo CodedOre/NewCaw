@@ -28,9 +28,11 @@ public class MainPage : Gtk.Widget {
 
   // UI-Elements of MainPage
   [GtkChild]
-  private unowned Adw.HeaderBar page_header;
+  private unowned Adw.Flap page_flap;
+
+  // UI-Elements of the content side
   [GtkChild]
-  private unowned Adw.WindowTitle page_title;
+  private unowned Adw.WindowTitle content_title;
   [GtkChild]
   private unowned CollectionView home_collection;
 
@@ -38,7 +40,7 @@ public class MainPage : Gtk.Widget {
    * Run at construction of the widget.
    */
   construct {
-    page_title.title = Config.PROJECT_NAME;
+    content_title.title = Config.PROJECT_NAME;
   }
 
   /**
@@ -69,14 +71,14 @@ public class MainPage : Gtk.Widget {
         }
 
         // Set the view subtitle
-        page_title.subtitle = account.username;
+        content_title.subtitle = account.username;
         // Display the collection in the CollectionView
         home_collection.displayed_platform = platform;
         home_collection.collection         = timeline;
       } else {
         // Set timeline to null
         timeline = null;
-        page_title.subtitle = null;
+        content_title.subtitle = null;
         home_collection.collection = null;
       }
     }
@@ -87,8 +89,7 @@ public class MainPage : Gtk.Widget {
    */
   public override void dispose () {
     // Destructs children of MainPage
-    page_header.unparent ();
-    home_collection.unparent ();
+    page_flap.unparent ();
     base.dispose ();
   }
 

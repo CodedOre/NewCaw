@@ -2,23 +2,44 @@ using Gtk 4.0;
 using Adw 1;
 
 template MainPage : Gtk.Widget {
-  layout-manager: Gtk.BoxLayout {
-    orientation: vertical;
-  };
+  layout-manager: Gtk.BinLayout {};
 
-  Adw.HeaderBar page_header {
-    [title]
-    Adw.WindowTitle page_title {}
+  Adw.Flap page_flap {
+    fold-policy: never;
 
-    [end]
-    Gtk.MenuButton {
-      icon-name: "open-menu-symbolic";
-      menu-model: main-menu;
+    [content]
+    Gtk.Box {
+      orientation: vertical;
+
+      Adw.HeaderBar {
+        [title]
+        Adw.WindowTitle content_title {}
+
+        [end]
+        Gtk.MenuButton {
+          icon-name: "open-menu-symbolic";
+          menu-model: main-menu;
+        }
+      }
+
+      .CollectionView home_collection {
+        vexpand: true;
+      }
     }
-  }
 
-  .CollectionView home_collection {
-    vexpand: true;
+    [separator]
+    Gtk.Separator {
+      orientation: vertical;
+    }
+
+    [flap]
+    Gtk.Box {
+      orientation: vertical;
+
+      styles [
+        "background"
+      ]
+    }
   }
 }
 
