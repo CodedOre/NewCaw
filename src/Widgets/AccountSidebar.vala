@@ -45,6 +45,33 @@ public class AccountSidebar : Gtk.Widget {
   }
 
   /**
+   * Changes the accounts when one was selected in the sidebar.
+   *
+   * @param widget The widget that was clicked in the account list.
+   */
+  [GtkCallback]
+  private void change_active_account (Gtk.ListBoxRow widget) {
+    // Get the AccountRow
+    var account_row = widget as AccountRow;
+    if (account_row == null) {
+      warning ("Activated row is not AccountRow!");
+      return;
+    }
+
+    // Get the MainWindow
+    var main_window = this.get_root () as MainWindow;
+    if (main_window == null) {
+      warning ("AccountSidebar not in a MainWindow, action not possible!");
+      return;
+    }
+
+    // Set the new account
+    if (account_row.account != null) {
+      main_window.account = account_row.account;
+    }
+  }
+
+  /**
    * Binds an account to an AccountRow in the accounts list.
    */
   private Gtk.Widget bind_account (Object item) {

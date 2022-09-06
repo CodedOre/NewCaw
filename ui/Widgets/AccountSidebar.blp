@@ -28,6 +28,8 @@ template AccountSidebar : Gtk.Widget {
   Gtk.ListBox account_list {
     selection-mode: none;
 
+    row-activated => change_active_account ();
+
     styles [
       "account-list"
     ]
