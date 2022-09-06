@@ -65,6 +65,24 @@ public class AccountSidebar : Gtk.Widget {
   }
 
   /**
+   * Opens the active account in a new page.
+   */
+  [GtkCallback]
+  private void display_active_account () {
+    // Get the MainWindow
+    var main_window = this.get_root () as MainWindow;
+    if (main_window == null) {
+      warning ("AccountSidebar not in a MainWindow, action not possible!");
+      return;
+    }
+
+    // Display the user if not null
+    if (active_account != null) {
+      main_window.display_user (active_account);
+    }
+  }
+
+  /**
    * Changes the accounts when one was selected in the sidebar.
    *
    * @param widget The widget that was clicked in the account list.

@@ -173,6 +173,9 @@ list.account-list > row {
   padding: 4px 0px;
   border-radius: 8px;
 }
+list.account-list > row.option-row > box.header {
+  min-height: 0px;
+}
 
 /**
  * Style for the Collections, based on ListViews navigation-sidebar.

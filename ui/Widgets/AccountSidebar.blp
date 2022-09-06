@@ -22,6 +22,18 @@ template AccountSidebar : Gtk.Widget {
       account: bind AccountSidebar.active-account;
       show-actions: false;
     }
+
+    Adw.ActionRow {
+      activatable: true;
+      icon-name: "person-symbolic";
+      title: _("Display Account");
+
+      activated => display_active_account ();
+
+      styles [
+        "option-row"
+      ]
+    }
   }
 
   Gtk.Separator {}
