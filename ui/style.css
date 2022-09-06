@@ -23,6 +23,12 @@
  */
 
 /**
+ * Custom accent colors for specific platforms.
+ */
+@define-color platform_mastodon #5E54EB;
+@define-color platform_twitter #1D9BF0;
+
+/**
  * Removes the underline from selected links.
  */
 link.hashtag, link.mention, link.weblink {
@@ -82,15 +88,25 @@ button.avatar-button {
 }
 
 /**
- * Button-styles for platform specific buttons.
+ * Backgrounds colored in the platform color.
  */
-button.mastodon-accent {
+.mastodon-background {
   color: white;
-  background-color: @purple_4;
+  background-color: @platform_mastodon;
 }
-button.twitter-accent {
+.twitter-background {
   color: white;
-  background-color: @blue_4;
+  background-color: @platform_twitter;
+}
+
+/**
+ * An image displaying an specific platform.
+ */
+image.platform-indicator {
+  padding: 2px;
+  border-radius: 25%;
+  background-color: @platform_mastodon;
+  color: white;
 }
 
 /**

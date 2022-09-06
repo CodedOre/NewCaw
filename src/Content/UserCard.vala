@@ -45,8 +45,8 @@ public class UserCard : Gtk.Widget {
       displayed_user = value;
 
       // Set's the UI for the new user
-      user_avatar.avatar = displayed_user != null ? displayed_user.avatar : null;
-      user_banner.media  = displayed_user != null ? displayed_user.header : null;
+      user_avatar.user  = displayed_user != null ? displayed_user        : null;
+      user_banner.media = displayed_user != null ? displayed_user.header : null;
     }
   }
 

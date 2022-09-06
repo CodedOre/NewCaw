@@ -90,9 +90,9 @@ public class PostStatus : Gtk.Widget {
       displayed_post = value;
 
       // Set the information in the UI
-      user_avatar.avatar = displayed_post != null ? displayed_post.author.avatar : null;
-      user_button.user   = displayed_post != null ? displayed_post.author        : null;
-      time_label.label   = displayed_post != null
+      user_avatar.user = displayed_post != null ? displayed_post.author : null;
+      user_button.user = displayed_post != null ? displayed_post.author : null;
+      time_label.label = displayed_post != null
                              ? DisplayUtils.display_time_delta (displayed_post.creation_date)
                              : "(null)";
     }

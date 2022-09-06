@@ -41,9 +41,9 @@ public class AccountRow : Adw.ActionRow {
       displayed_account = value;
 
       // Set the information in the UI
-      account_avatar.avatar = displayed_account != null ? displayed_account.avatar          : null;
-      this.title            = displayed_account != null ? displayed_account.display_name    : "(null)";
-      this.subtitle         = displayed_account != null ? @"@$(displayed_account.username)" : "(null)";
+      account_avatar.user = displayed_account;
+      this.title          = displayed_account != null ? displayed_account.display_name    : "(null)";
+      this.subtitle       = displayed_account != null ? @"@$(displayed_account.username)" : "(null)";
     }
   }
 
