@@ -5,13 +5,22 @@ template MainPage : Gtk.Widget {
   layout-manager: Gtk.BinLayout {};
 
   Adw.Flap page_flap {
-    fold-policy: never;
+    fold-policy: always;
+    reveal-flap: bind content_sidebar_toggle.active;
 
     [content]
     Gtk.Box {
       orientation: vertical;
 
       Adw.HeaderBar {
+        show-start-title-buttons: bind page_flap.folded;
+
+        [start]
+        Gtk.ToggleButton content_sidebar_toggle {
+          icon-name: "sidebar-show-symbolic";
+          active: bind flap_sidebar_toggle.active;
+        }
+
         [title]
         Adw.WindowTitle content_title {}
 
@@ -35,10 +44,26 @@ template MainPage : Gtk.Widget {
     [flap]
     Gtk.Box {
       orientation: vertical;
+      width-request: 300;
 
       styles [
         "background"
       ]
+
+      Adw.HeaderBar {
+        show-start-title-buttons: bind page_flap.folded inverted;
+        show-end-title-buttons: false;
+
+        [start]
+        Gtk.ToggleButton flap_sidebar_toggle {
+          icon-name: "sidebar-show-symbolic";
+          active: bind page_flap.reveal-flap;
+          visible: bind page_flap.folded;
+        }
+
+        [title]
+        Adw.WindowTitle flap_title {}
+      }
     }
   }
 }

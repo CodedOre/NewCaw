@@ -30,17 +30,22 @@ public class MainPage : Gtk.Widget {
   [GtkChild]
   private unowned Adw.Flap page_flap;
 
-  // UI-Elements of the content side
+  // UI-Elements of the content
   [GtkChild]
   private unowned Adw.WindowTitle content_title;
   [GtkChild]
   private unowned CollectionView home_collection;
+
+  // UI-Elements of the flap
+  [GtkChild]
+  private unowned Adw.WindowTitle flap_title;
 
   /**
    * Run at construction of the widget.
    */
   construct {
     content_title.title = Config.PROJECT_NAME;
+    flap_title.title    = Config.PROJECT_NAME;
   }
 
   /**
