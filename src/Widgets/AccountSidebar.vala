@@ -29,6 +29,8 @@ public class AccountSidebar : Gtk.Widget {
   // UI-Elements of AccountSidebar
   [GtkChild]
   private unowned Gtk.ListBox active_list;
+  [GtkChild]
+  private unowned Gtk.ListBox account_list;
 
   /**
    * The currently active account.
@@ -36,11 +38,29 @@ public class AccountSidebar : Gtk.Widget {
   public Backend.Account active_account { get; set; }
 
   /**
+   * Run at construction of an widget.
+   */
+  construct {
+    account_list.bind_model (Session.instance.account_list, bind_account);
+  }
+
+  /**
+   * Binds an account to an AccountRow in the accounts list.
+   */
+  private Gtk.Widget bind_account (Object item) {
+    var account    = item as Backend.Account;
+    var widget     = new AccountRow ();
+    widget.account = account;
+    return widget;
+  }
+
+  /**
    * Deconstructs AccountSidebar and it's childrens.
    */
   public override void dispose () {
     // Destructs children of AccountSidebar
-    active_list.dispose ();
+    active_list.unparent ();
+    account_list.unparent ();
     base.dispose ();
   }
 

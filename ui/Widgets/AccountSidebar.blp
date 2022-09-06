@@ -8,6 +8,7 @@ template AccountSidebar : Gtk.Widget {
   margin-end: 8;
   layout-manager: Gtk.BoxLayout {
     orientation: vertical;
+    spacing: 12;
   };
 
   Gtk.ListBox active_list {
@@ -20,5 +21,15 @@ template AccountSidebar : Gtk.Widget {
     .AccountRow {
       account: bind AccountSidebar.active-account;
     }
+  }
+
+  Gtk.Separator {}
+
+  Gtk.ListBox account_list {
+    selection-mode: none;
+
+    styles [
+      "account-list"
+    ]
   }
 }
