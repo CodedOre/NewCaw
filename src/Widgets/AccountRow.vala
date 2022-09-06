@@ -31,6 +31,11 @@ public class AccountRow : Adw.ActionRow {
   private unowned UserAvatar account_avatar;
 
   /**
+   * If additional actions should be shown.
+   */
+  public bool show_actions { get; set; default = true; }
+
+  /**
    * The Account which is displayed.
    */
   public Backend.Account account {
@@ -45,6 +50,29 @@ public class AccountRow : Adw.ActionRow {
       this.title          = displayed_account != null ? displayed_account.display_name    : "(null)";
       this.subtitle       = displayed_account != null ? @"@$(displayed_account.username)" : "(null)";
     }
+  }
+
+  /**
+   * Opens the displayed account in a new Window.
+   */
+  [GtkCallback]
+  private void open_in_window () {
+    print ("DEBUGPOINT 1\n");
+    // Only continue with an set account
+    if (account == null) {
+      return;
+    }
+
+    // Get the current MainWindow, to get the application
+    var main_window = this.get_root () as MainWindow;
+    if (main_window == null) {
+      warning ("AccountRow not in a MainWindow, action not possible!");
+      return;
+    }
+
+    // Create a new MainWindow and display the account
+    var window = new MainWindow (main_window.application, account);
+    window.present ();
   }
 
   /**
