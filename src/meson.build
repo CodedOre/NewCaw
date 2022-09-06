@@ -49,6 +49,7 @@ cawsources += [
   'System/SystemInfo.vala',
   'Utils/DisplayUtils.vala',
   'Utils/PlatformEnum.vala',
+  'Widgets/AccountSidebar.vala',
   'Widgets/BadgesBox.vala',
   'Widgets/FilterButton.vala',
   'Widgets/CroppedPicture.vala',

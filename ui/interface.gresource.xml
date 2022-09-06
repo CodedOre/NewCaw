@@ -27,6 +27,7 @@
     <file>Media/MediaSelector.ui</file>
     <file>Pages/MainPage.ui</file>
     <file>Pages/UserPage.ui</file>
+    <file>Widgets/AccountSidebar.ui</file>
     <file>Widgets/BadgesBox.ui</file>
     <file>Widgets/FilterButton.ui</file>
     <file>Widgets/UserAvatar.ui</file>
