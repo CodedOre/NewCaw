@@ -410,11 +410,15 @@ public class Session : Object {
   /**
    * Loads the data for the session from disk.
    */
-  public static async void load_session () {
+  public static void load_session () {
     // Notify application that we need it running
     instance.application.hold ();
 
-    yield instance.unpack_data ();
+    // Load the data from the session file
+    Variant stored_data = instance.load_from_file ();
+    if (stored_data != null) {
+      instance.unpack_data (stored_data);
+    }
 
     // Check if accounts are stored
     Backend.Account[] accounts = get_accounts ();
@@ -437,22 +441,18 @@ public class Session : Object {
   /**
    * Stores the data of the session on disk.
    */
-  public static async void store_session () {
+  public static void store_session () {
     // Create a Variant and store it
-    Variant session_store = yield instance.pack_data ();
-    yield instance.store_to_file (session_store);
+    Variant session_store = instance.pack_data ();
+    instance.store_to_file (session_store);
   }
 
   /**
    * Unpacks the loaded Variant and stores the contained information.
+   *
+   * @param loaded_data The variant loaded and to be unpacked.
    */
-  private async void unpack_data () {
-    // Load the data from the session file
-    Variant loaded_data = yield load_from_file ();
-    if (loaded_data == null) {
-      return;
-    }
-
+  private void unpack_data (Variant loaded_data) {
 #if SUPPORT_MASTODON
     // Iterate through the servers
     Variant     loaded_servers  = loaded_data.lookup_value ("Servers", null);
@@ -528,7 +528,7 @@ public class Session : Object {
    *
    * @return A Variant holding the information to be stored.
    */
-  private async Variant pack_data () {
+  private Variant pack_data () {
     var store_builder = new VariantBuilder (new VariantType ("a{sv}"));
 
 #if SUPPORT_MASTODON
@@ -582,7 +582,7 @@ public class Session : Object {
    *
    * @return A Variant holding the data from the file.
    */
-  private async Variant? load_from_file () {
+  private Variant? load_from_file () {
     // Initializes the file storing the session
     var file = File.new_build_filename (Environment.get_user_data_dir (),
                                         Config.PROJECT_NAME,
@@ -594,7 +594,7 @@ public class Session : Object {
       // Load the data from the file
       uint8[] file_content;
       string file_etag;
-      yield file.load_contents_async (null, out file_content, out file_etag);
+      file.load_contents (null, out file_content, out file_etag);
       // Convert the file data to an Variant and read the values from it
       var stored_bytes = new Bytes.take (file_content);
       stored_session   = new Variant.from_bytes (new VariantType ("a{sv}"), stored_bytes, false);
@@ -613,7 +613,7 @@ public class Session : Object {
    *
    * @param variant The Variant holding the session data.
    */
-  private async void store_to_file (Variant variant) {
+  private void store_to_file (Variant variant) {
     // Initializes the file storing the session
     var file = File.new_build_filename (Environment.get_user_data_dir (),
                                         Config.PROJECT_NAME,
@@ -623,9 +623,9 @@ public class Session : Object {
     try {
       // Convert variant to Bytes and store them in file
       Bytes bytes = variant.get_data_as_bytes ();
-      yield file.replace_contents_bytes_async (bytes, null,
-                                               false, REPLACE_DESTINATION,
-                                               null, null);
+      file.replace_contents (bytes.get_data (), null,
+                             false, REPLACE_DESTINATION,
+                             null, null);
     } catch (Error e) {
       warning (@"Session could not be stored: $(e.message)");
     }
