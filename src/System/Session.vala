@@ -225,11 +225,6 @@ public class Session : Object {
   private struct WindowData {
 
     /**
-     * The UUID assigned in the storage.
-     */
-    string uuid;
-
-    /**
      * The UUID of the account displayed in the window.
      */
     string account;
@@ -247,9 +242,8 @@ public class Session : Object {
     /**
      * Create a WindowData instance from data loaded of the session file.
      */
-    public static WindowData from_data (string uuid_prop, string account_prop, int width_prop, int height_prop) {
+    public static WindowData from_data (string account_prop, int width_prop, int height_prop) {
       var instance     = WindowData ();
-      instance.uuid    = uuid_prop;
       instance.account = account_prop;
       instance.width   = width_prop;
       instance.height  = height_prop;
@@ -264,7 +258,6 @@ public class Session : Object {
     public static WindowData? from_object (MainWindow window) {
       // Create instance and populate values
       var instance     = WindowData ();
-      instance.uuid    = Uuid.string_random ();
       instance.account = AccountData.get_uuid (window.account);
       window.get_default_size (out instance.width, out instance.height);
 
@@ -588,7 +581,6 @@ public class Session : Object {
 
       // Store data in a dictionary Variant
       var data_builder = new VariantBuilder (new VariantType ("a{sv}"));
-      data_builder.add ("{sv}", "uuid",    new Variant.string (window_data.uuid));
       data_builder.add ("{sv}", "account", new Variant.string (window_data.account));
       data_builder.add ("{sv}", "width",   new Variant.int32 (window_data.width));
       data_builder.add ("{sv}", "height",  new Variant.int32 (window_data.height));
