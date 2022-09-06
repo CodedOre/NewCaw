@@ -21,16 +21,26 @@
 using GLib;
 
 /**
- *
+ * Allows to change an account and displays related views for MainPage.
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Widgets/AccountSidebar.ui")]
 public class AccountSidebar : Gtk.Widget {
+
+  // UI-Elements of AccountSidebar
+  [GtkChild]
+  private unowned Gtk.ListBox active_list;
+
+  /**
+   * The currently active account.
+   */
+  public Backend.Account active_account { get; set; }
 
   /**
    * Deconstructs AccountSidebar and it's childrens.
    */
   public override void dispose () {
     // Destructs children of AccountSidebar
+    active_list.dispose ();
     base.dispose ();
   }
 

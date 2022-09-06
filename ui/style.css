@@ -149,6 +149,17 @@ widget.squared > avatar {
 }
 
 /**
+ * Style for the AccountSidebar.
+ */
+list.account-list {
+  background-color: transparent;
+}
+list.account-list > row {
+  padding: 4px 0px;
+  border-radius: 8px;
+}
+
+/**
  * Style for the Collections, based on ListViews navigation-sidebar.
  */
 listview.post-list {

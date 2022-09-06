@@ -1,0 +1,11 @@
+using Gtk 4.0;
+using Adw 1;
+
+template AccountRow : Adw.ActionRow {
+  activatable: true;
+
+  [prefix]
+  .UserAvatar account_avatar {
+    size: 42;
+  }
+}

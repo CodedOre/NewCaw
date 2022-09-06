@@ -2,7 +2,23 @@ using Gtk 4.0;
 using Adw 1;
 
 template AccountSidebar : Gtk.Widget {
+  margin-top: 8;
+  margin-bottom: 8;
+  margin-start: 8;
+  margin-end: 8;
   layout-manager: Gtk.BoxLayout {
     orientation: vertical;
   };
+
+  Gtk.ListBox active_list {
+    selection-mode: none;
+
+    styles [
+      "account-list"
+    ]
+
+    .AccountRow {
+      account: bind AccountSidebar.active-account;
+    }
+  }
 }
