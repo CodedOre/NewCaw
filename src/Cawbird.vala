@@ -120,6 +120,7 @@ public class Cawbird : Adw.Application {
    */
   protected override void shutdown () {
     Backend.Client.instance.shutdown ();
+    Session.store_session ();
     base.shutdown ();
   }
 
