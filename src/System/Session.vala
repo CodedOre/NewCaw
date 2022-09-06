@@ -64,11 +64,11 @@ public class Session : Object {
      * This functions also loads the token and secret from the storage and
      * creates an authenticated Account object for the data variable.
      */
-    public static async AccountData? from_data (string       uuid_prop,
-                                               PlatformEnum platform_prop,
-                                               string?      server_prop,
-                                               string       username_prop,
-                                               ServerData?  account_server) {
+    public static AccountData? from_data (string       uuid_prop,
+                                          PlatformEnum platform_prop,
+                                          string?      server_prop,
+                                          string       username_prop,
+                                          ServerData?  account_server) {
       // Create instance with known values
       var instance         = AccountData ();
       instance.uuid        = uuid_prop;
@@ -104,7 +104,6 @@ public class Session : Object {
         }
         // Log the account in
         instance.data.login (account_token);
-        yield instance.data.load_data ();
         assert (instance.data != null);
         // Resave the keys (as Twitter refreshes the token at each login)
         KeyStorage.store_account_access (instance.data, instance.uuid);
@@ -182,7 +181,7 @@ public class Session : Object {
      * This functions also loads the token and secret from the storage and
      * creates an authenticated Server object for the data variable.
      */
-    public static async ServerData? from_data (string uuid_prop, PlatformEnum platform_prop, string domain_prop) {
+    public static ServerData? from_data (string uuid_prop, PlatformEnum platform_prop, string domain_prop) {
       // Create instance with known values
       var instance      = ServerData ();
       instance.uuid     = uuid_prop;
@@ -478,7 +477,7 @@ public class Session : Object {
       // Create a new ServerData instance when all properties could be retrieved
       if (uuid_prop != null && platform_name != null && domain_prop != null) {
         var platform_prop = PlatformEnum.from_name (platform_name);
-        var server_data   = yield ServerData.from_data (uuid_prop, platform_prop, domain_prop);
+        var server_data   = ServerData.from_data (uuid_prop, platform_prop, domain_prop);
         if (server_data != null) {
           servers [server_data.uuid] = server_data;
         }
@@ -514,7 +513,7 @@ public class Session : Object {
       if (uuid_prop != null && platform_name != null && username_prop != null) {
         var platform_prop = PlatformEnum.from_name (platform_name);
         ServerData? account_server = server_prop != null ? servers [server_prop] : null;
-        var account_data = yield AccountData.from_data (uuid_prop, platform_prop, server_prop, username_prop, account_server);
+        var account_data = AccountData.from_data (uuid_prop, platform_prop, server_prop, username_prop, account_server);
         if (account_data != null) {
           accounts [account_data.uuid] = account_data;
         }
