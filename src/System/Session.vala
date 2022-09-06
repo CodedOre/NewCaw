@@ -403,7 +403,7 @@ public class Session : Object {
   /**
    * Loads the data for the session from disk.
    */
-  public static void load_session () {
+  public static async void load_session () {
     // Notify application that we need it running
     instance.application.hold ();
 
@@ -414,8 +414,17 @@ public class Session : Object {
       instance.unpack_data (stored_data, out windows);
     }
 
-    // Open the windows
+    // Load the account data
     Backend.Account[] accounts = get_accounts ();
+    foreach (Backend.Account acc in accounts) {
+      try {
+        yield acc.load_data ();
+      } catch (Error e) {
+        warning (@"Failed to load data for a account: $(e.message)");
+      }
+    }
+
+    // Open the windows
     if (windows.length > 0) {
       foreach (WindowData data in windows) {
         // Retrieve the account for the window

@@ -58,7 +58,7 @@ public class Cawbird : Adw.Application {
 
     // Load the session
     Session.init (this);
-    Session.load_session ();
+    Session.load_session.begin ();
   }
 
   /**
