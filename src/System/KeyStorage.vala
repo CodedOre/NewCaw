@@ -63,7 +63,7 @@ public class KeyStorage : Object {
    *
    * @throws Error Any error that happens while storing the token.
    */
-  public static async void store_server_access (Backend.Server server, string identifier) throws Error {
+  public static void store_server_access (Backend.Server server, string identifier) throws Error {
     // Fail on attempting to non Mastodon servers
     if (! (server is Backend.Mastodon.Server)) {
       error ("Only Mastodon servers should be stored!");
@@ -103,7 +103,7 @@ public class KeyStorage : Object {
    *
    * @throws Error Any error that happens while retrieving the token.
    */
-  public static async void retrieve_server_access (    string   identifier,
+  public static void retrieve_server_access (    string   identifier,
                                                    out string   token,
                                                    out string   secret)
                                                          throws Error {
@@ -132,7 +132,7 @@ public class KeyStorage : Object {
    *
    * @throws Error Any error that happens while removing the token.
    */
-  public static async void remove_server_access (string identifier) throws Error {
+  public static void remove_server_access (string identifier) throws Error {
     // Create the attributes
     var attributes           = new HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Server";
@@ -160,7 +160,7 @@ public class KeyStorage : Object {
    *
    * @throws Error Any error that happens while storing the token.
    */
-  public static async void store_account_access (Backend.Account account, string identifier) throws Error {
+  public static void store_account_access (Backend.Account account, string identifier) throws Error {
     // Create the attributes
     string platform_name     = PlatformEnum.get_platform_for_account (account).to_string ();
     var    attributes        = new HashTable<string,string> (str_hash, str_equal);
@@ -191,7 +191,7 @@ public class KeyStorage : Object {
    *
    * @throws Error Any error that happens while retrieving the token.
    */
-  public static async void retrieve_account_access (    string identifier,
+  public static void retrieve_account_access (    string identifier,
                                                     out string token)
                                                         throws Error {
     // Create the attributes
@@ -215,7 +215,7 @@ public class KeyStorage : Object {
    *
    * @throws Error Any error that happens while removing the token.
    */
-  public static async void remove_account_access (string identifier) throws Error {
+  public static void remove_account_access (string identifier) throws Error {
     // Create the attributes
     var attributes           = new HashTable<string,string> (str_hash, str_equal);
     attributes["type"]       = "Account";
