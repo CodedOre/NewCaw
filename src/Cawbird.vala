@@ -47,6 +47,7 @@ public class Cawbird : Adw.Application {
     this.add_action_entries (action_entries, this);
     // Set keyboard shortcuts for these actions
     this.set_accels_for_action ("app.quit", {"<primary>q"});
+    this.set_accels_for_action ("window.close", {"<primary>w"});
   }
 
   /**
