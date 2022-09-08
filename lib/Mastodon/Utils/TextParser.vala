@@ -282,6 +282,9 @@ internal class Backend.Mastodon.Utils.TextParser : Object {
     // Add root node as content can have multiple roots
     string parsed_text = @"<text>$(raw_text)</text>";
 
+    // Fix non-standard line break elements
+    parsed_text = parsed_text.replace ("<br>", "<br/>");
+
     // Create XML tree from text
     Xml.Doc* doc = Xml.Parser.parse_memory (parsed_text, parsed_text.length);
     if (doc == null) {
