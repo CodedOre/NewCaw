@@ -223,6 +223,27 @@ public class PostItem : Gtk.Widget {
   }
 
   /**
+   * Activated when a link in the text is clicked.
+   */
+  [GtkCallback]
+  private bool on_link_clicked (string uri) {
+    // Run class specific actions
+    if (uri.has_prefix ("hashtag|")) {
+      string target = uri [8:];
+      message ("Search not implemented yet, this is an dead-end!");
+    }
+    if (uri.has_prefix ("mention|")) {
+      string target = uri [8:];
+      // TODO: Open mentioned user
+    }
+    if (uri.has_prefix ("weblink|")) {
+      string target = uri [8:];
+      Gtk.show_uri (null, target, Gdk.CURRENT_TIME);
+    }
+    return true;
+  }
+
+  /**
    * Deconstructs PostItem and it's childrens.
    */
   public override void dispose () {

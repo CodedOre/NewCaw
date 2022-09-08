@@ -83,7 +83,7 @@ namespace Backend.Utils.TextUtils {
       // Append the module
       if (show_module) {
         if (link_module) {
-          builder.append (@"<a href=\"$(target)\" title=\"$(tooltip)\" class=\"$(module_class)\">$(display)</a>");
+          builder.append (@"<a href=\"$(module_class)|$(target)\" title=\"$(tooltip)\" class=\"$(module_class)\">$(display)</a>");
         } else {
           builder.append (display);
         }
