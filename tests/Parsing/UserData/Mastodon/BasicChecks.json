@@ -16,7 +16,7 @@
   "followers_count": 3,
   "following_count": 0,
   "posts_count":     11,
-  "description":    "This may or may not be a account from <a href=\"CodedOre@mastodon.online\" title=\"CodedOre@mastodon.online\" class=\"mention\">@CodedOre</a> for testing some API&apos;s for a certain Client.",
+  "description":    "This may or may not be a account from <a href=\"mention|CodedOre@mastodon.online\" title=\"CodedOre@mastodon.online\" class=\"mention\">@CodedOre</a> for testing some API&apos;s for a certain Client.",
   "description_modules": [
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",

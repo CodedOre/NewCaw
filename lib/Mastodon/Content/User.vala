@@ -26,10 +26,61 @@ using GLib;
 public class Backend.Mastodon.User : Backend.User {
 
   /**
+   * Returns a User object for a specific user name.
+   *
+   * If an object for the user was already created, that object is returned.
+   * Otherwise the json will be loaded from the server and an object created from it.
+   *
+   * @param username The name for the user, in the format "username@domain".
+   * @param account An account to authenticate the loading of the user.
+   *
+   * @throws Error Any error that could happen while the user is loaded.
+   */
+  public static async User from_username (string username, Backend.Account account) throws Error {
+    // Initialize the storage if needed
+    if (all_users == null) {
+      all_users = new HashTable <string, User> (str_hash, str_equal);
+    }
+
+    // Attempt to retrieve the user from storage
+    User? user = all_users.contains (username)
+                   ? all_users [username]
+                   : null;
+
+    // Create new object if not in storage
+    if (user == null) {
+      // Create the proxy call
+      Rest.ProxyCall call = account.create_call ();
+      call.set_method ("GET");
+      call.set_function (@"accounts/search");
+      call.add_param ("q", username);
+      call.add_param ("limit", "1");
+
+      // Load the user
+      Json.Node json;
+      try {
+        json = yield account.server.call (call);
+      } catch (Error e) {
+        throw e;
+      }
+      Json.Array list = json.get_array ();
+
+      // Retrieve the user json
+      Json.Object object = list.get_object_element (0);
+
+      // Create a new user from the data
+      user = User.from_json (object);
+    }
+
+    // Return the object
+    return user;
+  }
+
+  /**
    * Returns a User object for a given Json.Object.
    *
-   * If the object was already created, the object is returned, otherwise a
-   * new one is created.
+   * If an object for the user was already created, that object is returned.
+   * Otherwise a new object will be created from the json object.
    *
    * @param json A Json.Object retrieved from the API.
    */

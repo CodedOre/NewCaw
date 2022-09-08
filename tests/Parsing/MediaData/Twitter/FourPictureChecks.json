@@ -4,7 +4,7 @@
   "creation_date": "2021-10-14T12:06:27.000Z",
   "text": {
     "no_flags":          "And at last, now to show the maximum number: 4!",
-    "shown_media_links": "And at last, now to show the maximum number: 4! <a href=\"https://twitter.com/CawbirdA/status/1448621218572247045/photo/1\" title=\"https://twitter.com/CawbirdA/status/1448621218572247045/photo/1\" class=\"weblink\">pic.twitter.com/AOatVpaOUs</a>"
+    "shown_media_links": "And at last, now to show the maximum number: 4! <a href=\"weblink|https://twitter.com/CawbirdA/status/1448621218572247045/photo/1\" title=\"https://twitter.com/CawbirdA/status/1448621218572247045/photo/1\" class=\"weblink\">pic.twitter.com/AOatVpaOUs</a>"
   },
   "text_modules": [
     {

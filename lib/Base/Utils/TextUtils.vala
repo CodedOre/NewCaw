@@ -42,43 +42,51 @@ namespace Backend.Utils.TextUtils {
       string tooltip = Markup.escape_text (target);
       string display = Markup.escape_text (module.display);
 
+      // Set up the module settings
+      bool   show_module = true;
+      bool   link_module = true;
+      string module_class;
       switch (module.type) {
         case TRAIL_TAG:
-          if (Backend.Utils.TextFormats.get_format_flag (HIDE_TRAILING_TAGS)) {
-            break;
-          }
-          builder.append (@"<a href=\"$(target)\" title=\"$(tooltip)\" class=\"hashtag\">$(display)</a>");
+          show_module = ! Backend.Utils.TextFormats.get_format_flag (HIDE_TRAILING_TAGS);
+          module_class = "hashtag";
           break;
 
         case TAG:
-          builder.append (@"<a href=\"$(target)\" title=\"$(tooltip)\" class=\"hashtag\">$(display)</a>");
+          module_class = "hashtag";
           break;
 
         case MENTION:
-          builder.append (@"<a href=\"$(target)\" title=\"$(tooltip)\" class=\"mention\">$(display)</a>");
+          module_class = "mention";
           break;
 
         case MEDIALINK:
-          if (! Backend.Utils.TextFormats.get_format_flag (SHOW_MEDIA_LINKS)) {
-            break;
-          }
-          builder.append (@"<a href=\"$(target)\" title=\"$(tooltip)\" class=\"weblink\">$(display)</a>");
+          show_module  = Backend.Utils.TextFormats.get_format_flag (SHOW_MEDIA_LINKS);
+          module_class = "weblink";
           break;
 
         case QUOTELINK:
-          if (! Backend.Utils.TextFormats.get_format_flag (SHOW_QUOTE_LINKS)) {
-            break;
-          }
-          builder.append (@"<a href=\"$(target)\" title=\"$(tooltip)\" class=\"weblink\">$(display)</a>");
+          show_module = Backend.Utils.TextFormats.get_format_flag (SHOW_QUOTE_LINKS);
+          module_class = "weblink";
           break;
 
         case WEBLINK:
-          builder.append (@"<a href=\"$(target)\" title=\"$(tooltip)\" class=\"weblink\">$(display)</a>");
+          module_class = "weblink";
           break;
 
         default:
-          builder.append (display);
+          link_module  = false;
+          module_class = "text";
           break;
+      }
+
+      // Append the module
+      if (show_module) {
+        if (link_module) {
+          builder.append (@"<a href=\"$(module_class)|$(target)\" title=\"$(tooltip)\" class=\"$(module_class)\">$(display)</a>");
+        } else {
+          builder.append (display);
+        }
       }
     }
 

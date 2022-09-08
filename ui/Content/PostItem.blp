@@ -52,6 +52,8 @@ template PostItem : Gtk.Widget {
         use-markup: true;
         wrap: true;
         wrap-mode: word_char;
+
+        activate-link => on_link_clicked ();
       }
 
       .MediaPreview media_previewer {}
