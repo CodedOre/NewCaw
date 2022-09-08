@@ -53,6 +53,8 @@ template UserDisplay : Gtk.Widget {
       wrap-mode:     word_char;
       use-markup:    true;
       margin-bottom: 8;
+
+      activate-link => on_link_clicked ();
     }
 
     Gtk.FlowBox {

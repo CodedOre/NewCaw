@@ -131,6 +131,14 @@ public class UserDisplay : Gtk.Widget {
   }
 
   /**
+   * Activated when a link in the text is clicked.
+   */
+  [GtkCallback]
+  private bool on_link_clicked (string uri) {
+    return DisplayUtils.entities_link_action (uri, this);
+  }
+
+  /**
    * Deconstructs UserCard and it's childrens.
    */
   public override void dispose () {

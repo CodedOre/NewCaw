@@ -252,4 +252,3 @@ public class PostItem : Gtk.Widget {
   private Backend.Post? displayed_post = null;
 
 }
-
