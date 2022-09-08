@@ -219,8 +219,8 @@ public class Backend.Mastodon.Account : Backend.Account {
     posts_count     = (int) data.get_int_member ("statuses_count");
 
     // Set the images
-    avatar = new Media (PICTURE, avatar_url);
-    header = new Media (PICTURE, header_url);
+    avatar = avatar_url.length > 0 ? Media.from_url (PICTURE, avatar_url) : null;
+    header = header_url.length > 0 ? Media.from_url (PICTURE, header_url) : null;
 
     // Parse the description into modules and create a formatted version
     description_modules = Utils.TextParser.instance.parse_text (data.get_string_member ("note"));

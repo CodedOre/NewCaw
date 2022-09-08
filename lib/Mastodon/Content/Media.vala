@@ -26,13 +26,76 @@ using GLib;
 public class Backend.Mastodon.Media : Backend.Media {
 
   /**
+   * Returns a Media object for a url.
+   *
+   * If an object for the media was already created, that object is returned.
+   * Otherwise a new object will be created from the json object.
+   *
+   * @param type The type for the media
+   * @param media_url The url to the full media.
+   * @param preview_url The url to the preview image, if available.
+   */
+  public static Media from_url (MediaType type, string media_url, string? preview_url = null) {
+    // Initialize the storage if needed
+    if (all_media == null) {
+      all_media = new HashTable <string, Media> (str_hash, str_equal);
+    }
+
+    // Attempt to retrieve the media from storage
+    string id    = media_url.hash ().to_string ();
+    Media? media = all_media.contains (id)
+                     ? all_media [id]
+                     : null;
+
+    // Create new object if not in storage
+    if (media == null) {
+      media = new Media (type, media_url, preview_url);
+      all_media [id] = media;
+    }
+
+    // Return the object
+    return media;
+  }
+
+  /**
+   * Returns a Media object for a given Json.Object.
+   *
+   * If an object for the media was already created, that object is returned.
+   * Otherwise a new object will be created from the json object.
+   *
+   * @param json A Json.Object retrieved from the API.
+   */
+  public static Media from_json (Json.Object json) {
+    // Initialize the storage if needed
+    if (all_media == null) {
+      all_media = new HashTable <string, Media> (str_hash, str_equal);
+    }
+
+    // Attempt to retrieve the media from storage
+    string url   = json.get_string_member ("url");
+    string id    = url.hash ().to_string ();
+    Media? media = all_media.contains (id)
+                     ? all_media [id]
+                     : null;
+
+    // Create new object if not in storage
+    if (media == null) {
+      media = new Media.from_json_internal (json);
+      all_media [id] = media;
+    }
+
+    // Return the object
+    return media;
+  }
+
+  /**
    * Creates a Media object from a specific url.
    *
    * @param type The type for the media
    * @param media_url The url to the full media.
    * @param preview_url The url to the preview image, if available.
    */
-  public Media (MediaType type, string media_url, string? preview_url = null) {
+  private Media (MediaType type, string media_url, string? preview_url = null) {
     // Constructs the object
     Object (
       // Don't set id and alt_text
@@ -53,7 +116,7 @@ public class Backend.Mastodon.Media : Backend.Media {
    *
    * @param json A Json.Object containing the data.
    */
-  public Media.from_json (Json.Object json) {
+  private Media.from_json_internal (Json.Object json) {
     // Determine the type of this media
     string    type_string = json.get_string_member ("type");
     MediaType type_enum;
@@ -84,5 +147,10 @@ public class Backend.Mastodon.Media : Backend.Media {
       media_url:    json.get_string_member ("url")
     );
   }
+
+  /**
+   * Stores a reference to each media currently in memory.
+   */
+  private static HashTable <string, Media> all_media;
 
 }
