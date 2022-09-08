@@ -225,7 +225,7 @@ public class Backend.Twitter.Account : Backend.Account {
     posts_count     = (int) metrics.get_int_member ("tweet_count");
 
     // Set the ImageLoader for the avatar
-    avatar = new Media (PICTURE, avatar_media_url, avatar_preview_url);
+    avatar = avatar_preview_url.length > 0 ? Media.from_url (PICTURE, avatar_media_url, avatar_preview_url) : null;
     header = null;
 
     // Parse text into modules

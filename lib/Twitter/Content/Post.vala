@@ -226,7 +226,7 @@ public class Backend.Twitter.Post : Backend.Post {
           if (element.get_node_type () == OBJECT) {
             Json.Object obj = element.get_object ();
             if (obj.get_string_member("media_key") in media_keys) {
-              parsed_media += new Backend.Twitter.Media.from_json (obj);
+              parsed_media += Backend.Twitter.Media.from_json (obj);
             }
           }
         });
