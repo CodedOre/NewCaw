@@ -57,7 +57,6 @@ public class AccountRow : Adw.ActionRow {
    */
   [GtkCallback]
   private void open_in_window () {
-    print ("DEBUGPOINT 1\n");
     // Only continue with an set account
     if (account == null) {
       return;
