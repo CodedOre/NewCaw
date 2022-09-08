@@ -4,7 +4,7 @@
   "creation_date": "2021-10-04T06:19:27.000Z",
   "text": {
     "no_flags":          "A new post is there!\nLet&apos;s test one picture here:",
-    "shown_media_links": "A new post is there!\nLet&apos;s test one picture here: <a href=\"https://twitter.com/CawbirdA/status/1444910017153470465/photo/1\" title=\"https://twitter.com/CawbirdA/status/1444910017153470465/photo/1\" class=\"weblink\">pic.twitter.com/YnfnQob2nZ</a>"
+    "shown_media_links": "A new post is there!\nLet&apos;s test one picture here: <a href=\"weblink|https://twitter.com/CawbirdA/status/1444910017153470465/photo/1\" title=\"https://twitter.com/CawbirdA/status/1444910017153470465/photo/1\" class=\"weblink\">pic.twitter.com/YnfnQob2nZ</a>"
   },
   "text_modules": [
     {
