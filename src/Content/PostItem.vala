@@ -234,13 +234,58 @@ public class PostItem : Gtk.Widget {
     }
     if (uri.has_prefix ("mention|")) {
       string target = uri [8:];
-      // TODO: Open mentioned user
+      open_mentioned_user.begin (target);
     }
     if (uri.has_prefix ("weblink|")) {
       string target = uri [8:];
       Gtk.show_uri (null, target, Gdk.CURRENT_TIME);
     }
     return true;
+  }
+
+  /**
+   * Opens a mentioned user in a new UserPage.
+   *
+   * @string username The name of the mentioned user.
+   */
+  private async void open_mentioned_user (string username) {
+    Backend.User? mention = null;
+
+    // Get the account for this widget
+    var main_window = this.get_root () as MainWindow;
+    Backend.Account account = main_window != null
+                                ? main_window.account
+                                : null;
+    if (account == null) {
+      error ("Failed to get account for this view!");
+    }
+
+    // Load the user mentioned
+    var platform = PlatformEnum.get_platform_for_account (account);
+    try {
+      switch (platform) {
+#if SUPPORT_MASTODON
+        case MASTODON:
+          mention = yield Backend.Mastodon.User.from_username (username, account);
+          break;
+#endif
+#if SUPPORT_TWITTER
+        case TWITTER:
+          mention = yield Backend.Twitter.User.from_username (username, account);
+          break;
+#endif
+        default:
+          error ("PostItem: Failed to create an appropriate user object!");
+      }
+    } catch (Error e) {
+      warning (@"Failed to load mentioned user: $(e.message)\n");
+      return;
+    }
+
+    // Open a new UserPage with the user
+    if (mention != null) {
+      main_window.display_user (mention);
+    }
   }
 
   /**
