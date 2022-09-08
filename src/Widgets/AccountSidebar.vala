@@ -30,6 +30,8 @@ public class AccountSidebar : Gtk.Widget {
   [GtkChild]
   private unowned Gtk.ListBox active_list;
   [GtkChild]
+  private unowned Gtk.Separator sidebar_separator;
+  [GtkChild]
   private unowned Gtk.ListBox account_list;
 
   /**
@@ -125,6 +127,7 @@ public class AccountSidebar : Gtk.Widget {
   public override void dispose () {
     // Destructs children of AccountSidebar
     active_list.unparent ();
+    sidebar_separator.unparent ();
     account_list.unparent ();
     base.dispose ();
   }
