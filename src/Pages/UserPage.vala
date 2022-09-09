@@ -71,7 +71,7 @@ public class UserPage : Gtk.Widget {
         }
 
         // Set the view subtitle
-        page_title.subtitle = user.username;
+        page_title.subtitle = account.username;
         // Display the collection in the CollectionView
         collection_view.displayed_platform = platform;
         collection_view.collection         = timeline;
