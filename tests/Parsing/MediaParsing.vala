@@ -55,7 +55,7 @@ void run_media_test (string module, string post_json, string check_json) {
   switch (module) {
 #if SUPPORT_MASTODON
     case "Mastodon":
-      checked_post = new Backend.Mastodon.Post.from_json (post_object);
+      checked_post = Backend.Mastodon.Post.from_json (post_object);
       break;
 #endif
 #if SUPPORT_TWITTER
