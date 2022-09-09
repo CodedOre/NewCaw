@@ -129,9 +129,10 @@ public class Backend.Twitter.Post : Backend.Post {
     // Get metrics object
     Json.Object metrics = data.get_object_member ("public_metrics");
 
-    // Get author and referenced json
+    // Get author and referenced id
+    string?      parsed_id;
     Json.Object? author_obj    = parse_author (data, includes);
-    PostType     set_post_type = parse_reference (data, includes, out referenced_id);
+    PostType     set_post_type = parse_reference (data, includes, out parsed_id);
 
     // Get strings used to compose the url.
     var    post_author = author_obj  != null ? User.from_json (author_obj) : null;
@@ -162,6 +163,9 @@ public class Backend.Twitter.Post : Backend.Post {
       // Set referenced objects
       author: post_author
     );
+
+    // Set the referenced id in the new object
+    referenced_id = parsed_id;
 
     // Parse text into modules
     Json.Object? entities   = null;
@@ -342,6 +346,6 @@ public class Backend.Twitter.Post : Backend.Post {
   /**
    * The id for the referenced post.
    */
-  private string? referenced_id;
+  private string? referenced_id = null;
 
 }
