@@ -15,7 +15,7 @@
   "followers_count": 1,
   "following_count": 1,
   "posts_count":     17,
-  "description":    "This may or may not be a account from <a href=\"mention|@CodedOre\" title=\"@CodedOre\" class=\"mention\">@CodedOre</a> for testing some API&apos;s for a certain Client.",
+  "description":    "This may or may not be a account from <a href=\"mention|CodedOre\" title=\"CodedOre\" class=\"mention\">@CodedOre</a> for testing some API&apos;s for a certain Client.",
   "description_modules": [
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_TEXT",
@@ -27,7 +27,7 @@
     {
       "type":       "BACKEND_TEXT_MODULE_TYPE_MENTION",
       "display":    "@CodedOre",
-      "target":     "@CodedOre",
+      "target":     "CodedOre",
       "text_start": 38,
       "text_end":   47
     },
