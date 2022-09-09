@@ -171,9 +171,6 @@ public class PostItem : Gtk.Widget {
     Backend.Account account = main_window != null
                                 ? main_window.account
                                 : null;
-    if (account == null) {
-      error ("Failed to get account for this view!");
-    }
 
     bool has_repost, has_quote;
     Backend.Post? repost = null, quote = null;
@@ -182,7 +179,7 @@ public class PostItem : Gtk.Widget {
     try {
       has_repost = displayed_post != null && displayed_post.post_type == REPOST;
       repost     = has_repost ? displayed_post : null;
-      main_post  = has_repost
+      main_post  = has_repost && account != null
                      ? yield displayed_post.get_referenced_post (account)
                      : displayed_post;
     } catch (Error e) {
@@ -192,7 +189,7 @@ public class PostItem : Gtk.Widget {
     // Check if we have a quote
     try {
       has_quote  = main_post != null && main_post.post_type == QUOTE;
-      quote      = has_quote
+      quote      = has_quote && account != null
                      ? yield main_post.get_referenced_post (account)
                      : null;
     } catch (Error e) {
