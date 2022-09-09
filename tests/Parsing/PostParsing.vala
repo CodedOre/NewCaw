@@ -67,12 +67,7 @@ void run_post_test (string module, string post_json, string check_json) {
   // Run the checks for the post
   run_post_checks (checked_post, check_object);
 
-  // Check referenced post if checked_post is repost or quote
-  if (check_object.has_member ("referenced_post")) {
-    Backend.Post ref_post  = checked_post.referenced_post;
-    Json.Object  ref_check = check_object.get_object_member ("referenced_post");
-    run_post_checks (ref_post, ref_check);
-  }
+  // FIXME: Tests for referenced posts require an account
 }
 
 /**
