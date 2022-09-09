@@ -130,9 +130,8 @@ public class Backend.Twitter.Post : Backend.Post {
     Json.Object metrics = data.get_object_member ("public_metrics");
 
     // Get author and referenced json
-    Json.Object? referenced_obj;
     Json.Object? author_obj    = parse_author (data, includes);
-    PostType     set_post_type = parse_reference (data, includes, out referenced_obj);
+    PostType     set_post_type = parse_reference (data, includes, out referenced_id);
 
     // Get strings used to compose the url.
     var    post_author = author_obj  != null ? User.from_json (author_obj) : null;
@@ -161,8 +160,7 @@ public class Backend.Twitter.Post : Backend.Post {
                     + (int) metrics.get_int_member ("quote_count"),
 
       // Set referenced objects
-      author:          post_author,
-      referenced_post: referenced_obj != null ? Post.from_json (referenced_obj, includes) : null
+      author: post_author
     );
 
     // Parse text into modules
@@ -227,15 +225,14 @@ public class Backend.Twitter.Post : Backend.Post {
    *
    * @param data The Json.Object containing the specific Post.
    * @param includes A Json.Object including additional objects which may be related to this Post.
-   * @param parsed_obj A parameter in which the referenced post will be returned.
+   * @param parsed_id A parameter in which the id for the referenced post will be returned.
    *
    * @return The PostType the parsed post should be assigned.
    */
-  private static PostType parse_reference (Json.Object data, Json.Object includes, out Json.Object? parsed_obj = null) {
+  private static PostType parse_reference (Json.Object data, Json.Object includes, out string? parsed_id = null) {
     // Check if Post is a quote or repost
-    PostType     returned_type = NORMAL;
-    Json.Object? returned_obj  = null;
-    string       referenced_id = null;
+    PostType returned_type = NORMAL;
+    string?  returned_id   = null;
     if (data.has_member ("referenced_tweets")) {
       // Get all referenced posts
       Json.Array references = data.get_array_member ("referenced_tweets");
@@ -244,7 +241,7 @@ public class Backend.Twitter.Post : Backend.Post {
       references.foreach_element ((array, index, element) => {
         if (element.get_node_type () == OBJECT) {
           Json.Object obj = element.get_object ();
-          referenced_id   = obj.get_string_member ("id");
+          returned_id     = obj.get_string_member ("id");
           string obj_type = obj.get_string_member ("type");
           switch (obj_type) {
             case "quoted":
@@ -262,22 +259,8 @@ public class Backend.Twitter.Post : Backend.Post {
       });
     }
 
-    // Check for referenced posts
-    if (referenced_id != null && includes.has_member ("tweets")) {
-      Json.Array tweets_array = includes.get_array_member ("tweets");
-      // Look in included posts for referenced id
-      tweets_array.foreach_element ((array, index, element) => {
-        if (element.get_node_type () == OBJECT) {
-          Json.Object obj = element.get_object ();
-          if (obj.get_string_member("id") == referenced_id) {
-            returned_obj = obj;
-          }
-        }
-      });
-    }
-
     // Return the PostType
-    parsed_obj = returned_obj;
+    parsed_id = returned_id;
     return returned_type;
   }
 
@@ -332,8 +315,33 @@ public class Backend.Twitter.Post : Backend.Post {
   }
 
   /**
+   * Returns a possible post that this post referenced.
+   *
+   * If the referenced post is not in local memory,
+   * it will load said post from the servers.
+   *
+   * @param account An account to authenticate a possible loading of the post.
+   *
+   * @return The post referenced or null if none exists.
+   *
+   * @throw Error Any error that might happen while loading the post.
+   */
+  public override async Backend.Post? get_referenced_post (Backend.Account account) throws Error {
+    try {
+      return yield Post.from_id (referenced_id, account);
+    } catch (Error e) {
+      throw e;
+    }
+  }
+
+  /**
    * Stores a reference to each post currently in memory.
    */
   private static HashTable <string, Post> all_posts;
+
+  /**
+   * The id for the referenced post.
+   */
+  private string? referenced_id;
 
 }

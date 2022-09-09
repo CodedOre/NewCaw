@@ -105,7 +105,7 @@ public abstract class Backend.Post : Object {
    *
    * @throw Error Any error that might happen while loading the post.
    */
-  public abstract async Post? get_referenced_post (Account account);
+  public abstract async Post? get_referenced_post (Account account) throws Error;
 
   /**
    * Returns media attached to this Post.
