@@ -94,11 +94,8 @@ public class Backend.Mastodon.Post : Backend.Post {
       // Set the author
       author: User.from_json (json.get_object_member ("account")),
 
-      // Set PostType and referenced post
-      post_type: json.get_null_member ("reblog") ? PostType.NORMAL : PostType.REPOST,
-      referenced_post: ! json.get_null_member ("reblog")
-                         ? Post.from_json (json.get_object_member ("reblog"))
-                         : null
+      // Set PostType
+      post_type: json.get_null_member ("reblog") ? PostType.NORMAL : PostType.REPOST
     );
 
     // Parse the text into modules
@@ -106,6 +103,11 @@ public class Backend.Mastodon.Post : Backend.Post {
 
     // First format of the text.
     text = Backend.Utils.TextUtils.format_text (text_modules);
+
+    // Set the referenced post
+    referenced_post = ! json.get_null_member ("reblog")
+                        ? Post.from_json (json.get_object_member ("reblog"))
+                        : null;
 
     // Get media attachments
     Backend.Media[] parsed_media = {};
@@ -120,8 +122,29 @@ public class Backend.Mastodon.Post : Backend.Post {
   }
 
   /**
+   * Returns a possible post that this post referenced.
+   *
+   * If the referenced post is not in local memory,
+   * it will load said post from the servers.
+   *
+   * @param account An account to authenticate a possible loading of the post.
+   *
+   * @return The post referenced or null if none exists.
+   *
+   * @throw Error Any error that might happen while loading the post.
+   */
+  public override async Backend.Post? get_referenced_post (Backend.Account account) {
+    return referenced_post;
+  }
+
+  /**
    * Stores a reference to each post currently in memory.
    */
   private static HashTable <string, Post> all_posts;
+
+  /**
+   * Stores the referenced post.
+   */
+  private Post? referenced_post;
 
 }
