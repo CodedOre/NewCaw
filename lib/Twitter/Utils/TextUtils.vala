@@ -48,7 +48,7 @@ namespace Backend.Twitter.Utils.TextUtils {
             var entity         = TextModule ();
             entity.type        = TAG;
             entity.display     = "#" + obj.get_string_member ("tag");
-            entity.target      = obj.get_string_member ("tag");
+            entity.target      = "#" + obj.get_string_member ("tag");
             entity.text_start  = (uint) obj.get_int_member ("start");
             entity.text_end    = (uint) obj.get_int_member ("end");
             main_entities     += entity;
