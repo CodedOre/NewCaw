@@ -26,12 +26,43 @@ using GLib;
 public class Backend.Twitter.Post : Backend.Post {
 
   /**
+   * Returns a Post object for a given Json.Object.
+   *
+   * If an object for the post was already created, that object is returned.
+   * Otherwise a new object will be created from the json object.
+   *
+   * @param data The Json.Object containing the specific Post.
+   * @param includes A Json.Object including additional objects which may be related to this Post.
+   */
+  public static Post from_json (Json.Object data, Json.Object? includes = null) {
+    // Initialize the storage if needed
+    if (all_posts == null) {
+      all_posts = new HashTable <string, Post> (str_hash, str_equal);
+    }
+
+    // Attempt to retrieve the user from storage
+    string id   = data.get_string_member ("id");
+    Post?  post = all_posts.contains (id)
+                    ? all_posts [id]
+                    : null;
+
+    // Create new object if not in storage
+    if (post == null) {
+      post = new Post (data, includes);
+      all_posts [id] = post;
+    }
+
+    // Return the object
+    return post;
+  }
+
+  /**
    * Parses an given Json.Object and creates an Post object.
    *
    * @param data The Json.Object containing the specific Post.
    * @param includes A Json.Object including additional objects which may be related to this Post.
    */
-  public Post.from_json (Json.Object data, Json.Object includes) {
+  private Post (Json.Object data, Json.Object includes) {
     // Get metrics object
     Json.Object metrics = data.get_object_member ("public_metrics");
 
@@ -68,7 +99,7 @@ public class Backend.Twitter.Post : Backend.Post {
 
       // Set referenced objects
       author:          post_author,
-      referenced_post: referenced_obj != null ? new Post.from_json (referenced_obj, includes) : null
+      referenced_post: referenced_obj != null ? Post.from_json (referenced_obj, includes) : null
     );
 
     // Parse text into modules
@@ -236,5 +267,10 @@ public class Backend.Twitter.Post : Backend.Post {
     // Store the attached media
     return parsed_media;
   }
+
+  /**
+   * Stores a reference to each post currently in memory.
+   */
+  private static HashTable <string, Post> all_posts;
 
 }
