@@ -125,8 +125,6 @@ public class Backend.Twitter.Server : Backend.Server {
     // All extensions for a Post
     string[] post_extensions = {
       "author_id",
-      "referenced_tweets.id",
-      "referenced_tweets.id.author_id",
       "attachments.media_keys"
     };
 
