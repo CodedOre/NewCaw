@@ -285,9 +285,7 @@ public class CollectionView : Gtk.Widget {
   private bool filter_posts (Backend.Post post) {
     // Determine the type of the post
     bool is_repost = post.post_type == REPOST;
-    bool has_media = is_repost
-                       ? post.referenced_post.get_media ().length > 0
-                       : post.get_media ().length > 0;
+    bool has_media = post.get_media ().length > 0;
 
     // Check the type against the filters
     if (is_repost) {
