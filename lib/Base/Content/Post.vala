@@ -69,11 +69,6 @@ public abstract class Backend.Post : Object {
   public string url { get; construct; }
 
   /**
-   * If an post is an repost or quote, this stores the post reposted or quoted.
-   */
-  public Post? referenced_post { get; construct; }
-
-  /**
    * How often the post was liked.
    */
   public int liked_count { get; construct; }
@@ -97,6 +92,20 @@ public abstract class Backend.Post : Object {
       text = Utils.TextUtils.format_text (text_modules);
     });
   }
+
+  /**
+   * Returns a possible post that this post referenced.
+   *
+   * If the referenced post is not in local memory,
+   * it will load said post from the servers.
+   *
+   * @param account An account to authenticate a possible loading of the post.
+   *
+   * @return The post referenced or null if none exists.
+   *
+   * @throw Error Any error that might happen while loading the post.
+   */
+  public abstract async Post? get_referenced_post (Account account) throws Error;
 
   /**
    * Returns media attached to this Post.

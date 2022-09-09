@@ -26,6 +26,69 @@ using GLib;
 public class Backend.Twitter.Post : Backend.Post {
 
   /**
+   * Returns a Post object for a specific post id.
+   *
+   * If an object for the post was already created, that object is returned.
+   * Otherwise the json will be loaded from the server and an object created from it.
+   *
+   * @param id The id for the post.
+   * @param account An account to authenticate the loading of the post.
+   *
+   * @throws Error Any error that could happen while the post is loaded.
+   */
+  public static async Post from_id (string id, Backend.Account account) throws Error {
+    // Initialize the storage if needed
+    if (all_posts == null) {
+      all_posts = new HashTable <string, Post> (str_hash, str_equal);
+    }
+
+    // Attempt to retrieve the user from storage
+    Post? post = all_posts.contains (id)
+                   ? all_posts [id]
+                   : null;
+
+    // Create new object if not in storage
+    if (post == null) {
+      // Create the proxy call
+      Rest.ProxyCall call = account.create_call ();
+      call.set_method ("GET");
+      call.set_function (@"tweets/$(id)");
+      Server.append_post_fields (ref call);
+
+      // Load the user
+      Json.Node json;
+      try {
+        json = yield account.server.call (call);
+      } catch (Error e) {
+        throw e;
+      }
+      Json.Object data = json.get_object ();
+
+      // Retrieve the user json
+      Json.Object object;
+      if (data.has_member ("data")) {
+        object = data.get_object_member ("data");
+      } else {
+        error ("Could not retrieve post object!");
+      }
+
+      // Retrieve the includes json
+      Json.Object includes;
+      if (data.has_member ("includes")) {
+        includes = data.get_object_member ("includes");
+      } else {
+        includes = null;
+      }
+
+      // Create a new user from the data
+      post = Post.from_json (object, includes);
+    }
+
+    // Return the object
+    return post;
+  }
+
+  /**
    * Returns a Post object for a given Json.Object.
    *
    * If an object for the post was already created, that object is returned.
@@ -66,10 +129,10 @@ public class Backend.Twitter.Post : Backend.Post {
     // Get metrics object
     Json.Object metrics = data.get_object_member ("public_metrics");
 
-    // Get author and referenced json
-    Json.Object? referenced_obj;
+    // Get author and referenced id
+    string?      parsed_id;
     Json.Object? author_obj    = parse_author (data, includes);
-    PostType     set_post_type = parse_reference (data, includes, out referenced_obj);
+    PostType     set_post_type = parse_reference (data, includes, out parsed_id);
 
     // Get strings used to compose the url.
     var    post_author = author_obj  != null ? User.from_json (author_obj) : null;
@@ -98,9 +161,11 @@ public class Backend.Twitter.Post : Backend.Post {
                     + (int) metrics.get_int_member ("quote_count"),
 
       // Set referenced objects
-      author:          post_author,
-      referenced_post: referenced_obj != null ? Post.from_json (referenced_obj, includes) : null
+      author: post_author
     );
+
+    // Set the referenced id in the new object
+    referenced_id = parsed_id;
 
     // Parse text into modules
     Json.Object? entities   = null;
@@ -164,15 +229,14 @@ public class Backend.Twitter.Post : Backend.Post {
    *
    * @param data The Json.Object containing the specific Post.
    * @param includes A Json.Object including additional objects which may be related to this Post.
-   * @param parsed_obj A parameter in which the referenced post will be returned.
+   * @param parsed_id A parameter in which the id for the referenced post will be returned.
    *
    * @return The PostType the parsed post should be assigned.
    */
-  private static PostType parse_reference (Json.Object data, Json.Object includes, out Json.Object? parsed_obj = null) {
+  private static PostType parse_reference (Json.Object data, Json.Object includes, out string? parsed_id = null) {
     // Check if Post is a quote or repost
-    PostType     returned_type = NORMAL;
-    Json.Object? returned_obj  = null;
-    string       referenced_id = null;
+    PostType returned_type = NORMAL;
+    string?  returned_id   = null;
     if (data.has_member ("referenced_tweets")) {
       // Get all referenced posts
       Json.Array references = data.get_array_member ("referenced_tweets");
@@ -181,7 +245,7 @@ public class Backend.Twitter.Post : Backend.Post {
       references.foreach_element ((array, index, element) => {
         if (element.get_node_type () == OBJECT) {
           Json.Object obj = element.get_object ();
-          referenced_id   = obj.get_string_member ("id");
+          returned_id     = obj.get_string_member ("id");
           string obj_type = obj.get_string_member ("type");
           switch (obj_type) {
             case "quoted":
@@ -199,22 +263,8 @@ public class Backend.Twitter.Post : Backend.Post {
       });
     }
 
-    // Check for referenced posts
-    if (referenced_id != null && includes.has_member ("tweets")) {
-      Json.Array tweets_array = includes.get_array_member ("tweets");
-      // Look in included posts for referenced id
-      tweets_array.foreach_element ((array, index, element) => {
-        if (element.get_node_type () == OBJECT) {
-          Json.Object obj = element.get_object ();
-          if (obj.get_string_member("id") == referenced_id) {
-            returned_obj = obj;
-          }
-        }
-      });
-    }
-
     // Return the PostType
-    parsed_obj = returned_obj;
+    parsed_id = returned_id;
     return returned_type;
   }
 
@@ -269,8 +319,33 @@ public class Backend.Twitter.Post : Backend.Post {
   }
 
   /**
+   * Returns a possible post that this post referenced.
+   *
+   * If the referenced post is not in local memory,
+   * it will load said post from the servers.
+   *
+   * @param account An account to authenticate a possible loading of the post.
+   *
+   * @return The post referenced or null if none exists.
+   *
+   * @throw Error Any error that might happen while loading the post.
+   */
+  public override async Backend.Post? get_referenced_post (Backend.Account account) throws Error {
+    try {
+      return yield Post.from_id (referenced_id, account);
+    } catch (Error e) {
+      throw e;
+    }
+  }
+
+  /**
    * Stores a reference to each post currently in memory.
    */
   private static HashTable <string, Post> all_posts;
+
+  /**
+   * The id for the referenced post.
+   */
+  private string? referenced_id = null;
 
 }
