@@ -99,7 +99,7 @@ public class Backend.Twitter.UserTimeline : Backend.UserTimeline {
       if (element.get_node_type () == OBJECT) {
         // Create a new post object
         Json.Object obj   = element.get_object ();
-        var         post  = new Post.from_json (obj, includes);
+        var         post  = Post.from_json (obj, includes);
         store.insert (index + header_items, post);
       }
     });
