@@ -64,8 +64,15 @@ public abstract class Backend.Media : Object {
    */
   public async Gdk.Paintable get_preview (Cancellable? cancellable = null) throws Error {
     // Load the preview if not stored already
-    if (preview == null && preview_url != null) {
-      preview = yield MediaLoader.load_media (PICTURE, preview_url, cancellable);
+    if (preview == null && preview_url != null && ! preview_loading) {
+      try {
+        preview_loading = true;
+        preview = yield MediaLoader.load_media (PICTURE, preview_url, cancellable);
+      } catch (Error e) {
+        throw e;
+      } finally {
+        preview_loading = false;
+      }
     }
 
     // Return the loaded preview
@@ -86,11 +93,14 @@ public abstract class Backend.Media : Object {
    */
   public async Gdk.Paintable get_media (Cancellable? cancellable = null) throws Error  {
     // Load the media if not stored already
-    if (media == null && media_url != null) {
+    if (media == null && media_url != null && ! media_loading) {
       try {
+        media_loading = true;
         media = yield MediaLoader.load_media (media_type, media_url, cancellable);
       } catch (Error e) {
         throw e;
+      } finally {
+        media_loading = false;
       }
     }
 
@@ -104,8 +114,18 @@ public abstract class Backend.Media : Object {
   private Gdk.Paintable? preview = null;
 
   /**
+   * If an process is loading the preview.
+   */
+  private bool preview_loading = false;
+
+  /**
    * The stored media paintable.
    */
   private Gdk.Paintable? media = null;
+
+  /**
+   * If an process is loading the media.
+   */
+  private bool media_loading = false;
 
 }
