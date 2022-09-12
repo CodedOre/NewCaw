@@ -107,6 +107,8 @@ namespace Backend.Utils.TextUtils {
     while (search_trail_tags) {
       TextModule mod = modules [module_index];
       switch (mod.type) {
+        case MEDIALINK:
+        case QUOTELINK:
         case TAG:
           mark_trail_tags = true;
           break;
