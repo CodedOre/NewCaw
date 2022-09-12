@@ -134,7 +134,12 @@ public class Session : Object {
     /**
      * Retrieves the uuid for an active Account object.
      */
-    public static string? get_uuid (Backend.Account account) {
+    public static string? get_uuid (Backend.Account? account) {
+      // Check that we have an actual account
+      if (account == null) {
+        return null;
+      }
+
       // Check the account storage
       string account_uuid = null;
       Session.instance.accounts.foreach ((uuid, data) => {
@@ -227,7 +232,7 @@ public class Session : Object {
     /**
      * The UUID of the account displayed in the window.
      */
-    string account;
+    string? account;
 
     /**
      * The width of the window.
@@ -645,6 +650,10 @@ public class Session : Object {
 
       // Create a data object
       var window_data = WindowData.from_object (main);
+      // Only store WindowData if it has an valid account uuid
+      if (window_data.account.length < 1) {
+        continue;
+      }
 
       // Store data in a dictionary Variant
       var data_builder = new VariantBuilder (new VariantType ("a{sv}"));
