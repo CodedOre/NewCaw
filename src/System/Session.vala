@@ -651,7 +651,7 @@ public class Session : Object {
       // Create a data object
       var window_data = WindowData.from_object (main);
       // Only store WindowData if it has an valid account uuid
-      if (window_data.account.length < 1) {
+      if (window_data == null) {
         continue;
       }
 
