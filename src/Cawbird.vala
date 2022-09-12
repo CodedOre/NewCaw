@@ -41,8 +41,9 @@ public class Cawbird : Adw.Application {
   construct {
     // Define app actions
     ActionEntry[] action_entries = {
-      { "about", this.show_about_window },
-      { "quit",  this.quit }
+      { "about",       this.show_about_window },
+      { "preferences", this.show_preferences_window },
+      { "quit",        this.quit }
     };
     this.add_action_entries (action_entries, this);
     // Set keyboard shortcuts for these actions
@@ -176,6 +177,18 @@ public class Cawbird : Adw.Application {
 
     // Display the AboutWindow
     about_window.present ();
+  }
+
+  /**
+   * Displays an PreferencesWindow for the application.
+   *
+   * Activated by the action "app.preferences".
+   */
+  private void show_preferences_window () {
+    var window = new PreferencesWindow () {
+      transient_for = this.active_window
+    };
+    window.present ();
   }
 
   /**
