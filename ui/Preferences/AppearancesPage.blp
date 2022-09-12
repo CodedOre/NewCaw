@@ -4,4 +4,18 @@ using Adw 1;
 template PreferencesAppearancesPage : Adw.PreferencesPage {
   title: _("Appearance");
   icon-name: "appearance-symbolic";
+
+  Adw.PreferencesGroup {
+    title: _("Posts");
+
+    Adw.ActionRow {
+      title: _("Round Avatars");
+      activatable-widget: round_avatar_switch;
+
+      Gtk.Switch round_avatar_switch {
+        valign: center;
+        halign: center;
+      }
+    }
+  }
 }

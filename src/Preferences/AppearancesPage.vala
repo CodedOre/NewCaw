@@ -25,4 +25,23 @@ using GLib;
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Preferences/AppearancesPage.ui")]
 public class Preferences.AppearancesPage : Adw.PreferencesPage {
+
+  // UI-Elements of AppearancesPage
+  [GtkChild]
+  private unowned PostItem example_post_item;
+  [GtkChild]
+  private unowned Gtk.Switch round_avatar_switch;
+
+  /**
+   * Run at construction of the page.
+   */
+  construct {
+    // Bind the settings to the preferences widget
+    var settings = new Settings ("uk.co.ibboard.Cawbird");
+    settings.bind ("round-avatars",
+                   round_avatar_switch, "active",
+                   GLib.SettingsBindFlags.DEFAULT);
+
+  }
+
 }
