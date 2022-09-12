@@ -4,4 +4,22 @@ using Adw 1;
 template PreferencesAccountsPage : Adw.PreferencesPage {
   title: _("Accounts");
   icon-name: "people-symbolic";
+
+  Adw.PreferencesGroup {
+    Gtk.ListBox account_list {
+      selection-mode: none;
+
+      styles [
+        "boxed-list"
+      ]
+    }
+  }
+
+  Adw.PreferencesGroup {
+    Adw.ActionRow {
+      activatable: true;
+      title: _("Add Account");
+      icon-name: "list-add-symbolic";
+    }
+  }
 }

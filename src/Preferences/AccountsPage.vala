@@ -25,4 +25,26 @@ using GLib;
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Preferences/AccountsPage.ui")]
 public class Preferences.AccountsPage : Adw.PreferencesPage {
+
+  // UI-Elements of AccountsPage
+  [GtkChild]
+  private unowned Gtk.ListBox account_list;
+
+  /**
+   * Run at construction of the page.
+   */
+  construct {
+    account_list.bind_model (Session.instance.account_list, bind_account);
+  }
+
+  /**
+   * Binds an account to an AccountRow in the accounts list.
+   */
+  private Gtk.Widget bind_account (Object item) {
+    var account    = item as Backend.Account;
+    var widget     = new AccountRow ();
+    widget.account = account;
+    return widget;
+  }
+
 }
