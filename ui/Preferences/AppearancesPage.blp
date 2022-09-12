@@ -6,6 +6,15 @@ template PreferencesAppearancesPage : Adw.PreferencesPage {
   icon-name: "appearance-symbolic";
 
   Adw.PreferencesGroup {
+    Adw.PreferencesRow {
+      can-focus: false;
+      can-target: false;
+
+      .PostItem example_post_item {}
+    }
+  }
+
+  Adw.PreferencesGroup {
     title: _("Posts");
 
     Adw.ActionRow {

@@ -42,6 +42,53 @@ public class Preferences.AppearancesPage : Adw.PreferencesPage {
                    round_avatar_switch, "active",
                    GLib.SettingsBindFlags.DEFAULT);
 
+    // Set up the example post
+    display_example_post ();
+  }
+
+  /**
+   * Displays a example post in the page.
+   */
+  private void display_example_post () {
+    // Define the path to the example json
+    string? resource_id;
+#if SUPPORT_TWITTER
+    resource_id = "resource:///uk/co/ibboard/Cawbird/ui/Preferences/Examples/ExampleTwitterPost.json";
+#elif SUPPORT_MASTODON
+    resource_id = "resource:///uk/co/ibboard/Cawbird/ui/Preferences/Examples/ExampleMastodonPost.json";
+#else
+    warning ("No example JSON available for the page!");
+    example_post_item.post = null;
+    return;
+#endif
+
+    // Loads the json for the example post
+    try {
+      Backend.Post example_post;
+      // Load the resource as file
+      var   file     = File.new_for_uri (resource_id);
+      Bytes resource = file.load_bytes ();
+      var   stream   = new MemoryInputStream.from_bytes (resource);
+
+      // Parse the resource to the json objects
+      var json_parser = new Json.Parser ();
+      json_parser.load_from_stream (stream);
+#if SUPPORT_TWITTER
+      Json.Object root          = json_parser.get_root ().get_object ();
+      Json.Object post_data     = root.get_object_member ("data");
+      Json.Object post_includes = root.get_object_member ("includes");
+      example_post = Backend.Twitter.Post.from_json (post_data, post_includes);
+#elif SUPPORT_MASTODON
+      Json.Object post_data = json_parser.get_root ().get_object ();
+      example_post = Backend.Mastodon.Post.from_json (post_data);
+#endif
+
+      // Set the example post
+      example_post_item.post = example_post;
+    } catch (Error e) {
+      warning (@"Failed to set the example post: $(e.message)");
+      example_post_item.post = null;
+    }
   }
 
 }
