@@ -23,7 +23,7 @@ using GLib;
 /**
  * A window containing the MediaDisplay for media.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Windows/MediaDialog.ui")]
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Media/MediaDialog.ui")]
 public class MediaDialog : Adw.Window {
 
   // UI-Elements of MediaDialog
