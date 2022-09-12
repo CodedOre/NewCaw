@@ -89,12 +89,18 @@ public abstract class Backend.User : Object {
   public int posts_count { get; protected set; }
 
   /**
+   * Emitted when data in this user has changed.
+   */
+  public signal void user_updated ();
+
+  /**
    * Run while an object is constructed.
    */
   construct {
     // Reformat the description when flags were changed.
     Utils.TextFormats.instance.update_formatting.connect (() => {
       description = Utils.TextUtils.format_text (description_modules);
+      user_updated ();
     });
   }
 
