@@ -208,7 +208,8 @@ public class PostItem : Gtk.Widget {
     info_label.label   = _("%s using %s").printf (post_date, post_source);
 
     // Set the main post content
-    text_label.label = main_post != null ? main_post.text : "(null)";
+    text_label.label   = main_post != null ? main_post.text : "(null)";
+    text_label.visible = text_label.label.length > 0;
 
     // Set the media previews
     bool has_media          = main_post != null && main_post.get_media ().length > 0;

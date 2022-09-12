@@ -62,9 +62,10 @@ public class UserDisplay : Gtk.Widget {
       // Set's the UI for the new user
       if (displayed_user != null) {
         // Set names and description
-        user_display_label.label     = displayed_user.display_name;
-        user_username_label.label    = @"@$(displayed_user.username)";
-        user_description_label.label = displayed_user.description;
+        user_display_label.label       = displayed_user.display_name;
+        user_username_label.label      = @"@$(displayed_user.username)";
+        user_description_label.label   = displayed_user.description;
+        user_description_label.visible = user_description_label.label.length > 0;
 
         // Set up badges for the user
         user_badges.display_verified  = displayed_user.has_flag (VERIFIED);
