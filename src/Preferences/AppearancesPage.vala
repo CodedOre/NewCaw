@@ -31,6 +31,10 @@ public class Preferences.AppearancesPage : Adw.PreferencesPage {
   private unowned PostItem example_post_item;
   [GtkChild]
   private unowned Gtk.Switch round_avatar_switch;
+  [GtkChild]
+  private unowned Gtk.Switch trailing_tags_switch;
+  [GtkChild]
+  private unowned Gtk.Switch internal_links_switch;
 
   /**
    * Run at construction of the page.
@@ -40,6 +44,12 @@ public class Preferences.AppearancesPage : Adw.PreferencesPage {
     var settings = new Settings ("uk.co.ibboard.Cawbird");
     settings.bind ("round-avatars",
                    round_avatar_switch, "active",
+                   GLib.SettingsBindFlags.DEFAULT);
+    settings.bind ("hide-trailing-tags",
+                   trailing_tags_switch, "active",
+                   GLib.SettingsBindFlags.DEFAULT);
+    settings.bind ("hide-internal-links",
+                   internal_links_switch, "active",
                    GLib.SettingsBindFlags.DEFAULT);
 
     // Set up the example post

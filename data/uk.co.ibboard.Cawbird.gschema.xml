@@ -8,6 +8,18 @@
       </description>
       <default>true</default>
     </key>
+    <key type="b" name="hide-trailing-tags">
+      <description>
+        Hides tags after the text.
+      </description>
+      <default>false</default>
+    </key>
+    <key type="b" name="hide-internal-links">
+      <description>
+        Hides links to media or quotes (Twitter only).
+      </description>
+      <default>true</default>
+    </key>
 	</schema>
   <!-- Window Sizes -->
 	<schema id="uk.co.ibboard.Cawbird.Windows" path="/uk/co/ibboard/Cawbird/Windows/">
