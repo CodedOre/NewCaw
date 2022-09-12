@@ -44,6 +44,7 @@ cawsources += [
   'Media/MediaSelector.vala',
   'Pages/MainPage.vala',
   'Pages/UserPage.vala',
+  'Preferences/PreferencesWindow.vala',
   'System/KeyStorage.vala',
   'System/Session.vala',
   'System/SystemInfo.vala',
