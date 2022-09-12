@@ -51,6 +51,16 @@ public abstract class Backend.Media : Object {
   public string media_url { get; construct; }
 
   /**
+   * Emitted when get_preview finishes loading the preview.
+   */
+  private signal void preview_loaded ();
+
+  /**
+   * Emitted when get_media finishes loading the media.
+   */
+  private signal void media_loaded ();
+
+  /**
    * Retrieves the preview as a Gdk.Paintable.
    *
    * Loads the preview from the web asynchronously and
@@ -62,9 +72,19 @@ public abstract class Backend.Media : Object {
    *
    * @throws Error Any error that happens on loading.
    */
-  public async Gdk.Paintable get_preview (Cancellable? cancellable = null) throws Error {
-    // Load the preview if not stored already
-    if (preview == null && preview_url != null && ! preview_loading) {
+  public async Gdk.Paintable? get_preview (Cancellable? cancellable = null) throws Error {
+    // Return null if no preview_url is set
+    if (preview_url == null) {
+      return null;
+    }
+
+    // Return the fully loaded preview
+    if (preview != null) {
+      return preview;
+    }
+
+    if (! preview_loading) {
+      // If no call loads the preview, lock it and start loading
       try {
         preview_loading = true;
         preview = yield MediaLoader.load_media (PICTURE, preview_url, cancellable);
@@ -72,7 +92,15 @@ public abstract class Backend.Media : Object {
         throw e;
       } finally {
         preview_loading = false;
+        preview_loaded ();
       }
+    } else {
+      // If another call loads the preview, wait until the preview_loaded signal is emitted.
+      SourceFunc callback = get_preview.callback;
+      preview_loaded.connect (() => {
+        Idle.add ((owned) callback);
+      });
+      yield;
     }
 
     // Return the loaded preview
@@ -91,9 +119,19 @@ public abstract class Backend.Media : Object {
    *
    * @throws Error Any error that happens on loading.
    */
-  public async Gdk.Paintable get_media (Cancellable? cancellable = null) throws Error  {
-    // Load the media if not stored already
-    if (media == null && media_url != null && ! media_loading) {
+  public async Gdk.Paintable? get_media (Cancellable? cancellable = null) throws Error  {
+    // Return null if no media_url is set
+    if (media_url == null) {
+      return null;
+    }
+
+    // Return the fully loaded media
+    if (media != null) {
+      return media;
+    }
+
+    if (! media_loading) {
+      // If no call loads the media, lock it and start loading
       try {
         media_loading = true;
         media = yield MediaLoader.load_media (media_type, media_url, cancellable);
@@ -101,7 +139,15 @@ public abstract class Backend.Media : Object {
         throw e;
       } finally {
         media_loading = false;
+        media_loaded ();
       }
+    } else {
+      // If another call loads the media, wait until the media_loaded signal is emitted.
+      SourceFunc callback = get_media.callback;
+      media_loaded.connect (() => {
+        Idle.add ((owned) callback);
+      });
+      yield;
     }
 
     // Return the loaded media
