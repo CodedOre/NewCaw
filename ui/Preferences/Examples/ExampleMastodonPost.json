@@ -1,5 +1,5 @@
 {
-  "id": "108985927843021989",
+  "id": "demo-108985927843021989",
   "created_at": "2022-09-12T14:34:43.744Z",
   "in_reply_to_id": null,
   "in_reply_to_account_id": null,
@@ -59,33 +59,7 @@
       }
     ]
   },
-  "media_attachments": [
-    {
-      "id": "108985927615875127",
-      "type": "image",
-      "url": "https://files.mastodon.social/media_attachments/files/108/985/927/615/875/127/original/bad6e5439085c11a.jpeg",
-      "preview_url": "https://files.mastodon.social/media_attachments/files/108/985/927/615/875/127/small/bad6e5439085c11a.jpeg",
-      "remote_url": null,
-      "preview_remote_url": null,
-      "text_url": null,
-      "meta": {
-        "original": {
-          "width": 1983,
-          "height": 1046,
-          "size": "1983x1046",
-          "aspect": 1.895793499043977
-        },
-        "small": {
-          "width": 551,
-          "height": 291,
-          "size": "551x291",
-          "aspect": 1.8934707903780068
-        }
-      },
-      "description": null,
-      "blurhash": "UL7qseo|M0bH*IkBRjkBnQf8bbf8ozfPWCfR"
-    }
-  ],
+  "media_attachments": [],
   "mentions": [],
   "tags": [
     {
