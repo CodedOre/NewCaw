@@ -23,4 +23,9 @@ template AccountRow : Adw.ActionRow {
       "flat"
     ]
   }
+
+  Gtk.Image {
+    icon-name: "go-next-symbolic";
+    visible: bind AccountRow.show-next;
+  }
 }

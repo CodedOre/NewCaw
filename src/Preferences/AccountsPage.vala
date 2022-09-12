@@ -41,9 +41,11 @@ public class Preferences.AccountsPage : Adw.PreferencesPage {
    * Binds an account to an AccountRow in the accounts list.
    */
   private Gtk.Widget bind_account (Object item) {
-    var account    = item as Backend.Account;
-    var widget     = new AccountRow ();
-    widget.account = account;
+    var account         = item as Backend.Account;
+    var widget          = new AccountRow ();
+    widget.show_actions = false;
+    widget.show_next    = true;
+    widget.account      = account;
     return widget;
   }
 
