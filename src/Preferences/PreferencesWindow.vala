@@ -25,4 +25,22 @@ using GLib;
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Preferences/PreferencesWindow.ui")]
 public class PreferencesWindow : Adw.PreferencesWindow {
+
+  /**
+   * Run at initialization of the class.
+   */
+  class construct {
+    // Set up the account actions
+    install_action ("preferences.add-account", null, (widget, action) => {
+      var window = widget as PreferencesWindow;
+      if (window != null) {
+        var auth_view = new AuthView ();
+        window.present_subpage (auth_view);
+        auth_view.close_auth.connect (() => {
+          window.close_subpage ();
+        });
+      }
+    });
+  }
+
 }
