@@ -2,5 +2,18 @@ using Gtk 4.0;
 using Adw 1;
 
 template PreferencesAccountSettings : Gtk.Widget {
+  layout-manager: Gtk.BoxLayout {
+    orientation: vertical;
+  };
 
+  Adw.HeaderBar page_header {
+    [start]
+    Gtk.Button {
+      action-name: "preferences.close-subpage";
+      icon-name: "go-previous-symbolic";
+    }
+
+    [title]
+    Adw.WindowTitle page_title {}
+  }
 }

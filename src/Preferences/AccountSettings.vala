@@ -25,4 +25,43 @@ using GLib;
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Preferences/AccountSettings.ui")]
 public class Preferences.AccountSettings : Gtk.Widget {
+
+  // UI-Elements of AccountSettings
+  [GtkChild]
+  private unowned Adw.HeaderBar page_header;
+  [GtkChild]
+  private unowned Adw.WindowTitle page_title;
+
+  /**
+   * The account for which to set the settings.
+   */
+  public Backend.Account account {
+    get {
+      return displayed_account;
+    }
+    set {
+      displayed_account   = value;
+
+      // Set the window title to the account names
+      page_title.title    = displayed_account != null ? displayed_account.display_name    : "(null)";
+      page_title.subtitle = displayed_account != null
+                              ? DisplayUtils.prefix_username (displayed_account)
+                              : "(null)";
+    }
+  }
+
+  /**
+   * Deconstructs AccountSettings and it's childrens.
+   */
+  public override void dispose () {
+    // Deconstruct childrens
+    page_header.unparent ();
+    base.dispose ();
+  }
+
+  /**
+   * Stores the displayed account.
+   */
+  private Backend.Account? displayed_account = null;
+
 }

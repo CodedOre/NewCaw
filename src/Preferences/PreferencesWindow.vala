@@ -30,6 +30,11 @@ public class PreferencesWindow : Adw.PreferencesWindow {
    * Run at initialization of the class.
    */
   class construct {
+    // Set up a action to close a sub-page
+    install_action ("preferences.close-subpage", null, (widget, action) => {
+      var window = widget as PreferencesWindow;
+      window.close_subpage ();
+    });
     // Set up the account actions
     install_action ("preferences.add-account", null, (widget, action) => {
       var window = widget as PreferencesWindow;
@@ -49,7 +54,8 @@ public class PreferencesWindow : Adw.PreferencesWindow {
    * @param account The account to be displayed.
    */
   public void display_account_settings (Backend.Account account) {
-    var settings_view = new Preferences.AccountSettings ();
+    var settings_view     = new Preferences.AccountSettings ();
+    settings_view.account = account;
     this.present_subpage (settings_view);
   }
 
