@@ -152,6 +152,22 @@ public class Session : Object {
       return account_uuid;
     }
 
+    /**
+     * Removes the AccountData and the stored account from the system.
+     *
+     * @throws Error Any error that happened while removing the account.
+     */
+    public async void remove_data () throws Error {
+      try {
+        // Close down the account
+        yield this.data.revoke_access ();
+        // Remove access tokens
+        KeyStorage.remove_account_access (this.uuid);
+      } catch (Error e) {
+        throw e;
+      }
+    }
+
   }
 
   /**
@@ -385,6 +401,51 @@ public class Session : Object {
     }
     return account_array;
   }
+
+  /**
+   * Removes an account from the Session.
+   *
+   * @param account The account to remove.
+   *
+   * @throws Error Any error that happened while removing the account.
+   */
+  public static async void remove_account (Backend.Account account) throws Error {
+    // Remove the AccountData
+    string? account_uuid = AccountData.get_uuid (account);
+    if (account_uuid != null) {
+      var account_data = instance.accounts [account_uuid];
+      instance.accounts.remove (account_uuid);
+      try {
+        yield account_data.remove_data ();
+      } catch (Error e) {
+        throw e;
+      }
+    }
+
+    // Remove the account from the list
+    var  account_store = instance.account_list as ListStore;
+    uint list_position;
+    if (account_store.find (account, out list_position)) {
+      account_store.remove (list_position);
+    }
+
+    // Close account in MainWindows
+    foreach (Gtk.Window window in instance.application.get_windows ()) {
+      // Only check MainWindows
+      var main = window as MainWindow;
+      if (main == null || main.account != account) {
+        continue;
+      }
+
+      // If accounts still exist, change to the first
+      Backend.Account[] left_accounts = get_accounts ();
+      if (left_accounts.length > 0) {
+        main.account = left_accounts [0];
+      } else {
+        main.close ();
+      }
+    }
+}
 
   /**
    * Adds an Server to the session.
