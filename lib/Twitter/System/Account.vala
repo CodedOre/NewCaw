@@ -276,8 +276,9 @@ public class Backend.Twitter.Account : Backend.Account {
     call.set_method ("POST");
     call.set_function ("oauth2/revoke");
     call.add_header ("Content-Type", "application/x-www-form-urlencoded");
-    call.add_header ("client_id",    server.client_key);
-    call.add_header ("token",        this.access_token);
+    // FIXME: How to utilize --data-urlencode ?
+    call.add_param ("client_id", server.client_key);
+    call.add_param ("token",     this.access_token);
 
     try {
       yield server.call (call);

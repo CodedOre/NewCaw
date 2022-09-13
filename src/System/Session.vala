@@ -410,6 +410,11 @@ public class Session : Object {
    * @throws Error Any error that happened while removing the account.
    */
   public static async void remove_account (Backend.Account account) throws Error {
+    // Only continue with an account
+    if (account == null) {
+      return;
+    }
+
     // Remove the AccountData
     string? account_uuid = AccountData.get_uuid (account);
     if (account_uuid != null) {
