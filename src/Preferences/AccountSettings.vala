@@ -31,6 +31,8 @@ public class Preferences.AccountSettings : Gtk.Widget {
   private unowned Adw.HeaderBar page_header;
   [GtkChild]
   private unowned Adw.WindowTitle page_title;
+  [GtkChild]
+  private unowned Adw.Clamp page_settings;
 
   /**
    * The account for which to set the settings.
@@ -51,11 +53,54 @@ public class Preferences.AccountSettings : Gtk.Widget {
   }
 
   /**
+   * Run at initialization of the class.
+   */
+  class construct {
+    // Set up the account actions
+    install_action ("account-settings.remove-account", null, (widget, action) => {
+      // Retrieve the active window
+      var page   = widget as AccountSettings;
+      var window = page.get_root () as Gtk.Window;
+      if (page.account != null) {
+        // Create a dialog to confirm the action
+        var confirm_dialog = new Adw.MessageDialog (window,
+                                                    _("Remove this Account?"),
+                                                    _("This will remove the access for this account from your client."));
+        confirm_dialog.add_response ("cancel", _("Cancel"));
+        confirm_dialog.add_response ("remove", _("Remove Account"));
+        confirm_dialog.set_default_response ("cancel");
+        confirm_dialog.set_response_appearance ("remove", DESTRUCTIVE);
+        confirm_dialog.response.connect (page.on_remove_dialog);
+        confirm_dialog.present ();
+      }
+    });
+  }
+
+  /**
+   * Activated by the dialog confirming the account removal.
+   *
+   * @param response The response given by the dialog.
+   */
+  private void on_remove_dialog (string response) {
+    // Do nothing if response is not "remove"
+    if (response != "remove") {
+      return;
+    }
+
+    // Remove the account
+    // TODO: Add the method
+
+    // Close the subpage
+    this.activate_action ("preferences.close-subpage", null);
+  }
+
+  /**
    * Deconstructs AccountSettings and it's childrens.
    */
   public override void dispose () {
     // Deconstruct childrens
     page_header.unparent ();
+    page_settings.unparent ();
     base.dispose ();
   }
 

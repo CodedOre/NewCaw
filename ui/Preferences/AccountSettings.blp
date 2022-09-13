@@ -16,4 +16,28 @@ template PreferencesAccountSettings : Gtk.Widget {
     [title]
     Adw.WindowTitle page_title {}
   }
+
+  Adw.Clamp page_settings {
+    margin-top: 12;
+    margin-bottom: 12;
+    margin-start: 12;
+    margin-end: 12;
+
+    Adw.PreferencesGroup {
+      Adw.ActionRow {
+        activatable: true;
+        action-name: "account-settings.remove-account";
+        icon-name: "edit-delete-symbolic";
+        title: _("Remove Account");
+
+        Gtk.Image {
+          icon-name: "go-next-symbolic";
+        }
+
+        styles [
+          "destructive-action"
+        ]
+      }
+    }
+  }
 }
