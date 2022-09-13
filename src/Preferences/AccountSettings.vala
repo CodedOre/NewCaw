@@ -81,14 +81,18 @@ public class Preferences.AccountSettings : Gtk.Widget {
    *
    * @param response The response given by the dialog.
    */
-  private void on_remove_dialog (string response) {
+  private async void on_remove_dialog (string response) {
     // Do nothing if response is not "remove"
     if (response != "remove") {
       return;
     }
 
     // Remove the account
-    // TODO: Add the method
+    try {
+      yield Session.remove_account (this.account);
+    } catch (Error e) {
+      error (@"Failed to remove account properly: $(e.message)");
+    }
 
     // Close the subpage
     this.activate_action ("preferences.close-subpage", null);
