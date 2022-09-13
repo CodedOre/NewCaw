@@ -140,8 +140,10 @@ public class UserDisplay : Gtk.Widget {
   private async void update_item () {
     // Set names and description
     user_display_label.label       = displayed_user != null ? displayed_user.display_name    : "(null)";
-    user_username_label.label      = displayed_user != null ? @"@$(displayed_user.username)" : "(null)";
-    user_description_label.label   = displayed_user != null ? displayed_user.description      : "(null)";
+    user_description_label.label   = displayed_user != null ? displayed_user.description     : "(null)";
+    user_username_label.label      = displayed_user != null
+                                        ? DisplayUtils.prefix_username (displayed_user)
+                                        : "(null)";
     user_description_label.visible = user_description_label.label.length > 0;
 
     // Set up badges for the user

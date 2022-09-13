@@ -127,6 +127,34 @@ namespace DisplayUtils {
   }
 
   /**
+   * Add a "@" prefix to usernames when appropriate.
+   *
+   * @param user The user to be displayed.
+   *
+   * @return The string with the username, prefixed if Twitter user.
+   */
+  public string prefix_username (Backend.User user) {
+    var platform = PlatformEnum.get_platform_for_user (user);
+    switch (platform) {
+#if SUPPORT_MASTODON
+      case MASTODON:
+        // Only add it on Mastodon when no domain is visible
+        if (user.username.contains ("@")) {
+          return user.username;
+        } else {
+          return "@" + user.username;
+        }
+#endif
+#if SUPPORT_TWITTER
+      case TWITTER:
+        return "@" + user.username;
+#endif
+      default:
+        return user.username;
+    }
+  }
+
+  /**
    * Activated when a link in the text is clicked.
    *
    * @param uri The uri clicked in the label.
