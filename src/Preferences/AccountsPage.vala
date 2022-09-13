@@ -38,6 +38,31 @@ public class Preferences.AccountsPage : Adw.PreferencesPage {
   }
 
   /**
+   * Activated when one of the listed accounts was activated.
+   *
+   * @param widget The widget that was clicked in the account list.
+   */
+  [GtkCallback]
+  private void display_account_settings (Gtk.ListBoxRow widget) {
+    // Get the AccountRow
+    var account_row = widget as AccountRow;
+    if (account_row == null) {
+      warning ("Activated row is not AccountRow!");
+      return;
+    }
+
+    // Get the MainWindow
+    var pref_window = this.get_root () as PreferencesWindow;
+    if (pref_window == null) {
+      warning ("AccountsPage not in a PreferencesWindow, action not possible!");
+      return;
+    }
+
+    // Open the new subview
+    pref_window.display_account_settings (account_row.account);
+  }
+
+  /**
    * Binds an account to an AccountRow in the accounts list.
    */
   private Gtk.Widget bind_account (Object item) {

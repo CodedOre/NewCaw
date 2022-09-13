@@ -29,6 +29,7 @@
     <file>Media/MediaSelector.ui</file>
     <file>Pages/MainPage.ui</file>
     <file>Pages/UserPage.ui</file>
+    <file>Preferences/AccountSettings.ui</file>
     <file>Preferences/AccountsPage.ui</file>
     <file>Preferences/AppearancesPage.ui</file>
     <file>Preferences/PreferencesWindow.ui</file>

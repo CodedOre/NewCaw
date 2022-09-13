@@ -9,6 +9,8 @@ template PreferencesAccountsPage : Adw.PreferencesPage {
     Gtk.ListBox account_list {
       selection-mode: none;
 
+      row-activated => display_account_settings ();
+
       styles [
         "boxed-list"
       ]

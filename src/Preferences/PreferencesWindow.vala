@@ -43,4 +43,14 @@ public class PreferencesWindow : Adw.PreferencesWindow {
     });
   }
 
+  /**
+   * Displays an Account in a AccountSettings subview.
+   *
+   * @param account The account to be displayed.
+   */
+  public void display_account_settings (Backend.Account account) {
+    var settings_view = new Preferences.AccountSettings ();
+    this.present_subpage (settings_view);
+  }
+
 }
