@@ -52,7 +52,7 @@ public class Backend.Mastodon.User : Backend.User {
       // Create the proxy call
       Rest.ProxyCall call = account.create_call ();
       call.set_method ("GET");
-      call.set_function (@"accounts/search");
+      call.set_function (@"api/v1/accounts/search");
       call.add_param ("q", username);
       call.add_param ("limit", "1");
 
