@@ -58,24 +58,27 @@ public class UserDisplay : Gtk.Widget {
       return displayed_user;
     }
     set {
+      // Disconnect prior updaters
+      if (update_signal != null) {
+        displayed_user.disconnect (update_signal);
+      }
+
+      // Set the new value
       displayed_user = value;
-      // Set's the UI for the new user
+
+      // Connect to the data updater
       if (displayed_user != null) {
-        // Set names and description
-        user_display_label.label       = displayed_user.display_name;
-        user_username_label.label      = @"@$(displayed_user.username)";
-        user_description_label.label   = displayed_user.description;
-        user_description_label.visible = user_description_label.label.length > 0;
+        update_signal = displayed_user.user_updated.connect (update_item);
+      } else {
+        update_signal = null;
+      }
 
-        // Set up badges for the user
-        user_badges.display_verified  = displayed_user.has_flag (VERIFIED);
-        user_badges.display_bot       = displayed_user.has_flag (BOT);
-        user_badges.display_protected = displayed_user.has_flag (PROTECTED);
+      // Fill in the data
+      update_item.begin ();
 
-        // Set the labels for metrics
-        following_counter.label = _("<b>%i</b>  Following").printf (displayed_user.following_count);
-        followers_counter.label = _("<b>%i</b>  Followers").printf (displayed_user.followers_count);
-
+      // Set's the UI for the new user
+      // FIXME: We need to clear (or update) the flowbox on updates
+      if (displayed_user != null) {
         // Create a special creation date field
         var creation_field         = new Gtk.Box (HORIZONTAL, 4);
         var creation_icon          = new Gtk.Image.from_icon_name ("x-office-calendar-symbolic");
@@ -132,6 +135,28 @@ public class UserDisplay : Gtk.Widget {
   }
 
   /**
+   * Updates the properties for an UserDisplay.
+   */
+  private async void update_item () {
+    // Set names and description
+    user_display_label.label       = displayed_user != null ? displayed_user.display_name    : "(null)";
+    user_description_label.label   = displayed_user != null ? displayed_user.description     : "(null)";
+    user_username_label.label      = displayed_user != null
+                                        ? DisplayUtils.prefix_username (displayed_user)
+                                        : "(null)";
+    user_description_label.visible = user_description_label.label.length > 0;
+
+    // Set up badges for the user
+    user_badges.display_verified  = displayed_user != null ? displayed_user.has_flag (VERIFIED)  : false;
+    user_badges.display_bot       = displayed_user != null ? displayed_user.has_flag (BOT)       : false;
+    user_badges.display_protected = displayed_user != null ? displayed_user.has_flag (PROTECTED) : false;
+
+    // Set the labels for metrics
+    following_counter.label = displayed_user != null ? _("<b>%i</b>  Following").printf (displayed_user.following_count) : "(null)";
+    followers_counter.label = displayed_user != null ? _("<b>%i</b>  Followers").printf (displayed_user.followers_count) : "(null)";
+  }
+
+  /**
    * Activated when a link in the text is clicked.
    */
   [GtkCallback]
@@ -153,5 +178,10 @@ public class UserDisplay : Gtk.Widget {
    * Stores the displayed user.
    */
   private Backend.User displayed_user;
+
+  /**
+   * Stores the signal handle for updating the data of an user.
+   */
+  private ulong? update_signal = null;
 
 }

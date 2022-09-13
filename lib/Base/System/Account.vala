@@ -102,6 +102,16 @@ public abstract class Backend.Account : Backend.User {
   public abstract async void load_data () throws Error;
 
   /**
+   * Removes the account access for a client.
+   *
+   * This should only be called when the user removes the account from
+   * his client, as this removes the authentication from the server.
+   *
+   * @throws Error Any error occurring while removing the account.
+   */
+  public abstract async void revoke_access () throws Error;
+
+  /**
    * Creates a Rest.ProxyCall to perform an API call.
    *
    * @return A Rest.ProxyCall that can be then called with Server.call.

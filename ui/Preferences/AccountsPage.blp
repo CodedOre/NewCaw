@@ -1,0 +1,28 @@
+using Gtk 4.0;
+using Adw 1;
+
+template PreferencesAccountsPage : Adw.PreferencesPage {
+  title: _("Accounts");
+  icon-name: "people-symbolic";
+
+  Adw.PreferencesGroup {
+    Gtk.ListBox account_list {
+      selection-mode: none;
+
+      row-activated => display_account_settings ();
+
+      styles [
+        "boxed-list"
+      ]
+    }
+  }
+
+  Adw.PreferencesGroup {
+    Adw.ActionRow {
+      activatable: true;
+      title: _("Add Account");
+      icon-name: "list-add-symbolic";
+      action-name: "preferences.add-account";
+    }
+  }
+}

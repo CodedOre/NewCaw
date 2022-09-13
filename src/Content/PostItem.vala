@@ -97,7 +97,22 @@ public class PostItem : Gtk.Widget {
       return displayed_post;
     }
     set {
+      // Disconnect prior updaters
+      if (update_signal != null) {
+        displayed_post.disconnect (update_signal);
+      }
+
+      // Set the new value
       displayed_post = value;
+
+      // Connect to the data updater
+      if (displayed_post != null) {
+        update_signal = displayed_post.post_updated.connect (update_item);
+      } else {
+        update_signal = null;
+      }
+
+      // Fill in the data
       update_item.begin ();
     }
   }
@@ -267,6 +282,11 @@ public class PostItem : Gtk.Widget {
    * Stores the displayed repost.
    */
   private Backend.Post? displayed_post = null;
+
+  /**
+   * Stores the signal handle for updating the data of an post.
+   */
+  private ulong? update_signal = null;
 
   /**
    * Stores the post in the main view.

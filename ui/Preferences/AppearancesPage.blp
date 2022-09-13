@@ -1,0 +1,61 @@
+using Gtk 4.0;
+using Adw 1;
+
+template PreferencesAppearancesPage : Adw.PreferencesPage {
+  title: _("Appearance");
+  icon-name: "appearance-symbolic";
+
+  Adw.PreferencesGroup {
+    Adw.PreferencesRow {
+      can-focus: false;
+      can-target: false;
+
+      .PostItem example_post_item {}
+    }
+  }
+
+  Adw.PreferencesGroup {
+    title: _("Posts");
+
+    Adw.ActionRow {
+      title: _("Round Avatars");
+      activatable-widget: round_avatar_switch;
+
+      Gtk.Switch round_avatar_switch {
+        valign: center;
+        halign: center;
+      }
+    }
+
+    Adw.ActionRow {
+      title: _("Hide Trailing Tags");
+      activatable-widget: trailing_tags_switch;
+
+      Gtk.Switch trailing_tags_switch {
+        valign: center;
+        halign: center;
+      }
+    }
+
+    Adw.ActionRow {
+      title: _("Hide Internal Links");
+      subtitle: _("Links to media or quotes.");
+      activatable-widget: internal_links_switch;
+
+      [prefix]
+      Gtk.Image {
+        icon-name: "platform-twitter-symbolic";
+        tooltip-text: _("Only on Twitter");
+
+        styles [
+          "warning"
+        ]
+      }
+
+      Gtk.Switch internal_links_switch {
+        valign: center;
+        halign: center;
+      }
+    }
+  }
+}

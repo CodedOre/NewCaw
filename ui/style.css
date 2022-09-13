@@ -202,6 +202,20 @@ listview.post-list.small > row {
 }
 
 /**
+ * Styles for preferences rows doing a destructive action.
+ */
+row.destructive-action {
+  color: @destructive_bg_color;
+  background-color: transparent;
+}
+row.destructive-action:hover {
+  background-color: alpha(currentColor, .07);
+}
+row.destructive-action:active {
+  background-color: alpha(currentColor, .16);
+}
+
+/**
  * Widgets which corners are round on large clamps.
  */
 .roundable {

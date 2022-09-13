@@ -23,6 +23,7 @@ cawsources = cawresources
 cawsources += [
   'config.vapi',
   'Cawbird.vala',
+  'MainWindow.vala',
   'Authentication/AuthView.vala',
   'Authentication/BrowserPage.vala',
   'Authentication/CodePage.vala',
@@ -38,12 +39,17 @@ cawsources += [
   'Content/PostStatus.vala',
   'Content/UserCard.vala',
   'Content/UserDisplay.vala',
+  'Media/MediaDialog.vala',
   'Media/MediaDisplay.vala',
   'Media/MediaDisplayItem.vala',
   'Media/MediaPreview.vala',
   'Media/MediaSelector.vala',
   'Pages/MainPage.vala',
   'Pages/UserPage.vala',
+  'Preferences/AccountSettings.vala',
+  'Preferences/AccountsPage.vala',
+  'Preferences/AppearancesPage.vala',
+  'Preferences/PreferencesWindow.vala',
   'System/KeyStorage.vala',
   'System/Session.vala',
   'System/SystemInfo.vala',
@@ -56,9 +62,7 @@ cawsources += [
   'Widgets/CroppedPicture.vala',
   'Widgets/UserAvatar.vala',
   'Widgets/UserButton.vala',
-  'Widgets/WaitingButton.vala',
-  'Windows/MainWindow.vala',
-  'Windows/MediaDialog.vala'
+  'Widgets/WaitingButton.vala'
 ]
 
 # Add build configurations

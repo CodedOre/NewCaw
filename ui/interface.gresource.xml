@@ -7,6 +7,7 @@
   </gresource>
   <!-- UI Files -->
   <gresource prefix="/uk/co/ibboard/Cawbird/ui">
+    <file>MainWindow.ui</file>
     <file>Authentication/AuthView.ui</file>
     <file>Authentication/BrowserPage.ui</file>
     <file>Authentication/CodePage.ui</file>
@@ -22,11 +23,18 @@
     <file>Content/PostStatus.ui</file>
     <file>Content/UserCard.ui</file>
     <file>Content/UserDisplay.ui</file>
+    <file>Media/MediaDialog.ui</file>
     <file>Media/MediaDisplay.ui</file>
     <file>Media/MediaDisplayItem.ui</file>
     <file>Media/MediaSelector.ui</file>
     <file>Pages/MainPage.ui</file>
     <file>Pages/UserPage.ui</file>
+    <file>Preferences/AccountSettings.ui</file>
+    <file>Preferences/AccountsPage.ui</file>
+    <file>Preferences/AppearancesPage.ui</file>
+    <file>Preferences/PreferencesWindow.ui</file>
+    <file>Preferences/Examples/ExampleMastodonPost.json</file>
+    <file>Preferences/Examples/ExampleTwitterPost.json</file>
     <file>Widgets/AccountRow.ui</file>
     <file>Widgets/AccountSidebar.ui</file>
     <file>Widgets/BadgesBox.ui</file>
@@ -34,7 +42,5 @@
     <file>Widgets/UserAvatar.ui</file>
     <file>Widgets/UserButton.ui</file>
     <file>Widgets/WaitingButton.ui</file>
-    <file>Windows/MainWindow.ui</file>
-    <file>Windows/MediaDialog.ui</file>
   </gresource>
 </gresources>

@@ -21,7 +21,7 @@
 /**
  * The main window of the application, also responsible for new windows.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Windows/MainWindow.ui")]
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/MainWindow.ui")]
 public class MainWindow : Adw.ApplicationWindow {
 
   // UI-Elements of MainWindow

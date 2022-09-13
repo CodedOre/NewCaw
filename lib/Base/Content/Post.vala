@@ -84,12 +84,18 @@ public abstract class Backend.Post : Object {
   public int reposted_count { get; construct; }
 
   /**
+   * Emitted when data in this post has changed.
+   */
+  public signal void post_updated ();
+
+  /**
    * Run while an object is constructed.
    */
   construct {
     // Reformat the text when flags were changed.
     Utils.TextFormats.instance.update_formatting.connect (() => {
       text = Utils.TextUtils.format_text (text_modules);
+      post_updated ();
     });
   }
 

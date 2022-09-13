@@ -26,6 +26,33 @@ using GLib;
 public class Cawbird : Adw.Application {
 
   /**
+   * Property for the trailing tags setting.
+   */
+  protected bool trailing_tags_hidden {
+    get {
+      return trailing_tags_hidden_store;
+    }
+    set {
+      trailing_tags_hidden_store  = value;
+      Backend.Utils.TextFormats.set_format_flag (HIDE_TRAILING_TAGS, value);
+    }
+  }
+
+  /**
+   * Property for the internal links setting.
+   */
+  protected bool internal_links_hidden {
+    get {
+      return internal_links_hidden_store;
+    }
+    set {
+      internal_links_hidden_store  = value;
+      Backend.Utils.TextFormats.set_format_flag (SHOW_QUOTE_LINKS, ! value);
+      Backend.Utils.TextFormats.set_format_flag (SHOW_MEDIA_LINKS, ! value);
+    }
+  }
+
+  /**
    * Create the object.
    */
   public Cawbird () {
@@ -41,13 +68,23 @@ public class Cawbird : Adw.Application {
   construct {
     // Define app actions
     ActionEntry[] action_entries = {
-      { "about", this.show_about_window },
-      { "quit",  this.quit }
+      { "about",       this.show_about_window },
+      { "preferences", this.show_preferences_window },
+      { "quit",        this.quit }
     };
     this.add_action_entries (action_entries, this);
     // Set keyboard shortcuts for these actions
     this.set_accels_for_action ("app.quit", {"<primary>q"});
     this.set_accels_for_action ("window.close", {"<primary>w"});
+
+    // Bind text format options to gsettings
+    var settings = new Settings ("uk.co.ibboard.Cawbird");
+    settings.bind ("hide-trailing-tags",
+                   this, "trailing-tags-hidden",
+                   GLib.SettingsBindFlags.DEFAULT);
+    settings.bind ("hide-internal-links",
+                   this, "internal-links-hidden",
+                   GLib.SettingsBindFlags.DEFAULT);
   }
 
   /**
@@ -179,6 +216,18 @@ public class Cawbird : Adw.Application {
   }
 
   /**
+   * Displays an PreferencesWindow for the application.
+   *
+   * Activated by the action "app.preferences".
+   */
+  private void show_preferences_window () {
+    var window = new PreferencesWindow () {
+      transient_for = this.active_window
+    };
+    window.present ();
+  }
+
+  /**
    * The main method.
    */
   public static int main (string[] args) {
@@ -191,5 +240,15 @@ public class Cawbird : Adw.Application {
     // Run the app
     return new Cawbird ().run (args);
   }
+
+  /**
+   * Stores the trailing tags setting.
+   */
+  private bool trailing_tags_hidden_store;
+
+  /**
+   * Stores the internal links setting.
+   */
+  private bool internal_links_hidden_store;
 
 }

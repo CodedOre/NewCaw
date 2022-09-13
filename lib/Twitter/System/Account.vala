@@ -264,6 +264,30 @@ public class Backend.Twitter.Account : Backend.Account {
   }
 
   /**
+   * Removes the account access for a client.
+   *
+   * This should only be called when the user removes the account from
+   * his client, as this removes the authentication from the server.
+   *
+   * @throws Error Any error occurring while removing the account.
+   */
+  public override async void revoke_access () throws Error {
+    var call = this.create_call ();
+    call.set_method ("POST");
+    call.set_function ("oauth2/revoke");
+    call.add_header ("Content-Type", "application/x-www-form-urlencoded");
+    // FIXME: How to utilize --data-urlencode ?
+    call.add_param ("client_id", server.client_key);
+    call.add_param ("token",     this.access_token);
+
+    try {
+      yield server.call (call);
+    } catch (Error e) {
+      throw e;
+    }
+  }
+
+  /**
    * A CodeChallenge used to verify the authentication process.
    */
   private Rest.PkceCodeChallenge? auth_challenge = null;

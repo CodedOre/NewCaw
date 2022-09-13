@@ -61,7 +61,7 @@ public class Backend.Mastodon.HomeTimeline : Backend.HomeTimeline {
     // Create the proxy call
     Rest.ProxyCall call = call_account.create_call ();
     call.set_method ("GET");
-    call.set_function (@"timelines/home");
+    call.set_function (@"api/v1/timelines/home");
     call.add_param ("limit", "100");
     if (last_post_id != null) {
       call.add_param ("min_id", last_post_id);

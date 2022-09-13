@@ -36,6 +36,11 @@ public class AccountRow : Adw.ActionRow {
   public bool show_actions { get; set; default = true; }
 
   /**
+   * If additional actions should be shown.
+   */
+  public bool show_next { get; set; default = false; }
+
+  /**
    * The Account which is displayed.
    */
   public Backend.Account account {
