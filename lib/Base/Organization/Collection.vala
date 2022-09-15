@@ -63,7 +63,7 @@ public abstract class Backend.Collection : Object {
     }
 
     // Find the post before the parameter
-    var prev_post = store.get_item (index--) as Post;
+    var prev_post = store.get_item (index - 1) as Post;
     if (prev_post != null) {
       // Return the result
       return post.replied_to_id == prev_post.id;
@@ -92,7 +92,7 @@ public abstract class Backend.Collection : Object {
     }
 
     // Find the post before the parameter
-    var next_post = store.get_item (index++) as Post;
+    var next_post = store.get_item (index + 1) as Post;
     if (next_post != null) {
       // Return the result
       return next_post.replied_to_id == post.id;
