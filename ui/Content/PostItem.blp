@@ -9,6 +9,7 @@ template PostItem : Gtk.Widget {
   };
 
   .PostStatus repost_status {
+    show-previous: bind PostItem.connect-to-previous;
     display-inline: true;
     show-time: true;
     is-repost: true;
@@ -23,7 +24,7 @@ template PostItem : Gtk.Widget {
       width-request: 48;
 
       Gtk.Separator next_line {
-        visible: false;
+        visible: bind PostItem.connect-to-next;
         halign: center;
         orientation: vertical;
       }

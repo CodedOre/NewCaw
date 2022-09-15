@@ -46,9 +46,11 @@ public class Backend.Twitter.HomeTimeline : Backend.HomeTimeline {
     // Add PseudoItems for the headers
     header_items = headers.length;
     var store    = post_list as ListStore;
+    int header_i = 0;
     foreach (string name in headers) {
-      var item = new PseudoItem (name);
+      var item = new PseudoItem (header_i, name);
       store.append (item);
+      header_i++;
     }
   }
   
@@ -99,9 +101,12 @@ public class Backend.Twitter.HomeTimeline : Backend.HomeTimeline {
         // Create a new post object
         Json.Object obj   = element.get_object ();
         var         post  = Post.from_json (obj, includes);
-        store.insert (index + header_items, post);
+        store.append (post);
       }
     });
+
+    // Sort the list
+    store.sort (compare_items);
   }
 
   /**

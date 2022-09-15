@@ -118,6 +118,16 @@ public class PostItem : Gtk.Widget {
   }
 
   /**
+   * If a line to the previous PostItem should be drawn.
+   */
+  public bool connect_to_previous { get; set; }
+
+  /**
+   * If a line to the next PostItem should be drawn.
+   */
+  public bool connect_to_next { get; set; }
+
+  /**
    * Creates a new PostItem with an specific display_mode.
    *
    * @param mode The display mode for this PostDisplay.
@@ -215,7 +225,7 @@ public class PostItem : Gtk.Widget {
     repost_status.visible     = has_repost;
     repost_status.post        = repost;
     post_status.post          = main_post;
-    post_status.show_previous = has_repost;
+    post_status.show_previous = has_repost || connect_to_previous;
 
     // Set the main post information
     string post_date   = main_post != null ? main_post.creation_date.format ("%x, %X") : "(null)";
