@@ -58,8 +58,11 @@ public abstract class Backend.Collection : Object {
   protected int compare_items (Object a, Object b) {
     // Sort PseudoItems according to their index
     if (a is PseudoItem && b is PseudoItem) {
+      // Retrieve the items
       var pseudo_a = a as PseudoItem;
       var pseudo_b = b as PseudoItem;
+
+      // Sort the items using the set index
       uint x = pseudo_a.index;
       uint y = pseudo_b.index;
       return (int) (x > y) - (int) (x < y);
@@ -75,15 +78,24 @@ public abstract class Backend.Collection : Object {
 
     // Sort Posts
     if (a is Post && b is Post) {
+      // Retrieve the posts
       var post_a = a as Post;
       var post_b = b as Post;
+
+      // Check if one post replies to the other
+      bool a_replied_b = post_a.replied_to_id == post_b.id;
+      bool b_replied_a = post_b.replied_to_id == post_a.id;
+      if (a_replied_b || b_replied_a) {
+        return (int) (a_replied_b) - (int) (b_replied_a);
+      }
+
+      // Otherwise sort by the date
       DateTime x = post_a.creation_date;
       DateTime y = post_b.creation_date;
       return -1 * x.compare (y);
     }
 
     // If nothing fits, return 0
-    assert_not_reached ();
     return 0;
   }
 
