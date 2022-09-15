@@ -29,6 +29,11 @@ using GLib;
 public class Backend.PseudoItem : Object {
 
   /**
+   * An index used while sorting the collection to order multiple PseudoItems.
+   */
+  public int index { get; construct; }
+
+  /**
    * An description for the UI to place the right widget.
    */
   public string description { get; construct; }
@@ -36,10 +41,12 @@ public class Backend.PseudoItem : Object {
   /**
    * Creates an instance of this object.
    *
-   * @string description An description for the UI to place the right widget.
+   * @param index An index used while sorting the collection to order multiple PseudoItems.
+   * @param description An description for the UI to place the right widget.
    */
-  internal PseudoItem (string description) {
+  internal PseudoItem (int index, string description) {
     Object (
+      index: index,
       description: description
     );
   }

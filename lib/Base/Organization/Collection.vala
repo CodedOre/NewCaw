@@ -43,6 +43,51 @@ public abstract class Backend.Collection : Object {
   public abstract async void pull_posts () throws Error;
 
   /**
+   * Compares two posts while sorting the list.
+   *
+   * The sorting is mostly reverse chronological, with a few exceptions.
+   * Any item that is not a Post, particular PseudoItems, will be placed on top.
+   * Also, if multiple posts that build a reply chain are found, the posts will
+   * be sorted chronological for a better understanding of the reply chain.
+   *
+   * @param a The first object to compare.
+   * @param b The second object to compare.
+   *
+   * @return How to sort both posts (positive when a before b, negative when b before a).
+   */
+  protected int compare_items (Object a, Object b) {
+    // Sort PseudoItems according to their index
+    if (a is PseudoItem && b is PseudoItem) {
+      var pseudo_a = a as PseudoItem;
+      var pseudo_b = b as PseudoItem;
+      uint x = pseudo_a.index;
+      uint y = pseudo_b.index;
+      return (int) (x > y) - (int) (x < y);
+    }
+
+    // Sort Post and not Post
+    if (a is Post && ! (b is Post)) {
+      return 1;
+    }
+    if (! (a is Post) && b is Post) {
+      return -1;
+    }
+
+    // Sort Posts
+    if (a is Post && b is Post) {
+      var post_a = a as Post;
+      var post_b = b as Post;
+      DateTime x = post_a.creation_date;
+      DateTime y = post_b.creation_date;
+      return -1 * x.compare (y);
+    }
+
+    // If nothing fits, return 0
+    assert_not_reached ();
+    return 0;
+  }
+
+  /**
    * The id from the latest pulled Post.
    */
   protected string? last_post_id = null;
