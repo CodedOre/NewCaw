@@ -226,6 +226,11 @@ public class CollectionView : Gtk.Widget {
     if (post_item != null) {
       post_item.post = null;
     }
+
+    // Unbind header widgets from the listview
+    if (item.child == header || item.child == list_separator || item.child == filter_options) {
+      item.child = null;
+    }
   }
 
   /**
