@@ -8,17 +8,17 @@
       </description>
       <default>true</default>
     </key>
-    <key type="b" name="hide-trailing-tags">
+    <key type="b" name="trailing-tags">
       <description>
-        Hides tags after the text.
+        If to show tags after the text.
       </description>
       <default>false</default>
     </key>
-    <key type="b" name="hide-internal-links">
+    <key type="b" name="internal-links">
       <description>
-        Hides links to media or quotes (Twitter only).
+        If to show links to media or quotes (Twitter only).
       </description>
-      <default>true</default>
+      <default>false</default>
     </key>
 	</schema>
   <!-- Window Sizes -->

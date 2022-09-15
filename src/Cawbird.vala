@@ -28,27 +28,27 @@ public class Cawbird : Adw.Application {
   /**
    * Property for the trailing tags setting.
    */
-  protected bool trailing_tags_hidden {
+  protected bool trailing_tags_shown {
     get {
-      return trailing_tags_hidden_store;
+      return trailing_tags_shown_store;
     }
     set {
-      trailing_tags_hidden_store  = value;
-      Backend.Utils.TextFormats.set_format_flag (HIDE_TRAILING_TAGS, value);
+      Backend.Utils.TextFormats.set_format_flag (HIDE_TRAILING_TAGS, ! value);
+      trailing_tags_shown_store = value;
     }
   }
 
   /**
    * Property for the internal links setting.
    */
-  protected bool internal_links_hidden {
+  protected bool internal_links_shown {
     get {
-      return internal_links_hidden_store;
+      return internal_links_shown_store;
     }
     set {
-      internal_links_hidden_store  = value;
-      Backend.Utils.TextFormats.set_format_flag (SHOW_QUOTE_LINKS, ! value);
-      Backend.Utils.TextFormats.set_format_flag (SHOW_MEDIA_LINKS, ! value);
+      internal_links_shown_store = value;
+      Backend.Utils.TextFormats.set_format_flag (SHOW_QUOTE_LINKS, value);
+      Backend.Utils.TextFormats.set_format_flag (SHOW_MEDIA_LINKS, value);
     }
   }
 
@@ -79,11 +79,11 @@ public class Cawbird : Adw.Application {
 
     // Bind text format options to gsettings
     var settings = new Settings ("uk.co.ibboard.Cawbird");
-    settings.bind ("hide-trailing-tags",
-                   this, "trailing-tags-hidden",
+    settings.bind ("trailing-tags",
+                   this, "trailing-tags-shown",
                    GLib.SettingsBindFlags.DEFAULT);
-    settings.bind ("hide-internal-links",
-                   this, "internal-links-hidden",
+    settings.bind ("internal-links",
+                   this, "internal-links-shown",
                    GLib.SettingsBindFlags.DEFAULT);
   }
 
@@ -244,11 +244,11 @@ public class Cawbird : Adw.Application {
   /**
    * Stores the trailing tags setting.
    */
-  private bool trailing_tags_hidden_store;
+  private bool trailing_tags_shown_store;
 
   /**
    * Stores the internal links setting.
    */
-  private bool internal_links_hidden_store;
+  private bool internal_links_shown_store;
 
 }

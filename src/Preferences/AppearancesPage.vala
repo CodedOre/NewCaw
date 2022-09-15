@@ -45,10 +45,10 @@ public class Preferences.AppearancesPage : Adw.PreferencesPage {
     settings.bind ("round-avatars",
                    round_avatar_switch, "active",
                    GLib.SettingsBindFlags.DEFAULT);
-    settings.bind ("hide-trailing-tags",
+    settings.bind ("trailing-tags",
                    trailing_tags_switch, "active",
                    GLib.SettingsBindFlags.DEFAULT);
-    settings.bind ("hide-internal-links",
+    settings.bind ("internal-links",
                    internal_links_switch, "active",
                    GLib.SettingsBindFlags.DEFAULT);
 
