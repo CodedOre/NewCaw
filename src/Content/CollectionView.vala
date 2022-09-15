@@ -293,10 +293,15 @@ public class CollectionView : Gtk.Widget {
    */
   private bool filter_posts (Backend.Post post) {
     // Determine the type of the post
+    bool is_reply  = post.replied_to_id != null;
+    bool in_thread = collection.connected_to_previous (post) || collection.connected_to_next (post) ;
     bool is_repost = post.post_type == REPOST;
     bool has_media = post.get_media ().length > 0;
 
     // Check the type against the filters
+    if (is_reply && ! in_thread) {
+      return filter_options.display_replies;
+    }
     if (is_repost) {
       return filter_options.display_reposts;
     }
