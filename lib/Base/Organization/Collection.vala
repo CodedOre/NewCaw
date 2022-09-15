@@ -43,6 +43,64 @@ public abstract class Backend.Collection : Object {
   public abstract async void pull_posts () throws Error;
 
   /**
+   * Checks if a post in the list replies to the post previous to it.
+   *
+   * @param post The post to check for.
+   *
+   * @return If the post replies to the post previous to it.
+   */
+  public bool connected_to_previous (Post post) {
+    // Retrieve the post list as ListStore
+    var store = post_list as ListStore;
+    if (store == null) {
+      return false;
+    }
+
+    // Check if the post exists in the list
+    uint index;
+    if (! store.find (post, out index)) {
+      return false;
+    }
+
+    // Find the post before the parameter
+    var prev_post = store.get_item (index--) as Post;
+    if (prev_post != null) {
+      // Return the result
+      return post.replied_to_id == prev_post.id;
+    }
+    return false;
+  }
+
+  /**
+   * Checks if a post in the list replies to the post next to it.
+   *
+   * @param post The post to check for.
+   *
+   * @return If the post replies to the post next to it.
+   */
+  public bool connected_to_next (Post post) {
+    // Retrieve the post list as ListStore
+    var store = post_list as ListStore;
+    if (store == null) {
+      return false;
+    }
+
+    // Check if the post exists in the list
+    uint index;
+    if (! store.find (post, out index)) {
+      return false;
+    }
+
+    // Find the post before the parameter
+    var next_post = store.get_item (index++) as Post;
+    if (next_post != null) {
+      // Return the result
+      return next_post.replied_to_id == post.id;
+    }
+    return false;
+  }
+
+  /**
    * Compares two posts while sorting the list.
    *
    * The sorting is mostly reverse chronological, with a few exceptions.
