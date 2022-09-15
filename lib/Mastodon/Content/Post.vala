@@ -82,6 +82,9 @@ public class Backend.Mastodon.Post : Backend.Post {
                        new TimeZone.utc ()
                      ),
 
+      // Set PostType
+      post_type: json.get_null_member ("reblog") ? PostType.NORMAL : PostType.REPOST,
+
       // Set url and domain
       url:    post_url,
       domain: post_domain,
@@ -94,8 +97,8 @@ public class Backend.Mastodon.Post : Backend.Post {
       // Set the author
       author: User.from_json (json.get_object_member ("account")),
 
-      // Set PostType
-      post_type: json.get_null_member ("reblog") ? PostType.NORMAL : PostType.REPOST
+      // Set replied_to_id
+      replied_to_id: json.get_string_member ("in_reply_to_id")
     );
 
     // Parse the text into modules

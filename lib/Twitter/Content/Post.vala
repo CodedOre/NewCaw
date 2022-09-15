@@ -130,9 +130,9 @@ public class Backend.Twitter.Post : Backend.Post {
     Json.Object metrics = data.get_object_member ("public_metrics");
 
     // Get author and referenced id
-    string?      parsed_id;
+    string?      repost_id, reply_id;
     Json.Object? author_obj    = parse_author (data, includes);
-    PostType     set_post_type = parse_reference (data, includes, out parsed_id);
+    PostType     set_post_type = parse_reference (data, includes, out repost_id, out reply_id);
 
     // Get strings used to compose the url.
     var    post_author = author_obj  != null ? User.from_json (author_obj) : null;
@@ -161,11 +161,12 @@ public class Backend.Twitter.Post : Backend.Post {
                     + (int) metrics.get_int_member ("quote_count"),
 
       // Set referenced objects
-      author: post_author
+      author:        post_author,
+      replied_to_id: reply_id
     );
 
     // Set the referenced id in the new object
-    referenced_id = parsed_id;
+    referenced_id = repost_id;
 
     // Parse text into modules
     Json.Object? entities   = null;
@@ -229,14 +230,16 @@ public class Backend.Twitter.Post : Backend.Post {
    *
    * @param data The Json.Object containing the specific Post.
    * @param includes A Json.Object including additional objects which may be related to this Post.
-   * @param parsed_id A parameter in which the id for the referenced post will be returned.
+   * @param repost_id A parameter in which the id for a repost will be returned.
+   * @param reply_id A parameter in which the id for a reply will be returned.
    *
    * @return The PostType the parsed post should be assigned.
    */
-  private static PostType parse_reference (Json.Object data, Json.Object includes, out string? parsed_id = null) {
+  private static PostType parse_reference (Json.Object data, Json.Object includes, out string? repost_id = null, out string? reply_id = null) {
     // Check if Post is a quote or repost
-    PostType returned_type = NORMAL;
-    string?  returned_id   = null;
+    PostType returned_type      = NORMAL;
+    string?  returned_repost_id = null;
+    string?  returned_reply_id  = null;
     if (data.has_member ("referenced_tweets")) {
       // Get all referenced posts
       Json.Array references = data.get_array_member ("referenced_tweets");
@@ -245,16 +248,18 @@ public class Backend.Twitter.Post : Backend.Post {
       references.foreach_element ((array, index, element) => {
         if (element.get_node_type () == OBJECT) {
           Json.Object obj = element.get_object ();
-          returned_id     = obj.get_string_member ("id");
           string obj_type = obj.get_string_member ("type");
           switch (obj_type) {
             case "quoted":
               returned_type = QUOTE;
+              returned_repost_id = obj.get_string_member ("id");
               break;
             case "retweeted":
               returned_type = REPOST;
+              returned_repost_id = obj.get_string_member ("id");
               break;
             case "replied_to":
+              returned_reply_id = obj.get_string_member ("id");
               break;
             default:
               error ("Could not create referenced_post for this Post: Unknown object type!");
@@ -264,7 +269,8 @@ public class Backend.Twitter.Post : Backend.Post {
     }
 
     // Return the PostType
-    parsed_id = returned_id;
+    repost_id = returned_repost_id;
+    reply_id  = returned_reply_id;
     return returned_type;
   }
 

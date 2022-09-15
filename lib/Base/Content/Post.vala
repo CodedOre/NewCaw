@@ -84,6 +84,11 @@ public abstract class Backend.Post : Object {
   public int reposted_count { get; construct; }
 
   /**
+   * The id for the post this post replies to.
+   */
+  public string? replied_to_id { get; construct; }
+
+  /**
    * Emitted when data in this post has changed.
    */
   public signal void post_updated ();
