@@ -201,9 +201,13 @@ public class CollectionView : Gtk.Widget {
       item.child = new PostItem ();
     }
 
-    // Display the post
     var post_item = item.child as PostItem;
     if (post_item != null) {
+      // Set the connecting lines
+      post_item.connect_to_previous = collection.connected_to_previous (post);
+      post_item.connect_to_next     = collection.connected_to_next (post);
+
+      // Display the post
       post_item.post = post;
     }
   }
