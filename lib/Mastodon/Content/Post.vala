@@ -98,7 +98,9 @@ public class Backend.Mastodon.Post : Backend.Post {
       author: User.from_json (json.get_object_member ("account")),
 
       // Set replied_to_id
-      replied_to_id: json.get_string_member ("in_reply_to_id")
+      replied_to_id: ! json.get_null_member ("in_reply_to_id")
+                       ? json.get_string_member ("in_reply_to_id")
+                       : null
     );
 
     // Parse the text into modules
