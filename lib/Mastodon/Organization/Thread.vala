@@ -46,6 +46,43 @@ public class Backend.Mastodon.Thread : Backend.Thread {
    * @throws Error Any error that happened while pulling the posts.
    */
   public override async void pull_posts () throws Error {
+    // Create the proxy call
+    Rest.ProxyCall call = call_account.create_call ();
+    call.set_method ("GET");
+    call.set_function (@"api/v1/statuses/$(main_post.id)/context");
+
+    // Load the timeline
+    Json.Node json;
+    try {
+      json = yield call_account.server.call (call);
+    } catch (Error e) {
+      throw e;
+    }
+    Json.Object data      = json.get_object ();
+    Json.Array  preceding = data.get_array_member ("ancestors");
+    Json.Array  following = data.get_array_member ("descendants");
+
+    // Parse the posts from the json
+    var store = post_list as ListStore;
+    preceding.foreach_element ((array, index, element) => {
+      if (element.get_node_type () == OBJECT) {
+        // Create a new post object
+        Json.Object obj  = element.get_object ();
+        var         post = Post.from_json (obj);
+        store.append (post);
+      }
+    });
+    following.foreach_element ((array, index, element) => {
+      if (element.get_node_type () == OBJECT) {
+        // Create a new post object
+        Json.Object obj  = element.get_object ();
+        var         post = Post.from_json (obj);
+        store.append (post);
+      }
+    });
+
+    // Sort the list
+    store.sort (compare_items);
   }
 
 }
