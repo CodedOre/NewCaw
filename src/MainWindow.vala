@@ -131,6 +131,28 @@ public class MainWindow : Adw.ApplicationWindow {
   }
 
   /**
+   * Display a post in a new ThreadPage.
+   *
+   * @param post The post to be displayed.
+   */
+  public void display_thread (Backend.Post post) {
+    // Check if a ThreadPage is active
+    var current_page = main_view.visible_child as ThreadPage;
+    if (current_page != null) {
+      // Check if the post is already displayed
+      if (current_page.post == post) {
+        return;
+      }
+    }
+
+    // Create the new page and make it visible
+    var thread_page = new ThreadPage ();
+    main_view.append (thread_page);
+    thread_page.post = post;
+    main_view.set_visible_child (thread_page);
+  }
+
+  /**
    * Activated when the window should be closed.
    *
    * This quits the application when the last window is closed, so that at least
