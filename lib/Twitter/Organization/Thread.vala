@@ -24,4 +24,28 @@ using GLib;
  * Provides the utilities to display a thread based on a post.
  */
 public class Backend.Twitter.Thread : Backend.Thread {
+
+  /**
+   * Creates a new Thread object for a given main post.
+   *
+   * @param main_post The main post which serves as the focus for this thread.
+   * @param account The Account used for making the API calls.
+   */
+  public Thread (Post main_post, Account account) {
+    // Construct the object
+    Object (
+      post_list: new ListStore (typeof (Object)),
+      call_account: account,
+      main_post: main_post
+    );
+  }
+
+  /**
+   * Calls the API to get the posts for the Collection.
+   *
+   * @throws Error Any error that happened while pulling the posts.
+   */
+  public override async void pull_posts () throws Error {
+  }
+
 }

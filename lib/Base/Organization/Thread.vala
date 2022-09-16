@@ -27,21 +27,11 @@ using GLib;
  * "main post". It will display all posts preceding the main post until
  * the top one, as well as all replies to the main post.
  */
-public abstract class Backend.Thread : Object {
-
-  /**
-   * The list of posts displayed in this thread.
-   */
-  public ListModel post_list { get; construct; }
+public abstract class Backend.Thread : Backend.Collection {
 
   /**
    * The post from which the thread is build.
    */
   public Post main_post { get; construct; }
-
-  /**
-   * An Account used to make the API calls.
-   */
-  public Account call_account { get; construct; }
 
 }

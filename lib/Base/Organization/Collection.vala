@@ -33,7 +33,7 @@ public abstract class Backend.Collection : Object {
   /**
    * An Account used to make the API calls.
    */
-  protected Account call_account { get; set; }
+  public Account call_account { get; construct; }
 
   /**
    * Calls the API to get the posts for the Collection.
