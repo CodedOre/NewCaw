@@ -31,7 +31,7 @@ public class Backend.Mastodon.Thread : Backend.Thread {
    * @param main_post The main post which serves as the focus for this thread.
    * @param account The Account used for making the API calls.
    */
-  public Thread (Post main_post, Account account) {
+  public Thread (Backend.Post main_post, Backend.Account account) {
     // Construct the object
     Object (
       post_list: new ListStore (typeof (Object)),

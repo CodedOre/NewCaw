@@ -28,6 +28,7 @@
     <file>Media/MediaDisplayItem.ui</file>
     <file>Media/MediaSelector.ui</file>
     <file>Pages/MainPage.ui</file>
+    <file>Pages/ThreadPage.ui</file>
     <file>Pages/UserPage.ui</file>
     <file>Preferences/AccountSettings.ui</file>
     <file>Preferences/AccountsPage.ui</file>

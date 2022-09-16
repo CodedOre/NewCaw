@@ -45,6 +45,7 @@ cawsources += [
   'Media/MediaPreview.vala',
   'Media/MediaSelector.vala',
   'Pages/MainPage.vala',
+  'Pages/ThreadPage.vala',
   'Pages/UserPage.vala',
   'Preferences/AccountSettings.vala',
   'Preferences/AccountsPage.vala',
