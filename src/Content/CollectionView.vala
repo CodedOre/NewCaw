@@ -106,6 +106,12 @@ public class CollectionView : Gtk.Widget {
     list_factory.bind.connect (on_bind);
     list_factory.unbind.connect (on_unbind);
     list_factory.teardown.connect (on_teardown);
+
+    // Bind the double-click setting
+    var settings = new Settings ("uk.co.ibboard.Cawbird");
+    settings.bind ("double-click-activation",
+                   listview, "single-click-activate",
+                   GLib.SettingsBindFlags.INVERT_BOOLEAN);
   }
 
   /**

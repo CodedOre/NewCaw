@@ -17,8 +17,6 @@ template CollectionView : Gtk.Widget {
       tightening-threshold: 512;
 
       Gtk.ListView listview {
-        single-click-activate: true;
-
         activate => on_activation ();
 
         styles [

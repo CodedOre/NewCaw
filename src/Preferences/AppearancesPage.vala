@@ -35,6 +35,8 @@ public class Preferences.AppearancesPage : Adw.PreferencesPage {
   private unowned Gtk.Switch trailing_tags_switch;
   [GtkChild]
   private unowned Gtk.Switch internal_links_switch;
+  [GtkChild]
+  private unowned Gtk.Switch double_click_activation_switch;
 
   /**
    * Run at construction of the page.
@@ -50,6 +52,9 @@ public class Preferences.AppearancesPage : Adw.PreferencesPage {
                    GLib.SettingsBindFlags.DEFAULT);
     settings.bind ("hide-internal-links",
                    internal_links_switch, "active",
+                   GLib.SettingsBindFlags.DEFAULT);
+    settings.bind ("double-click-activation",
+                   double_click_activation_switch, "active",
                    GLib.SettingsBindFlags.DEFAULT);
 
     // Set up the example post
