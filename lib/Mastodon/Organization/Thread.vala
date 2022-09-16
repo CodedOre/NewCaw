@@ -38,6 +38,10 @@ public class Backend.Mastodon.Thread : Backend.Thread {
       call_account: account,
       main_post: main_post
     );
+
+    // Append the main post to the list
+    var store = post_list as ListStore;
+    store.append (main_post);
   }
 
   /**
