@@ -46,6 +46,11 @@ public class CollectionView : Gtk.Widget {
   public Gtk.Widget header { get; set; }
 
   /**
+   * The id for a post which is displayed as the "main post".
+   */
+  public string? main_post_id { get; set; default = null; }
+
+  /**
    * Which platform the displayed collection is on.
    *
    * Used to determine a few platform-specific strings.
@@ -210,8 +215,15 @@ public class CollectionView : Gtk.Widget {
 
     var post_item = item.child as PostItem;
     if (post_item != null) {
+      // Set the display mode
+      post_item.display_mode = main_post_id == post.id
+                                 ? PostItem.DisplayMode.MAIN
+                                 : PostItem.DisplayMode.LIST;
+
       // Set the connecting lines
-      post_item.connect_to_previous = collection.connected_to_previous (post);
+      post_item.connect_to_previous = post.replied_to_id != main_post_id
+                                        ? collection.connected_to_previous (post)
+                                        : false;
       post_item.connect_to_next     = collection.connected_to_next (post);
 
       // Display the post

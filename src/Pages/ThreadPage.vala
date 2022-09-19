@@ -74,11 +74,13 @@ public class ThreadPage : Gtk.Widget {
         page_title.subtitle = account.username;
         // Display the collection in the CollectionView
         collection_view.displayed_platform = platform;
+        collection_view.main_post_id       = post.id;
         collection_view.collection         = thread;
       } else {
         // Set thread to null
         thread = null;
-        collection_view.collection = null;
+        collection_view.collection   = null;
+        collection_view.main_post_id = null;
       }
     }
   }
