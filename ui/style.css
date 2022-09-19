@@ -212,6 +212,23 @@ listview.post-list.small > row {
 }
 
 /**
+ * Give the PostItem for a main post an accented background.
+ */
+listview.post-list > row.main-post {
+  background-color: alpha(@accent_color, 0.12);
+  margin: 6px 0px;
+}
+listview.post-list.small > row.main-post {
+  margin: 0px;
+}
+listview.post-list > row.main-post:hover {
+  background-color: alpha(@accent_color, 0.2);
+}
+listview.post-list > row.main-post:active {
+  background-color: alpha(@accent_color, 0.32);
+}
+
+/**
  * Styles for preferences rows doing a destructive action.
  */
 row.destructive-action {

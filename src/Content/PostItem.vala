@@ -86,6 +86,9 @@ public class PostItem : Gtk.Widget {
       content_box.margin_top     = set_display_mode != LIST ? 8 : 0;
 
       DisplayUtils.conditional_css (set_display_mode == QUOTE, text_label, "caption");
+      if (this.parent != null) {
+        DisplayUtils.conditional_css (set_display_mode == MAIN, this.parent, "main-post");
+      }
     }
   }
 
