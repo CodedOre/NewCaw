@@ -26,15 +26,24 @@ using GLib;
 public class Backend.Twitter.Thread : Backend.Thread {
 
   /**
+   * The id for the conversation for this thread.
+   */
+  public string conversation_id { get; construct; }
+
+  /**
    * Creates a new Thread object for a given main post.
    *
    * @param main_post The main post which serves as the focus for this thread.
    * @param account The Account used for making the API calls.
    */
   public Thread (Backend.Post main_post, Backend.Account account) {
+    // Get the sub-type of the post
+    var main_tweet = main_post as Post;
+
     // Construct the object
     Object (
       post_list: new ListStore (typeof (Object)),
+      conversation_id: main_tweet.conversation_id,
       reverse_chronological: false,
       call_account: account,
       main_post: main_post
