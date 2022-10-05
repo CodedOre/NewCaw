@@ -75,6 +75,18 @@ public class Backend.Twitter.Thread : Backend.Thread {
    * @throws Error Any error that happened while pulling the posts.
    */
   public override async void pull_posts () throws Error {
+    // Calls all posts preceding the main post
+    var store = post_list as ListStore;
+    var parent_iterator = main_post;
+    while (true) {
+      string parent_id = parent_iterator.replied_to_id;
+      if (parent_id == null) {
+        break;
+      }
+      parent_iterator = yield Post.from_id (parent_id, call_account);
+      store.append (parent_iterator);
+    }
+
     // Create the proxy call
     Rest.ProxyCall call = call_account.create_call ();
     call.set_method ("GET");
@@ -82,8 +94,7 @@ public class Backend.Twitter.Thread : Backend.Thread {
     Server.append_post_fields (ref call);
 
     // Build the search query
-    string query = "";
-    query += @"conversation_id: $(conversation_id)";
+    string query = "conversation_id:$(conversation_id) AND in_reply_to_tweet_id:$(main_post.id)";
     call.add_param ("query", query);
 
     // Load the timeline
@@ -120,7 +131,6 @@ public class Backend.Twitter.Thread : Backend.Thread {
     }
 
     // Parse the posts from the json
-    var store = post_list as ListStore;
     list.foreach_element ((array, index, element) => {
       if (element.get_node_type () == OBJECT) {
         // Create a new post object
