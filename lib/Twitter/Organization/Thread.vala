@@ -80,6 +80,14 @@ public class Backend.Twitter.Thread : Backend.Thread {
     }
     Json.Object data = json.get_object ();
 
+    // Check the meta object for info
+    Json.Object meta = data.get_object_member ("meta");
+    int64 post_count = meta.get_int_member ("count");
+    // Skip parsing when no posts were provided
+    if (post_count < 1) {
+      return;
+    }
+
     // Retrieve the post list
     Json.Array list;
     if (data.has_member ("data")) {
