@@ -33,10 +33,15 @@ public class Backend.Twitter.Thread : Backend.Thread {
   /**
    * Creates a new Thread object for a given main post.
    *
+   * In this subclass, the timeout_label can be set to create a PseudoItem
+   * when a main_post is older than 7 days, at which point pulling the replies
+   * is no longer possible for the API accessible to us.
+   *
    * @param main_post The main post which serves as the focus for this thread.
    * @param account The Account used for making the API calls.
+   * @param timeout_label The name for the PseudoItem which is presented when no result can be shown.
    */
-  public Thread (Backend.Post main_post, Backend.Account account) {
+  public Thread (Backend.Post main_post, Backend.Account account, string? timeout_label = null) {
     // Get the sub-type of the post
     var main_tweet = main_post as Post;
 
@@ -52,6 +57,16 @@ public class Backend.Twitter.Thread : Backend.Thread {
     // Append the main post to the list
     var store = post_list as ListStore;
     store.append (main_post);
+
+    // Append a warning PseudoItem when the post is too old
+    if (timeout_label != null) {
+      var      nowtime = new DateTime.now ();
+      TimeSpan postage = nowtime.difference (main_post.creation_date);
+      if (postage / TimeSpan.DAY > 7) {
+        var timeout_item = new PseudoItem (0, timeout_label);
+        store.append (timeout_item);
+      }
+    }
   }
 
   /**
