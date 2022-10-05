@@ -36,6 +36,11 @@ public abstract class Backend.Collection : Object {
   public Account call_account { get; construct; }
 
   /**
+   * How the posts in this collection are sorted.
+   */
+  public bool reverse_chronological { get; construct; default = true; }
+
+  /**
    * Calls the API to get the posts for the Collection.
    *
    * @throws Error Any error that happened while pulling the posts.
@@ -160,9 +165,10 @@ public abstract class Backend.Collection : Object {
       }
 
       // Otherwise sort by the date
-      DateTime x = a_parent.creation_date;
-      DateTime y = b_parent.creation_date;
-      return -1 * x.compare (y);
+      DateTime x   = a_parent.creation_date;
+      DateTime y   = b_parent.creation_date;
+      int sort_mod = reverse_chronological ? -1 : 1;
+      return sort_mod * x.compare (y);
     }
 
     // If nothing fits, return 0

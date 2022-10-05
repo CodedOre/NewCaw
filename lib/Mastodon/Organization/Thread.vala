@@ -35,6 +35,7 @@ public class Backend.Mastodon.Thread : Backend.Thread {
     // Construct the object
     Object (
       post_list: new ListStore (typeof (Object)),
+      reverse_chronological: false,
       call_account: account,
       main_post: main_post
     );
