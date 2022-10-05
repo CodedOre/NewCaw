@@ -26,6 +26,11 @@ using GLib;
 public class Backend.Twitter.Post : Backend.Post {
 
   /**
+   * The id for the conversation this post is in.
+   */
+  public string conversation_id { get; construct; }
+
+  /**
    * Returns a Post object for a specific post id.
    *
    * If an object for the post was already created, that object is returned.
@@ -161,8 +166,9 @@ public class Backend.Twitter.Post : Backend.Post {
                     + (int) metrics.get_int_member ("quote_count"),
 
       // Set referenced objects
-      author:        post_author,
-      replied_to_id: reply_id
+      author:          post_author,
+      conversation_id: data.get_string_member ("conversation_id"),
+      replied_to_id:   reply_id
     );
 
     // Set the referenced id in the new object

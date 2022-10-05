@@ -92,6 +92,7 @@ public class Backend.Twitter.Server : Backend.Server {
       "entities",
       "author_id",
       "source",
+      "conversation_id",
       "referenced_tweets",
       "public_metrics",
       "attachments"
