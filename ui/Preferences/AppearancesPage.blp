@@ -28,7 +28,7 @@ template PreferencesAppearancesPage : Adw.PreferencesPage {
     }
 
     Adw.ActionRow {
-      title: _("Hide Trailing Tags");
+      title: _("Display Trailing Tags");
       activatable-widget: trailing_tags_switch;
 
       Gtk.Switch trailing_tags_switch {
@@ -37,8 +37,8 @@ template PreferencesAppearancesPage : Adw.PreferencesPage {
       }
     }
 
-    Adw.ActionRow {
-      title: _("Hide Internal Links");
+    Adw.ActionRow internal_links_row {
+      title: _("Display Internal Links");
       subtitle: _("Links to media or quotes.");
       activatable-widget: internal_links_switch;
 

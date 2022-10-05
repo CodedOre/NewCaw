@@ -34,6 +34,8 @@ public class Preferences.AppearancesPage : Adw.PreferencesPage {
   [GtkChild]
   private unowned Gtk.Switch trailing_tags_switch;
   [GtkChild]
+  private unowned Adw.ActionRow internal_links_row;
+  [GtkChild]
   private unowned Gtk.Switch internal_links_switch;
   [GtkChild]
   private unowned Gtk.Switch double_click_activation_switch;
@@ -47,15 +49,22 @@ public class Preferences.AppearancesPage : Adw.PreferencesPage {
     settings.bind ("round-avatars",
                    round_avatar_switch, "active",
                    GLib.SettingsBindFlags.DEFAULT);
-    settings.bind ("hide-trailing-tags",
+    settings.bind ("trailing-tags",
                    trailing_tags_switch, "active",
                    GLib.SettingsBindFlags.DEFAULT);
-    settings.bind ("hide-internal-links",
+    settings.bind ("internal-links",
                    internal_links_switch, "active",
                    GLib.SettingsBindFlags.DEFAULT);
     settings.bind ("double-click-activation",
                    double_click_activation_switch, "active",
                    GLib.SettingsBindFlags.DEFAULT);
+
+    // Display certain rows only when applicable
+#if SUPPORT_TWITTER
+    internal_links_row.visible = true;
+#else
+    internal_links_row.visible = false;
+#endif
 
     // Set up the example post
     display_example_post ();
