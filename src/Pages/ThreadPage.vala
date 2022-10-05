@@ -63,7 +63,7 @@ public class ThreadPage : Gtk.Widget {
 #endif
 #if SUPPORT_TWITTER
           case TWITTER:
-            thread = new Backend.Twitter.Thread (displayed_post, account);
+            thread = new Backend.Twitter.Thread (displayed_post, account, "timeout");
             break;
 #endif
           default:

@@ -31,6 +31,8 @@ public class CollectionView : Gtk.Widget {
   private unowned Gtk.ScrolledWindow scroll_window;
   [GtkChild]
   private unowned Gtk.ListView listview;
+  [GtkChild]
+  private unowned Adw.ActionRow timeout_indicator;
 
   /**
    * The default headers needed in a collection for CollectionList.
@@ -192,6 +194,10 @@ public class CollectionView : Gtk.Widget {
         new_widget = filter_options;
         break;
 
+      case "timeout":
+        new_widget = timeout_indicator;
+        break;
+
       default:
         new_widget = null;
         break;
@@ -251,7 +257,7 @@ public class CollectionView : Gtk.Widget {
     }
 
     // Unbind header widgets from the listview
-    if (item.child == header || item.child == list_separator || item.child == filter_options) {
+    if (item.child == header || item.child == list_separator || item.child == filter_options || item.child == timeout_indicator) {
       item.child = null;
     }
   }
