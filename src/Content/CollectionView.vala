@@ -31,6 +31,8 @@ public class CollectionView : Gtk.Widget {
   private unowned Gtk.ScrolledWindow scroll_window;
   [GtkChild]
   private unowned Gtk.ListView listview;
+  [GtkChild]
+  private unowned Adw.ActionRow timeout_indicator;
 
   /**
    * The default headers needed in a collection for CollectionList.
@@ -44,6 +46,11 @@ public class CollectionView : Gtk.Widget {
    * A header widget to be displayed on top of the collection.
    */
   public Gtk.Widget header { get; set; }
+
+  /**
+   * The id for a post which is displayed as the "main post".
+   */
+  public string? main_post_id { get; set; default = null; }
 
   /**
    * Which platform the displayed collection is on.
@@ -73,14 +80,15 @@ public class CollectionView : Gtk.Widget {
       if (shown_collection != null) {
         // Bind the collection to the list
         var filter_list = new Gtk.FilterListModel (shown_collection.post_list, list_filter);
-        var list_model = new Gtk.NoSelection (filter_list);
+        list_model      = new Gtk.NoSelection (filter_list);
         listview.set_model (list_model);
-      } else {
-         listview.set_model (null);
-      }
 
-      // Pull the posts from the list
-      shown_collection.pull_posts.begin ();
+        // Pull the posts from the list
+        shown_collection.pull_posts.begin ();
+      } else {
+        list_model = null;
+        listview.set_model (null);
+      }
     }
   }
 
@@ -105,6 +113,12 @@ public class CollectionView : Gtk.Widget {
     list_factory.bind.connect (on_bind);
     list_factory.unbind.connect (on_unbind);
     list_factory.teardown.connect (on_teardown);
+
+    // Bind the double-click setting
+    var settings = new Settings ("uk.co.ibboard.Cawbird");
+    settings.bind ("double-click-activation",
+                   listview, "single-click-activate",
+                   GLib.SettingsBindFlags.INVERT_BOOLEAN);
   }
 
   /**
@@ -180,6 +194,10 @@ public class CollectionView : Gtk.Widget {
         new_widget = filter_options;
         break;
 
+      case "timeout":
+        new_widget = timeout_indicator;
+        break;
+
       default:
         new_widget = null;
         break;
@@ -203,8 +221,15 @@ public class CollectionView : Gtk.Widget {
 
     var post_item = item.child as PostItem;
     if (post_item != null) {
+      // Set the display mode
+      post_item.display_mode = main_post_id == post.id
+                                 ? PostItem.DisplayMode.MAIN
+                                 : PostItem.DisplayMode.LIST;
+
       // Set the connecting lines
-      post_item.connect_to_previous = collection.connected_to_previous (post);
+      post_item.connect_to_previous = post.replied_to_id != main_post_id
+                                        ? collection.connected_to_previous (post)
+                                        : false;
       post_item.connect_to_next     = collection.connected_to_next (post);
 
       // Display the post
@@ -232,7 +257,7 @@ public class CollectionView : Gtk.Widget {
     }
 
     // Unbind header widgets from the listview
-    if (item.child == header || item.child == list_separator || item.child == filter_options) {
+    if (item.child == header || item.child == list_separator || item.child == filter_options || item.child == timeout_indicator) {
       item.child = null;
     }
   }
@@ -256,6 +281,36 @@ public class CollectionView : Gtk.Widget {
       item.child = null;
     } else if (widget != null) {
       widget.unparent ();
+    }
+  }
+
+  /**
+   * Runs when a row was activated.
+   *
+   * @param index The index of the activated row.
+   */
+  [GtkCallback]
+  private void on_activation (uint index) {
+    // Only run if a list is present
+    if (list_model == null) {
+      return;
+    }
+
+    // Get the activated object
+    var object = list_model.get_object (index);
+
+    // Run actions when object is a post.
+    var post = object as Backend.Post;
+    if (post != null) {
+      // Get the MainWindow
+      var main_window = this.get_root () as MainWindow;
+      if (main_window == null) {
+        warning ("CollectionView not in a MainWindow, action not possible!");
+        return;
+      }
+
+      // Display the post in a thread
+      main_window.display_thread (post);
     }
   }
 
@@ -344,5 +399,10 @@ public class CollectionView : Gtk.Widget {
    * Stores the displayed Collection.
    */
   private Backend.Collection? shown_collection = null;
+
+  /**
+   * Stores the currently used Gtk.SelectionModel.
+   */
+  private Gtk.SelectionModel? list_model = null;
 
 }

@@ -192,6 +192,16 @@ listview.post-list > row {
 }
 
 /**
+ * Style for a warning row in the CollectionView.
+ */
+row.warning {
+  border-radius: 12px;
+  margin: 12px;
+  background-color: @warning_bg_color;
+  color: @warning_fg_color;
+}
+
+/**
  * Remove padding and rounded corners on small sizes.
  */
 listview.post-list.small {

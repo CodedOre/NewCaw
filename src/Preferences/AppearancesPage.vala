@@ -37,6 +37,8 @@ public class Preferences.AppearancesPage : Adw.PreferencesPage {
   private unowned Adw.ActionRow internal_links_row;
   [GtkChild]
   private unowned Gtk.Switch internal_links_switch;
+  [GtkChild]
+  private unowned Gtk.Switch double_click_activation_switch;
 
   /**
    * Run at construction of the page.
@@ -52,6 +54,9 @@ public class Preferences.AppearancesPage : Adw.PreferencesPage {
                    GLib.SettingsBindFlags.DEFAULT);
     settings.bind ("internal-links",
                    internal_links_switch, "active",
+                   GLib.SettingsBindFlags.DEFAULT);
+    settings.bind ("double-click-activation",
+                   double_click_activation_switch, "active",
                    GLib.SettingsBindFlags.DEFAULT);
 
     // Display certain rows only when applicable

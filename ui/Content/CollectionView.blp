@@ -17,10 +17,22 @@ template CollectionView : Gtk.Widget {
       tightening-threshold: 512;
 
       Gtk.ListView listview {
+        activate => on_activation ();
+
         styles [
           "post-list"
         ]
       }
     }
   }
+}
+
+Adw.ActionRow timeout_indicator {
+  icon-name: "stopwatch-symbolic";
+  title: _("Replies can't be pulled.");
+  subtitle: _("The API can't pull replies for posts older than 7 days.");
+
+  styles [
+    "warning"
+  ]
 }

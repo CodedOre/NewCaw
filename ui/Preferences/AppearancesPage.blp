@@ -57,5 +57,15 @@ template PreferencesAppearancesPage : Adw.PreferencesPage {
         halign: center;
       }
     }
+
+    Adw.ActionRow {
+      title: _("Activate on Double-Click");
+      activatable-widget: double_click_activation_switch;
+
+      Gtk.Switch double_click_activation_switch {
+        valign: center;
+        halign: center;
+      }
+    }
   }
 }

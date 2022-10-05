@@ -25,6 +25,7 @@ blueprints = custom_target(
     'Media/MediaDisplayItem.blp',
     'Media/MediaSelector.blp',
     'Pages/MainPage.blp',
+    'Pages/ThreadPage.blp',
     'Pages/UserPage.blp',
     'Preferences/AccountSettings.blp',
     'Preferences/AccountsPage.blp',

@@ -20,6 +20,12 @@
       </description>
       <default>false</default>
     </key>
+    <key type="b" name="double-click-activation">
+      <description>
+        If a double click is required to activate posts.
+      </description>
+      <default>false</default>
+    </key>
 	</schema>
   <!-- Window Sizes -->
 	<schema id="uk.co.ibboard.Cawbird.Windows" path="/uk/co/ibboard/Cawbird/Windows/">
