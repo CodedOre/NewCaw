@@ -54,6 +54,11 @@ namespace SystemInfo {
     info_string += "Application:\n";
     info_string += @"- ID: $(Config.APPLICATION_ID)\n";
     info_string += @"- Version: $(Config.PROJECT_VERSION)\n";
+#if DEBUG
+    info_string += "- Debug: true\n";
+#else
+    info_string += "- Debug: false\n";
+#endif
 
     return info_string;
   }
