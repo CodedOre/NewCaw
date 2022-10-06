@@ -31,6 +31,12 @@ public class CollectionView : Gtk.Widget {
   private unowned Gtk.ScrolledWindow scroll_window;
   [GtkChild]
   private unowned Gtk.ListView listview;
+
+  // Elements that may appear in the list
+  [GtkChild]
+  private unowned CollectionFilter filter_options;
+  [GtkChild]
+  private unowned Gtk.Separator list_separator;
   [GtkChild]
   private unowned Adw.ActionRow timeout_indicator;
 
@@ -46,6 +52,26 @@ public class CollectionView : Gtk.Widget {
    * A header widget to be displayed on top of the collection.
    */
   public Gtk.Widget header { get; set; }
+
+  /**
+   * If generic posts should be shown.
+   */
+  public bool show_generic { get; set; default = true; }
+
+  /**
+   * If replies should be shown.
+   */
+  public bool show_replies { get; set; default = false; }
+
+  /**
+   * If reposts should be shown.
+   */
+  public bool show_reposts { get; set; default = true; }
+
+  /**
+   * If media posts should be shown.
+   */
+  public bool show_media { get; set; default = true; }
 
   /**
    * The id for a post which is displayed as the "main post".
@@ -96,15 +122,8 @@ public class CollectionView : Gtk.Widget {
    * Run at construction of an widget.
    */
   construct {
-    // Initialize additional widgets
-    list_separator = new Gtk.Separator (HORIZONTAL);
-    filter_options = new CollectionFilter ();
-
     // Create a list filter from the collection
     list_filter = new Gtk.CustomFilter (filter_items);
-    filter_options.filters_changed.connect (() => {
-      list_filter.changed (DIFFERENT);
-    });
 
     // Create the ListFactory and bind the signals
     var list_factory = new Gtk.SignalListItemFactory ();
@@ -119,6 +138,14 @@ public class CollectionView : Gtk.Widget {
     settings.bind ("double-click-activation",
                    listview, "single-click-activate",
                    GLib.SettingsBindFlags.INVERT_BOOLEAN);
+  }
+
+  /**
+   * Updates the filter of the CollectionView.
+   */
+  [GtkCallback]
+  private void update_filter (Object obj, ParamSpec param) {
+    list_filter.changed (DIFFERENT);
   }
 
   /**
@@ -355,15 +382,15 @@ public class CollectionView : Gtk.Widget {
 
     // Check the type against the filters
     if (is_reply && ! in_thread) {
-      return filter_options.display_replies;
+      return show_replies;
     }
     if (is_repost) {
-      return filter_options.display_reposts;
+      return show_reposts;
     }
     if (has_media) {
-      return filter_options.display_media;
+      return show_media;
     }
-    return filter_options.display_generic;
+    return show_generic;
   }
 
   /**
@@ -384,16 +411,6 @@ public class CollectionView : Gtk.Widget {
    * The Gtk.Filter used to filter the posts.
    */
   private Gtk.Filter list_filter;
-
-  /**
-   * A Gtk.Separator separating header and list.
-   */
-  private Gtk.Separator list_separator;
-
-  /**
-   * The CollectionFilter widget to filter the list.
-   */
-  private CollectionFilter filter_options;
 
   /**
    * Stores the displayed Collection.

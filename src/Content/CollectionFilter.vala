@@ -66,51 +66,22 @@ public class CollectionFilter : Gtk.Widget {
   /**
    * If generic posts should be displayed.
    */
-  public bool display_generic {
-    get {
-      return generic_filter.active;
-    }
-  }
+  public bool display_generic { get; set; }
 
   /**
    * If replies should be displayed.
    */
-  public bool display_replies {
-    get {
-      return replies_filter.active;
-    }
-  }
+  public bool display_replies { get; set; }
 
   /**
    * If reposts should be displayed.
    */
-  public bool display_reposts {
-    get {
-      return reposts_filter.active;
-    }
-  }
+  public bool display_reposts { get; set; }
 
   /**
    * If media posts should be displayed.
    */
-  public bool display_media {
-    get {
-      return media_filter.active;
-    }
-  }
-
-  /**
-   * Emitted when a FilterButton was selected.
-   */
-  public signal void filters_changed ();
-
-  /**
-   * Activated when a FilterButton is toggled.
-   */
-  [GtkCallback]
-  private void on_filters_changed () {
-    filters_changed ();
-  }
+  public bool display_media { get; set; }
 
   /**
    * Deconstructs CollectionFilter and it's childrens.

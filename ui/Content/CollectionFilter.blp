@@ -12,30 +12,23 @@ template CollectionFilter : Gtk.Widget {
     selection-mode:        none;
 
     .FilterButton generic_filter {
-      active: true;
+      active: bind CollectionFilter.display_generic bidirectional;
       label:  _("Posts");
-
-      toggled => on_filters_changed ();
     }
 
     .FilterButton replies_filter {
+      active: bind CollectionFilter.display_replies bidirectional;
       label:  _("Replies");
-
-      toggled => on_filters_changed ();
     }
 
     .FilterButton reposts_filter {
-      active: true;
+      active: bind CollectionFilter.display_reposts bidirectional;
       label:  _("Reposts");
-
-      toggled => on_filters_changed ();
     }
 
     .FilterButton media_filter {
-      active: true;
+      active: bind CollectionFilter.display_media bidirectional;
       label:  _("Media");
-
-      toggled => on_filters_changed ();
     }
   }
 }
