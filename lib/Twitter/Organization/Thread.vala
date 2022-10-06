@@ -94,8 +94,8 @@ public class Backend.Twitter.Thread : Backend.Thread {
     Server.append_post_fields (ref call);
 
     // Build the search query
-    string query = "conversation_id:$(conversation_id) AND in_reply_to_tweet_id:$(main_post.id)";
-    call.add_param ("query", query);
+    call.add_param ("query", @"in_reply_to_tweet_id:$(main_post.id)");
+    call.add_param ("max_results", "100");
 
     // Load the timeline
     Json.Node json;
@@ -108,7 +108,7 @@ public class Backend.Twitter.Thread : Backend.Thread {
 
     // Check the meta object for info
     Json.Object meta = data.get_object_member ("meta");
-    int64 post_count = meta.get_int_member ("count");
+    int64 post_count = meta.get_int_member ("result_count");
     // Skip parsing when no posts were provided
     if (post_count < 1) {
       return;
