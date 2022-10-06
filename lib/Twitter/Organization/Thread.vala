@@ -56,7 +56,7 @@ public class Backend.Twitter.Thread : Backend.Thread {
 
     // Append the main post to the list
     var store = post_list as ListStore;
-    store.append (main_post);
+    store.insert_sorted (main_post, compare_items);
 
     // Append a warning PseudoItem when the post is too old
     if (timeout_label != null) {
@@ -64,7 +64,7 @@ public class Backend.Twitter.Thread : Backend.Thread {
       TimeSpan postage = nowtime.difference (main_post.creation_date);
       if (postage / TimeSpan.DAY > 7) {
         var timeout_item = new PseudoItem (0, timeout_label);
-        store.append (timeout_item);
+        store.insert_sorted (timeout_item, compare_items);
       }
     }
   }
@@ -84,7 +84,7 @@ public class Backend.Twitter.Thread : Backend.Thread {
         break;
       }
       parent_iterator = yield Post.from_id (parent_id, call_account);
-      store.append (parent_iterator);
+      store.insert_sorted (parent_iterator, compare_items);
     }
 
     // Create the proxy call
@@ -136,12 +136,9 @@ public class Backend.Twitter.Thread : Backend.Thread {
         // Create a new post object
         Json.Object obj   = element.get_object ();
         var         post  = Post.from_json (obj, includes);
-        store.append (post);
+        store.insert_sorted (post, compare_items);
       }
     });
-
-    // Sort the list
-    store.sort (compare_items);
   }
 
 }

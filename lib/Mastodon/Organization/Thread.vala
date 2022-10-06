@@ -42,7 +42,7 @@ public class Backend.Mastodon.Thread : Backend.Thread {
 
     // Append the main post to the list
     var store = post_list as ListStore;
-    store.append (main_post);
+    store.insert_sorted (main_post, compare_items);
   }
 
   /**
@@ -74,7 +74,7 @@ public class Backend.Mastodon.Thread : Backend.Thread {
         // Create a new post object
         Json.Object obj  = element.get_object ();
         var         post = Post.from_json (obj);
-        store.append (post);
+        store.insert_sorted (post, compare_items);
       }
     });
     following.foreach_element ((array, index, element) => {
@@ -82,12 +82,9 @@ public class Backend.Mastodon.Thread : Backend.Thread {
         // Create a new post object
         Json.Object obj  = element.get_object ();
         var         post = Post.from_json (obj);
-        store.append (post);
+        store.insert_sorted (post, compare_items);
       }
     });
-
-    // Sort the list
-    store.sort (compare_items);
   }
 
 }

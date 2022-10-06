@@ -49,7 +49,7 @@ public class Backend.Mastodon.HomeTimeline : Backend.HomeTimeline {
     int header_i = 0;
     foreach (string name in headers) {
       var item = new PseudoItem (header_i, name);
-      store.append (item);
+      store.insert_sorted (item, compare_items);
       header_i++;
     }
   }
@@ -85,12 +85,9 @@ public class Backend.Mastodon.HomeTimeline : Backend.HomeTimeline {
         // Create a new post object
         Json.Object obj  = element.get_object ();
         var         post = Post.from_json (obj);
-        store.append (post);
+        store.insert_sorted (post, compare_items);
       }
     });
-
-    // Sort the list
-    store.sort (compare_items);
   }
 
   /**
