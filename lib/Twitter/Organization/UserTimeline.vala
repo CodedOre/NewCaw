@@ -65,6 +65,7 @@ public class Backend.Twitter.UserTimeline : Backend.UserTimeline {
     Rest.ProxyCall call = call_account.create_call ();
     call.set_method ("GET");
     call.set_function (@"users/$(user.id)/tweets");
+    call.add_param ("max_results", "50");
     if (last_post_id != null) {
       call.add_param ("since_id", last_post_id);
     }

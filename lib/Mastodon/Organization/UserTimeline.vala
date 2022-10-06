@@ -65,6 +65,7 @@ public class Backend.Mastodon.UserTimeline : Backend.UserTimeline {
     Rest.ProxyCall call = call_account.create_call ();
     call.set_method ("GET");
     call.set_function (@"api/v1/accounts/$(user.id)/statuses");
+    call.add_param ("limit", "50");
     if (last_post_id != null) {
       call.add_param ("min_id", last_post_id);
     }

@@ -64,6 +64,7 @@ public class Backend.Twitter.HomeTimeline : Backend.HomeTimeline {
     Rest.ProxyCall call = call_account.create_call ();
     call.set_method ("GET");
     call.set_function (@"users/$(account.id)/timelines/reverse_chronological");
+    call.add_param ("max_results", "50");
     if (last_post_id != null) {
       call.add_param ("since_id", last_post_id);
     }
