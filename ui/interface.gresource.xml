@@ -4,6 +4,7 @@
   <gresource prefix="/uk/co/ibboard/Cawbird">
     <file>style.css</file>
     <file>style-dark.css</file>
+    <file>style-hc.css</file>
   </gresource>
   <!-- UI Files -->
   <gresource prefix="/uk/co/ibboard/Cawbird/ui">
