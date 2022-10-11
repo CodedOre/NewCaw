@@ -26,6 +26,16 @@ using GLib;
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Preferences/PreferencesWindow.ui")]
 public class PreferencesWindow : Adw.PreferencesWindow {
 
+#if DEBUG
+  /**
+   * Run at construction of an window.
+   */
+  construct {
+    // Add development style in debug
+    add_css_class ("devel");
+  }
+#endif
+
   /**
    * Run at initialization of the class.
    */

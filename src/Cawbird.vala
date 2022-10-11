@@ -211,6 +211,11 @@ public class Cawbird : Adw.Application {
       { "Timm Bäder" }
     );
 
+#if DEBUG
+    // Add development style in debug
+    about_window.add_css_class ("devel");
+#endif
+
     // Display the AboutWindow
     about_window.present ();
   }
