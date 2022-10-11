@@ -56,10 +56,13 @@ public class Cawbird : Adw.Application {
    * Create the object.
    */
   public Cawbird () {
-    Object (application_id: Config.APPLICATION_ID, flags: ApplicationFlags.HANDLES_OPEN);
+    Object (
+      application_id: Config.APPLICATION_ID,
 #if DEBUG
-    set_resource_base_path ("/uk/co/ibboard/Cawbird/");
+      resource_base_path: "/uk/co/ibboard/Cawbird/",
 #endif
+      flags: ApplicationFlags.HANDLES_OPEN
+    );
   }
 
   /**
