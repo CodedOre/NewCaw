@@ -126,7 +126,7 @@ namespace Backend.Twitter.Utils.TextUtils {
       return (int) (x > y) - (int) (x < y);
     });
 
-    // Split the text into TextModules
+    // Create a TextModule for text before the first entity
     TextModule first_entity = main_entities [0];
     if (first_entity.text_start != 0) {
       var first_text        = TextModule ();
@@ -136,9 +136,12 @@ namespace Backend.Twitter.Utils.TextUtils {
       first_text.text_end   = raw_text.index_of_nth_char (first_entity.text_start);
       first_text.display    = raw_text [first_text.text_start:first_text.text_end];
       final_modules        += first_text;
-      final_modules        += first_entity;
     }
 
+    // Append the first TextModule
+    final_modules += first_entity;
+
+    // Add TextModules for each text between entities
     if (main_entities.length > 1) {
       for (int i = 1; i < main_entities.length; i++) {
         TextModule? last_entity    = main_entities [i-1];
@@ -156,6 +159,7 @@ namespace Backend.Twitter.Utils.TextUtils {
       }
     }
 
+    // Add a TextModule for text after the last entity
     TextModule? last_entity = main_entities [main_entities.length - 1];
     if (last_entity != null) {
       if (last_entity.text_end < raw_text.length - 1) {
