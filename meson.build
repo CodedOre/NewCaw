@@ -22,8 +22,8 @@ if dev_build
   git = find_program('git', required : false, disabler : true)
   if git.found()
     # Get short version of commit id and use it as version number
-    git_branch = run_command(git, 'rev-parse', '--abbrev-ref', 'HEAD')
-    git_commit = run_command(git, 'rev-parse', '--short', 'HEAD')
+    git_branch = run_command(git, 'rev-parse', '--abbrev-ref', 'HEAD', check: true)
+    git_commit = run_command(git, 'rev-parse', '--short', 'HEAD', check: true)
     version = git_branch.stdout().strip() + '-' + git_commit.stdout().strip()
   else
     # Use project version as fallback
