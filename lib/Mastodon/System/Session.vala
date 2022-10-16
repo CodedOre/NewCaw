@@ -85,7 +85,7 @@ public class Backend.Mastodon.Session : Backend.Session {
     }
 
     // Create a new post and add it to memory
-    Post post = new Post (data, this);
+    Post post = new Post (this, data);
     pulled_posts [id] = post;
     return post;
   }
@@ -169,8 +169,8 @@ public class Backend.Mastodon.Session : Backend.Session {
    * This is an platform-specific implementation of the abstract method
    * defined in the base class, for more details see the base method.
    */
-  public override Backend.HomeTimeline get_home_timeline (string[] headers) {
-    return new HomeTimeline (headers, this);
+  public override Backend.HomeTimeline get_home_timeline (string[] headers = {}) {
+    return new HomeTimeline (this, headers);
   }
 
   /**

@@ -33,11 +33,11 @@ public class Backend.Twitter.Post : Backend.Post {
   /**
    * Parses an given Json.Object and creates an Post object.
    *
+   * @param session The Session this post will be managed by.
    * @param data The Json.Object containing the specific Post.
    * @param includes A Json.Object including additional objects which may be related to this Post.
-   * @param session The Session this post will be managed by.
    */
-  internal Post (Json.Object data, Json.Object includes, Session session) {
+  internal Post (Session session, Json.Object data, Json.Object includes) {
     // Get metrics object
     Json.Object metrics = data.get_object_member ("public_metrics");
 

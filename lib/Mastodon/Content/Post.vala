@@ -28,10 +28,10 @@ public class Backend.Mastodon.Post : Backend.Post {
   /**
    * Parses an given Json.Object and creates an Post object.
    *
-   * @param json A Json.Object retrieved from the API.
    * @param session The Session this post will be managed by.
+   * @param json A Json.Object retrieved from the API.
    */
-  internal Post (Json.Object json, Session session) {
+  internal Post (Session session, Json.Object json) {
     // Get url to html site if available
     string post_url = ! json.get_null_member ("url")
                         ? json.get_string_member ("url")

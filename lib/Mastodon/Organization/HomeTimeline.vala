@@ -32,10 +32,10 @@ public class Backend.Mastodon.HomeTimeline : Backend.HomeTimeline {
    * the headers parameter can be added. For each string in that list
    * an PseudoItem will be created with the string as description.
    *
-   * @param headers Descriptions for header items to be added.
    * @param session The Session for which the timeline is created.
+   * @param headers Descriptions for header items to be added.
    */
-  internal HomeTimeline (string[] headers, Session session) {
+  internal HomeTimeline (Session session, string[] headers = {}) {
     // Construct the object
     Object (
       post_list: new ListStore (typeof (Object)),
@@ -44,7 +44,6 @@ public class Backend.Mastodon.HomeTimeline : Backend.HomeTimeline {
     );
     
     // Add PseudoItems for the headers
-    header_items = headers.length;
     var store    = post_list as ListStore;
     int header_i = 0;
     foreach (string name in headers) {
@@ -83,10 +82,5 @@ public class Backend.Mastodon.HomeTimeline : Backend.HomeTimeline {
       store.insert_sorted (post, compare_items);
     }
   }
-
-  /**
-   * The amount of added header items.
-   */
-  private uint header_items = 0;
 
 }

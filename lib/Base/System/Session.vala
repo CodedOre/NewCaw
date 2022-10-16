@@ -139,7 +139,7 @@ public abstract class Backend.Session : Object {
    *
    * @return The HomeTimeline for the account of the session.
    */
-  public abstract HomeTimeline get_home_timeline (string[] headers);
+  public abstract HomeTimeline get_home_timeline (string[] headers = {});
 
   /**
    * Retrieves the UserTime for a user in this session.
