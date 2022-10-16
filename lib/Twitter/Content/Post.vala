@@ -340,7 +340,7 @@ public class Backend.Twitter.Post : Backend.Post {
    *
    * @return The post referenced or null if none exists.
    *
-   * @throw Error Any error that might happen while loading the post.
+   * @throws Error Any error that might happen while loading the post.
    */
   public override async Backend.Post? get_referenced_post (Backend.Account account) throws Error {
     try {

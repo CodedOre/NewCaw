@@ -114,7 +114,7 @@ public abstract class Backend.Post : Object {
    *
    * @return The post referenced or null if none exists.
    *
-   * @throw Error Any error that might happen while loading the post.
+   * @throws Error Any error that might happen while loading the post.
    */
   public abstract async Post? get_referenced_post (Account account) throws Error;
 
