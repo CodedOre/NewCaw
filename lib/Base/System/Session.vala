@@ -76,7 +76,7 @@ public abstract class Backend.Session : Object {
    *
    * @throws Error Any error that could happen while the post is pulled.
    */
-  internal abstract async Post pull_post (string id) throws Error;
+  public abstract async Post pull_post (string id) throws Error;
 
   /**
    * Loads an post from downloaded data.
@@ -114,7 +114,7 @@ public abstract class Backend.Session : Object {
    *
    * @throws Error Any error that could happen while the user is pulled.
    */
-  internal abstract async User pull_user (string id) throws Error;
+  public abstract async User pull_user (string id) throws Error;
 
   /**
    * Loads an user from downloaded data.

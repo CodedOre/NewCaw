@@ -46,7 +46,7 @@ public class Backend.Mastodon.Session : Backend.Session {
    * This is an platform-specific implementation of the abstract method
    * defined in the base class, for more details see the base method.
    */
-  internal override async Backend.Post pull_post (string id) throws Error {
+  public override async Backend.Post pull_post (string id) throws Error {
     // Check if the post is already present in memory
     if (pulled_posts.contains (id)) {
       return pulled_posts [id];
@@ -119,7 +119,7 @@ public class Backend.Mastodon.Session : Backend.Session {
    * This is an platform-specific implementation of the abstract method
    * defined in the base class, for more details see the base method.
    */
-  internal override async Backend.User pull_user (string id) throws Error {
+  public override async Backend.User pull_user (string id) throws Error {
     // Check if the user is already present in memory
     if (pulled_users.contains (id)) {
       return pulled_users [id];
