@@ -26,10 +26,15 @@ using GLib;
  * Used by KeyStorage and AccountManager to request the right type when
  * loading keys or data from storage without class information.
  */
-public enum PlatformEnum {
+public enum Backend.PlatformEnum {
 
+#if SUPPORT_MASTODON
   MASTODON,
-  TWITTER;
+#endif
+#if SUPPORT_TWITTER
+  TWITTER,
+#endif
+  NONE;
 
   /**
    * Converts the enum to a better readable string.
@@ -37,11 +42,18 @@ public enum PlatformEnum {
   public string to_string () {
     switch (this) {
 
+#if SUPPORT_MASTDON
       case MASTODON:
         return "Mastodon";
+#endif
 
+#if SUPPORT_TWITTER
       case TWITTER:
         return "Twitter";
+#endif
+
+      case NONE:
+        return "None";
 
       default:
         assert_not_reached();
@@ -57,12 +69,16 @@ public enum PlatformEnum {
    */
   public static PlatformEnum from_name (string name) {
     switch (name) {
+#if SUPPORT_MASTODON
       case "Mastodon":
         return MASTODON;
+#endif
+#if SUPPORT_MASTODON
       case "Twitter":
         return TWITTER;
+#endif
       default:
-        assert_not_reached();
+        return NONE;
     }
   }
 
@@ -88,8 +104,8 @@ public enum PlatformEnum {
     }
 #endif
 
-    // Failing if not detected any platform
-    assert_not_reached();
+    // Return NONE if no platform is applicable
+    return NONE;
   }
 
   /**
@@ -114,8 +130,8 @@ public enum PlatformEnum {
     }
 #endif
 
-    // Failing if not detected any platform
-    assert_not_reached();
+    // Return NONE if no platform is applicable
+    return NONE;
   }
 
   /**
@@ -146,8 +162,8 @@ public enum PlatformEnum {
     }
 #endif
 
-    // Failing if not detected any platform
-    assert_not_reached();
+    // Return NONE if no platform is applicable
+    return NONE;
   }
 
 }

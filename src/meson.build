@@ -55,7 +55,6 @@ cawsources += [
   'System/Session.vala',
   'System/SystemInfo.vala',
   'Utils/DisplayUtils.vala',
-  'Utils/PlatformEnum.vala',
   'Widgets/AccountRow.vala',
   'Widgets/AccountSidebar.vala',
   'Widgets/BadgesBox.vala',

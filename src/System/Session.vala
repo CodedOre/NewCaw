@@ -39,7 +39,7 @@ public class Session : Object {
     /**
      * The platform the account is on.
      */
-    PlatformEnum platform;
+    Backend.PlatformEnum platform;
 
     /**
      * The UUID for the server the account is located at.
@@ -65,7 +65,7 @@ public class Session : Object {
      * creates an authenticated Account object for the data variable.
      */
     public static AccountData? from_data (string       uuid_prop,
-                                          PlatformEnum platform_prop,
+                                          Backend.PlatformEnum platform_prop,
                                           string?      server_prop,
                                           string       username_prop,
                                           ServerData?  account_server) {
@@ -124,7 +124,7 @@ public class Session : Object {
       string server_uuid   = server != null ? server.uuid : null;
       var instance         = AccountData ();
       instance.uuid        = Uuid.string_random ();
-      instance.platform    = PlatformEnum.get_platform_for_account (account);
+      instance.platform    = Backend.PlatformEnum.get_platform_for_account (account);
       instance.username    = account.username;
       instance.server_uuid = server_uuid;
       instance.data        = account;
@@ -183,7 +183,7 @@ public class Session : Object {
     /**
      * The platform the server is on.
      */
-    PlatformEnum platform;
+    Backend.PlatformEnum platform;
 
     /**
      * The domain of this server.
@@ -202,7 +202,7 @@ public class Session : Object {
      * This functions also loads the token and secret from the storage and
      * creates an authenticated Server object for the data variable.
      */
-    public static ServerData? from_data (string uuid_prop, PlatformEnum platform_prop, string domain_prop) {
+    public static ServerData? from_data (string uuid_prop, Backend.PlatformEnum platform_prop, string domain_prop) {
       // Create instance with known values
       var instance      = ServerData ();
       instance.uuid     = uuid_prop;
@@ -232,7 +232,7 @@ public class Session : Object {
       // Create instance and populate values
       var instance      = ServerData ();
       instance.uuid     = Uuid.string_random ();
-      instance.platform = PlatformEnum.get_platform_for_server (server);
+      instance.platform = Backend.PlatformEnum.get_platform_for_server (server);
       instance.domain   = server.domain;
       instance.data     = server;
       return instance;
@@ -570,7 +570,7 @@ public class Session : Object {
 
       // Create a new ServerData instance when all properties could be retrieved
       if (uuid_prop != null && platform_name != null && domain_prop != null) {
-        var platform_prop = PlatformEnum.from_name (platform_name);
+        var platform_prop = Backend.PlatformEnum.from_name (platform_name);
         var server_data   = ServerData.from_data (uuid_prop, platform_prop, domain_prop);
         if (server_data != null) {
           servers [server_data.uuid] = server_data;
@@ -605,7 +605,7 @@ public class Session : Object {
 
       // Create a new AccountData instance when all properties could be retrieved
       if (uuid_prop != null && platform_name != null && username_prop != null) {
-        var platform_prop = PlatformEnum.from_name (platform_name);
+        var platform_prop = Backend.PlatformEnum.from_name (platform_name);
         ServerData? account_server = server_prop != null ? servers [server_prop] : null;
         var account_data = AccountData.from_data (uuid_prop, platform_prop, server_prop, username_prop, account_server);
         if (account_data != null) {

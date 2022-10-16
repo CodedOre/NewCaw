@@ -104,7 +104,7 @@ public class UserAvatar : Gtk.Widget {
       }
 
       // Set the platform indicator
-      var platform = PlatformEnum.get_platform_for_user (displayed_user);
+      var platform = Backend.PlatformEnum.get_platform_for_user (displayed_user);
       switch (platform) {
         case MASTODON:
           platform_indicator.icon_name = "platform-mastodon-symbolic";

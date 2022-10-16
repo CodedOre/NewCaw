@@ -43,7 +43,7 @@ public class CollectionFilter : Gtk.Widget {
    *
    * Used to determine a few platform-specific strings.
    */
-  public PlatformEnum displayed_platform {
+  public Backend.PlatformEnum displayed_platform {
     get {
       return set_display_platform;
     }
@@ -95,6 +95,6 @@ public class CollectionFilter : Gtk.Widget {
   /**
    * Store the display platform.
    */
-  private PlatformEnum set_display_platform;
+  private Backend.PlatformEnum set_display_platform;
 
 }

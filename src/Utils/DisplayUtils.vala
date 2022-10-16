@@ -134,7 +134,7 @@ namespace DisplayUtils {
    * @return The string with the username, prefixed if Twitter user.
    */
   public string prefix_username (Backend.User user) {
-    var platform = PlatformEnum.get_platform_for_user (user);
+    var platform = Backend.PlatformEnum.get_platform_for_user (user);
     switch (platform) {
 #if SUPPORT_MASTODON
       case MASTODON:
@@ -198,7 +198,7 @@ namespace DisplayUtils {
     }
 
     // Load the user mentioned
-    var platform = PlatformEnum.get_platform_for_account (account);
+    var platform = Backend.PlatformEnum.get_platform_for_account (account);
     try {
       switch (platform) {
 #if SUPPORT_MASTODON

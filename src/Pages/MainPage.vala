@@ -59,7 +59,7 @@ public class MainPage : Gtk.Widget {
       displayed_account = value;
       if (displayed_account != null) {
         // Create a HomeTimeline
-        var platform = PlatformEnum.get_platform_for_account (displayed_account);
+        var platform = Backend.PlatformEnum.get_platform_for_account (displayed_account);
         switch (platform) {
 #if SUPPORT_MASTODON
           case MASTODON:

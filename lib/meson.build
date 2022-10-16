@@ -33,6 +33,7 @@ libfiles = [
   'Base/System/Client.vala',
   'Base/System/Server.vala',
   'Base/Utils/MediaLoader.vala',
+  'Base/Utils/PlatformEnum.vala',
   'Base/Utils/TextFormats.vala',
   'Base/Utils/TextUtils.vala'
 ]
