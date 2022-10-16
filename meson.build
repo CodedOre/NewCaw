@@ -57,7 +57,8 @@ endif
 
 # Build and test the backend from subdirectories
 subdir('lib')
-subdir('tests')
+# FIXME: We need new tests
+# subdir('tests')
 
 # Build the code and data for the client
 cawresources = []
