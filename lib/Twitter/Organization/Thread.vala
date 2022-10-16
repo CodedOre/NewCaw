@@ -33,15 +33,10 @@ public class Backend.Twitter.Thread : Backend.Thread {
   /**
    * Creates a new Thread object for a given main post.
    *
-   * In this subclass, the timeout_label can be set to create a PseudoItem
-   * when a main_post is older than 7 days, at which point pulling the replies
-   * is no longer possible for the API accessible to us.
-   *
+   * @param session The Session that this thread is assigned to.
    * @param main_post The main post which serves as the focus for this thread.
-   * @param account The Account used for making the API calls.
-   * @param timeout_label The name for the PseudoItem which is presented when no result can be shown.
    */
-  public Thread (Backend.Post main_post, Backend.Account account, string? timeout_label = null) {
+  public Thread (Session session, Backend.Post main_post) {
     // Get the sub-type of the post
     var main_tweet = main_post as Post;
 
@@ -50,7 +45,7 @@ public class Backend.Twitter.Thread : Backend.Thread {
       post_list: new ListStore (typeof (Object)),
       conversation_id: main_tweet.conversation_id,
       reverse_chronological: false,
-      call_account: account,
+      session: session,
       main_post: main_post
     );
 
@@ -58,6 +53,7 @@ public class Backend.Twitter.Thread : Backend.Thread {
     var store = post_list as ListStore;
     store.insert_sorted (main_post, compare_items);
 
+    /* FIXME: Rework this bit.
     // Append a warning PseudoItem when the post is too old
     if (timeout_label != null) {
       var      nowtime = new DateTime.now ();
@@ -67,6 +63,7 @@ public class Backend.Twitter.Thread : Backend.Thread {
         store.insert_sorted (timeout_item, compare_items);
       }
     }
+    */
   }
 
   /**
@@ -83,12 +80,12 @@ public class Backend.Twitter.Thread : Backend.Thread {
       if (parent_id == null) {
         break;
       }
-      parent_iterator = yield Post.from_id (parent_id, call_account);
+      parent_iterator = yield session.pull_post (parent_id);
       store.insert_sorted (parent_iterator, compare_items);
     }
 
     // Create the proxy call
-    Rest.ProxyCall call = call_account.create_call ();
+    Rest.ProxyCall call = session.account.create_call ();
     call.set_method ("GET");
     call.set_function (@"tweets/search/recent");
     Server.append_post_fields (ref call);
@@ -100,7 +97,7 @@ public class Backend.Twitter.Thread : Backend.Thread {
     // Load the timeline
     Json.Node json;
     try {
-      json = yield call_account.server.call (call);
+      json = yield session.account.server.call (call);
     } catch (Error e) {
       throw e;
     }
@@ -114,31 +111,10 @@ public class Backend.Twitter.Thread : Backend.Thread {
       return;
     }
 
-    // Retrieve the post list
-    Json.Array list;
-    if (data.has_member ("data")) {
-      list = data.get_array_member ("data");
-    } else {
-      error ("Could not retrieve post list!");
+    // Load the posts in the post list
+    foreach (Backend.Post post in session.load_post_list (json)) {
+      store.insert_sorted (post, compare_items);
     }
-
-    // Retrieve the data object
-    Json.Object includes;
-    if (data.has_member ("includes")) {
-      includes = data.get_object_member ("includes");
-    } else {
-      includes = null;
-    }
-
-    // Parse the posts from the json
-    list.foreach_element ((array, index, element) => {
-      if (element.get_node_type () == OBJECT) {
-        // Create a new post object
-        Json.Object obj   = element.get_object ();
-        var         post  = Post.from_json (obj, includes);
-        store.insert_sorted (post, compare_items);
-      }
-    });
   }
 
 }

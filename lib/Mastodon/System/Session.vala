@@ -183,4 +183,14 @@ public class Backend.Mastodon.Session : Backend.Session {
     return new UserTimeline (this, user, headers);
   }
 
+  /**
+   * Retrieves the Thread for a post in this session.
+   *
+   * This is an platform-specific implementation of the abstract method
+   * defined in the base class, for more details see the base method.
+   */
+  public override Backend.Thread get_thread (Backend.Post main_post) {
+    return new Thread (this, main_post);
+  }
+
 }

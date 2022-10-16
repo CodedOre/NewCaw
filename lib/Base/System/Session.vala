@@ -156,6 +156,15 @@ public abstract class Backend.Session : Object {
   public abstract UserTimeline get_user_timeline (User user, string[] headers = {});
 
   /**
+   * Retrieves the Thread for a post in this session.
+   *
+   * @param main_post The main post which serves as the focus for this thread.
+   *
+   * @return The Thread for the post of the session.
+   */
+  public abstract Thread get_thread (Post main_post);
+
+  /**
    * Stores a reference to each post pulled by this session.
    */
   protected HashTable <string, Post> pulled_posts;

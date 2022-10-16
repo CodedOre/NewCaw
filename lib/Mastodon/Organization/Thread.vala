@@ -28,15 +28,15 @@ public class Backend.Mastodon.Thread : Backend.Thread {
   /**
    * Creates a new Thread object for a given main post.
    *
+   * @param session The Session that this thread is assigned to.
    * @param main_post The main post which serves as the focus for this thread.
-   * @param account The Account used for making the API calls.
    */
-  public Thread (Backend.Post main_post, Backend.Account account) {
+  public Thread (Session session, Backend.Post main_post) {
     // Construct the object
     Object (
       post_list: new ListStore (typeof (Object)),
       reverse_chronological: false,
-      call_account: account,
+      session: session,
       main_post: main_post
     );
 
@@ -52,39 +52,33 @@ public class Backend.Mastodon.Thread : Backend.Thread {
    */
   public override async void pull_posts () throws Error {
     // Create the proxy call
-    Rest.ProxyCall call = call_account.create_call ();
+    Rest.ProxyCall call = session.account.create_call ();
     call.set_method ("GET");
     call.set_function (@"api/v1/statuses/$(main_post.id)/context");
 
     // Load the timeline
     Json.Node json;
     try {
-      json = yield call_account.server.call (call);
+      json = yield session.account.server.call (call);
     } catch (Error e) {
       throw e;
     }
-    Json.Object data      = json.get_object ();
-    Json.Array  preceding = data.get_array_member ("ancestors");
-    Json.Array  following = data.get_array_member ("descendants");
 
-    // Parse the posts from the json
+    // Split the returned json in preceding and following
+    Json.Object data = json.get_object ();
+    var preceding = new Json.Node.alloc ();
+    var following = new Json.Node.alloc ();
+    preceding.init_array (data.get_array_member ("ancestors"));
+    following.init_array (data.get_array_member ("descendants"));
+
+    // Load the posts in the post list
     var store = post_list as ListStore;
-    preceding.foreach_element ((array, index, element) => {
-      if (element.get_node_type () == OBJECT) {
-        // Create a new post object
-        Json.Object obj  = element.get_object ();
-        var         post = Post.from_json (obj);
-        store.insert_sorted (post, compare_items);
-      }
-    });
-    following.foreach_element ((array, index, element) => {
-      if (element.get_node_type () == OBJECT) {
-        // Create a new post object
-        Json.Object obj  = element.get_object ();
-        var         post = Post.from_json (obj);
-        store.insert_sorted (post, compare_items);
-      }
-    });
+    foreach (Backend.Post post in session.load_post_list (preceding)) {
+      store.insert_sorted (post, compare_items);
+    }
+    foreach (Backend.Post post in session.load_post_list (following)) {
+      store.insert_sorted (post, compare_items);
+    }
   }
 
 }
