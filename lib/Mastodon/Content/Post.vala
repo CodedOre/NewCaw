@@ -26,44 +26,11 @@ using GLib;
 public class Backend.Mastodon.Post : Backend.Post {
 
   /**
-   * Returns a Post object for a given Json.Object.
-   *
-   * If an object for the post was already created, that object is returned.
-   * Otherwise a new object will be created from the json object.
-   *
-   * @param json The Json.Object containing the specific Post.
-   */
-  public static Post from_json (Json.Object json) {
-    // Initialize the storage if needed
-    if (all_posts == null) {
-      all_posts = new HashTable <string, Post> (str_hash, str_equal);
-    }
-
-    // Attempt to retrieve the user from storage
-    string url    = json.get_string_member ("url");
-    string domain = Utils.ParseUtils.strip_domain (url);
-    string name   = json.get_string_member ("id");
-    string id     = @"$(name)@$(domain)";
-    Post?  post = all_posts.contains (id)
-                    ? all_posts [id]
-                    : null;
-
-    // Create new object if not in storage
-    if (post == null) {
-      post = new Post (json);
-      all_posts [id] = post;
-    }
-
-    // Return the object
-    return post;
-  }
-
-  /**
    * Parses an given Json.Object and creates an Post object.
    *
    * @param json A Json.Object retrieved from the API.
    */
-  private Post (Json.Object json) {
+  internal Post (Json.Object json) {
     // Get url to html site if available
     string post_url = ! json.get_null_member ("url")
                         ? json.get_string_member ("url")
@@ -141,11 +108,6 @@ public class Backend.Mastodon.Post : Backend.Post {
   public override async Backend.Post? get_referenced_post (Backend.Account account) throws Error {
     return referenced_post;
   }
-
-  /**
-   * Stores a reference to each post currently in memory.
-   */
-  private static HashTable <string, Post> all_posts;
 
   /**
    * Stores the referenced post.

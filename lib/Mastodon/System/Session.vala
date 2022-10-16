@@ -40,4 +40,54 @@ public class Backend.Mastodon.Session : Backend.Session {
     );
   }
 
+  /**
+   * Retrieves an post for an specified id.
+   *
+   * This is an platform-specific implementation of the abstract method
+   * defined in the base class, for more details see the base method.
+   */
+  internal override async Backend.Post pull_post (string id) throws Error {
+    // Check if the post is already present in memory
+    if (pulled_posts.contains (id)) {
+      return pulled_posts [id];
+    }
+
+    // Create the proxy call
+    Rest.ProxyCall call = account.create_call ();
+    call.set_method ("GET");
+    call.set_function (@"api/v1/statuses/$(id)");
+
+    // Load the user
+    Json.Node json;
+    try {
+      json = yield account.server.call (call);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Hand the data over to load_data
+    return load_post (json.get_object ());
+  }
+
+  /**
+   * Loads an post from downloaded data.
+   *
+   * This is an platform-specific implementation of the abstract method
+   * defined in the base class, for more details see the base method.
+   */
+  internal override Backend.Post load_post (Json.Object data) {
+    // Get the id of the post
+    string id = data.get_string_member ("id");
+
+    // Check if the post is already present in memory
+    if (pulled_posts.contains (id)) {
+      return pulled_posts [id];
+    }
+
+    // Create a new post and add it to memory
+    Post post = new Post (data);
+    pulled_posts [id] = post;
+    return post;
+  }
+
 }
