@@ -162,7 +162,7 @@ public class KeyStorage : Object {
    */
   public static void store_account_access (Backend.Account account, string identifier) throws Error {
     // Create the attributes
-    string platform_name     = Backend.PlatformEnum.get_platform_for_account (account).to_string ();
+    string platform_name     = Backend.PlatformEnum.for_account (account).to_string ();
     var    attributes        = new HashTable<string,string> (str_hash, str_equal);
     string token_label       = @"Access Token for Account \"$(account.username)\" on $(platform_name)";
     attributes["type"]       = "Account";

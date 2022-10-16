@@ -124,7 +124,7 @@ public class Session : Object {
       string server_uuid   = server != null ? server.uuid : null;
       var instance         = AccountData ();
       instance.uuid        = Uuid.string_random ();
-      instance.platform    = Backend.PlatformEnum.get_platform_for_account (account);
+      instance.platform    = Backend.PlatformEnum.for_account (account);
       instance.username    = account.username;
       instance.server_uuid = server_uuid;
       instance.data        = account;
@@ -232,7 +232,7 @@ public class Session : Object {
       // Create instance and populate values
       var instance      = ServerData ();
       instance.uuid     = Uuid.string_random ();
-      instance.platform = Backend.PlatformEnum.get_platform_for_server (server);
+      instance.platform = Backend.PlatformEnum.for_server (server);
       instance.domain   = server.domain;
       instance.data     = server;
       return instance;

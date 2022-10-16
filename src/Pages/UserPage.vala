@@ -54,7 +54,7 @@ public class UserPage : Gtk.Widget {
         }
 
         // Create a UserTimeline
-        var platform = Backend.PlatformEnum.get_platform_for_user (displayed_user);
+        var platform = Backend.PlatformEnum.for_user (displayed_user);
         switch (platform) {
 #if SUPPORT_MASTODON
           case MASTODON:

@@ -89,7 +89,7 @@ public enum Backend.PlatformEnum {
    *
    * @return The enum representing the platform this server is using.
    */
-  public static PlatformEnum get_platform_for_server (Backend.Server server) {
+  public static PlatformEnum for_server (Backend.Server server) {
 #if SUPPORT_MASTODON
     // Return if using Mastodon
     if (server is Backend.Mastodon.Server) {
@@ -115,7 +115,7 @@ public enum Backend.PlatformEnum {
    *
    * @return The enum representing the platform this account is using.
    */
-  public static PlatformEnum get_platform_for_account (Backend.Account account) {
+  public static PlatformEnum for_account (Backend.Account account) {
 #if SUPPORT_MASTODON
     // Return if using Mastodon
     if (account is Backend.Mastodon.Account) {
@@ -141,11 +141,11 @@ public enum Backend.PlatformEnum {
    *
    * @return The enum representing the platform this user is using.
    */
-  public static PlatformEnum get_platform_for_user (Backend.User user) {
+  public static PlatformEnum for_user (Backend.User user) {
     // Switch method if user is an account
     if (user is Backend.Account) {
       var account = user as Backend.Account;
-      return get_platform_for_account (account);
+      return for_account (account);
     }
 
 #if SUPPORT_MASTODON

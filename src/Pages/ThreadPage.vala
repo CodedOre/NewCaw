@@ -54,7 +54,7 @@ public class ThreadPage : Gtk.Widget {
         }
 
         // Create a Thread
-        var platform = Backend.PlatformEnum.get_platform_for_account (account);
+        var platform = Backend.PlatformEnum.for_account (account);
         switch (platform) {
 #if SUPPORT_MASTODON
           case MASTODON:
