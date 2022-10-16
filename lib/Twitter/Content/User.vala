@@ -26,106 +26,12 @@ using GLib;
 public class Backend.Twitter.User : Backend.User {
 
   /**
-   * Returns a User object for a specific user name.
-   *
-   * If an object for the user was already created, that object is returned.
-   * Otherwise the json will be loaded from the server and an object created from it.
-   *
-   * @param username The name for the user.
-   * @param account An account to authenticate the loading of the user.
-   *
-   * @throws Error Any error that could happen while the user is loaded.
-   */
-  public static async User from_username (string username, Backend.Account account) throws Error {
-    // Initialize the storage if needed
-    if (all_users == null) {
-      all_users = new HashTable <string, User> (str_hash, str_equal);
-    }
-
-    // Attempt to retrieve the user from storage
-    User? user = all_users.contains (username)
-                   ? all_users [username]
-                   : null;
-
-    // Create new object if not in storage
-    if (user == null) {
-      // Create the proxy call
-      Rest.ProxyCall call = account.create_call ();
-      call.set_method ("GET");
-      call.set_function (@"users/by/username/$(username)");
-      Server.append_user_fields (ref call);
-
-      // Load the user
-      Json.Node json;
-      try {
-        json = yield account.server.call (call);
-      } catch (Error e) {
-        throw e;
-      }
-      Json.Object data = json.get_object ();
-
-      // Retrieve the user json
-      Json.Object object;
-      if (data.has_member ("data")) {
-        object = data.get_object_member ("data");
-      } else {
-        error ("Could not retrieve user object!");
-      }
-
-      // Retrieve the includes json
-      Json.Object includes;
-      if (data.has_member ("includes")) {
-        includes = data.get_object_member ("includes");
-      } else {
-        includes = null;
-      }
-
-      // Create a new user from the data
-      user = User.from_json (object, includes);
-    }
-
-    // Return the object
-    return user;
-  }
-
-  /**
-   * Returns a User object for a given Json.Object.
-   *
-   * If an object for the user was already created, that object is returned.
-   * Otherwise a new object will be created from the json object.
-   *
-   * @param data The Json.Object containing the specific User.
-   * @param includes A Json.Object including additional objects which may be related to this User.
-   */
-  public static User from_json (Json.Object data, Json.Object? includes = null) {
-    // Initialize the storage if needed
-    if (all_users == null) {
-      all_users = new HashTable <string, User> (str_hash, str_equal);
-    }
-
-    // Attempt to retrieve the user from storage
-    string id   = data.get_string_member ("username");
-    User?  user = all_users.contains (id)
-                    ? all_users [id]
-                    : null;
-
-    // Create new object if not in storage
-    if (user == null) {
-      user = new User (data, includes);
-      all_users [id] = user;
-    }
-
-    // Return the object
-    return user;
-  }
-
-  /**
    * Parses an given Json.Object and creates an User object.
    *
    * @param data The Json.Object containing the specific User.
    * @param includes A Json.Object including additional objects which may be related to this User.
    */
-  private User (Json.Object data, Json.Object? includes = null) {
+  internal User (Json.Object data, Json.Object? includes = null) {
     // Get metrics object
     Json.Object metrics = data.get_object_member ("public_metrics");
 

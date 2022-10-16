@@ -107,4 +107,71 @@ public class Backend.Twitter.Session : Backend.Session {
     return post;
   }
 
+  /**
+   * Retrieves an user for an specified id.
+   *
+   * This is an platform-specific implementation of the abstract method
+   * defined in the base class, for more details see the base method.
+   */
+  internal override async Backend.User pull_user (string id) throws Error {
+    // Check if the user is already present in memory
+    if (pulled_users.contains (id)) {
+      return pulled_users [id];
+    }
+
+    // Create the proxy call
+    Rest.ProxyCall call = account.create_call ();
+    call.set_method ("GET");
+    call.set_function (@"users/$(id)");
+    Server.append_user_fields (ref call);
+
+    // Load the user
+    Json.Node json;
+    try {
+      json = yield account.server.call (call);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Hand the data over to load_data
+    return load_user (json.get_object ());
+  }
+
+  /**
+   * Loads an user from downloaded data.
+   *
+   * This is an platform-specific implementation of the abstract method
+   * defined in the base class, for more details see the base method.
+   */
+  internal override Backend.User load_user (Json.Object data) {
+    // Split the user data object
+    Json.Object object;
+    if (data.has_member ("data")) {
+      object = data.get_object_member ("data");
+    } else {
+      error ("Could not retrieve User data!");
+    }
+
+    // Get the id of the user
+    string id = object.get_string_member ("id");
+
+    // Check if the user is already present in memory
+    if (pulled_users.contains (id)) {
+      return pulled_users [id];
+    }
+
+    // Retrieve the includes json
+    Json.Object includes;
+    if (data.has_member ("includes")) {
+      includes = data.get_object_member ("includes");
+    } else {
+      includes = null;
+    }
+
+    // Create a new user and add it to memory
+    User user = new User (object, includes); //, this);
+    pulled_users [id] = user;
+    return user;
+  }
+
 }
