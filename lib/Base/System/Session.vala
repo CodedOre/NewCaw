@@ -41,10 +41,14 @@ public abstract class Backend.Session : Object {
    */
   public static Session for_account (Account account) {
     switch (PlatformEnum.for_account (account)) {
+#if SUPPORT_MASTODON
       case MASTODON:
         return new Mastodon.Session (account);
+#endif
+#if SUPPORT_TWITTER
       case TWITTER:
         return new Twitter.Session (account);
+#endif
       default:
         error ("No compatible session type found for this account!");
     }
