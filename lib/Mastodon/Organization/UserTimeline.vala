@@ -76,7 +76,6 @@ public class Backend.Mastodon.UserTimeline : Backend.UserTimeline {
     } catch (Error e) {
       throw e;
     }
-    Json.Array list = json.get_array ();
 
     // Load the posts in the post list
     var store = post_list as ListStore;

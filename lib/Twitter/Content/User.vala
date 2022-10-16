@@ -103,9 +103,4 @@ public class Backend.Twitter.User : Backend.User {
     }
   }
 
-  /**
-   * Stores a reference to each user currently in memory.
-   */
-  private static HashTable <string, User> all_users;
-
 }
