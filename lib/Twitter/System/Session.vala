@@ -108,6 +108,68 @@ public class Backend.Twitter.Session : Backend.Session {
   }
 
   /**
+   * Loads a list of downloaded posts.
+   *
+   * This is an platform-specific implementation of the abstract method
+   * defined in the base class, for more details see the base method.
+   */
+  internal override Backend.Post[] load_post_list (Json.Node json) {
+    // Create the returned array
+    Backend.Post[] post_list = {};
+
+    // Get the root object
+    Json.Object data = json.get_object ();
+
+    // Retrieve the post list
+    Json.Array list;
+    if (data.has_member ("data")) {
+      list = data.get_array_member ("data");
+    } else {
+      error ("Could not retrieve Post list!");
+    }
+
+    // Retrieve the data object
+    Json.Object includes;
+    if (data.has_member ("includes")) {
+      includes = data.get_object_member ("includes");
+    } else {
+      includes = null;
+    }
+
+    // Parse the posts from the json
+    list.foreach_element ((array, index, element) => {
+      if (element.get_node_type () == OBJECT) {
+        // Create a new post object
+        Json.Object obj = element.get_object ();
+        post_list += load_post_iterator (obj, includes);
+      }
+    });
+  }
+
+  /**
+   * Loads an post retrieved from a post list.
+   *
+   * @param data The data for the post.
+   * @param includes The includes for the post.
+   *
+   * @return The post created from the data.
+   */
+  private Backend.Post load_post_iterator (Json.Object data, Json.Object includes) {
+    // Get the id of the post
+    string id = data.get_string_member ("id");
+
+    // Check if the post is already present in memory
+    if (pulled_posts.contains (id)) {
+      return pulled_posts [id];
+    }
+
+    // Create a new post and add it to memory
+    Post post = new Post (data, includes, this);
+    pulled_posts [id] = post;
+    return post;
+  }
+
+  /**
    * Retrieves an user for an specified id.
    *
    * This is an platform-specific implementation of the abstract method

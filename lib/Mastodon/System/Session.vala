@@ -91,6 +91,29 @@ public class Backend.Mastodon.Session : Backend.Session {
   }
 
   /**
+   * Loads a list of downloaded posts.
+   *
+   * This is an platform-specific implementation of the abstract method
+   * defined in the base class, for more details see the base method.
+   */
+  internal override Backend.Post[] load_post_list (Json.Node json) {
+    // Create the returned array
+    Backend.Post[] post_list = {};
+
+    // Parse the posts from the json
+    Json.Array list = json.get_array ();
+    list.foreach_element ((array, index, element) => {
+      if (element.get_node_type () == OBJECT) {
+        // Create a new post object
+        Json.Object obj = element.get_object ();
+        post_list += load_post (obj);
+      }
+    });
+
+    return post_list;
+  }
+
+  /**
    * Retrieves an user for an specified id.
    *
    * This is an platform-specific implementation of the abstract method

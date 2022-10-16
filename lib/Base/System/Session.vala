@@ -91,6 +91,18 @@ public abstract class Backend.Session : Object {
   internal abstract Post load_post (Json.Object data);
 
   /**
+   * Loads a list of downloaded posts.
+   *
+   * If a post was already pulled and is present in memory, the version
+   * from memory is used, otherwise a new object for the post is created.
+   *
+   * @param data The data for the post list.
+   *
+   * @return The post list created from the data.
+   */
+  internal abstract Post[] load_post_list (Json.Node json);
+
+  /**
    * Retrieves an user for an specified id.
    *
    * If the user was already pulled and is present in memory, the version
