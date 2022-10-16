@@ -85,7 +85,7 @@ public class Backend.Mastodon.Session : Backend.Session {
     }
 
     // Create a new post and add it to memory
-    Post post = new Post (data);
+    Post post = new Post (data, this);
     pulled_posts [id] = post;
     return post;
   }

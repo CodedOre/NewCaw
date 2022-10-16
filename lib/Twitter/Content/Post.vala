@@ -35,8 +35,9 @@ public class Backend.Twitter.Post : Backend.Post {
    *
    * @param data The Json.Object containing the specific Post.
    * @param includes A Json.Object including additional objects which may be related to this Post.
+   * @param session The Session this post will be managed by.
    */
-  internal Post (Json.Object data, Json.Object includes) {
+  internal Post (Json.Object data, Json.Object includes, Session session) {
     // Get metrics object
     Json.Object metrics = data.get_object_member ("public_metrics");
 
@@ -52,6 +53,9 @@ public class Backend.Twitter.Post : Backend.Post {
 
     // Construct object with properties
     Object (
+      // Set the session
+      session: session,
+
       // Set basic data
       id:        post_id,
       source:    data.get_string_member ("source"),
@@ -242,15 +246,13 @@ public class Backend.Twitter.Post : Backend.Post {
    * If the referenced post is not in local memory,
    * it will load said post from the servers.
    *
-   * @param account An account to authenticate a possible loading of the post.
-   *
    * @return The post referenced or null if none exists.
    *
    * @throws Error Any error that might happen while loading the post.
    */
-  public override async Backend.Post? get_referenced_post (Backend.Account account) throws Error {
+  public override async Backend.Post? get_referenced_post () throws Error {
     try {
-      return yield Post.from_id (referenced_id, account);
+      return yield session.pull_post (referenced_id);
     } catch (Error e) {
       throw e;
     }

@@ -102,7 +102,7 @@ public class Backend.Twitter.Session : Backend.Session {
     }
 
     // Create a new post and add it to memory
-    Post post = new Post (object, includes);
+    Post post = new Post (object, includes, this);
     pulled_posts [id] = post;
     return post;
   }

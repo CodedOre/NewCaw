@@ -29,8 +29,9 @@ public class Backend.Mastodon.Post : Backend.Post {
    * Parses an given Json.Object and creates an Post object.
    *
    * @param json A Json.Object retrieved from the API.
+   * @param session The Session this post will be managed by.
    */
-  internal Post (Json.Object json) {
+  internal Post (Json.Object json, Session session) {
     // Get url to html site if available
     string post_url = ! json.get_null_member ("url")
                         ? json.get_string_member ("url")
@@ -39,6 +40,9 @@ public class Backend.Mastodon.Post : Backend.Post {
 
     // Construct object with properties
     Object (
+      // Set the session
+      session: session,
+
       // Set basic data
       id:       json.get_string_member ("id"),
       source: ! json.get_null_member ("application")
@@ -78,7 +82,7 @@ public class Backend.Mastodon.Post : Backend.Post {
 
     // Set the referenced post
     referenced_post = ! json.get_null_member ("reblog")
-                        ? Post.from_json (json.get_object_member ("reblog"))
+                        ? session.load_post (json.get_object_member ("reblog"))
                         : null;
 
     // Get media attachments
@@ -99,19 +103,17 @@ public class Backend.Mastodon.Post : Backend.Post {
    * If the referenced post is not in local memory,
    * it will load said post from the servers.
    *
-   * @param account An account to authenticate a possible loading of the post.
-   *
    * @return The post referenced or null if none exists.
    *
    * @throws Error Any error that might happen while loading the post.
    */
-  public override async Backend.Post? get_referenced_post (Backend.Account account) throws Error {
+  public override async Backend.Post? get_referenced_post () throws Error {
     return referenced_post;
   }
 
   /**
    * Stores the referenced post.
    */
-  private Post? referenced_post;
+  private Backend.Post? referenced_post;
 
 }

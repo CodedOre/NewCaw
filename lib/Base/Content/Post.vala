@@ -26,6 +26,11 @@ using GLib;
 public abstract class Backend.Post : Object {
 
   /**
+   * The session this post is managed by and to be used to retrieve additional data.
+   */
+  public Session session { get; construct; }
+
+  /**
    * The unique identifier of this post.
    */
   public string id { get; construct; }
@@ -110,13 +115,11 @@ public abstract class Backend.Post : Object {
    * If the referenced post is not in local memory,
    * it will load said post from the servers.
    *
-   * @param account An account to authenticate a possible loading of the post.
-   *
    * @return The post referenced or null if none exists.
    *
    * @throws Error Any error that might happen while loading the post.
    */
-  public abstract async Post? get_referenced_post (Account account) throws Error;
+  public abstract async Post? get_referenced_post () throws Error;
 
   /**
    * Returns media attached to this Post.
