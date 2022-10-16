@@ -26,19 +26,19 @@ using GLib;
 public abstract class Backend.Collection : Object {
 
   /**
-   * A ListModel holding all posts in this Collection.
+   * The session this post is managed by and to be used to retrieve additional data.
    */
-  public ListModel post_list { get; construct; }
-  
-  /**
-   * An Account used to make the API calls.
-   */
-  public Account call_account { get; construct; }
+  public Session session { get; construct; }
 
   /**
    * How the posts in this collection are sorted.
    */
   public bool reverse_chronological { get; construct; default = true; }
+
+  /**
+   * A ListModel holding all posts in this Collection.
+   */
+  public ListModel post_list { get; construct; }
 
   /**
    * Calls the API to get the posts for the Collection.
