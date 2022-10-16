@@ -61,6 +61,7 @@ public abstract class Backend.Session : Object {
   construct {
     // Initialize the content storage.
     pulled_posts = new HashTable <string, Post> (str_hash, str_equal);
+    pulled_users = new HashTable <string, User> (str_hash, str_equal);
   }
 
   /**
@@ -90,8 +91,39 @@ public abstract class Backend.Session : Object {
   internal abstract Post load_post (Json.Object data);
 
   /**
+   * Retrieves an user for an specified id.
+   *
+   * If the user was already pulled and is present in memory, the version
+   * from memory is used, otherwise a call to the servers will be made.
+   *
+   * @param id The id for the user.
+   *
+   * @return The user for the given username.
+   *
+   * @throws Error Any error that could happen while the user is pulled.
+   */
+  internal abstract async User pull_user (string id) throws Error;
+
+  /**
+   * Loads an user from downloaded data.
+   *
+   * If the user was already pulled and is present in memory, the version
+   * from memory is used, otherwise a new object for the user is created.
+   *
+   * @param data The data for the user.
+   *
+   * @return The user created from the data.
+   */
+  internal abstract User load_user (Json.Object data);
+
+  /**
    * Stores a reference to each post pulled by this session.
    */
   protected HashTable <string, Post> pulled_posts;
+
+  /**
+   * Stores a reference to each user pulled by this session.
+   */
+  protected HashTable <string, User> pulled_users;
 
 }
