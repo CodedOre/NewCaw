@@ -31,7 +31,7 @@ public class Backend.Mastodon.Thread : Backend.Thread {
    * @param session The Session that this thread is assigned to.
    * @param main_post The main post which serves as the focus for this thread.
    */
-  public Thread (Session session, Backend.Post main_post) {
+  internal Thread (Session session, Backend.Post main_post) {
     // Construct the object
     Object (
       post_list: new ListStore (typeof (Object)),

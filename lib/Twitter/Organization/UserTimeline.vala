@@ -36,7 +36,7 @@ public class Backend.Twitter.UserTimeline : Backend.UserTimeline {
    * @param user The User for which the timeline is to be created.
    * @param headers Descriptions for header items to be added.
    */
-  public UserTimeline (Session session, Backend.User user, string[] headers = {}) {
+  internal UserTimeline (Session session, Backend.User user, string[] headers = {}) {
     // Construct the object
     Object (
       post_list: new ListStore (typeof (Object)),

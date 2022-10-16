@@ -36,7 +36,7 @@ public class Backend.Twitter.Thread : Backend.Thread {
    * @param session The Session that this thread is assigned to.
    * @param main_post The main post which serves as the focus for this thread.
    */
-  public Thread (Session session, Backend.Post main_post) {
+  internal Thread (Session session, Backend.Post main_post) {
     // Get the sub-type of the post
     var main_tweet = main_post as Post;
 
