@@ -55,4 +55,43 @@ public abstract class Backend.Session : Object {
    */
   public Account account { get; construct; }
 
+  /**
+   * Run at construction of this session.
+   */
+  construct {
+    // Initialize the content storage.
+    pulled_posts = new HashTable <string, Post> (str_hash, str_equal);
+  }
+
+  /**
+   * Retrieves an post for an specified id.
+   *
+   * If the post was already pulled and is present in memory, the version
+   * from memory is used, otherwise a call to the servers will be made.
+   *
+   * @param id The id for the post.
+   *
+   * @return The post for the given id.
+   *
+   * @throws Error Any error that could happen while the post is pulled.
+   */
+  internal abstract async Post pull_post (string id) throws Error;
+
+  /**
+   * Loads an post from downloaded data.
+   *
+   * If the post was already pulled and is present in memory, the version
+   * from memory is used, otherwise a new object for the post is created.
+   *
+   * @param data The data for the post.
+   *
+   * @return The post created from the data.
+   */
+  internal abstract Post load_post (Json.Object data);
+
+  /**
+   * Stores a reference to each post pulled by this session.
+   */
+  protected HashTable <string, Post> pulled_posts;
+
 }
