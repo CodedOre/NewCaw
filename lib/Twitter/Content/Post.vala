@@ -47,7 +47,7 @@ public class Backend.Twitter.Post : Backend.Post {
     PostType     set_post_type = parse_reference (data, includes, out repost_id, out reply_id);
 
     // Get strings used to compose the url.
-    var    post_author = author_obj  != null ? User.from_json (author_obj) : null;
+    var    post_author = author_obj  != null ? session.load_user (author_obj) : null;
     string author_name = post_author != null ? post_author.username : "";
     string post_id     = data.get_string_member ("id");
 
