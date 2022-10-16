@@ -129,6 +129,19 @@ public abstract class Backend.Session : Object {
   internal abstract User load_user (Json.Object data);
 
   /**
+   * Retrieves the HomeTimeline for the account in this session.
+   *
+   * In order to allow a ListView to include widgets before the posts,
+   * the headers parameter can be added. For each string in that list
+   * an PseudoItem will be created with the string as description.
+   *
+   * @param headers Descriptions for header items to be added.
+   *
+   * @return The HomeTimeline for the account of the session.
+   */
+  public abstract HomeTimeline get_home_timeline (string[] headers);
+
+  /**
    * Stores a reference to each post pulled by this session.
    */
   protected HashTable <string, Post> pulled_posts;

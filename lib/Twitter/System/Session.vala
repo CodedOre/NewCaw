@@ -236,4 +236,14 @@ public class Backend.Twitter.Session : Backend.Session {
     return user;
   }
 
+  /**
+   * Retrieves the HomeTimeline for the account in this session.
+   *
+   * This is an platform-specific implementation of the abstract method
+   * defined in the base class, for more details see the base method.
+   */
+  public override Backend.HomeTimeline get_home_timeline (string[] headers) {
+    return new HomeTimeline (headers, this);
+  }
+
 }
