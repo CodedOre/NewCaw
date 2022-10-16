@@ -31,106 +31,12 @@ public class Backend.Twitter.Post : Backend.Post {
   public string conversation_id { get; construct; }
 
   /**
-   * Returns a Post object for a specific post id.
-   *
-   * If an object for the post was already created, that object is returned.
-   * Otherwise the json will be loaded from the server and an object created from it.
-   *
-   * @param id The id for the post.
-   * @param account An account to authenticate the loading of the post.
-   *
-   * @throws Error Any error that could happen while the post is loaded.
-   */
-  public static async Post from_id (string id, Backend.Account account) throws Error {
-    // Initialize the storage if needed
-    if (all_posts == null) {
-      all_posts = new HashTable <string, Post> (str_hash, str_equal);
-    }
-
-    // Attempt to retrieve the user from storage
-    Post? post = all_posts.contains (id)
-                   ? all_posts [id]
-                   : null;
-
-    // Create new object if not in storage
-    if (post == null) {
-      // Create the proxy call
-      Rest.ProxyCall call = account.create_call ();
-      call.set_method ("GET");
-      call.set_function (@"tweets/$(id)");
-      Server.append_post_fields (ref call);
-
-      // Load the user
-      Json.Node json;
-      try {
-        json = yield account.server.call (call);
-      } catch (Error e) {
-        throw e;
-      }
-      Json.Object data = json.get_object ();
-
-      // Retrieve the user json
-      Json.Object object;
-      if (data.has_member ("data")) {
-        object = data.get_object_member ("data");
-      } else {
-        error ("Could not retrieve post object!");
-      }
-
-      // Retrieve the includes json
-      Json.Object includes;
-      if (data.has_member ("includes")) {
-        includes = data.get_object_member ("includes");
-      } else {
-        includes = null;
-      }
-
-      // Create a new user from the data
-      post = Post.from_json (object, includes);
-    }
-
-    // Return the object
-    return post;
-  }
-
-  /**
-   * Returns a Post object for a given Json.Object.
-   *
-   * If an object for the post was already created, that object is returned.
-   * Otherwise a new object will be created from the json object.
-   *
-   * @param data The Json.Object containing the specific Post.
-   * @param includes A Json.Object including additional objects which may be related to this Post.
-   */
-  public static Post from_json (Json.Object data, Json.Object? includes = null) {
-    // Initialize the storage if needed
-    if (all_posts == null) {
-      all_posts = new HashTable <string, Post> (str_hash, str_equal);
-    }
-
-    // Attempt to retrieve the user from storage
-    string id   = data.get_string_member ("id");
-    Post?  post = all_posts.contains (id)
-                    ? all_posts [id]
-                    : null;
-
-    // Create new object if not in storage
-    if (post == null) {
-      post = new Post (data, includes);
-      all_posts [id] = post;
-    }
-
-    // Return the object
-    return post;
-  }
-
-  /**
    * Parses an given Json.Object and creates an Post object.
    *
    * @param data The Json.Object containing the specific Post.
    * @param includes A Json.Object including additional objects which may be related to this Post.
    */
-  private Post (Json.Object data, Json.Object includes) {
+  internal Post (Json.Object data, Json.Object includes) {
     // Get metrics object
     Json.Object metrics = data.get_object_member ("public_metrics");
 
@@ -349,11 +255,6 @@ public class Backend.Twitter.Post : Backend.Post {
       throw e;
     }
   }
-
-  /**
-   * Stores a reference to each post currently in memory.
-   */
-  private static HashTable <string, Post> all_posts;
 
   /**
    * The id for the referenced post.

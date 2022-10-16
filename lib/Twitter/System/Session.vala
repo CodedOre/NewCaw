@@ -40,4 +40,71 @@ public class Backend.Twitter.Session : Backend.Session {
     );
   }
 
+  /**
+   * Retrieves an post for an specified id.
+   *
+   * This is an platform-specific implementation of the abstract method
+   * defined in the base class, for more details see the base method.
+   */
+  internal override async Backend.Post pull_post (string id) throws Error {
+    // Check if the post is already present in memory
+    if (pulled_posts.contains (id)) {
+      return pulled_posts [id];
+    }
+
+    // Create the proxy call
+    Rest.ProxyCall call = account.create_call ();
+    call.set_method ("GET");
+    call.set_function (@"tweets/$(id)");
+    Server.append_post_fields (ref call);
+
+    // Load the user
+    Json.Node json;
+    try {
+      json = yield account.server.call (call);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Hand the data over to load_data
+    return load_post (json.get_object ());
+  }
+
+  /**
+   * Loads an post from downloaded data.
+   *
+   * This is an platform-specific implementation of the abstract method
+   * defined in the base class, for more details see the base method.
+   */
+  internal override Backend.Post load_post (Json.Object data) {
+    // Split the post data object
+    Json.Object object;
+    if (data.has_member ("data")) {
+      object = data.get_object_member ("data");
+    } else {
+      error ("Could not retrieve Post data!");
+    }
+
+    // Get the id of the post
+    string id = object.get_string_member ("id");
+
+    // Check if the post is already present in memory
+    if (pulled_posts.contains (id)) {
+      return pulled_posts [id];
+    }
+
+    // Retrieve the includes json
+    Json.Object includes;
+    if (data.has_member ("includes")) {
+      includes = data.get_object_member ("includes");
+    } else {
+      includes = null;
+    }
+
+    // Create a new post and add it to memory
+    Post post = new Post (object, includes);
+    pulled_posts [id] = post;
+    return post;
+  }
+
 }
