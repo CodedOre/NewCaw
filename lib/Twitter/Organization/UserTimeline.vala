@@ -32,20 +32,19 @@ public class Backend.Twitter.UserTimeline : Backend.UserTimeline {
    * the headers parameter can be added. For each string in that list
    * an PseudoItem will be created with the string as description.
    *
+   * @param session The Session that this timeline is assigned to.
    * @param user The User for which the timeline is to be created.
-   * @param account The Account used for making the API calls.
    * @param headers Descriptions for header items to be added.
    */
-  public UserTimeline (Backend.User user, Backend.Account account, string[] headers = {}) {
+  public UserTimeline (Session session, Backend.User user, string[] headers = {}) {
     // Construct the object
     Object (
       post_list: new ListStore (typeof (Object)),
-      call_account: account,
+      session: session,
       user: user
     );
 
     // Add PseudoItems for the headers
-    header_items = headers.length;
     var store    = post_list as ListStore;
     int header_i = 0;
     foreach (string name in headers) {
@@ -62,7 +61,7 @@ public class Backend.Twitter.UserTimeline : Backend.UserTimeline {
    */
   public override async void pull_posts () throws Error {
     // Create the proxy call
-    Rest.ProxyCall call = call_account.create_call ();
+    Rest.ProxyCall call = session.account.create_call ();
     call.set_method ("GET");
     call.set_function (@"users/$(user.id)/tweets");
     call.add_param ("max_results", "50");
@@ -74,43 +73,16 @@ public class Backend.Twitter.UserTimeline : Backend.UserTimeline {
     // Load the timeline
     Json.Node json;
     try {
-      json = yield call_account.server.call (call);
+      json = yield session.account.server.call (call);
     } catch (Error e) {
       throw e;
     }
-    Json.Object data = json.get_object ();
 
-    // Retrieve the post list
-    Json.Array list;
-    if (data.has_member ("data")) {
-      list = data.get_array_member ("data");
-    } else {
-      error ("Could not retrieve post list!");
-    }
-
-    // Retrieve the data object
-    Json.Object includes;
-    if (data.has_member ("includes")) {
-      includes = data.get_object_member ("includes");
-    } else {
-      includes = null;
-    }
-
-    // Parse the posts from the json
+    // Load the posts in the post list
     var store = post_list as ListStore;
-    list.foreach_element ((array, index, element) => {
-      if (element.get_node_type () == OBJECT) {
-        // Create a new post object
-        Json.Object obj   = element.get_object ();
-        var         post  = Post.from_json (obj, includes);
-        store.insert_sorted (post, compare_items);
-      }
-    });
+    foreach (Backend.Post post in session.load_post_list (json)) {
+      store.insert_sorted (post, compare_items);
+    }
   }
-
-  /**
-   * The amount of added header items.
-   */
-  private uint header_items = 0;
 
 }

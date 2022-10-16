@@ -173,4 +173,14 @@ public class Backend.Mastodon.Session : Backend.Session {
     return new HomeTimeline (headers, this);
   }
 
+  /**
+   * Retrieves the UserTime for a user in this session.
+   *
+   * This is an platform-specific implementation of the abstract method
+   * defined in the base class, for more details see the base method.
+   */
+  public override Backend.UserTimeline get_user_timeline (Backend.User user, string[] headers = {}) {
+    return new UserTimeline (this, user, headers);
+  }
+
 }

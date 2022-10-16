@@ -142,6 +142,20 @@ public abstract class Backend.Session : Object {
   public abstract HomeTimeline get_home_timeline (string[] headers);
 
   /**
+   * Retrieves the UserTime for a user in this session.
+   *
+   * In order to allow a ListView to include widgets before the posts,
+   * the headers parameter can be added. For each string in that list
+   * an PseudoItem will be created with the string as description.
+   *
+   * @param user The user to show the UserTimeline for.
+   * @param headers Descriptions for header items to be added.
+   *
+   * @return The UserTimeline for the user of the session.
+   */
+  public abstract UserTimeline get_user_timeline (User user, string[] headers = {});
+
+  /**
    * Stores a reference to each post pulled by this session.
    */
   protected HashTable <string, Post> pulled_posts;
