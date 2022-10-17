@@ -39,17 +39,31 @@ public class MainWindow : Adw.ApplicationWindow {
    */
   public Backend.Account account {
     get {
-      return displayed_account;
+      return displayed_session.account;
     }
     construct set {
-      // Set the new account
-      displayed_account = value;
+      // Create a session for the account
+      session = value != null
+                  ? Backend.Session.for_account (value)
+                  : null;
+    }
+  }
 
-      if (displayed_account != null) {
+  /**
+   * The session currently displayed in this window.
+   */
+  public Backend.Session session {
+    get {
+      return displayed_session;
+    }
+    set {
+      displayed_session = value;
+
+      if (displayed_session != null) {
         // Display set account
-        main_page.account = displayed_account;
+        main_page.account = displayed_session.account;
         this.window_stack.set_visible_child (main_view);
-        this.title = @"$(Config.PROJECT_NAME) - @$(displayed_account.username)";
+        this.title = @"$(Config.PROJECT_NAME) - @$(displayed_session.account.username)";
       } else {
         // Or open AuthView on non-existence
         this.window_stack.set_visible_child (auth_view);
@@ -194,9 +208,9 @@ public class MainWindow : Adw.ApplicationWindow {
   }
 
   /**
-   * Holds the displayed account.
+   * Holds the displayed session.
    */
-  private Backend.Account displayed_account;
+  private Backend.Session? displayed_session = null;
 
   /**
    * Counts how many MainWindows are opened.
