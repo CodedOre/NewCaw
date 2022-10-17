@@ -132,9 +132,9 @@ public class Backend.Twitter.Post : Backend.Post {
       });
     }
 
+    // Return the parsed object
     if (author_obj != null) {
-      // Return the parsed object
-      return author_obj;
+      return Utils.ParseUtils.wrap_include_data (author_obj, includes);
     } else {
       // Fail the parsing if author not found
       error ("Could not create author for this Post: No object found in includes!");

@@ -26,6 +26,21 @@ using GLib;
 namespace Backend.Twitter.Utils.ParseUtils {
 
   /**
+   * Creates a pseudo-object for object parsed from includes so that
+   * Session.load_* can treat them as they would've been pulled from server.
+   *
+   * @param object The object to be wrapped.
+   * @param includes Additional includes to be added.
+   *
+   * @return A new Json.Object containing the object.
+   */
+  private Json.Object wrap_include_data (Json.Object object, Json.Object includes) {
+    var return_data = new Json.Object ();
+    return_data.set_object_member ("data", object);
+    return return_data;
+  }
+
+  /**
    * Get the high resolution url for an user image.
    *
    * @param url The url to be parsed.
