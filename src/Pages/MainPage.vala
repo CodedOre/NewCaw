@@ -62,7 +62,7 @@ public class MainPage : Gtk.Widget {
 
       // Retrieve the UserTimeline
       timeline = displayed_session != null
-                   ? session.get_home_timeline ()
+                   ? session.get_home_timeline (CollectionView.HEADERS)
                    : null;
 
       // Set the page content
