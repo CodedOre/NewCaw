@@ -43,43 +43,21 @@ public class UserPage : Gtk.Widget {
     }
     set {
       displayed_user = value;
-      if (displayed_user != null) {
-        // Get the account for this widget
-        var main_window = this.get_root () as MainWindow;
-        Backend.Account account = main_window != null
-                                    ? main_window.account
-                                    : null;
-        if (account == null) {
-          error ("Failed to get account for this view!");
-        }
 
-        // Create a UserTimeline
-        var platform = Backend.PlatformEnum.for_user (displayed_user);
-        switch (platform) {
-#if SUPPORT_MASTODON
-          case MASTODON:
-            timeline = new Backend.Mastodon.UserTimeline (displayed_user, account, CollectionView.HEADERS);
-            break;
-#endif
-#if SUPPORT_TWITTER
-          case TWITTER:
-            timeline = new Backend.Twitter.UserTimeline (displayed_user, account, CollectionView.HEADERS);
-            break;
-#endif
-          default:
-            error ("UserPage: Failed to create an appropriate user timeline!");
-        }
+      // Get the session for the widget
+      var main_window = this.get_root () as MainWindow;
+      var session = main_window != null
+                      ? main_window.session
+                      : null;
 
-        // Set the view subtitle
-        page_title.subtitle = account.username;
-        // Display the collection in the CollectionView
-        collection_view.displayed_platform = platform;
-        collection_view.collection         = timeline;
-      } else {
-        // Set timeline to null
-        timeline = null;
-        collection_view.collection = null;
-      }
+      // Retrieve the UserTimeline
+      timeline = session != null && displayed_user != null
+                   ? session.get_user_timeline (displayed_user)
+                   : null;
+
+      // Set the page content
+      page_title.subtitle = session != null ? session.account.username : null;
+      collection_view.collection = timeline;
     }
   }
 

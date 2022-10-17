@@ -191,32 +191,22 @@ public class PostItem : Gtk.Widget {
    * Updates the properties for an PostItem.
    */
   private async void update_item () {
-    // Get the account for this widget
-    var main_window = this.get_root () as MainWindow;
-    Backend.Account account = main_window != null
-                                ? main_window.account
-                                : null;
-
     bool has_repost, has_quote;
     Backend.Post? repost = null, quote = null;
 
     // Check if we have a repost
     try {
       has_repost = displayed_post != null && displayed_post.post_type == REPOST;
-      repost     = has_repost ? displayed_post : null;
-      main_post  = has_repost && account != null
-                     ? yield displayed_post.get_referenced_post (account)
-                     : displayed_post;
+      repost = has_repost ? displayed_post : null;
+      main_post = has_repost ? yield displayed_post.get_referenced_post () : displayed_post;
     } catch (Error e) {
       warning ("Failed to pull the reposted post: $(e.message)");
     }
 
     // Check if we have a quote
     try {
-      has_quote  = main_post != null && main_post.post_type == QUOTE;
-      quote      = has_quote && account != null
-                     ? yield main_post.get_referenced_post (account)
-                     : null;
+      has_quote = main_post != null && main_post.post_type == QUOTE;
+      quote = has_quote ? yield main_post.get_referenced_post () : null;
     } catch (Error e) {
       warning ("Failed to pull the quoted post: $(e.message)");
     }

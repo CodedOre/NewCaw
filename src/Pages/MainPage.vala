@@ -39,6 +39,8 @@ public class MainPage : Gtk.Widget {
   // UI-Elements of the flap
   [GtkChild]
   private unowned Adw.WindowTitle flap_title;
+  [GtkChild]
+  private unowned AccountSidebar account_sidebar;
 
   /**
    * Run at construction of the widget.
@@ -49,43 +51,30 @@ public class MainPage : Gtk.Widget {
   }
 
   /**
-   * The Account which is displayed.
+   * The Session which is displayed.
    */
-  public Backend.Account account {
+  public Backend.Session session {
     get {
-      return displayed_account;
+      return displayed_session;
     }
     set {
-      displayed_account = value;
-      if (displayed_account != null) {
-        // Create a HomeTimeline
-        var platform = Backend.PlatformEnum.for_account (displayed_account);
-        switch (platform) {
-#if SUPPORT_MASTODON
-          case MASTODON:
-            timeline = new Backend.Mastodon.HomeTimeline (displayed_account, CollectionView.HEADERS);
-            break;
-#endif
-#if SUPPORT_TWITTER
-          case TWITTER:
-            timeline = new Backend.Twitter.HomeTimeline (displayed_account, CollectionView.HEADERS);
-            break;
-#endif
-          default:
-            error ("MainPage: Failed to create an appropriate home timeline!");
-        }
+      displayed_session = value;
 
-        // Set the view subtitle
-        content_title.subtitle = account.username;
-        // Display the collection in the CollectionView
-        home_collection.displayed_platform = platform;
-        home_collection.collection         = timeline;
-      } else {
-        // Set timeline to null
-        timeline = null;
-        content_title.subtitle = null;
-        home_collection.collection = null;
-      }
+      // Retrieve the UserTimeline
+      timeline = displayed_session != null
+                   ? session.get_home_timeline ()
+                   : null;
+
+      // Set the page content
+      home_collection.collection = timeline;
+      content_title.subtitle = displayed_session != null
+                                 ? displayed_session.account.username
+                                 : null;
+
+      // Set the active account in the sidebar
+      account_sidebar.active_account = displayed_session != null
+                                         ? displayed_session.account
+                                         : null;
     }
   }
 
@@ -104,8 +93,8 @@ public class MainPage : Gtk.Widget {
   private Backend.HomeTimeline? timeline = null;
 
   /**
-   * Stores the displayed account.
+   * Stores the displayed session.
    */
-  private Backend.Account? displayed_account = null;
+  private Backend.Session? displayed_session = null;
 
 }

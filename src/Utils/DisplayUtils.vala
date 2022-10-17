@@ -182,38 +182,25 @@ namespace DisplayUtils {
   /**
    * Opens a mentioned user in a new UserPage.
    *
-   * @string username The name of the mentioned user.
+   * @string id The id of the mentioned user.
    * @param widget The widget making the call.
    */
-  private async void open_mentioned_user (string username, Gtk.Widget widget) {
+  private async void open_mentioned_user (string id, Gtk.Widget widget) {
     Backend.User? mention = null;
 
-    // Get the account for this widget
+    // Get the session for the widget
     var main_window = widget.get_root () as MainWindow;
-    Backend.Account account = main_window != null
-                                ? main_window.account
-                                : null;
-    if (account == null) {
-      error ("Failed to get account for this view!");
+    var session = main_window != null
+                    ? main_window.session
+                    : null;
+
+    if (session == null) {
+      error ("Failed to get a session for this widget!");
     }
 
     // Load the user mentioned
-    var platform = Backend.PlatformEnum.for_account (account);
     try {
-      switch (platform) {
-#if SUPPORT_MASTODON
-        case MASTODON:
-          mention = yield Backend.Mastodon.User.from_username (username, account);
-          break;
-#endif
-#if SUPPORT_TWITTER
-        case TWITTER:
-          mention = yield Backend.Twitter.User.from_username (username, account);
-          break;
-#endif
-        default:
-          error ("PostItem: Failed to create an appropriate user object!");
-      }
+      mention = yield session.pull_user (id);
     } catch (Error e) {
       warning (@"Failed to load mentioned user: $(e.message)\n");
       return;

@@ -101,14 +101,14 @@ public class Preferences.AppearancesPage : Adw.PreferencesPage {
       Json.Object root          = json_parser.get_root ().get_object ();
       Json.Object post_data     = root.get_object_member ("data");
       Json.Object post_includes = root.get_object_member ("includes");
-      example_post = Backend.Twitter.Post.from_json (post_data, post_includes);
+      // example_post = Backend.Twitter.Post.from_json (post_data, post_includes);
 #elif SUPPORT_MASTODON
       Json.Object post_data = json_parser.get_root ().get_object ();
-      example_post = Backend.Mastodon.Post.from_json (post_data);
+      // example_post = Backend.Mastodon.Post.from_json (post_data);
 #endif
 
       // Set the example post
-      example_post_item.post = example_post;
+      example_post_item.post = null;
     } catch (Error e) {
       warning (@"Failed to set the example post: $(e.message)");
       example_post_item.post = null;

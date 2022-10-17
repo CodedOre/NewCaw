@@ -43,45 +43,21 @@ public class ThreadPage : Gtk.Widget {
     }
     set {
       displayed_post = value;
-      if (displayed_post != null) {
-        // Get the account for this widget
-        var main_window = this.get_root () as MainWindow;
-        Backend.Account account = main_window != null
-                                    ? main_window.account
-                                    : null;
-        if (account == null) {
-          error ("Failed to get account for this view!");
-        }
 
-        // Create a Thread
-        var platform = Backend.PlatformEnum.for_account (account);
-        switch (platform) {
-#if SUPPORT_MASTODON
-          case MASTODON:
-            thread = new Backend.Mastodon.Thread (displayed_post, account);
-            break;
-#endif
-#if SUPPORT_TWITTER
-          case TWITTER:
-            thread = new Backend.Twitter.Thread (displayed_post, account, "timeout");
-            break;
-#endif
-          default:
-            error ("Failed to create an appropriate thread!");
-        }
+      // Get the session for the widget
+      var main_window = this.get_root () as MainWindow;
+      var session = main_window != null
+                      ? main_window.session
+                      : null;
 
-        // Set the view subtitle
-        page_title.subtitle = account.username;
-        // Display the collection in the CollectionView
-        collection_view.displayed_platform = platform;
-        collection_view.main_post_id       = post.id;
-        collection_view.collection         = thread;
-      } else {
-        // Set thread to null
-        thread = null;
-        collection_view.collection   = null;
-        collection_view.main_post_id = null;
-      }
+      // Retrieve the Thread
+      thread = session != null && displayed_post != null
+                   ? session.get_thread (displayed_post)
+                   : null;
+
+      // Set the page content
+      page_title.subtitle = session != null ? session.account.username : null;
+      collection_view.collection = thread;
     }
   }
 

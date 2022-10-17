@@ -59,9 +59,9 @@ public class MainWindow : Adw.ApplicationWindow {
     set {
       displayed_session = value;
 
+      main_page.session = displayed_session;
       if (displayed_session != null) {
         // Display set account
-        main_page.account = displayed_session.account;
         this.window_stack.set_visible_child (main_view);
         this.title = @"$(Config.PROJECT_NAME) - @$(displayed_session.account.username)";
       } else {
