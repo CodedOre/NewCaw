@@ -206,6 +206,13 @@ public abstract class Backend.Session : Object {
   public abstract async void revoke_session () throws Error;
 
   /**
+   * Creates a Rest.ProxyCall to perform an API call.
+   *
+   * @return A Rest.ProxyCall that can be then called with Server.call.
+   */
+  internal abstract Rest.ProxyCall create_call ();
+
+  /**
    * Stores a reference to each post pulled by this session.
    */
   protected HashTable <string, Post> pulled_posts;
