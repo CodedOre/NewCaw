@@ -49,6 +49,11 @@ public abstract class Backend.Session : Object {
     switch (PlatformEnum.for_server (server)) {
 #if SUPPORT_MASTODON
       case MASTODON:
+        try {
+          return yield new Mastodon.Session (identifier, access_token, server);
+        } catch (Error e) {
+          throw e;
+        }
 #endif
 #if SUPPORT_TWITTER
       case TWITTER:

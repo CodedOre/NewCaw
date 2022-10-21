@@ -29,15 +29,58 @@ using GLib;
 public class Backend.Mastodon.Session : Backend.Session {
 
   /**
-   * Creates a new instance of Session.
+   * Creates a new instance of the Session class.
    *
-   * @param account The account for this session.
+   * Also creates the required proxy and loads the connected account
+   * before creating the new instance. Should the loading fail it throws
+   * an error and will not create the instance.
+   *
+   * @param identifier The identifier for this session.
+   * @param access_token The access token to make calls for this session.
+   * @param server The server this session is connected to.
+   *
+   * @throws Error Errors that happen while verifying the session by loading the account.
    */
-  internal Session (Backend.Account account) {
-    // Construct new object
+  internal async Session (string identifier, string access_token, Backend.Server server) throws Error {
+    // Create the proxy
+    var call_proxy = new Rest.OAuth2Proxy (@"https://$(server.domain)/oauth/authorize",
+                                           @"https://$(server.domain)/oauth/token",
+                                           Server.OOB_REDIRECT,
+                                           server.client_key,
+                                           server.client_secret,
+                                           @"https://$(server.domain)/");
+    proxy.access_token = access_token;
+
+    // Make a call to load the account
+    var account_call = call_proxy.new_call ();
+    account_call.set_method ("GET");
+    account_call.set_function ("api/v1/accounts/verify_credentials");
+
+    // Load the data for the account
+    Json.Node json;
+    try {
+      json = yield server.call (account_call);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Create the object for the account
+    Json.Object data = json.get_object ();
+    User account = new User (data);
+
+    // Construct the new object
     Object (
+      identifier: identifier,
+      access_token: access_token,
+      server: server,
       account: account
     );
+
+    // Set the proxy
+    proxy = call_proxy;
+
+    // Stores the account in the pulled_user archive
+    pulled_users [account.id] = account;
   }
 
   /**
@@ -53,14 +96,14 @@ public class Backend.Mastodon.Session : Backend.Session {
     }
 
     // Create the proxy call
-    Rest.ProxyCall call = account.create_call ();
+    Rest.ProxyCall call = proxy.new_call ();
     call.set_method ("GET");
     call.set_function (@"api/v1/statuses/$(id)");
 
     // Load the user
     Json.Node json;
     try {
-      json = yield account.server.call (call);
+      json = yield server.call (call);
     } catch (Error e) {
       throw e;
     }
@@ -126,14 +169,14 @@ public class Backend.Mastodon.Session : Backend.Session {
     }
 
     // Create the proxy call
-    Rest.ProxyCall call = account.create_call ();
+    Rest.ProxyCall call = proxy.new_call ();
     call.set_method ("GET");
     call.set_function (@"api/v1/accounts/$(id)");
 
     // Load the user
     Json.Node json;
     try {
-      json = yield account.server.call (call);
+      json = yield server.call (call);
     } catch (Error e) {
       throw e;
     }
@@ -192,5 +235,31 @@ public class Backend.Mastodon.Session : Backend.Session {
   public override Backend.Thread get_thread (Backend.Post main_post) {
     return new Thread (this, main_post);
   }
+
+  /**
+   * Removes the session from the client.
+   *
+   * This is an platform-specific implementation of the abstract method
+   * defined in the base class, for more details see the base method.
+   */
+  public override async void revoke_session () throws Error {
+    var call = proxy.new_call ();
+    call.set_method ("POST");
+    call.set_function ("oauth/revoke");
+    call.add_param ("client_id",     server.client_key);
+    call.add_param ("client_secret", server.client_secret);
+    call.add_param ("token",         access_token);
+
+    try {
+      yield server.call (call);
+    } catch (Error e) {
+      throw e;
+    }
+  }
+
+  /**
+   * The proxy used to authorize the API calls.
+   */
+  private Rest.OAuth2Proxy proxy;
 
 }
