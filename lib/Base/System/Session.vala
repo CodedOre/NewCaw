@@ -89,7 +89,7 @@ public abstract class Backend.Session : Object {
   /**
    * The account that is managed by this session.
    */
-  public User account { get; construct; }
+  public User account { get; protected set; }
 
   /**
    * Run at construction of this session.
