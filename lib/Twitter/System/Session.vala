@@ -70,7 +70,7 @@ public partial class Backend.Twitter.Session : AsyncInitable {
    * @param io_priority The I/O priority of the operation
    * @param cancellable Allows the initialization of the class to be cancelled.
    *
-   * @returns If the object was successfully initialized.
+   * @return If the object was successfully initialized.
    *
    * @throws Error Errors that happened while loading the account.
    */

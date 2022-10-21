@@ -41,7 +41,7 @@ public abstract class Backend.Session : Object {
    * @param access_token The access token to make calls for this session.
    * @param server The server which this server calls.
    *
-   * @returns A newly created Session instance from the set data.
+   * @return A newly created Session instance from the set data.
    *
    * @throws Error Errors that happen while verifying the session by loading the account.
    */

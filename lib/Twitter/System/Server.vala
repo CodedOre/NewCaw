@@ -61,7 +61,6 @@ public class Backend.Twitter.Server : Backend.Server {
    * them on Twitter's Developer Portal to use here.
    *
    * @param client_key The key to authenticate the client.
-   * @param client_secret The secret to authenticate the client.
    */
   public Server (string client_key) {
     // Create the Server instance
