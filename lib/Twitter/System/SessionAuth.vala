@@ -20,37 +20,15 @@
 
 using GLib;
 
-/* SessionAuth.vala
- *
- * Copyright 2022 Frederick Schenk
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
-using GLib;
-
 /**
  * Provides utilities to authenticate new sessions.
  */
-public class Backend.Mastodon.SessionAuth : Backend.SessionAuth {
+public class Backend.Twitter.SessionAuth : Backend.SessionAuth {
 
   /**
    * The scopes that will be requested.
    */
-  private const string AUTH_SCOPES = "read write follow push";
+  private const string AUTH_SCOPES = "tweet.read tweet.write tweet.moderate.write users.read follows.read follows.write space.read mute.read mute.write like.read like.write list.read list.write block.read block.write offline.access";
 
   /**
    * Initializes the authentication.
@@ -62,23 +40,16 @@ public class Backend.Mastodon.SessionAuth : Backend.SessionAuth {
     auth_state = null;
     auth_challenge = null;
 
-    // Check for an authenticated server
-    // TODO: Implement this when ClientState exists
-
-    // Authenticate a new server on the set domain
-    try {
-      auth_server = yield new Server.authenticate (domain);
-    } catch (Error e) {
-      throw e;
-    }
+    // Check that the server exists
+    auth_server = Server.instance;
 
     // Create the auth_proxy
-    auth_proxy = new Rest.OAuth2Proxy (@"https://$(auth_server.domain)/oauth/authorize",
-                                       @"https://$(auth_server.domain)/oauth/token",
+    auth_proxy = new Rest.OAuth2Proxy (@"https://twitter.com/i/oauth2/authorize",
+                                       @"https://api.$(auth_server.domain)/2/oauth2/token",
                                        Server.OOB_REDIRECT,
                                        auth_server.client_key,
                                        auth_server.client_secret,
-                                       @"https://$(auth_server.domain)/");
+                                       @"https://api.$(auth_server.domain)/2/");
   }
 
   /**
