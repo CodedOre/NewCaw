@@ -54,6 +54,7 @@ if mastodon_backend
     'Mastodon/System/Account.vala',
     'Mastodon/System/Server.vala',
     'Mastodon/System/Session.vala',
+    'Mastodon/System/SessionAuth.vala',
     'Mastodon/System/SessionCalls.vala',
     'Mastodon/Utils/ParseUtils.vala',
     'Mastodon/Utils/TextParser.vala'
