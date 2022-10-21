@@ -26,19 +26,20 @@ using GLib;
 public abstract class Backend.SessionAuth : Object {
 
   /**
-   * Set's the server to authenticate on.
+   * Initializes the authentication.
    *
-   * This will authenticate the client on the server,
-   * if no Server object is present in the ClientState.
+   * Initializes the authentication proxy at the set server.
+   * If the client was not authenticated at the given server,
+   * it will run the authentication for it.
    *
-   * On platforms with only one server (e.g. Twitter),
-   * this method does nothing.
+   * On platforms with only one server (e.g. Twitter), the domain
+   * parameter is ignored.
    *
    * @param domain The domain of the server to authenticate at.
    *
    * @throws Error Errors that happen when the server could not be set.
    */
-  public abstract async void set_server (string domain) throws Error;
+  public abstract async void init_auth (string domain) throws Error;
 
   /**
    * Generates an authentication url to begin an authentication.
