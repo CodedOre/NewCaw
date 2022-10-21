@@ -28,6 +28,6 @@ public abstract class Backend.HomeTimeline : Backend.Collection {
   /**
    * The Account which timeline is presented.
    */
-  public Account account { get; construct; }
+  public User account { get; construct; }
 
 }

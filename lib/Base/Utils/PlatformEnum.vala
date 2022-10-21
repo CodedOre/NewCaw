@@ -109,32 +109,6 @@ public enum Backend.PlatformEnum {
   }
 
   /**
-   * Get the enum type for a Account.
-   *
-   * @param account The account to get the type for.
-   *
-   * @return The enum representing the platform this account is using.
-   */
-  public static PlatformEnum for_account (Backend.Account account) {
-#if SUPPORT_MASTODON
-    // Return if using Mastodon
-    if (account is Backend.Mastodon.Account) {
-      return MASTODON;
-    }
-#endif
-
-#if SUPPORT_TWITTER
-    // Return if using Twitter
-    if (account is Backend.Twitter.Account) {
-      return TWITTER;
-    }
-#endif
-
-    // Return NONE if no platform is applicable
-    return NONE;
-  }
-
-  /**
    * Get the enum type for a User.
    *
    * @param user The user to get the type for.
@@ -142,12 +116,6 @@ public enum Backend.PlatformEnum {
    * @return The enum representing the platform this user is using.
    */
   public static PlatformEnum for_user (Backend.User user) {
-    // Switch method if user is an account
-    if (user is Backend.Account) {
-      var account = user as Backend.Account;
-      return for_account (account);
-    }
-
 #if SUPPORT_MASTODON
     // Return if using Mastodon
     if (user is Backend.Mastodon.User) {

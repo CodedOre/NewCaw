@@ -21,49 +21,57 @@
 using GLib;
 
 /**
- * Stores basic information representing the client.
+ * The client for utilizing this backend.
  *
- * This provides information used to identify the
- * application using the backend in certain classes
- * such as Server.
+ * This class provides information about the client to other methods of the
+ * backend and provides methods to initialize and shutdown the backend during
+ * an application run.
  *
- * As such, it needs to be the first to be initialized.
+ * Before using anything else from the backend, Client must be initialized.
  */
 [SingleInstance]
 public class Backend.Client : Object {
 
   /**
-   * The global instance of Client.
+   * The global instance of the client.
    */
   public static Client? instance {
     get {
       if (global_instance == null) {
-        critical ("Client was not initialized!");
+        critical ("Client must be initialized first!");
       }
       return global_instance;
     }
   }
 
   /**
-   * The name of the client.
+   * The id of the client.
    *
-   * Used by the Mastodon backend to create an oauth application when needed.
+   * Is expected to be a reverse domain and to be the
+   * same as the application id utilizing the backend.
+   */
+  public string id { get; construct; }
+
+  /**
+   * The name of the client.
    */
   public string name { get; construct; }
 
   /**
-   * The website for the client.
+   * A website for more information on a client.
    *
-   * Used by the Mastodon backend to create an oauth application when needed.
+   * Used by backends that create OAuth applications on the
+   * fly (e.g. Mastodon) to provide a link for the user while
+   * authorizing a new session.
    */
   public string website { get; construct; }
 
   /**
-   * An optional redirect uri to speed up the authentication process.
+   * An optional redirect uri used during authentication.
    *
-   * After the user authorized the client, this uri will be called.
-   * The client can then use it to access the authentication code without
-   * the user needing to input it in the application.
+   * Can be provided to the authenticating server to automatically redirect
+   * the user from the webpage back to the client after he has authorized
+   * it on the OAuth page.
    *
    * If set to null, the out-of-band uri for a specific platform is used instead.
    */
@@ -77,9 +85,10 @@ public class Backend.Client : Object {
    * @param website The website for the client.
    * @param redirect_uri An optional redirect uri.
    */
-  public Client (string name, string website, string? redirect_uri = null) {
+  public Client (string id, string name, string website, string? redirect_uri = null) {
     // Construct the class
     Object (
+      id:           id,
       name:         name,
       website:      website,
       redirect_uri: redirect_uri

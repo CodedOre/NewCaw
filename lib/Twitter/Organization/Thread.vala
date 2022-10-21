@@ -85,7 +85,7 @@ public class Backend.Twitter.Thread : Backend.Thread {
     }
 
     // Create the proxy call
-    Rest.ProxyCall call = session.account.create_call ();
+    Rest.ProxyCall call = session.create_call ();
     call.set_method ("GET");
     call.set_function (@"tweets/search/recent");
     Server.append_post_fields (ref call);
@@ -97,7 +97,7 @@ public class Backend.Twitter.Thread : Backend.Thread {
     // Load the timeline
     Json.Node json;
     try {
-      json = yield session.account.server.call (call);
+      json = yield session.server.call (call);
     } catch (Error e) {
       throw e;
     }

@@ -6,7 +6,8 @@ libdepends = [
   dependency('gtk4',           version: '>= 4.0'),
   dependency('json-glib-1.0',  version: '>= 1.2'),
   dependency('libsoup-3.0',    version: '>= 3.0'),
-  dependency('rest-1.0',       version: '>= 0.9')
+  dependency('rest-1.0',       version: '>= 0.9'),
+  dependency('libsecret-1',    version: '>= 0.20.5')
 ]
 
 # Add libxml as dependency for Mastodon
@@ -29,10 +30,11 @@ libfiles = [
   'Base/Organization/PseudoItem.vala',
   'Base/Organization/Thread.vala',
   'Base/Organization/UserTimeline.vala',
-  'Base/System/Account.vala',
   'Base/System/Client.vala',
+  'Base/System/KeyStorage.vala',
   'Base/System/Server.vala',
   'Base/System/Session.vala',
+  'Base/System/SessionAuth.vala',
   'Base/Utils/MediaLoader.vala',
   'Base/Utils/PlatformEnum.vala',
   'Base/Utils/TextFormats.vala',
@@ -48,9 +50,10 @@ if mastodon_backend
     'Mastodon/Organization/HomeTimeline.vala',
     'Mastodon/Organization/Thread.vala',
     'Mastodon/Organization/UserTimeline.vala',
-    'Mastodon/System/Account.vala',
     'Mastodon/System/Server.vala',
     'Mastodon/System/Session.vala',
+    'Mastodon/System/SessionAuth.vala',
+    'Mastodon/System/SessionCalls.vala',
     'Mastodon/Utils/ParseUtils.vala',
     'Mastodon/Utils/TextParser.vala'
   ]
@@ -63,9 +66,10 @@ if twitter_backend
     'Twitter/Organization/HomeTimeline.vala',
     'Twitter/Organization/Thread.vala',
     'Twitter/Organization/UserTimeline.vala',
-    'Twitter/System/Account.vala',
     'Twitter/System/Server.vala',
     'Twitter/System/Session.vala',
+    'Twitter/System/SessionAuth.vala',
+    'Twitter/System/SessionCalls.vala',
     'Twitter/Utils/ParseUtils.vala',
     'Twitter/Utils/TextUtils.vala'
   ]

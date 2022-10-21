@@ -61,7 +61,7 @@ public class Backend.Mastodon.UserTimeline : Backend.UserTimeline {
    */
   public override async void pull_posts () throws Error {
     // Create the proxy call
-    Rest.ProxyCall call = session.account.create_call ();
+    Rest.ProxyCall call = session.create_call ();
     call.set_method ("GET");
     call.set_function (@"api/v1/accounts/$(user.id)/statuses");
     call.add_param ("limit", "50");
@@ -72,7 +72,7 @@ public class Backend.Mastodon.UserTimeline : Backend.UserTimeline {
     // Load the timeline
     Json.Node json;
     try {
-      json = yield session.account.server.call (call);
+      json = yield session.server.call (call);
     } catch (Error e) {
       throw e;
     }
