@@ -50,7 +50,9 @@ public abstract class Backend.Session : Object {
 #if SUPPORT_MASTODON
       case MASTODON:
         try {
-          return yield new Mastodon.Session (identifier, access_token, server);
+          var session = new Mastodon.Session (identifier, access_token, server);
+          yield session.init_async ();
+          return session;
         } catch (Error e) {
           throw e;
         }
