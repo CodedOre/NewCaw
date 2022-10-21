@@ -96,15 +96,6 @@ public abstract class Backend.Session : Object {
   public User account { get; protected set; }
 
   /**
-   * Run at construction of this session.
-   */
-  construct {
-    // Initialize the content storage.
-    pulled_posts = new HashTable <string, Post> (str_hash, str_equal);
-    pulled_users = new HashTable <string, User> (str_hash, str_equal);
-  }
-
-  /**
    * Retrieves an post for an specified id.
    *
    * If the post was already pulled and is present in memory, the version
@@ -220,15 +211,5 @@ public abstract class Backend.Session : Object {
    * @return A Rest.ProxyCall that can be then called with Server.call.
    */
   internal abstract Rest.ProxyCall create_call ();
-
-  /**
-   * Stores a reference to each post pulled by this session.
-   */
-  protected HashTable <string, Post> pulled_posts;
-
-  /**
-   * Stores a reference to each user pulled by this session.
-   */
-  protected HashTable <string, User> pulled_users;
 
 }

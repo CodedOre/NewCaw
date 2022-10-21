@@ -59,6 +59,15 @@ public partial class Backend.Twitter.Session : AsyncInitable {
   }
 
   /**
+   * Run at construction of this session.
+   */
+  construct {
+    // Initialize the content storage.
+    pulled_posts = new HashTable <string, Post> (str_hash, str_equal);
+    pulled_users = new HashTable <string, User> (str_hash, str_equal);
+  }
+
+  /**
    * Initializes the object after constructions.
    *
    * This primarily loads the account connected with the session. Before
@@ -127,5 +136,15 @@ public partial class Backend.Twitter.Session : AsyncInitable {
    * The proxy used to authorize the API calls.
    */
   private Rest.OAuth2Proxy proxy;
+
+  /**
+   * Stores a reference to each post pulled by this session.
+   */
+  private HashTable <string, Post> pulled_posts;
+
+  /**
+   * Stores a reference to each user pulled by this session.
+   */
+  private HashTable <string, User> pulled_users;
 
 }
