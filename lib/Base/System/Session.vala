@@ -57,6 +57,11 @@ public abstract class Backend.Session : Object {
 #endif
 #if SUPPORT_TWITTER
       case TWITTER:
+        try {
+          return yield new Twitter.Session (identifier, access_token, server);
+        } catch (Error e) {
+          throw e;
+        }
 #endif
       default:
         error ("Can't create session for unknown server platform!");
