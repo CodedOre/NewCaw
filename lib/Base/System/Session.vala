@@ -41,7 +41,7 @@ public abstract class Backend.Session : Object {
    * @param access_token The access token to make calls for this session.
    * @param server The server which this server calls.
    *
-   * @returns A newly created Session instance from the set data.
+   * @return A newly created Session instance from the set data.
    *
    * @throws Error Errors that happen while verifying the session by loading the account.
    */
@@ -50,7 +50,9 @@ public abstract class Backend.Session : Object {
 #if SUPPORT_MASTODON
       case MASTODON:
         try {
-          return yield new Mastodon.Session (identifier, access_token, server);
+          var session = new Mastodon.Session (identifier, access_token, server);
+          yield session.init_async ();
+          return session;
         } catch (Error e) {
           throw e;
         }
@@ -58,7 +60,9 @@ public abstract class Backend.Session : Object {
 #if SUPPORT_TWITTER
       case TWITTER:
         try {
-          return yield new Twitter.Session (identifier, access_token, server);
+          var session = new Twitter.Session (identifier, access_token, server);
+          yield session.init_async ();
+          return session;
         } catch (Error e) {
           throw e;
         }
@@ -89,7 +93,7 @@ public abstract class Backend.Session : Object {
   /**
    * The account that is managed by this session.
    */
-  public User account { get; construct; }
+  public User account { get; protected set; }
 
   /**
    * Run at construction of this session.
