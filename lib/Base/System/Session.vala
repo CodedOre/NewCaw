@@ -33,31 +33,53 @@ using GLib;
 public abstract class Backend.Session : Object {
 
   /**
-   * Creates a new instance of Session.
+   * Creates an Session object from set data.
    *
-   * @param account The account for this session.
+   * Used to restore a session from an saved state.
    *
-   * @return A session suitable for the set account.
+   * @param identifier The identifier for the session.
+   * @param access_token The access token to make calls for this session.
+   * @param server The server which this server calls.
+   *
+   * @returns A newly created Session instance from the set data.
+   *
+   * @throws Error Errors that happen while verifying the session by loading the account.
    */
-  public static Session for_account (Account account) {
-    switch (PlatformEnum.for_account (account)) {
+  internal async static Session from_data (string identifier, string access_token, Server server) throws Error {
+    switch (PlatformEnum.for_server (server)) {
 #if SUPPORT_MASTODON
       case MASTODON:
-        return new Mastodon.Session (account);
 #endif
 #if SUPPORT_TWITTER
       case TWITTER:
-        return new Twitter.Session (account);
 #endif
       default:
-        error ("No compatible session type found for this account!");
+        error ("Can't create session for unknown server platform!");
     }
   }
 
   /**
+   * An unique identifier for this session.
+   *
+   * Used by ClientState to identify related access
+   * secrets and data when loading the state again.
+   */
+  public string identifier { get; construct; }
+
+  /**
+   * The access token to make calls for this session.
+   */
+  public string access_token { get; construct; }
+
+  /**
+   * The server this session is connected to.
+   */
+  public weak Server server { get; construct; }
+
+  /**
    * The account that is managed by this session.
    */
-  public Account account { get; construct; }
+  public User account { get; construct; }
 
   /**
    * Run at construction of this session.
@@ -167,6 +189,16 @@ public abstract class Backend.Session : Object {
    * @return The Thread for the post of the session.
    */
   public abstract Thread get_thread (Post main_post);
+
+  /**
+   * Removes the session from the client.
+   *
+   * This will remove the authentication of the session from the
+   * server and the saved data of the session in the client.
+   *
+   * @throws Error Any error occurring while removing the account.
+   */
+  public abstract async void revoke_session () throws Error;
 
   /**
    * Stores a reference to each post pulled by this session.
