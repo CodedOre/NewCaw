@@ -117,8 +117,6 @@ internal class Backend.KeyStorage : Object {
 
   /**
    * Stores the global instance of KeyStorage.
-   *
-   * Only access over the instance property!
    */
   private static KeyStorage? global_instance = null;
 
