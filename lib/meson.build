@@ -69,6 +69,7 @@ if twitter_backend
     'Twitter/System/Account.vala',
     'Twitter/System/Server.vala',
     'Twitter/System/Session.vala',
+    'Twitter/System/SessionCalls.vala',
     'Twitter/Utils/ParseUtils.vala',
     'Twitter/Utils/TextUtils.vala'
   ]

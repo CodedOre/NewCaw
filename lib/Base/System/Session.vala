@@ -60,7 +60,9 @@ public abstract class Backend.Session : Object {
 #if SUPPORT_TWITTER
       case TWITTER:
         try {
-          return yield new Twitter.Session (identifier, access_token, server);
+          var session = new Twitter.Session (identifier, access_token, server);
+          yield session.init_async ();
+          return session;
         } catch (Error e) {
           throw e;
         }
