@@ -35,6 +35,7 @@ libfiles = [
   'Base/System/KeyStorage.vala',
   'Base/System/Server.vala',
   'Base/System/Session.vala',
+  'Base/System/SessionAuth.vala',
   'Base/Utils/MediaLoader.vala',
   'Base/Utils/PlatformEnum.vala',
   'Base/Utils/TextFormats.vala',
@@ -53,6 +54,7 @@ if mastodon_backend
     'Mastodon/System/Account.vala',
     'Mastodon/System/Server.vala',
     'Mastodon/System/Session.vala',
+    'Mastodon/System/SessionAuth.vala',
     'Mastodon/System/SessionCalls.vala',
     'Mastodon/Utils/ParseUtils.vala',
     'Mastodon/Utils/TextParser.vala'
@@ -69,6 +71,7 @@ if twitter_backend
     'Twitter/System/Account.vala',
     'Twitter/System/Server.vala',
     'Twitter/System/Session.vala',
+    'Twitter/System/SessionAuth.vala',
     'Twitter/System/SessionCalls.vala',
     'Twitter/Utils/ParseUtils.vala',
     'Twitter/Utils/TextUtils.vala'
