@@ -60,7 +60,7 @@ public class Backend.Twitter.HomeTimeline : Backend.HomeTimeline {
    */
   public override async void pull_posts () throws Error {
     // Create the proxy call
-    Rest.ProxyCall call = session.account.create_call ();
+    Rest.ProxyCall call = session.create_call ();
     call.set_method ("GET");
     call.set_function (@"users/$(account.id)/timelines/reverse_chronological");
     call.add_param ("max_results", "50");
@@ -72,7 +72,7 @@ public class Backend.Twitter.HomeTimeline : Backend.HomeTimeline {
     // Load the timeline
     Json.Node json;
     try {
-      json = yield session.account.server.call (call);
+      json = yield session.server.call (call);
     } catch (Error e) {
       throw e;
     }
