@@ -6,7 +6,8 @@ libdepends = [
   dependency('gtk4',           version: '>= 4.0'),
   dependency('json-glib-1.0',  version: '>= 1.2'),
   dependency('libsoup-3.0',    version: '>= 3.0'),
-  dependency('rest-1.0',       version: '>= 0.9')
+  dependency('rest-1.0',       version: '>= 0.9'),
+  dependency('libsecret-1',    version: '>= 0.20.5')
 ]
 
 # Add libxml as dependency for Mastodon
@@ -31,6 +32,7 @@ libfiles = [
   'Base/Organization/UserTimeline.vala',
   'Base/System/Account.vala',
   'Base/System/Client.vala',
+  'Base/System/KeyStorage.vala',
   'Base/System/Server.vala',
   'Base/System/Session.vala',
   'Base/Utils/MediaLoader.vala',
