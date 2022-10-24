@@ -98,6 +98,27 @@ internal class Backend.ClientState : Object {
   }
 
   /**
+   * Checks if an server is still needed.
+   */
+  private void check_servers () {
+    // Create a copy of the server list
+    var open_servers = active_servers.copy ();
+
+    // Rule out all servers still used by a session
+    active_sessions.foreach ((session) => {
+      unowned List list_check = active_servers.find (session.server);
+      if (list_check.length () != 0) {
+        open_servers.remove_all (session.server);
+      }
+    });
+
+    // Remove all servers not used anymore
+    open_servers.foreach ((server) => {
+      remove_server (server);
+    });
+  }
+
+  /**
    * Stores all sessions managed by ClientState.
    */
   private List<Server> active_servers;
