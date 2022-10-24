@@ -40,12 +40,12 @@ public class Backend.Mastodon.SessionAuth : Backend.SessionAuth {
     auth_state = null;
     auth_challenge = null;
 
-    // Check for an authenticated server
-    // TODO: Implement this when ClientState exists
-
-    // Authenticate a new server on the set domain
+    // Add an existing or new server for the set domain
     try {
-      auth_server = yield new Server.authenticate (domain);
+      Server? server_check = ClientState.find_server (domain) as Mastodon.Server;
+      auth_server = server_check != null
+                      ? server_check
+                      : yield new Server.authenticate (domain);
     } catch (Error e) {
       throw e;
     }

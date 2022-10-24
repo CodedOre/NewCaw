@@ -75,6 +75,22 @@ internal class Backend.ClientState : Object {
   }
 
   /**
+   * Checks if an server for a given domain exists.
+   *
+   * @param domain The domain to check for.
+   *
+   * @returns A server if one exists for the domain, else null;
+   */
+  public static Server? find_server (string domain) {
+    foreach (Server server in instance.active_servers) {
+      if (server.domain == domain) {
+        return server;
+      }
+    }
+    return null;
+  }
+
+  /**
    * Removes a server from ClientState.
    *
    * @param server The server to be removed.
