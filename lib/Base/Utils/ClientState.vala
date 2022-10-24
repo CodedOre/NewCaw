@@ -38,6 +38,42 @@ internal class Backend.ClientState : Object {
   }
 
   /**
+   * Run at construction of this object.
+   */
+  construct {
+    active_sessions = new List<Session> ();
+  }
+
+  /**
+   * Adds a session to be managed by ClientState.
+   *
+   * @param session The session to be added.
+   */
+  public static void add_session (Session session) {
+    unowned List list_check = instance.active_sessions.find (session);
+    if (list_check.length () == 0) {
+      instance.active_sessions.append (session);
+    }
+  }
+
+  /**
+   * Removes a session from ClientState.
+   *
+   * @param session The session to be removed.
+   */
+  public static void remove_session (Session session) {
+    unowned List list_check = instance.active_sessions.find (session);
+    if (list_check.length () != 0) {
+      instance.active_sessions.remove_all (session);
+    }
+  }
+
+  /**
+   * Stores all sessions managed by ClientState.
+   */
+  private List<Session> active_sessions;
+
+  /**
    * Stores the global instance of ClientState.
    */
   private static ClientState? global_instance = null;
