@@ -55,6 +55,13 @@ public abstract class Backend.Server : Object {
   public string client_secret { get; protected set; }
 
   /**
+   * Used to identify this object when storing and restoring a ClientState.
+   *
+   * This should be set once on authentication, but not modified afterwards.
+   */
+  internal string identifier { get; protected set; }
+
+  /**
    * Runs the given Rest.ProxyCall and returns the result as an Json.Node.
    *
    * @param call The call to be run, create it with Account.create_call.

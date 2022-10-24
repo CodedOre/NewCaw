@@ -70,6 +70,9 @@ public class Backend.Twitter.Server : Backend.Server {
       client_secret: null
     );
 
+    // Don't set a identifier (not stored with ClientState)
+    identifier = null;
+
     // Set the global instance
     _instance = this;
   }

@@ -58,7 +58,7 @@ internal class Backend.KeyStorage : Object {
    *
    * @throws Error Errors while accessing the secret storage.
    */
-  internal static string retrieve_access (string identifier) throws Error {
+  public static string retrieve_access (string identifier) throws Error {
     // Create the call attributes
     var attributes           = new HashTable<string,string> (str_hash, str_equal);
     attributes["identifier"] = identifier;
@@ -80,7 +80,7 @@ internal class Backend.KeyStorage : Object {
    *
    * @throws Error Errors while accessing the secret storage.
    */
-  internal static void store_access (string secret, string identifier, string label) throws Error {
+  public static void store_access (string secret, string identifier, string label) throws Error {
     // Create the call attributes
     var attributes           = new HashTable<string,string> (str_hash, str_equal);
     attributes["identifier"] = identifier;
@@ -102,7 +102,7 @@ internal class Backend.KeyStorage : Object {
    *
    * @throws Error Errors while accessing the secret storage.
    */
-  internal static void remove_access (string identifier) throws Error {
+  public static void remove_access (string identifier) throws Error {
     // Create the attributes
     var attributes           = new HashTable<string,string> (str_hash, str_equal);
     attributes["identifier"] = identifier;
@@ -117,8 +117,6 @@ internal class Backend.KeyStorage : Object {
 
   /**
    * Stores the global instance of KeyStorage.
-   *
-   * Only access over the instance property!
    */
   private static KeyStorage? global_instance = null;
 

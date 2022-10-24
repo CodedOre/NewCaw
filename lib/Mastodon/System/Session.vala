@@ -98,6 +98,9 @@ public partial class Backend.Mastodon.Session : AsyncInitable {
 
     // Create the object for the account
     account = load_user (json.get_object ());
+
+    // Add the new session to the ClientState
+    ClientState.add_session (this);
     return true;
   }
 
@@ -108,6 +111,7 @@ public partial class Backend.Mastodon.Session : AsyncInitable {
    * defined in the base class, for more details see the base method.
    */
   public override async void revoke_session () throws Error {
+    // Prepare revoke call
     var call = proxy.new_call ();
     call.set_method ("POST");
     call.set_function ("oauth/revoke");
@@ -115,11 +119,15 @@ public partial class Backend.Mastodon.Session : AsyncInitable {
     call.add_param ("client_secret", server.client_secret);
     call.add_param ("token",         access_token);
 
+    // Revoke key at the server
     try {
       yield server.call (call);
     } catch (Error e) {
       throw e;
     }
+
+    // Remove the session from ClientState
+    ClientState.remove_session (this);
   }
 
   /**
