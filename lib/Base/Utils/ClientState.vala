@@ -41,7 +41,8 @@ internal class Backend.ClientState : Object {
    * Run at construction of this object.
    */
   construct {
-    active_sessions = new List<Session> ();
+    active_servers = new GenericArray <Server> ();
+    active_sessions = new GenericArray <Session> ();
   }
 
   /**
@@ -55,9 +56,9 @@ internal class Backend.ClientState : Object {
       error ("Twitter servers should not be added to ClientState!");
     }
 
-    unowned List list_check = instance.active_servers.find (server);
-    if (list_check.length () == 0) {
-      instance.active_servers.append (server);
+    // Add the server if not already in array
+    if (! instance.active_servers.find (server)) {
+      instance.active_servers.add (server);
     }
   }
 
@@ -67,9 +68,9 @@ internal class Backend.ClientState : Object {
    * @param session The session to be added.
    */
   public static void add_session (Session session) {
-    unowned List list_check = instance.active_sessions.find (session);
-    if (list_check.length () == 0) {
-      instance.active_sessions.append (session);
+    // Add the session if not already in array
+    if (! instance.active_sessions.find (session)) {
+      instance.active_sessions.add (session);
     }
   }
 
@@ -79,9 +80,8 @@ internal class Backend.ClientState : Object {
    * @param server The server to be removed.
    */
   public static void remove_server (Server server) {
-    unowned List list_check = instance.active_servers.find (server);
-    if (list_check.length () != 0) {
-      instance.active_servers.remove_all (server);
+    if (instance.active_servers.find (server)) {
+      instance.active_servers.remove (server);
     }
   }
 
@@ -91,9 +91,8 @@ internal class Backend.ClientState : Object {
    * @param session The session to be removed.
    */
   public static void remove_session (Session session) {
-    unowned List list_check = instance.active_sessions.find (session);
-    if (list_check.length () != 0) {
-      instance.active_sessions.remove_all (session);
+    if (instance.active_sessions.find (session)) {
+      instance.active_sessions.remove (session);
     }
   }
 
@@ -101,32 +100,35 @@ internal class Backend.ClientState : Object {
    * Checks if an server is still needed.
    */
   private void check_servers () {
-    // Create a copy of the server list
-    var open_servers = active_servers.copy ();
+    uint[] used_servers = {};
 
     // Rule out all servers still used by a session
-    active_sessions.foreach ((session) => {
-      unowned List list_check = active_servers.find (session.server);
-      if (list_check.length () != 0) {
-        open_servers.remove_all (session.server);
+    foreach (Session session in active_sessions) {
+      uint server_index;
+      if (active_servers.find (session.server, out server_index)) {
+        if (! (server_index in used_servers)) {
+          used_servers += server_index;
+        }
       }
-    });
+    }
 
     // Remove all servers not used anymore
-    open_servers.foreach ((server) => {
-      remove_server (server);
-    });
+    for (uint i = 0; i < active_servers.length; i++) {
+      if (! (i in used_servers)) {
+        active_servers.remove_index (i);
+      }
+    }
   }
 
   /**
    * Stores all sessions managed by ClientState.
    */
-  private List<Server> active_servers;
+  private GenericArray <Server> active_servers;
 
   /**
    * Stores all sessions managed by ClientState.
    */
-  private List<Session> active_sessions;
+  private GenericArray <Session> active_sessions;
 
   /**
    * Stores the global instance of ClientState.
