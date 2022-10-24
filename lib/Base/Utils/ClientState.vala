@@ -45,6 +45,23 @@ internal class Backend.ClientState : Object {
   }
 
   /**
+   * Adds a server to be managed by ClientState.
+   *
+   * @param server The server to be added.
+   */
+  public static void add_server (Server server) {
+    // Avoid adding Twitter servers to the ClientState
+    if (server is Twitter.Server) {
+      error ("Twitter servers should not be added to ClientState!");
+    }
+
+    unowned List list_check = instance.active_servers.find (server);
+    if (list_check.length () == 0) {
+      instance.active_servers.append (server);
+    }
+  }
+
+  /**
    * Adds a session to be managed by ClientState.
    *
    * @param session The session to be added.
@@ -53,6 +70,18 @@ internal class Backend.ClientState : Object {
     unowned List list_check = instance.active_sessions.find (session);
     if (list_check.length () == 0) {
       instance.active_sessions.append (session);
+    }
+  }
+
+  /**
+   * Removes a server from ClientState.
+   *
+   * @param server The server to be removed.
+   */
+  public static void remove_server (Server server) {
+    unowned List list_check = instance.active_servers.find (server);
+    if (list_check.length () != 0) {
+      instance.active_servers.remove_all (server);
     }
   }
 
@@ -67,6 +96,11 @@ internal class Backend.ClientState : Object {
       instance.active_sessions.remove_all (session);
     }
   }
+
+  /**
+   * Stores all sessions managed by ClientState.
+   */
+  private List<Server> active_servers;
 
   /**
    * Stores all sessions managed by ClientState.

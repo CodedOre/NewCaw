@@ -103,6 +103,9 @@ public class Backend.Mastodon.Server : Backend.Server {
     // Retrieve the client key and secret
     client_key    = client.get_string_member ("client_id");
     client_secret = client.get_string_member ("client_secret");
+
+    // Add the new server to ClientState
+    ClientState.add_server (this);
   }
 
   /**
