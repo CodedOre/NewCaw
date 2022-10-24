@@ -73,14 +73,6 @@ public abstract class Backend.Session : Object {
   }
 
   /**
-   * An unique identifier for this session.
-   *
-   * Used by ClientState to identify related access
-   * secrets and data when loading the state again.
-   */
-  public string identifier { get; construct; }
-
-  /**
    * The access token to make calls for this session.
    */
   public string access_token { get; construct; }
@@ -94,6 +86,13 @@ public abstract class Backend.Session : Object {
    * The account that is managed by this session.
    */
   public User account { get; protected set; }
+
+  /**
+   * Used to identify this object when storing and restoring a ClientState.
+   *
+   * This should be set once on authentication, but not modified afterwards.
+   */
+  internal string identifier { get; protected set; }
 
   /**
    * Run at construction of this session.

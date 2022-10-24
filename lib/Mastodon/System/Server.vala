@@ -42,17 +42,21 @@ public class Backend.Mastodon.Server : Backend.Server {
    *
    * If no keys are provided, use the Server.authenticate instead.
    *
+   * @param identifier The identifier for the session.
    * @param domain The domain of the server to connect to.
    * @param client_key The key to authenticate the client if available.
    * @param client_secret The secret to authenticate the client if available.
    */
-  public Server (string domain, string client_key, string client_secret) {
+  internal Server (string identifier, string domain, string client_key, string client_secret) {
     // Create the Server instance
     Object (
       domain:        domain,
       client_key:    client_key,
       client_secret: client_secret
     );
+
+    // Set the identifier
+    this.identifier = identifier;
   }
 
   /**
@@ -65,7 +69,7 @@ public class Backend.Mastodon.Server : Backend.Server {
    *
    * @throws Error Any error that occurs while creating the client application.
    */
-  public async Server.authenticate (string domain, Cancellable? cancellable = null) throws Error {
+  internal async Server.authenticate (string domain, Cancellable? cancellable = null) throws Error {
     // Create the Server instance
     Object (
       domain: domain
@@ -104,7 +108,8 @@ public class Backend.Mastodon.Server : Backend.Server {
     client_key    = client.get_string_member ("client_id");
     client_secret = client.get_string_member ("client_secret");
 
-    // Add the new server to ClientState
+    // Create identifier and add the new server to ClientState
+    identifier = Uuid.string_random ();
     ClientState.add_server (this);
   }
 
