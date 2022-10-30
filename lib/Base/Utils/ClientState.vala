@@ -115,35 +115,73 @@ internal class Backend.ClientState : Object {
   }
 
   /**
-   * Packs the information of an Server into an GVariant.
+   * Prepares an Server to be saved to a state file.
+   *
+   * This packs the data relevant to restoring the server into a GVariant,
+   * as well as storing the access token to the KeyStorage.
    *
    * @param server The server to be packed.
    *
    * @return A GVariant holding the information of server.
+   *
+   * @throws Error Errors when storing the access token does not work.
    */
-  private static Variant pack_server (Server server) {
+  private Variant pack_server (Server server) throws Error {
+    // Create the VariantBuilder and check the platform
     var state_builder = new VariantBuilder (new VariantType ("a{sms}"));
     var platform = PlatformEnum.for_server (server);
+
+    // Store the access token
+    try {
+      string token_label = @"Access Token for Server \"$(server.domain)\" on $(platform)";
+      KeyStorage.store_access (server.client_key, @"ck_$(server.identifier)", token_label);
+      string secret_label = @"Access Secret for Server \"$(server.domain)\" on $(platform)";
+      KeyStorage.store_access (server.client_secret, @"cs_$(server.identifier)", secret_label);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Add the data to the variant
     state_builder.add ("{sms}", "uuid", server.identifier);
     state_builder.add ("{sms}", "platform", platform.to_string ());
     state_builder.add ("{sms}", "domain", server.domain);
+
+    // Return the created variant
     return state_builder.end ();
   }
 
   /**
-   * Packs the information of an Session into an GVariant.
+   * Prepares an Session to be saved to a state file.
+   *
+   * This packs the data relevant to restoring the session into a GVariant,
+   * as well as storing the access token to the KeyStorage.
    *
    * @param session The session to be packed.
    *
    * @return A GVariant holding the information of session.
+   *
+   * @throws Error Errors when storing the access token does not work.
    */
-  private static Variant pack_session (Session session) {
+  private Variant pack_session (Session session) throws Error {
+    // Create the VariantBuilder and check the platform
     var state_builder = new VariantBuilder (new VariantType ("a{sms}"));
     var platform = PlatformEnum.for_session (session);
+
+    // Store the access token
+    try {
+      string token_label = @"Access Token for Account \"$(session.account.username)\" on $(platform)";
+      KeyStorage.store_access (session.access_token, session.identifier, token_label);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Add the data to the variant
     state_builder.add ("{sms}", "uuid", session.identifier);
     state_builder.add ("{sms}", "platform", platform.to_string ());
     state_builder.add ("{sms}", "server_uuid", session.server.identifier);
     state_builder.add ("{sms}", "username", session.account.username);
+
+    // Return the created variant
     return state_builder.end ();
   }
 
