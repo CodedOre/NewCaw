@@ -42,7 +42,7 @@ public class Backend.Twitter.Server : Backend.Server {
   /**
    * The global instance of this server.
    */
-  public static Server? instance {
+  public static Server instance {
     get {
       if (_instance == null) {
         critical ("This server was not initialized!");
