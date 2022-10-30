@@ -51,10 +51,12 @@ internal class Backend.ClientState : Object {
    * @param server The server to be added.
    */
   public static void add_server (Server server) {
+#if SUPPORT_TWITTER
     // Avoid adding Twitter servers to the ClientState
     if (server is Twitter.Server) {
       error ("Twitter servers should not be added to ClientState!");
     }
+#endif
 
     // Add the server if not already in array
     if (! instance.active_servers.find (server)) {
