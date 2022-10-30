@@ -50,8 +50,6 @@ cawsources += [
   'Preferences/AccountsPage.vala',
   'Preferences/AppearancesPage.vala',
   'Preferences/PreferencesWindow.vala',
-  'System/KeyStorage.vala',
-  'System/Session.vala',
   'Utils/DisplayUtils.vala',
   'Utils/SystemInfo.vala',
   'Widgets/AccountRow.vala',
