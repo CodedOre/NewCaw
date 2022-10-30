@@ -181,11 +181,16 @@ internal class Backend.ClientState : Object {
    */
   public async void load_state () throws Error {
     // Load the state variant from the file
-    Variant state_variant;
+    Variant? state_variant;
     try {
       state_variant = load_file ();
     } catch (Error e) {
       throw e;
+    }
+
+    // Stop if no data was loaded
+    if (state_variant == null) {
+      return;
     }
 
     // Load the server data
