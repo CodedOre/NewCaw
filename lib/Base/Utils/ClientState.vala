@@ -134,8 +134,10 @@ internal class Backend.ClientState : Object {
    * it's access token from the KeyStorage.
    *
    * @param server The server to be removed.
+   *
+   * @throws Error Errors when removing the access token.
    */
-  public static void remove_server (Server server) {
+  public static void remove_server (Server server) throws Error {
     // Remove the server the server list
     if (instance.active_servers.find (server)) {
       instance.active_servers.remove (server);
@@ -156,9 +158,9 @@ internal class Backend.ClientState : Object {
    *
    * @param session The session to be removed.
    *
-   * @throws Error Errors while accessing the KeyStorage.
+   * @throws Error Errors when removing the access token.
    */
-  public static void remove_session (Session session) {
+  public static void remove_session (Session session) throws Error {
     // Remove the session from the session list
     if (instance.active_sessions.find (session)) {
       instance.active_sessions.remove (session);
@@ -182,7 +184,11 @@ internal class Backend.ClientState : Object {
     var state_builder = new VariantBuilder (new VariantType ("a{sv}"));
 
     // Check for unused servers
-    check_servers ();
+    try {
+      check_servers ();
+    } catch (Error e) {
+      throw e;
+    }
 
     // Pack each server into the state variant
     var server_builder = new VariantBuilder (new VariantType ("av"));
@@ -401,7 +407,7 @@ internal class Backend.ClientState : Object {
    *
    * @throws Error Errors while accessing the state file.
    */
-  private Variant? load_file (Variant variant) throws Error {
+  private Variant? load_file () throws Error {
     // Initialize the file
     var file = File.new_build_filename (state_path, "state.gvariant", null);
 
@@ -448,8 +454,10 @@ internal class Backend.ClientState : Object {
 
   /**
    * Checks if an server is still needed.
+   *
+   * @throws Error Errors when removing a server.
    */
-  private void check_servers () {
+  private void check_servers () throws Error {
     uint[] used_servers = {};
 
     // Rule out all servers still used by a session
@@ -466,7 +474,11 @@ internal class Backend.ClientState : Object {
     for (uint i = 0; i < active_servers.length; i++) {
       if (! (i in used_servers)) {
         var server = active_servers [i];
-        remove_server (server);
+        try {
+          remove_server (server);
+        } catch (Error e) {
+          throw e;
+        }
       }
     }
   }
