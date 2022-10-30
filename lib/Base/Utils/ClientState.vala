@@ -98,13 +98,29 @@ internal class Backend.ClientState : Object {
   }
 
   /**
+   * Checks if an server with a given id exists.
+   *
+   * @param id The id to check for.
+   *
+   * @returns A server if one exists with the id, else null;
+   */
+  public static Server? find_server_by_id (string id) {
+    foreach (Server server in instance.active_servers) {
+      if (server.identifier == id) {
+        return server;
+      }
+    }
+    return null;
+  }
+
+  /**
    * Checks if an server for a given domain exists.
    *
    * @param domain The domain to check for.
    *
    * @returns A server if one exists for the domain, else null;
    */
-  public static Server? find_server (string domain) {
+  public static Server? find_server_by_domain (string domain) {
     foreach (Server server in instance.active_servers) {
       if (server.domain == domain) {
         return server;
