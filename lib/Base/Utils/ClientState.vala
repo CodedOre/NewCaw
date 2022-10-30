@@ -41,8 +41,12 @@ internal class Backend.ClientState : Object {
    * Run at construction of this object.
    */
   construct {
+    // Initialize the arrays
     active_servers = new GenericArray <Server> ();
     active_sessions = new GenericArray <Session> ();
+
+    // Create cache dir if not already existing
+    DirUtils.create_with_parents (state_path, 0750);
   }
 
   /**
@@ -186,6 +190,28 @@ internal class Backend.ClientState : Object {
   }
 
   /**
+   * Stores a GVariant to the state file.
+   *
+   * @param The GVariant to be stored.
+   *
+   * @throws Error Errors while accessing the state file.
+   */
+  private void store_file (Variant variant) throws Error {
+    // Initialize the file
+    var file = File.new_build_filename (state_path, "state.gvariant", null);
+
+    // Convert the variant to Bytes and store to file
+    try {
+      Bytes bytes = variant.get_data_as_bytes ();
+      file.replace_contents (bytes.get_data (), null,
+                             false, REPLACE_DESTINATION,
+                             null, null);
+    } catch (Error e) {
+      throw e;
+    }
+  }
+
+  /**
    * Checks if an server is still needed.
    */
   private void check_servers () {
@@ -223,5 +249,12 @@ internal class Backend.ClientState : Object {
    * Stores the global instance of ClientState.
    */
   private static ClientState? global_instance = null;
+
+  /**
+   * The path to the directory holding the state storage.
+   */
+  private string state_path = Path.build_filename (Environment.get_user_data_dir (),
+                                                   Client.instance.name,
+                                                   null);
 
 }
