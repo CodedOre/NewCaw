@@ -109,6 +109,32 @@ public enum Backend.PlatformEnum {
   }
 
   /**
+   * Get the enum type for a Session.
+   *
+   * @param session The session to get the type for.
+   *
+   * @return The enum representing the platform this session is using.
+   */
+  public static PlatformEnum for_session (Backend.Session session) {
+#if SUPPORT_MASTODON
+    // Return if using Mastodon
+    if (session is Backend.Mastodon.Session) {
+      return MASTODON;
+    }
+#endif
+
+#if SUPPORT_TWITTER
+    // Return if using Twitter
+    if (session is Backend.Twitter.Session) {
+      return TWITTER;
+    }
+#endif
+
+    // Return NONE if no platform is applicable
+    return NONE;
+  }
+
+  /**
    * Get the enum type for a User.
    *
    * @param user The user to get the type for.

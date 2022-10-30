@@ -115,6 +115,39 @@ internal class Backend.ClientState : Object {
   }
 
   /**
+   * Packs the information of an Server into an GVariant.
+   *
+   * @param server The server to be packed.
+   *
+   * @return A GVariant holding the information of server.
+   */
+  private static Variant pack_server (Server server) {
+    var state_builder = new VariantBuilder (new VariantType ("a{sms}"));
+    var platform = PlatformEnum.for_server (server);
+    state_builder.add ("{sms}", "uuid", server.identifier);
+    state_builder.add ("{sms}", "platform", platform.to_string ());
+    state_builder.add ("{sms}", "domain", server.domain);
+    return state_builder.end ();
+  }
+
+  /**
+   * Packs the information of an Session into an GVariant.
+   *
+   * @param session The session to be packed.
+   *
+   * @return A GVariant holding the information of session.
+   */
+  private static Variant pack_session (Session session) {
+    var state_builder = new VariantBuilder (new VariantType ("a{sms}"));
+    var platform = PlatformEnum.for_session (session);
+    state_builder.add ("{sms}", "uuid", session.identifier);
+    state_builder.add ("{sms}", "platform", platform.to_string ());
+    state_builder.add ("{sms}", "server_uuid", session.server.identifier);
+    state_builder.add ("{sms}", "username", session.account.username);
+    return state_builder.end ();
+  }
+
+  /**
    * Checks if an server is still needed.
    */
   private void check_servers () {
