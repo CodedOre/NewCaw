@@ -175,6 +175,47 @@ internal class Backend.ClientState : Object {
   }
 
   /**
+   * Loads the ClientState from the state file.
+   *
+   * @throws Error Any error that might happen loading access token or state data.
+   */
+  public async void load_state () throws Error {
+    // Load the state variant from the file
+    Variant state_variant;
+    try {
+      state_variant = load_file ();
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Load the server data
+    Variant stored_servers = state_variant.lookup_value ("Servers", null);
+    VariantIter server_iter = stored_servers.iterator ();
+    Variant server_variant;
+    while (server_iter.next ("av", out server_variant)) {
+      try {
+        var server = unpack_server (server_variant);
+        add_server (server);
+      } catch (Error e) {
+        throw e;
+      }
+    }
+
+    // Load the session data
+    Variant stored_sessions = state_variant.lookup_value ("Sessions", null);
+    VariantIter session_iter = stored_sessions.iterator ();
+    Variant session_variant;
+    while (session_iter.next ("av", out session_variant)) {
+      try {
+        var session = yield unpack_session (session_variant);
+        add_session (session);
+      } catch (Error e) {
+        throw e;
+      }
+    }
+  }
+
+  /**
    * Stores the ClientState to the state file.
    *
    * @throws Error Errors that might happen when accessing the KeyStorage or the state file.
