@@ -97,24 +97,45 @@ internal class Backend.ClientState : Object {
   }
 
   /**
-   * Removes a server from ClientState.
+   * Removes a server from ClientState and
+   * it's access token from the KeyStorage.
    *
    * @param server The server to be removed.
    */
   public static void remove_server (Server server) {
+    // Remove the server the server list
     if (instance.active_servers.find (server)) {
       instance.active_servers.remove (server);
+    }
+
+    // Remove the access token of the session
+    try {
+      KeyStorage.remove_access (@"ck_$(server.identifier)");
+      KeyStorage.remove_access (@"cs_$(server.identifier)");
+    } catch (Error e) {
+      throw e;
     }
   }
 
   /**
-   * Removes a session from ClientState.
+   * Removes a session from ClientState and
+   * it's access token from the KeyStorage.
    *
    * @param session The session to be removed.
+   *
+   * @throws Error Errors while accessing the KeyStorage.
    */
   public static void remove_session (Session session) {
+    // Remove the session from the session list
     if (instance.active_sessions.find (session)) {
       instance.active_sessions.remove (session);
+    }
+
+    // Remove the access token of the session
+    try {
+      KeyStorage.remove_access (session.identifier);
+    } catch (Error e) {
+      throw e;
     }
   }
 
@@ -260,7 +281,8 @@ internal class Backend.ClientState : Object {
     // Remove all servers not used anymore
     for (uint i = 0; i < active_servers.length; i++) {
       if (! (i in used_servers)) {
-        active_servers.remove_index (i);
+        var server = active_servers [i];
+        remove_server (server);
       }
     }
   }
