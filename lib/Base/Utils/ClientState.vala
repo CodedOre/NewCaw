@@ -18,6 +18,23 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+
+/**
+ * Errors that happened while loading or storing the ClientState.
+ */
+public errordomain Backend.StateError {
+
+  /**
+   * The data for a Server or Session was not usable to create a instance.
+   */
+  INVALID_DATA,
+
+  /**
+   * A instance for a Server or Session could not be created as the platform is not supported.
+   */
+  UNKNOWN_PLATFORM
+
+}
 /**
  * Stores all active sessions and servers, and allows
  * saving and loading client states from disk.
@@ -170,6 +187,57 @@ internal class Backend.ClientState : Object {
   }
 
   /**
+   * Creates a new Server from stored data.
+   *
+   * This loads the data from a GVariant and creates a
+   * Server instance for the server, as well as
+   * loading the access token for it.
+   *
+   * @param variant The variant from which to create the server.
+   *
+   * @return The newly created Server instance.
+   *
+   * @throws Error Errors when loading the access token does not work.
+   */
+  private Server unpack_server (Variant variant) throws Error {
+    string? uuid_prop, platform_name, domain_prop, key_prop, secret_prop;
+    PlatformEnum platform_prop;
+
+    // Attempt to load the server data
+    variant.lookup ("uuid", "s", out uuid_prop);
+    variant.lookup ("platform", "s", out platform_name);
+    variant.lookup ("domain", "s", out domain_prop);
+    platform_prop = PlatformEnum.from_name (platform_name);
+
+    // Check that all data could be retrieved
+    if (uuid_prop == null) {
+      throw new StateError.INVALID_DATA (@"No identifier given");
+    }
+    if (domain_prop == null) {
+      throw new StateError.INVALID_DATA (@"No domain given");
+    }
+
+    // Look up the access token for the instance
+    try {
+      key_prop = KeyStorage.retrieve_access (@"ck_$(uuid_prop)");
+      secret_prop = KeyStorage.retrieve_access (@"cs_$(uuid_prop)");
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Create a new Server instance from the data
+    switch (platform_prop) {
+#if SUPPORT_MASTODON
+      case MASTODON:
+        return new Mastodon.Server (uuid_prop, domain_prop, key_prop, secret_prop);
+#endif
+
+      default:
+        throw new StateError.UNKNOWN_PLATFORM (@"Unknown platform \"$(platform_name)\"");
+    }
+  }
+
+  /**
    * Prepares an Server to be saved to a state file.
    *
    * This packs the data relevant to restoring the server into a GVariant,
@@ -238,6 +306,36 @@ internal class Backend.ClientState : Object {
 
     // Return the created variant
     return state_builder.end ();
+  }
+
+  /**
+   * Loads a GVariant from the state file.
+   *
+   * @return The GVariant from the file, or null if not existing.
+   *
+   * @throws Error Errors while accessing the state file.
+   */
+  private Variant? load_file (Variant variant) throws Error {
+    // Initialize the file
+    var file = File.new_build_filename (state_path, "state.gvariant", null);
+
+    Variant? stored_state;
+    try {
+      // Load the data from the file
+      uint8[] file_content;
+      string file_etag;
+      file.load_contents (null, out file_content, out file_etag);
+      // Convert the file data to an Variant and read the values from it
+      var stored_bytes = new Bytes.take (file_content);
+      stored_state = new Variant.from_bytes (new VariantType ("a{sv}"), stored_bytes, false);
+    } catch (Error e) {
+      // Don't put warning out if the file can't be found (expected error)
+      if (! (e is IOError.NOT_FOUND)) {
+        throw e;
+      }
+      stored_state = null;
+    }
+    return stored_state;
   }
 
   /**
