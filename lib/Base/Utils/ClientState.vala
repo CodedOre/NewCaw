@@ -216,7 +216,8 @@ internal class Backend.ClientState : Object {
    * @throws Error Errors when loading the access token does not work.
    */
   private Server unpack_server (Variant variant) throws Error {
-    string? uuid_prop, platform_name, domain_prop, key_prop, secret_prop;
+    string? uuid_prop, platform_name, domain_prop,
+            key_prop, secret_prop;
     PlatformEnum platform_prop;
 
     // Attempt to load the server data
@@ -227,10 +228,10 @@ internal class Backend.ClientState : Object {
 
     // Check that all data could be retrieved
     if (uuid_prop == null) {
-      throw new StateError.INVALID_DATA (@"No identifier given");
+      throw new StateError.INVALID_DATA ("No identifier given");
     }
     if (domain_prop == null) {
-      throw new StateError.INVALID_DATA (@"No domain given");
+      throw new StateError.INVALID_DATA ("No domain given");
     }
 
     // Look up the access token for the instance
@@ -251,6 +252,75 @@ internal class Backend.ClientState : Object {
       default:
         throw new StateError.UNKNOWN_PLATFORM (@"Unknown platform \"$(platform_name)\"");
     }
+  }
+
+  /**
+   * Creates a new Session from stored data.
+   *
+   * This loads the data from a GVariant and creates a
+   * Session instance for the session, as well as
+   * loading the access token for it.
+   *
+   * @param variant The variant from which to create the session.
+   *
+   * @return The newly created Session instance.
+   *
+   * @throws Error Errors when loading the access token does not work.
+   */
+  private async Session unpack_session (Variant variant) throws Error {
+    string? uuid_prop, platform_name, server_prop,
+            username_prop, access_prop;
+    PlatformEnum platform_prop;
+
+    // Attempt to load the server data
+    variant.lookup ("uuid", "s", out uuid_prop);
+    variant.lookup ("platform", "s", out platform_name);
+    variant.lookup ("server_uuid", "s", out server_prop);
+    variant.lookup ("username", "s", out username_prop);
+    platform_prop = PlatformEnum.from_name (platform_name);
+
+    // Check that all data could be retrieved
+    if (uuid_prop == null) {
+      throw new StateError.INVALID_DATA ("No identifier given");
+    }
+    if (username_prop == null) {
+      throw new StateError.INVALID_DATA ("No username given");
+    }
+
+    // Look up the access token for the instance
+    try {
+      access_prop = KeyStorage.retrieve_access (uuid_prop);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Look up the server for the session
+    Server server;
+    switch (platform_prop) {
+#if SUPPORT_MASTODON
+      case MASTODON:
+        server = find_server_by_id (server_prop);
+        break;
+#endif
+
+#if SUPPORT_TWITTER
+      case TWITTER:
+        // Use the global Twitter server
+        server = Twitter.Server.instance;
+        break;
+#endif
+
+      default:
+        throw new StateError.UNKNOWN_PLATFORM (@"Unknown platform \"$(platform_name)\"");
+    }
+
+    // Check that there is a valid server
+    if (server == null) {
+      throw new StateError.INVALID_DATA ("Associated Server can't be found");
+    }
+
+    // Return the created instance for the session
+    return yield Session.from_data (uuid_prop, access_prop, server);
   }
 
   /**
