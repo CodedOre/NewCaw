@@ -119,6 +119,36 @@ internal class Backend.ClientState : Object {
   }
 
   /**
+   * Stores the ClientState to the state file.
+   *
+   * @throws Error Errors that might happen when accessing the KeyStorage or the state file.
+   */
+  public void store_state () throws Error {
+    // Prepare to build the state variant
+    var state_builder = new VariantBuilder (new VariantType ("a{sv}"));
+
+    // Check for unused servers
+    check_servers ();
+
+    // Pack each server into the state variant
+    var server_builder = new VariantBuilder (new VariantType ("av"));
+    foreach (Server server in active_servers) {
+      server_builder.add ("v", pack_server (server));
+    }
+    state_builder.add ("{sv}", "Servers", server_builder.end ());
+
+    // Pack each session into the state variant
+    var session_builder = new VariantBuilder (new VariantType ("av"));
+    foreach (Session session in active_sessions) {
+      session_builder.add ("v", pack_session (session));
+    }
+    state_builder.add ("{sv}", "Sessions", session_builder.end ());
+
+    // Store the state variant in a file
+    store_file (state_builder.end ());
+  }
+
+  /**
    * Prepares an Server to be saved to a state file.
    *
    * This packs the data relevant to restoring the server into a GVariant,
