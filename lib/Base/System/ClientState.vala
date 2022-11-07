@@ -35,140 +35,24 @@ public errordomain Backend.StateError {
   UNKNOWN_PLATFORM
 
 }
-/**
- * Stores all active sessions and servers, and allows
- * saving and loading client states from disk.
- */
-[SingleInstance]
-public class Backend.ClientState : Object {
 
-  /**
-   * Creates a new instance of ClientState.
-   *
-   * Should only be called to create a instance for the Client class.
-   */
-  internal ClientState () {
-    Object ();
-  }
+/**
+ * The client for utilizing this backend.
+ *
+ * This class provides information about the client to other methods of the
+ * backend and provides methods to initialize and shutdown the backend during
+ * an application run.
+ *
+ * Before using anything else from the backend, Client must be initialized.
+ */
+public partial class Backend.Client : Object {
 
   /**
    * Run at construction of this object.
    */
   construct {
-    // Initialize the arrays
-    active_servers = new GenericArray <Server> ();
-    active_sessions = new GenericArray <Session> ();
-
     // Create cache dir if not already existing
     DirUtils.create_with_parents (state_path, 0750);
-  }
-
-  /**
-   * Adds a server to be managed by ClientState.
-   *
-   * @param server The server to be added.
-   */
-  public void add_server (Server server) {
-#if SUPPORT_TWITTER
-    // Avoid adding Twitter servers to the ClientState
-    if (server is Twitter.Server) {
-      error ("Twitter servers should not be added to ClientState!");
-    }
-#endif
-
-    // Add the server if not already in array
-    if (! active_servers.find (server)) {
-      active_servers.add (server);
-    }
-  }
-
-  /**
-   * Adds a session to be managed by ClientState.
-   *
-   * @param session The session to be added.
-   */
-  public void add_session (Session session) {
-    // Add the session if not already in array
-    if (! active_sessions.find (session)) {
-      active_sessions.add (session);
-    }
-  }
-
-  /**
-   * Checks if an server with a given id exists.
-   *
-   * @param id The id to check for.
-   *
-   * @returns A server if one exists with the id, else null;
-   */
-  public Server? find_server_by_id (string id) {
-    foreach (Server server in active_servers) {
-      if (server.identifier == id) {
-        return server;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Checks if an server for a given domain exists.
-   *
-   * @param domain The domain to check for.
-   *
-   * @returns A server if one exists for the domain, else null;
-   */
-  public Server? find_server_by_domain (string domain) {
-    foreach (Server server in active_servers) {
-      if (server.domain == domain) {
-        return server;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Removes a server from ClientState and
-   * it's access token from the KeyStorage.
-   *
-   * @param server The server to be removed.
-   *
-   * @throws Error Errors when removing the access token.
-   */
-  public void remove_server (Server server) throws Error {
-    // Remove the server the server list
-    if (active_servers.find (server)) {
-      active_servers.remove (server);
-    }
-
-    // Remove the access token of the session
-    try {
-      KeyStorage.remove_access (@"ck_$(server.identifier)");
-      KeyStorage.remove_access (@"cs_$(server.identifier)");
-    } catch (Error e) {
-      throw e;
-    }
-  }
-
-  /**
-   * Removes a session from ClientState and
-   * it's access token from the KeyStorage.
-   *
-   * @param session The session to be removed.
-   *
-   * @throws Error Errors when removing the access token.
-   */
-  public void remove_session (Session session) throws Error {
-    // Remove the session from the session list
-    if (active_sessions.find (session)) {
-      active_sessions.remove (session);
-    }
-
-    // Remove the access token of the session
-    try {
-      KeyStorage.remove_access (session.identifier);
-    } catch (Error e) {
-      throw e;
-    }
   }
 
   /**
@@ -525,16 +409,6 @@ public class Backend.ClientState : Object {
       }
     }
   }
-
-  /**
-   * Stores all sessions managed by ClientState.
-   */
-  private GenericArray <Server> active_servers;
-
-  /**
-   * Stores all sessions managed by ClientState.
-   */
-  private GenericArray <Session> active_sessions;
 
   /**
    * The path to the directory holding the state storage.
