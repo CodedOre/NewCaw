@@ -40,6 +40,50 @@ public class Backend.SessionList : ListModel, Object {
   }
 
   /**
+   * Adds a session to the list.
+   *
+   * @param session The session to be added.
+   */
+  public void add_session (Session session) {
+    // Stop if session already in list
+    if (store.find (session)) {
+      return;
+    }
+
+    // Add the session to the list
+    store.add (session);
+
+    // Note the changed list
+    items_changed (store.length - 1, 0, 1);
+  }
+
+  /**
+   * Removes a session from ClientState and
+   * it's access token from the KeyStorage.
+   *
+   * @param session The session to be removed.
+   *
+   * @throws Error Errors when removing the access token.
+   */
+  public void remove_session (Session session) throws Error {
+    // Remove the session from the session list
+    uint removed_position;
+    if (store.find (session, out removed_position)) {
+      store.remove (session);
+    }
+
+    // Remove the access token of the session
+    try {
+      KeyStorage.remove_access (session.identifier);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Note the changed list
+    items_changed (removed_position, 1, 0);
+  }
+
+  /**
    * Returns the nth session in this list.
    *
    * @param position The position to look for.
