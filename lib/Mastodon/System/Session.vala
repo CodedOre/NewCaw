@@ -100,7 +100,7 @@ public partial class Backend.Mastodon.Session : AsyncInitable {
     account = load_user (json.get_object ());
 
     // Add the new session to the ClientState
-    ClientState.add_session (this);
+    Client.instance.state.add_session (this);
     return true;
   }
 
@@ -127,7 +127,7 @@ public partial class Backend.Mastodon.Session : AsyncInitable {
     }
 
     // Remove the session from ClientState
-    ClientState.remove_session (this);
+    Client.instance.state.remove_session (this);
   }
 
   /**

@@ -40,18 +40,15 @@ public errordomain Backend.StateError {
  * saving and loading client states from disk.
  */
 [SingleInstance]
-internal class Backend.ClientState : Object {
+public class Backend.ClientState : Object {
 
   /**
-   * The global instance of ClientState.
+   * Creates a new instance of ClientState.
+   *
+   * Should only be called to create a instance for the Client class.
    */
-  private static ClientState instance {
-    get {
-      if (global_instance == null) {
-        global_instance = new ClientState ();
-      }
-      return global_instance;
-    }
+  internal ClientState () {
+    Object ();
   }
 
   /**
@@ -71,7 +68,7 @@ internal class Backend.ClientState : Object {
    *
    * @param server The server to be added.
    */
-  public static void add_server (Server server) {
+  public void add_server (Server server) {
 #if SUPPORT_TWITTER
     // Avoid adding Twitter servers to the ClientState
     if (server is Twitter.Server) {
@@ -80,8 +77,8 @@ internal class Backend.ClientState : Object {
 #endif
 
     // Add the server if not already in array
-    if (! instance.active_servers.find (server)) {
-      instance.active_servers.add (server);
+    if (! active_servers.find (server)) {
+      active_servers.add (server);
     }
   }
 
@@ -90,10 +87,10 @@ internal class Backend.ClientState : Object {
    *
    * @param session The session to be added.
    */
-  public static void add_session (Session session) {
+  public void add_session (Session session) {
     // Add the session if not already in array
-    if (! instance.active_sessions.find (session)) {
-      instance.active_sessions.add (session);
+    if (! active_sessions.find (session)) {
+      active_sessions.add (session);
     }
   }
 
@@ -104,8 +101,8 @@ internal class Backend.ClientState : Object {
    *
    * @returns A server if one exists with the id, else null;
    */
-  public static Server? find_server_by_id (string id) {
-    foreach (Server server in instance.active_servers) {
+  public Server? find_server_by_id (string id) {
+    foreach (Server server in active_servers) {
       if (server.identifier == id) {
         return server;
       }
@@ -120,8 +117,8 @@ internal class Backend.ClientState : Object {
    *
    * @returns A server if one exists for the domain, else null;
    */
-  public static Server? find_server_by_domain (string domain) {
-    foreach (Server server in instance.active_servers) {
+  public Server? find_server_by_domain (string domain) {
+    foreach (Server server in active_servers) {
       if (server.domain == domain) {
         return server;
       }
@@ -137,10 +134,10 @@ internal class Backend.ClientState : Object {
    *
    * @throws Error Errors when removing the access token.
    */
-  public static void remove_server (Server server) throws Error {
+  public void remove_server (Server server) throws Error {
     // Remove the server the server list
-    if (instance.active_servers.find (server)) {
-      instance.active_servers.remove (server);
+    if (active_servers.find (server)) {
+      active_servers.remove (server);
     }
 
     // Remove the access token of the session
@@ -160,10 +157,10 @@ internal class Backend.ClientState : Object {
    *
    * @throws Error Errors when removing the access token.
    */
-  public static void remove_session (Session session) throws Error {
+  public void remove_session (Session session) throws Error {
     // Remove the session from the session list
-    if (instance.active_sessions.find (session)) {
-      instance.active_sessions.remove (session);
+    if (active_sessions.find (session)) {
+      active_sessions.remove (session);
     }
 
     // Remove the access token of the session
@@ -538,11 +535,6 @@ internal class Backend.ClientState : Object {
    * Stores all sessions managed by ClientState.
    */
   private GenericArray <Session> active_sessions;
-
-  /**
-   * Stores the global instance of ClientState.
-   */
-  private static ClientState? global_instance = null;
 
   /**
    * The path to the directory holding the state storage.

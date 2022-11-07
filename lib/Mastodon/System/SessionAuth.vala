@@ -42,7 +42,7 @@ public class Backend.Mastodon.SessionAuth : Backend.SessionAuth {
 
     // Add an existing or new server for the set domain
     try {
-      Server? server_check = ClientState.find_server_by_domain (domain) as Mastodon.Server;
+      Server? server_check = Client.instance.state.find_server_by_domain (domain) as Mastodon.Server;
       auth_server = server_check != null
                       ? server_check
                       : yield new Server.authenticate (domain);

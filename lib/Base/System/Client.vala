@@ -78,6 +78,16 @@ public class Backend.Client : Object {
   public string? redirect_uri { get; construct; }
 
   /**
+   * The ClientState object for this client.
+   *
+   * Provides the utilities to manage the state of the client, like loading
+   * a previous state from storage or storing it for future runs.
+   *
+   * TODO: Maybe combine this into Client?
+   */
+  public ClientState state { get; construct; }
+
+  /**
    * Constructs the client instance.
    *
    * @param id The identifier for the client.
@@ -88,10 +98,11 @@ public class Backend.Client : Object {
   public Client (string id, string name, string website, string? redirect_uri = null) {
     // Construct the class
     Object (
-      id:           id,
-      name:         name,
-      website:      website,
-      redirect_uri: redirect_uri
+      id: id,
+      name: name,
+      website: website,
+      redirect_uri: redirect_uri,
+      state: new ClientState ()
     );
 
     // Set the global instance
