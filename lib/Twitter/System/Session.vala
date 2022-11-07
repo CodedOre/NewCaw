@@ -102,7 +102,7 @@ public partial class Backend.Twitter.Session : AsyncInitable {
     account = load_user (json.get_object ());
 
     // Add the new session to the ClientState
-    Client.instance.state.add_session (this);
+    Client.instance.add_session (this);
     return true;
   }
 
@@ -130,7 +130,7 @@ public partial class Backend.Twitter.Session : AsyncInitable {
     }
 
     // Remove the session from ClientState
-    Client.instance.state.remove_session (this);
+    Client.instance.remove_session (this);
   }
 
   /**

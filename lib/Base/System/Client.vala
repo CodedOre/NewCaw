@@ -153,7 +153,7 @@ public partial class Backend.Client : Initable {
    *
    * @param id The id to check for.
    *
-   * @returns A server if one exists with the id, else null;
+   * @return A server if one exists with the id, else null;
    */
   public Server? find_server_by_id (string id) {
     foreach (Server server in active_servers) {
@@ -169,7 +169,7 @@ public partial class Backend.Client : Initable {
    *
    * @param domain The domain to check for.
    *
-   * @returns A server if one exists for the domain, else null;
+   * @return A server if one exists for the domain, else null;
    */
   public Server? find_server_by_domain (string domain) {
     foreach (Server server in active_servers) {

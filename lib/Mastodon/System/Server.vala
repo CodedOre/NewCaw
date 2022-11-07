@@ -110,7 +110,7 @@ public class Backend.Mastodon.Server : Backend.Server {
 
     // Create identifier and add the new server to ClientState
     identifier = Uuid.string_random ();
-    Client.instance.state.add_server (this);
+    Client.instance.add_server (this);
   }
 
   /**
