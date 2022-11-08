@@ -184,7 +184,7 @@ public abstract class Backend.ClientList <T> : ListModel, Object {
   /**
    * Provides an iterator to iterate the list.
    */
-  public Iterator iterator () {
+  public Iterator <T> iterator () {
     return new Iterator <T> (this);
   }
 
