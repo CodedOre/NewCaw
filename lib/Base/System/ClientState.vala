@@ -309,14 +309,6 @@ public partial class Backend.Client : Object {
     var state_builder = new VariantBuilder (new VariantType ("a{sms}"));
     var platform = PlatformEnum.for_session (session);
 
-    // Store the access token
-    try {
-      string token_label = @"Access Token for Account \"$(session.account.username)\" on $(platform)";
-      KeyStorage.store_access (session.access_token, session.identifier, token_label);
-    } catch (Error e) {
-      throw e;
-    }
-
     // Add the data to the variant
     state_builder.add ("{sms}", "uuid", session.identifier);
     state_builder.add ("{sms}", "platform", platform.to_string ());

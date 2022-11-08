@@ -59,11 +59,14 @@ public abstract class Backend.ClientList <T> : ListModel, Object {
   }
 
   /**
-   * Adds an item to the list.
+   * Adds an item to the list and the
+   * associated access to the KeyStorage.
    *
    * @param item The item to be added.
+   *
+   * @throws Error Errors when adding the access token doesn't work.
    */
-  internal void add (T item) {
+  internal void add (T item) throws Error {
     // Stop if item is already in list
     if (store.find (item)) {
       return;
@@ -72,9 +75,24 @@ public abstract class Backend.ClientList <T> : ListModel, Object {
     // Add the item to the list
     store.add (item);
 
+    try {
+      add_access (item);
+    } catch (Error e) {
+      throw e;
+    }
+
     // Note the changed list
     items_changed (store.length - 1, 0, 1);
   }
+
+  /**
+   * Adds the access for an item to the KeyStorage.
+   *
+   * @param item The item to be removed.
+   *
+   * @throws Error Errors when adding the access token doesn't work.
+   */
+  internal abstract void add_access (T item) throws Error;
 
   /**
    * Removes a item from the list and the
@@ -87,9 +105,12 @@ public abstract class Backend.ClientList <T> : ListModel, Object {
   internal void remove (T item) throws Error {
     // Remove the session from the session list
     uint removed_position;
-    if (store.find (item, out removed_position)) {
-      store.remove (item);
+    if (! store.find (item, out removed_position)) {
+      return;
     }
+
+    // Remove the item
+    store.remove (item);
 
     try {
       remove_access (item);
@@ -127,6 +148,19 @@ public class Backend.SessionList : ClientList <Session> {
    */
   internal SessionList () {
     Object ();
+  }
+
+  /**
+   * Adds the access for an item from the KeyStorage.
+   */
+  internal override void add_access (Session item) throws Error {
+    try {
+      PlatformEnum platform = PlatformEnum.for_session (item);
+      string token_label = @"Access Token for Account \"$(item.account.username)\" on $(platform)";
+      KeyStorage.store_access (item.access_token, item.identifier, token_label);
+    } catch (Error e) {
+      throw e;
+    }
   }
 
   /**
