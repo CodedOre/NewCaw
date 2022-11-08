@@ -20,6 +20,12 @@
 
 using GLib;
 
+/**
+ * Keeps a list of active instances in a Client.
+ *
+ * Can be used by an application to retrieve an updating list of currently
+ * active servers or users, and is used internally to keep track of them.
+ */
 public abstract class Backend.ClientList <T> : ListModel, Object {
 
   /**
@@ -130,6 +136,57 @@ public abstract class Backend.ClientList <T> : ListModel, Object {
    * @throws Error Errors when removing the access token doesn't work.
    */
   internal abstract void remove_access (T item) throws Error;
+
+  /**
+   * An Iterator to enable foreach loops.
+   */
+  public class Iterator <T> : Object {
+
+    /**
+     * Constructs a new Iterator.
+     */
+    internal Iterator (ClientList list) {
+      iterated = list;
+    }
+
+    /**
+     * Moves to the next value.
+     *
+     * @return If a next value exists.
+     */
+  	public bool next () {
+      assert (iterated != null);
+  	  return iterated.store.get (iter_i++) != null;
+  	}
+
+    /**
+     * Retrieves the current value.
+     *
+     * @return The value at the current iteration.
+     */
+  	public new T? get () {
+      assert (iterated != null);
+  	  return iterated.store.get (iter_i);
+  	}
+
+  	/**
+  	 * The list iterated through.
+  	 */
+  	private ClientList iterated;
+
+    /**
+     * Counts the current iteration.
+     */
+  	private uint iter_i = -1;
+
+  }
+
+  /**
+   * Provides an iterator to iterate the list.
+   */
+  public Iterator iterator () {
+    return new Iterator <T> (this);
+  }
 
   /**
    * Stores the sessions internally.
