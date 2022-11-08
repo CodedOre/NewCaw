@@ -127,38 +127,6 @@ public partial class Backend.Client : Initable {
   }
 
   /**
-   * Checks if an server with a given id exists.
-   *
-   * @param id The id to check for.
-   *
-   * @return A server if one exists with the id, else null;
-   */
-  public Server? find_server_by_id (string id) {
-    foreach (Server server in servers) {
-      if (server.identifier == id) {
-        return server;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Checks if an server for a given domain exists.
-   *
-   * @param domain The domain to check for.
-   *
-   * @return A server if one exists for the domain, else null;
-   */
-  public Server? find_server_by_domain (string domain) {
-    foreach (Server server in servers) {
-      if (server.domain == domain) {
-        return server;
-      }
-    }
-    return null;
-  }
-
-  /**
    * Cleans up backend-related stuff when the client is exited.
    */
   public void shutdown () {

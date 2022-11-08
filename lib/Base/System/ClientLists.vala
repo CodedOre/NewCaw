@@ -65,6 +65,23 @@ public abstract class Backend.ClientList <T> : ListModel, Object {
   }
 
   /**
+   * Check if a item exists with a specific search function.
+   *
+   * @param needle The term to search for in the list.
+   * @param equal_func A function used to determine the right item.
+   *
+   * @return The right item if found, else null.
+   */
+  internal T? find <G> (G needle, ArraySearchFunc<G,T> equal_func) {
+    uint? index;
+    if (store.find_custom <G> (needle, equal_func, out index)) {
+      return store.get (index);
+    } else {
+      return null;
+    }
+  }
+
+  /**
    * Checks if a object is found in the list.
    *
    * @param object The object to check for.
@@ -72,7 +89,7 @@ public abstract class Backend.ClientList <T> : ListModel, Object {
    *
    * @return If the object can be found in the list.
    */
-  internal bool find (T object, out uint index) {
+  internal bool find_object (T object, out uint index) {
     return store.find (object, out index);
   }
 

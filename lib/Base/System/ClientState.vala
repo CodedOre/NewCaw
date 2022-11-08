@@ -232,7 +232,7 @@ public partial class Backend.Client : Object {
     switch (platform_prop) {
 #if SUPPORT_MASTODON
       case MASTODON:
-        server = find_server_by_id (server_prop);
+        server = servers.find <string> (server_prop, (needle, item) => { return item.identifier == needle; });
         break;
 #endif
 
@@ -372,7 +372,7 @@ public partial class Backend.Client : Object {
     // Rule out all servers still used by a session
     foreach (Session session in sessions) {
       uint server_index;
-      if (servers.find (session.server, out server_index)) {
+      if (servers.find_object (session.server, out server_index)) {
         if (! (server_index in used_servers)) {
           used_servers += server_index;
         }
