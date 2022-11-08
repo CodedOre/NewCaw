@@ -81,7 +81,7 @@ public partial class Backend.Client : Object {
     while (server_iter.next ("av", out server_variant)) {
       try {
         var server = unpack_server (server_variant);
-        add_server (server);
+        servers.add (server);
       } catch (Error e) {
         throw e;
       }
@@ -94,6 +94,7 @@ public partial class Backend.Client : Object {
     while (session_iter.next ("av", out session_variant)) {
       try {
         var session = yield unpack_session (session_variant);
+        sessions.add (session);
       } catch (Error e) {
         throw e;
       }
@@ -118,7 +119,7 @@ public partial class Backend.Client : Object {
 
     // Pack each server into the state variant
     var server_builder = new VariantBuilder (new VariantType ("av"));
-    foreach (Server server in active_servers) {
+    foreach (Server server in servers) {
       server_builder.add ("v", pack_server (server));
     }
     state_builder.add ("{sv}", "Servers", server_builder.end ());
@@ -371,7 +372,7 @@ public partial class Backend.Client : Object {
     // Rule out all servers still used by a session
     foreach (Session session in sessions) {
       uint server_index;
-      if (active_servers.find (session.server, out server_index)) {
+      if (servers.find (session.server, out server_index)) {
         if (! (server_index in used_servers)) {
           used_servers += server_index;
         }
@@ -379,11 +380,11 @@ public partial class Backend.Client : Object {
     }
 
     // Remove all servers not used anymore
-    for (uint i = 0; i < active_servers.length; i++) {
+    for (uint i = 0; i < servers.get_n_items (); i++) {
       if (! (i in used_servers)) {
-        var server = active_servers [i];
+        var server = servers.get_item (i) as Server;
         try {
-          remove_server (server);
+          servers.remove (server);
         } catch (Error e) {
           throw e;
         }

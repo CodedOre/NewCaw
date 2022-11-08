@@ -83,6 +83,11 @@ public partial class Backend.Client : Initable {
   public SessionList sessions { get; construct; }
 
   /**
+   * All servers that are active with this client.
+   */
+  public ServerList servers { get; construct; }
+
+  /**
    * Constructs the client instance.
    *
    * @param id The identifier for the client.
@@ -97,7 +102,8 @@ public partial class Backend.Client : Initable {
       name: name,
       website: website,
       redirect_uri: redirect_uri,
-      sessions: new SessionList ()
+      sessions: new SessionList (),
+      servers: new ServerList ()
     );
 
     // Set the global instance
@@ -117,28 +123,7 @@ public partial class Backend.Client : Initable {
    */
   public bool init (Cancellable? cancellable = null) throws Error {
     // Initialize the arrays
-    active_servers = new GenericArray <Server> ();
-
     return true;
-  }
-
-  /**
-   * Adds a server to be managed by ClientState.
-   *
-   * @param server The server to be added.
-   */
-  public void add_server (Server server) {
-#if SUPPORT_TWITTER
-    // Avoid adding Twitter servers to the ClientState
-    if (server is Twitter.Server) {
-      error ("Twitter servers should not be added to ClientState!");
-    }
-#endif
-
-    // Add the server if not already in array
-    if (! active_servers.find (server)) {
-      active_servers.add (server);
-    }
   }
 
   /**
@@ -149,7 +134,7 @@ public partial class Backend.Client : Initable {
    * @return A server if one exists with the id, else null;
    */
   public Server? find_server_by_id (string id) {
-    foreach (Server server in active_servers) {
+    foreach (Server server in servers) {
       if (server.identifier == id) {
         return server;
       }
@@ -165,35 +150,12 @@ public partial class Backend.Client : Initable {
    * @return A server if one exists for the domain, else null;
    */
   public Server? find_server_by_domain (string domain) {
-    foreach (Server server in active_servers) {
+    foreach (Server server in servers) {
       if (server.domain == domain) {
         return server;
       }
     }
     return null;
-  }
-
-  /**
-   * Removes a server from ClientState and
-   * it's access token from the KeyStorage.
-   *
-   * @param server The server to be removed.
-   *
-   * @throws Error Errors when removing the access token.
-   */
-  public void remove_server (Server server) throws Error {
-    // Remove the server the server list
-    if (active_servers.find (server)) {
-      active_servers.remove (server);
-    }
-
-    // Remove the access token of the session
-    try {
-      KeyStorage.remove_access (@"ck_$(server.identifier)");
-      KeyStorage.remove_access (@"cs_$(server.identifier)");
-    } catch (Error e) {
-      throw e;
-    }
   }
 
   /**
@@ -207,10 +169,5 @@ public partial class Backend.Client : Initable {
    * Stores the global instance of Client.
    */
   private static Client? global_instance = null;
-
-  /**
-   * Stores all sessions managed by ClientState.
-   */
-  private GenericArray <Server> active_servers;
 
 }

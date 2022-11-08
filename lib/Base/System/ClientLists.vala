@@ -65,6 +65,18 @@ public abstract class Backend.ClientList <T> : ListModel, Object {
   }
 
   /**
+   * Checks if a object is found in the list.
+   *
+   * @param object The object to check for.
+   * @param index The position of the object in the list.
+   *
+   * @return If the object can be found in the list.
+   */
+  internal bool find (T object, out uint index) {
+    return store.find (object, out index);
+  }
+
+  /**
    * Adds an item to the list and the
    * associated access to the KeyStorage.
    *
@@ -73,6 +85,13 @@ public abstract class Backend.ClientList <T> : ListModel, Object {
    * @throws Error Errors when adding the access token doesn't work.
    */
   internal void add (T item) throws Error {
+#if SUPPORT_TWITTER
+    // Don't add Twitter servers
+    if (item is Backend.Twitter.Server) {
+      return;
+    }
+#endif
+
     // Stop if item is already in list
     if (store.find (item)) {
       return;
