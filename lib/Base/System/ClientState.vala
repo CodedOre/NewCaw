@@ -94,7 +94,6 @@ public partial class Backend.Client : Object {
     while (session_iter.next ("av", out session_variant)) {
       try {
         var session = yield unpack_session (session_variant);
-        add_session (session);
       } catch (Error e) {
         throw e;
       }
@@ -126,7 +125,7 @@ public partial class Backend.Client : Object {
 
     // Pack each session into the state variant
     var session_builder = new VariantBuilder (new VariantType ("av"));
-    foreach (Session session in active_sessions) {
+    foreach (Session session in sessions) {
       session_builder.add ("v", pack_session (session));
     }
     state_builder.add ("{sv}", "Sessions", session_builder.end ());
@@ -370,7 +369,7 @@ public partial class Backend.Client : Object {
     uint[] used_servers = {};
 
     // Rule out all servers still used by a session
-    foreach (Session session in active_sessions) {
+    foreach (Session session in sessions) {
       uint server_index;
       if (active_servers.find (session.server, out server_index)) {
         if (! (server_index in used_servers)) {

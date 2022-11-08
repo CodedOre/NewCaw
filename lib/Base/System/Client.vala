@@ -78,6 +78,11 @@ public partial class Backend.Client : Initable {
   public string? redirect_uri { get; construct; }
 
   /**
+   * All sessions that are active with this client.
+   */
+  public SessionList sessions { get; construct; }
+
+  /**
    * Constructs the client instance.
    *
    * @param id The identifier for the client.
@@ -91,7 +96,8 @@ public partial class Backend.Client : Initable {
       id: id,
       name: name,
       website: website,
-      redirect_uri: redirect_uri
+      redirect_uri: redirect_uri,
+      sessions: new SessionList ()
     );
 
     // Set the global instance
@@ -112,7 +118,6 @@ public partial class Backend.Client : Initable {
   public bool init (Cancellable? cancellable = null) throws Error {
     // Initialize the arrays
     active_servers = new GenericArray <Server> ();
-    active_sessions = new GenericArray <Session> ();
 
     return true;
   }
@@ -133,18 +138,6 @@ public partial class Backend.Client : Initable {
     // Add the server if not already in array
     if (! active_servers.find (server)) {
       active_servers.add (server);
-    }
-  }
-
-  /**
-   * Adds a session to be managed by ClientState.
-   *
-   * @param session The session to be added.
-   */
-  public void add_session (Session session) {
-    // Add the session if not already in array
-    if (! active_sessions.find (session)) {
-      active_sessions.add (session);
     }
   }
 
@@ -204,28 +197,6 @@ public partial class Backend.Client : Initable {
   }
 
   /**
-   * Removes a session from ClientState and
-   * it's access token from the KeyStorage.
-   *
-   * @param session The session to be removed.
-   *
-   * @throws Error Errors when removing the access token.
-   */
-  public void remove_session (Session session) throws Error {
-    // Remove the session from the session list
-    if (active_sessions.find (session)) {
-      active_sessions.remove (session);
-    }
-
-    // Remove the access token of the session
-    try {
-      KeyStorage.remove_access (session.identifier);
-    } catch (Error e) {
-      throw e;
-    }
-  }
-
-  /**
    * Cleans up backend-related stuff when the client is exited.
    */
   public void shutdown () {
@@ -241,10 +212,5 @@ public partial class Backend.Client : Initable {
    * Stores all sessions managed by ClientState.
    */
   private GenericArray <Server> active_servers;
-
-  /**
-   * Stores all sessions managed by ClientState.
-   */
-  private GenericArray <Session> active_sessions;
 
 }
