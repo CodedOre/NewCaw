@@ -20,67 +20,13 @@
 
 using GLib;
 
-/**
- * Provides a list of all sessions used by a Client.
- */
-public class Backend.SessionList : ListModel, Object {
+public abstract class Backend.ClientList <T> : ListModel, Object {
 
   /**
-   * Creates a new instance of SessionList.
-   */
-  internal SessionList () {
-    Object ();
-  }
-
-  /**
-   * Constructs a new instance of SessionList.
+   * Runs at construction of a new instance.
    */
   construct {
-    store = new GenericArray <Session> ();
-  }
-
-  /**
-   * Adds a session to the list.
-   *
-   * @param session The session to be added.
-   */
-  public void add_session (Session session) {
-    // Stop if session already in list
-    if (store.find (session)) {
-      return;
-    }
-
-    // Add the session to the list
-    store.add (session);
-
-    // Note the changed list
-    items_changed (store.length - 1, 0, 1);
-  }
-
-  /**
-   * Removes a session from ClientState and
-   * it's access token from the KeyStorage.
-   *
-   * @param session The session to be removed.
-   *
-   * @throws Error Errors when removing the access token.
-   */
-  public void remove_session (Session session) throws Error {
-    // Remove the session from the session list
-    uint removed_position;
-    if (store.find (session, out removed_position)) {
-      store.remove (session);
-    }
-
-    // Remove the access token of the session
-    try {
-      KeyStorage.remove_access (session.identifier);
-    } catch (Error e) {
-      throw e;
-    }
-
-    // Note the changed list
-    items_changed (removed_position, 1, 0);
+    store = new GenericArray <T> ();
   }
 
   /**
@@ -91,7 +37,7 @@ public class Backend.SessionList : ListModel, Object {
    * @return The session at the position, or null if position is invalid.
    */
   public Object? get_item (uint position) {
-    return store.get (position);
+    return store.get (position) as Object;
   }
 
   /**
@@ -109,12 +55,89 @@ public class Backend.SessionList : ListModel, Object {
    * @return The type for a base Session class.
    */
   public Type get_item_type () {
-    return typeof (Session);
+    return typeof (T);
   }
+
+  /**
+   * Adds an item to the list.
+   *
+   * @param item The item to be added.
+   */
+  internal void add (T item) {
+    // Stop if item is already in list
+    if (store.find (item)) {
+      return;
+    }
+
+    // Add the item to the list
+    store.add (item);
+
+    // Note the changed list
+    items_changed (store.length - 1, 0, 1);
+  }
+
+  /**
+   * Removes a item from the list and the
+   * associated access token from the KeyStorage.
+   *
+   * @param item The item to be removed.
+   *
+   * @throws Error Errors when removing the access token doesn't work.
+   */
+  internal void remove (T item) throws Error {
+    // Remove the session from the session list
+    uint removed_position;
+    if (store.find (item, out removed_position)) {
+      store.remove (item);
+    }
+
+    try {
+      remove_access (item);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Note the changed list
+    items_changed (removed_position, 1, 0);
+  }
+
+  /**
+   * Removes the access for an item from the KeyStorage.
+   *
+   * @param item The item to be removed.
+   *
+   * @throws Error Errors when removing the access token doesn't work.
+   */
+  internal abstract void remove_access (T item) throws Error;
 
   /**
    * Stores the sessions internally.
    */
-  private GenericArray <Session> store;
+  private GenericArray <T> store;
+
+}
+
+/**
+ * Provides a list of all sessions used by a Client.
+ */
+public class Backend.SessionList : ClientList <Session> {
+
+  /**
+   * Creates a new instance of SessionList.
+   */
+  internal SessionList () {
+    Object ();
+  }
+
+  /**
+   * Removes the access for an item from the KeyStorage.
+   */
+  internal override void remove_access (Session item) throws Error {
+    try {
+      KeyStorage.remove_access (item.identifier);
+    } catch (Error e) {
+      throw e;
+    }
+  }
 
 }
