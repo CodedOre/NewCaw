@@ -31,6 +31,7 @@ libfiles = [
   'Base/Organization/Thread.vala',
   'Base/Organization/UserTimeline.vala',
   'Base/System/Client.vala',
+  'Base/System/ClientLists.vala',
   'Base/System/ClientState.vala',
   'Base/System/Server.vala',
   'Base/System/Session.vala',

@@ -81,7 +81,7 @@ public partial class Backend.Client : Object {
     while (server_iter.next ("av", out server_variant)) {
       try {
         var server = unpack_server (server_variant);
-        add_server (server);
+        servers.add (server);
       } catch (Error e) {
         throw e;
       }
@@ -94,7 +94,7 @@ public partial class Backend.Client : Object {
     while (session_iter.next ("av", out session_variant)) {
       try {
         var session = yield unpack_session (session_variant);
-        add_session (session);
+        sessions.add (session);
       } catch (Error e) {
         throw e;
       }
@@ -119,14 +119,14 @@ public partial class Backend.Client : Object {
 
     // Pack each server into the state variant
     var server_builder = new VariantBuilder (new VariantType ("av"));
-    foreach (Server server in active_servers) {
+    foreach (Server server in servers) {
       server_builder.add ("v", pack_server (server));
     }
     state_builder.add ("{sv}", "Servers", server_builder.end ());
 
     // Pack each session into the state variant
     var session_builder = new VariantBuilder (new VariantType ("av"));
-    foreach (Session session in active_sessions) {
+    foreach (Session session in sessions) {
       session_builder.add ("v", pack_session (session));
     }
     state_builder.add ("{sv}", "Sessions", session_builder.end ());
@@ -273,16 +273,6 @@ public partial class Backend.Client : Object {
     var state_builder = new VariantBuilder (new VariantType ("a{sms}"));
     var platform = PlatformEnum.for_server (server);
 
-    // Store the access token
-    try {
-      string token_label = @"Access Token for Server \"$(server.domain)\" on $(platform)";
-      KeyStorage.store_access (server.client_key, @"ck_$(server.identifier)", token_label);
-      string secret_label = @"Access Secret for Server \"$(server.domain)\" on $(platform)";
-      KeyStorage.store_access (server.client_secret, @"cs_$(server.identifier)", secret_label);
-    } catch (Error e) {
-      throw e;
-    }
-
     // Add the data to the variant
     state_builder.add ("{sms}", "uuid", server.identifier);
     state_builder.add ("{sms}", "platform", platform.to_string ());
@@ -308,14 +298,6 @@ public partial class Backend.Client : Object {
     // Create the VariantBuilder and check the platform
     var state_builder = new VariantBuilder (new VariantType ("a{sms}"));
     var platform = PlatformEnum.for_session (session);
-
-    // Store the access token
-    try {
-      string token_label = @"Access Token for Account \"$(session.account.username)\" on $(platform)";
-      KeyStorage.store_access (session.access_token, session.identifier, token_label);
-    } catch (Error e) {
-      throw e;
-    }
 
     // Add the data to the variant
     state_builder.add ("{sms}", "uuid", session.identifier);
@@ -388,9 +370,9 @@ public partial class Backend.Client : Object {
     uint[] used_servers = {};
 
     // Rule out all servers still used by a session
-    foreach (Session session in active_sessions) {
+    foreach (Session session in sessions) {
       uint server_index;
-      if (active_servers.find (session.server, out server_index)) {
+      if (servers.find (session.server, out server_index)) {
         if (! (server_index in used_servers)) {
           used_servers += server_index;
         }
@@ -398,11 +380,11 @@ public partial class Backend.Client : Object {
     }
 
     // Remove all servers not used anymore
-    for (uint i = 0; i < active_servers.length; i++) {
+    for (uint i = 0; i < servers.get_n_items (); i++) {
       if (! (i in used_servers)) {
-        var server = active_servers [i];
+        var server = servers.get_item (i) as Server;
         try {
-          remove_server (server);
+          servers.remove (server);
         } catch (Error e) {
           throw e;
         }
