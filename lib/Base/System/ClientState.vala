@@ -273,16 +273,6 @@ public partial class Backend.Client : Object {
     var state_builder = new VariantBuilder (new VariantType ("a{sms}"));
     var platform = PlatformEnum.for_server (server);
 
-    // Store the access token
-    try {
-      string token_label = @"Access Token for Server \"$(server.domain)\" on $(platform)";
-      KeyStorage.store_access (server.client_key, @"ck_$(server.identifier)", token_label);
-      string secret_label = @"Access Secret for Server \"$(server.domain)\" on $(platform)";
-      KeyStorage.store_access (server.client_secret, @"cs_$(server.identifier)", secret_label);
-    } catch (Error e) {
-      throw e;
-    }
-
     // Add the data to the variant
     state_builder.add ("{sms}", "uuid", server.identifier);
     state_builder.add ("{sms}", "platform", platform.to_string ());

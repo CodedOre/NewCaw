@@ -175,3 +175,44 @@ public class Backend.SessionList : ClientList <Session> {
   }
 
 }
+
+/**
+ * Provides a list of all servers used by a Client.
+ */
+public class Backend.ServerList : ClientList <Server> {
+
+  /**
+   * Creates a new instance of ServerList.
+   */
+  internal ServerList () {
+    Object ();
+  }
+
+  /**
+   * Adds the access for an item from the KeyStorage.
+   */
+  internal override void add_access (Server item) throws Error {
+    try {
+      PlatformEnum platform = PlatformEnum.for_server (item);
+      string token_label = @"Access Token for Server \"$(item.domain)\" on $(platform)";
+      KeyStorage.store_access (item.client_key, @"ck_$(item.identifier)", token_label);
+      string secret_label = @"Access Secret for Server \"$(item.domain)\" on $(platform)";
+      KeyStorage.store_access (item.client_secret, @"cs_$(item.identifier)", secret_label);
+    } catch (Error e) {
+      throw e;
+    }
+  }
+
+  /**
+   * Removes the access for an item from the KeyStorage.
+   */
+  internal override void remove_access (Server item) throws Error {
+    try {
+      KeyStorage.remove_access (@"ck_$(item.identifier)");
+      KeyStorage.remove_access (@"cs_$(item.identifier)");
+    } catch (Error e) {
+      throw e;
+    }
+  }
+
+}
