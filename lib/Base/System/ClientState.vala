@@ -392,11 +392,4 @@ public partial class Backend.Client : Object {
     }
   }
 
-  /**
-   * The path to the directory holding the state storage.
-   */
-  private string state_path = Path.build_filename (Environment.get_user_data_dir (),
-                                                   Client.instance.name,
-                                                   null);
-
 }
