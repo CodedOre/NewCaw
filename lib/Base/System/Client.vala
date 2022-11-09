@@ -106,6 +106,9 @@ public partial class Backend.Client : Initable {
       servers: new ServerList ()
     );
 
+    // Initialize the instance
+    init ();
+
     // Set the global instance
     global_instance = this;
   }
