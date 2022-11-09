@@ -97,9 +97,8 @@ public class Cawbird : Adw.Application {
     // Initializes the backend client
     new Backend.Client (Config.PROJECT_NAME, "https://github.com/CodedOre/NewCaw", "cawbird://authenticate");
 
-    // Load the session
-    Session.init (this);
-    Session.load_session.begin ();
+    // Load the previous program state
+    Backend.Client.instance.load_state ();
   }
 
   /**
@@ -160,8 +159,8 @@ public class Cawbird : Adw.Application {
    * Run when the program is closed.
    */
   protected override void shutdown () {
+    Backend.Client.instance.store_state ();
     Backend.Client.instance.shutdown ();
-    Session.store_session ();
     base.shutdown ();
   }
 
