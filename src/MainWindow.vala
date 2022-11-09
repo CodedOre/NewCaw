@@ -41,12 +41,6 @@ public class MainWindow : Adw.ApplicationWindow {
     get {
       return displayed_session.account;
     }
-    construct set {
-      // Create a session for the account
-      session = value != null
-                  ? Backend.Session.for_account (value)
-                  : null;
-    }
   }
 
   /**
@@ -82,7 +76,7 @@ public class MainWindow : Adw.ApplicationWindow {
     // Initializes the Object
     Object (
       application: app,
-      account:     session
+      session: session
     );
   }
 
@@ -97,7 +91,7 @@ public class MainWindow : Adw.ApplicationWindow {
         this.close ();
       } else {
         // Otherwise set the new account
-        this.account      = auth_view.account;
+        // FIXME: this.account      = auth_view.account;
         auth_view.account = null;
       }
     });
