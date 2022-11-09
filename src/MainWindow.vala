@@ -37,7 +37,7 @@ public class MainWindow : Adw.ApplicationWindow {
   /**
    * The account currently displayed in this window.
    */
-  public Backend.Account account {
+  public Backend.User account {
     get {
       return displayed_session.account;
     }
@@ -78,11 +78,11 @@ public class MainWindow : Adw.ApplicationWindow {
    * @param app The Gtk.Application for this window.
    * @param account The account to be assigned to this window, or null for an AuthView.
    */
-  public MainWindow (Gtk.Application app, Backend.Account? account = null) {
+  public MainWindow (Gtk.Application app, Backend.Session? session = null) {
     // Initializes the Object
     Object (
       application: app,
-      account:     account
+      account:     session
     );
   }
 
