@@ -40,7 +40,7 @@ public class MainPage : Gtk.Widget {
   [GtkChild]
   private unowned Adw.WindowTitle flap_title;
   [GtkChild]
-  private unowned AccountSidebar account_sidebar;
+  private unowned SessionSidebar session_sidebar;
 
   /**
    * Run at construction of the widget.
@@ -72,9 +72,7 @@ public class MainPage : Gtk.Widget {
                                  : null;
 
       // Set the active account in the sidebar
-      account_sidebar.active_account = displayed_session != null
-                                         ? displayed_session.account
-                                         : null;
+      session_sidebar.active_session = displayed_session;
     }
   }
 
