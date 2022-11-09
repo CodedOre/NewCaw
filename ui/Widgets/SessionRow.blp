@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template AccountRow : Adw.ActionRow {
+template SessionRow : Adw.ActionRow {
   activatable: true;
 
   [prefix]
@@ -15,7 +15,7 @@ template AccountRow : Adw.ActionRow {
     valign: center;
     icon-name: "window-new-symbolic";
     tooltip-text: _("Open in new Window");
-    visible: bind AccountRow.show-actions;
+    visible: bind SessionRow.show-actions;
 
     clicked => open_in_window ();
 
@@ -26,6 +26,6 @@ template AccountRow : Adw.ActionRow {
 
   Gtk.Image {
     icon-name: "go-next-symbolic";
-    visible: bind AccountRow.show-next;
+    visible: bind SessionRow.show-next;
   }
 }

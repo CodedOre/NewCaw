@@ -37,10 +37,10 @@
     <file>Preferences/PreferencesWindow.ui</file>
     <file>Preferences/Examples/ExampleMastodonPost.json</file>
     <file>Preferences/Examples/ExampleTwitterPost.json</file>
-    <file>Widgets/AccountRow.ui</file>
     <file>Widgets/AccountSidebar.ui</file>
     <file>Widgets/BadgesBox.ui</file>
     <file>Widgets/FilterButton.ui</file>
+    <file>Widgets/SessionRow.ui</file>
     <file>Widgets/UserAvatar.ui</file>
     <file>Widgets/UserButton.ui</file>
     <file>Widgets/WaitingButton.ui</file>

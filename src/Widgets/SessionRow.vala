@@ -1,4 +1,4 @@
-/* AccountRow.vala
+/* SessionRow.vala
  *
  * Copyright 2022 Frederick Schenk
  *
@@ -23,10 +23,10 @@ using GLib;
 /**
  * Shows an account in an row and offers options for it.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Widgets/AccountRow.ui")]
-public class AccountRow : Adw.ActionRow {
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Widgets/SessionRow.ui")]
+public class SessionRow : Adw.ActionRow {
 
-  // UI-Elements of AccountRow
+  // UI-Elements of SessionRow
   [GtkChild]
   private unowned UserAvatar account_avatar;
 
@@ -41,47 +41,47 @@ public class AccountRow : Adw.ActionRow {
   public bool show_next { get; set; default = false; }
 
   /**
-   * The Account which is displayed.
+   * The Session which is displayed.
    */
-  public Backend.Account account {
+  public Backend.Session session {
     get {
-      return displayed_account;
+      return displayed_session;
     }
     set {
-      displayed_account = value;
+      displayed_session = value;
 
       // Set the information in the UI
-      account_avatar.user = displayed_account;
-      this.title          = displayed_account != null ? displayed_account.display_name    : "(null)";
-      this.subtitle       = displayed_account != null ? @"@$(displayed_account.username)" : "(null)";
+      account_avatar.user = displayed_session != null ? displayed_session.account : null;
+      this.title          = displayed_session != null ? displayed_session.account.display_name : "(null)";
+      this.subtitle       = displayed_session != null ? DisplayUtils.prefix_username (displayed_session.account) : "(null)";
     }
   }
 
   /**
-   * Opens the displayed account in a new Window.
+   * Opens the displayed session in a new Window.
    */
   [GtkCallback]
   private void open_in_window () {
-    // Only continue with an set account
-    if (account == null) {
+    // Only continue with an set session
+    if (session == null) {
       return;
     }
 
     // Get the current MainWindow, to get the application
     var main_window = this.get_root () as MainWindow;
     if (main_window == null) {
-      warning ("AccountRow not in a MainWindow, action not possible!");
+      warning ("SessionRow not in a MainWindow, action not possible!");
       return;
     }
 
-    // Create a new MainWindow and display the account
-    var window = new MainWindow (main_window.application, account);
+    // Create a new MainWindow and display the session
+    var window = new MainWindow (main_window.application, session);
     window.present ();
   }
 
   /**
-   * Stores the displayed account.
+   * Stores the displayed session.
    */
-  private Backend.Account? displayed_account = null;
+  private Backend.Session? displayed_session = null;
 
 }

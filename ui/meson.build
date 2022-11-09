@@ -31,10 +31,10 @@ blueprints = custom_target(
     'Preferences/AccountsPage.blp',
     'Preferences/AppearancesPage.blp',
     'Preferences/PreferencesWindow.blp',
-    'Widgets/AccountRow.blp',
     'Widgets/AccountSidebar.blp',
     'Widgets/BadgesBox.blp',
     'Widgets/FilterButton.blp',
+    'Widgets/SessionRow.blp',
     'Widgets/UserAvatar.blp',
     'Widgets/UserButton.blp',
     'Widgets/WaitingButton.blp'
