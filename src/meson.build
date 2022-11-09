@@ -52,11 +52,11 @@ cawsources += [
   'Preferences/PreferencesWindow.vala',
   'Utils/DisplayUtils.vala',
   'Utils/SystemInfo.vala',
-  'Widgets/AccountSidebar.vala',
   'Widgets/BadgesBox.vala',
   'Widgets/FilterButton.vala',
   'Widgets/CroppedPicture.vala',
   'Widgets/SessionRow.vala',
+  'Widgets/SessionSidebar.vala',
   'Widgets/UserAvatar.vala',
   'Widgets/UserButton.vala',
   'Widgets/WaitingButton.vala'
