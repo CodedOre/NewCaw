@@ -45,8 +45,8 @@ public class PreferencesWindow : Adw.PreferencesWindow {
       var window = widget as PreferencesWindow;
       window.close_subpage ();
     });
-    // Set up the account actions
-    install_action ("preferences.add-account", null, (widget, action) => {
+    // Set up the session actions
+    install_action ("preferences.add-session", null, (widget, action) => {
       var window = widget as PreferencesWindow;
       if (window != null) {
         var auth_view = new AuthView ();
@@ -59,13 +59,13 @@ public class PreferencesWindow : Adw.PreferencesWindow {
   }
 
   /**
-   * Displays an Account in a AccountSettings subview.
+   * Displays an Session in a SessionSettings subview.
    *
-   * @param account The account to be displayed.
+   * @param session The session to be displayed.
    */
-  public void display_account_settings (Backend.Account account) {
-    var settings_view     = new Preferences.AccountSettings ();
-    settings_view.account = account;
+  public void display_session_settings (Backend.Session session) {
+    var settings_view     = new Preferences.SessionSettings ();
+    settings_view.session = session;
     this.present_subpage (settings_view);
   }
 
