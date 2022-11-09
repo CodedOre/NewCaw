@@ -31,9 +31,9 @@
     <file>Pages/MainPage.ui</file>
     <file>Pages/ThreadPage.ui</file>
     <file>Pages/UserPage.ui</file>
-    <file>Preferences/AccountSettings.ui</file>
     <file>Preferences/AppearancesPage.ui</file>
     <file>Preferences/PreferencesWindow.ui</file>
+    <file>Preferences/SessionSettings.ui</file>
     <file>Preferences/SessionsPage.ui</file>
     <file>Preferences/Examples/ExampleMastodonPost.json</file>
     <file>Preferences/Examples/ExampleTwitterPost.json</file>
