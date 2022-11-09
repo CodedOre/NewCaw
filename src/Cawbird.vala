@@ -98,7 +98,16 @@ public class Cawbird : Adw.Application {
     new Backend.Client (Config.PROJECT_NAME, "https://github.com/CodedOre/NewCaw", "cawbird://authenticate");
 
     // Load the previous program state
-    Backend.Client.instance.load_state ();
+    this.hold ();
+    Backend.Client.instance.load_state.begin ((obj, res) => {
+      try {
+        Backend.Client.instance.load_state.end (res);
+      } catch (Error e) {
+        critical (@"Failed to load program state: $(e.message)");
+      } finally {
+        this.release ();
+      }
+    });
   }
 
   /**
@@ -159,9 +168,14 @@ public class Cawbird : Adw.Application {
    * Run when the program is closed.
    */
   protected override void shutdown () {
-    Backend.Client.instance.store_state ();
-    Backend.Client.instance.shutdown ();
-    base.shutdown ();
+    try {
+      Backend.Client.instance.store_state ();
+    } catch (Error e) {
+      error (@"Failed to store program state: $(e.message)");
+    } finally {
+      Backend.Client.instance.shutdown ();
+      base.shutdown ();
+    }
   }
 
   /**
