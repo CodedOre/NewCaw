@@ -1,4 +1,4 @@
-/* AccountsPage.vala
+/* SessionsPage.vala
  *
  * Copyright 2022 Frederick Schenk
  *
@@ -21,56 +21,56 @@
 using GLib;
 
 /**
- * Displays the page regarding the appearance options.
+ * Lists all authenticated sessions and allows to change them.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Preferences/AccountsPage.ui")]
-public class Preferences.AccountsPage : Adw.PreferencesPage {
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Preferences/SessionsPage.ui")]
+public class Preferences.SessionsPage : Adw.PreferencesPage {
 
-  // UI-Elements of AccountsPage
+  // UI-Elements of SessionsPage
   [GtkChild]
-  private unowned Gtk.ListBox account_list;
+  private unowned Gtk.ListBox session_list;
 
   /**
    * Run at construction of the page.
    */
   construct {
-    account_list.bind_model (Session.instance.account_list, bind_account);
+    session_list.bind_model (Backend.Client.instance.sessions, bind_session);
   }
 
   /**
-   * Activated when one of the listed accounts was activated.
+   * Activated when one of the listed sessions was activated.
    *
-   * @param widget The widget that was clicked in the account list.
+   * @param widget The widget that was clicked in the session list.
    */
   [GtkCallback]
-  private void display_account_settings (Gtk.ListBoxRow widget) {
-    // Get the AccountRow
-    var account_row = widget as AccountRow;
-    if (account_row == null) {
-      warning ("Activated row is not AccountRow!");
+  private void display_session_settings (Gtk.ListBoxRow widget) {
+    // Get the SessionRow
+    var session_row = widget as SessionRow;
+    if (session_row == null) {
+      warning ("Activated row is not SessionRow!");
       return;
     }
 
-    // Get the MainWindow
+    // Get the PreferencesWindow
     var pref_window = this.get_root () as PreferencesWindow;
     if (pref_window == null) {
-      warning ("AccountsPage not in a PreferencesWindow, action not possible!");
+      warning ("SessionsPage not in a PreferencesWindow, action not possible!");
       return;
     }
 
     // Open the new subview
-    pref_window.display_account_settings (account_row.account);
+    pref_window.display_session_settings (session_row.session);
   }
 
   /**
-   * Binds an account to an AccountRow in the accounts list.
+   * Binds an session to an SessionRow in the session list.
    */
-  private Gtk.Widget bind_account (Object item) {
-    var account         = item as Backend.Account;
-    var widget          = new AccountRow ();
+  private Gtk.Widget bind_session (Object item) {
+    var session         = item as Backend.Session;
+    var widget          = new SessionRow ();
     widget.show_actions = false;
     widget.show_next    = true;
-    widget.account      = account;
+    widget.session      = session;
     return widget;
   }
 
