@@ -125,7 +125,9 @@ public partial class Backend.Client : Initable {
    * @throws Error Errors that happened while loading the account.
    */
   public bool init (Cancellable? cancellable = null) throws Error {
-    // Initialize the arrays
+    // Initialize the class variables
+    state_path = Path.build_filename (Environment.get_user_data_dir (), name, null);
+
     return true;
   }
 
@@ -140,5 +142,10 @@ public partial class Backend.Client : Initable {
    * Stores the global instance of Client.
    */
   private static Client? global_instance = null;
+
+  /**
+   * The path to the directory holding the state storage.
+   */
+  private string state_path;
 
 }

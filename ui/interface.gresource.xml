@@ -31,16 +31,16 @@
     <file>Pages/MainPage.ui</file>
     <file>Pages/ThreadPage.ui</file>
     <file>Pages/UserPage.ui</file>
-    <file>Preferences/AccountSettings.ui</file>
-    <file>Preferences/AccountsPage.ui</file>
     <file>Preferences/AppearancesPage.ui</file>
     <file>Preferences/PreferencesWindow.ui</file>
+    <file>Preferences/SessionSettings.ui</file>
+    <file>Preferences/SessionsPage.ui</file>
     <file>Preferences/Examples/ExampleMastodonPost.json</file>
     <file>Preferences/Examples/ExampleTwitterPost.json</file>
-    <file>Widgets/AccountRow.ui</file>
-    <file>Widgets/AccountSidebar.ui</file>
     <file>Widgets/BadgesBox.ui</file>
     <file>Widgets/FilterButton.ui</file>
+    <file>Widgets/SessionRow.ui</file>
+    <file>Widgets/SessionSidebar.ui</file>
     <file>Widgets/UserAvatar.ui</file>
     <file>Widgets/UserButton.ui</file>
     <file>Widgets/WaitingButton.ui</file>

@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template PreferencesAccountSettings : Gtk.Widget {
+template PreferencesSessionSettings : Gtk.Widget {
   layout-manager: Gtk.BoxLayout {
     orientation: vertical;
   };
@@ -26,7 +26,7 @@ template PreferencesAccountSettings : Gtk.Widget {
     Adw.PreferencesGroup {
       Adw.ActionRow {
         activatable: true;
-        action-name: "account-settings.remove-account";
+        action-name: "session-settings.remove-session";
         icon-name: "edit-delete-symbolic";
         title: _("Remove Account");
 

@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template AccountSidebar : Gtk.Widget {
+template SessionSidebar : Gtk.Widget {
   margin-top: 8;
   margin-bottom: 8;
   margin-start: 8;
@@ -15,11 +15,11 @@ template AccountSidebar : Gtk.Widget {
     selection-mode: none;
 
     styles [
-      "account-list"
+      "session-list"
     ]
 
-    .AccountRow {
-      account: bind AccountSidebar.active-account;
+    .SessionRow {
+      session: bind SessionSidebar.active-session;
       show-actions: false;
     }
 
@@ -28,7 +28,7 @@ template AccountSidebar : Gtk.Widget {
       icon-name: "person-symbolic";
       title: _("Display Account");
 
-      activated => display_active_account ();
+      activated => display_session_account ();
 
       styles [
         "option-row"
@@ -38,13 +38,13 @@ template AccountSidebar : Gtk.Widget {
 
   Gtk.Separator sidebar_separator {}
 
-  Gtk.ListBox account_list {
+  Gtk.ListBox session_list {
     selection-mode: none;
 
-    row-activated => change_active_account ();
+    row-activated => change_active_session ();
 
     styles [
-      "account-list"
+      "session-list"
     ]
   }
 }

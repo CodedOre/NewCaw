@@ -37,15 +37,9 @@ public class MainWindow : Adw.ApplicationWindow {
   /**
    * The account currently displayed in this window.
    */
-  public Backend.Account account {
+  public Backend.User account {
     get {
       return displayed_session.account;
-    }
-    construct set {
-      // Create a session for the account
-      session = value != null
-                  ? Backend.Session.for_account (value)
-                  : null;
     }
   }
 
@@ -78,11 +72,11 @@ public class MainWindow : Adw.ApplicationWindow {
    * @param app The Gtk.Application for this window.
    * @param account The account to be assigned to this window, or null for an AuthView.
    */
-  public MainWindow (Gtk.Application app, Backend.Account? account = null) {
+  public MainWindow (Gtk.Application app, Backend.Session? session = null) {
     // Initializes the Object
     Object (
       application: app,
-      account:     account
+      session: session
     );
   }
 
@@ -97,7 +91,7 @@ public class MainWindow : Adw.ApplicationWindow {
         this.close ();
       } else {
         // Otherwise set the new account
-        this.account      = auth_view.account;
+        // FIXME: this.account      = auth_view.account;
         auth_view.account = null;
       }
     });

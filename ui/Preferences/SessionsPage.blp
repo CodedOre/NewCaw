@@ -1,15 +1,15 @@
 using Gtk 4.0;
 using Adw 1;
 
-template PreferencesAccountsPage : Adw.PreferencesPage {
+template PreferencesSessionsPage : Adw.PreferencesPage {
   title: _("Accounts");
   icon-name: "people-symbolic";
 
   Adw.PreferencesGroup {
-    Gtk.ListBox account_list {
+    Gtk.ListBox session_list {
       selection-mode: none;
 
-      row-activated => display_account_settings ();
+      row-activated => display_session_settings ();
 
       styles [
         "boxed-list"
@@ -22,7 +22,7 @@ template PreferencesAccountsPage : Adw.PreferencesPage {
       activatable: true;
       title: _("Add Account");
       icon-name: "list-add-symbolic";
-      action-name: "preferences.add-account";
+      action-name: "preferences.add-session";
     }
   }
 }

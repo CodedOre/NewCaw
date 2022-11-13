@@ -164,16 +164,16 @@ widget.squared > avatar {
 }
 
 /**
- * Style for the AccountSidebar.
+ * Style for the SessionSidebar.
  */
-list.account-list {
+list.session-list {
   background-color: transparent;
 }
-list.account-list > row {
+list.session-list > row {
   padding: 4px 0px;
   border-radius: 8px;
 }
-list.account-list > row.option-row > box.header {
+list.session-list > row.option-row > box.header {
   min-height: 0px;
 }
 

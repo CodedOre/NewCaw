@@ -1,4 +1,4 @@
-/* AccountSettings.vala
+/* SessionSettings.vala
  *
  * Copyright 2022 Frederick Schenk
  *
@@ -21,12 +21,12 @@
 using GLib;
 
 /**
- * Provides the subpage with the settings for a specific user.
+ * Provides the subpage with the settings for a specific session.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Preferences/AccountSettings.ui")]
-public class Preferences.AccountSettings : Gtk.Widget {
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Preferences/SessionSettings.ui")]
+public class Preferences.SessionSettings : Gtk.Widget {
 
-  // UI-Elements of AccountSettings
+  // UI-Elements of SessionSettings
   [GtkChild]
   private unowned Adw.HeaderBar page_header;
   [GtkChild]
@@ -35,19 +35,19 @@ public class Preferences.AccountSettings : Gtk.Widget {
   private unowned Adw.Clamp page_settings;
 
   /**
-   * The account for which to set the settings.
+   * The session for which to set the settings.
    */
-  public Backend.Account account {
+  public Backend.Session session {
     get {
-      return displayed_account;
+      return displayed_session;
     }
     set {
-      displayed_account   = value;
+      displayed_session = value;
 
       // Set the window title to the account names
-      page_title.title    = displayed_account != null ? displayed_account.display_name    : "(null)";
-      page_title.subtitle = displayed_account != null
-                              ? DisplayUtils.prefix_username (displayed_account)
+      page_title.title    = displayed_session != null ? displayed_session.account.display_name : "(null)";
+      page_title.subtitle = displayed_session != null
+                              ? DisplayUtils.prefix_username (displayed_session.account)
                               : "(null)";
     }
   }
@@ -56,12 +56,12 @@ public class Preferences.AccountSettings : Gtk.Widget {
    * Run at initialization of the class.
    */
   class construct {
-    // Set up the account actions
-    install_action ("account-settings.remove-account", null, (widget, action) => {
+    // Set up the session actions
+    install_action ("session-settings.remove-session", null, (widget, action) => {
       // Retrieve the active window
-      var page   = widget as AccountSettings;
+      var page   = widget as SessionSettings;
       var window = page.get_root () as Gtk.Window;
-      if (page.account != null) {
+      if (page.session != null) {
         // Create a dialog to confirm the action
         var confirm_dialog = new Adw.MessageDialog (window,
                                                     _("Remove this Account?"),
@@ -77,7 +77,7 @@ public class Preferences.AccountSettings : Gtk.Widget {
   }
 
   /**
-   * Activated by the dialog confirming the account removal.
+   * Activated by the dialog confirming the session removal.
    *
    * @param response The response given by the dialog.
    */
@@ -89,7 +89,7 @@ public class Preferences.AccountSettings : Gtk.Widget {
 
     // Remove the account
     try {
-      yield Session.remove_account (this.account);
+      yield session.revoke_session ();
     } catch (Error e) {
       error (@"Failed to remove account properly: $(e.message)");
     }
@@ -99,7 +99,7 @@ public class Preferences.AccountSettings : Gtk.Widget {
   }
 
   /**
-   * Deconstructs AccountSettings and it's childrens.
+   * Deconstructs SessionSettings and it's childrens.
    */
   public override void dispose () {
     // Deconstruct childrens
@@ -109,8 +109,8 @@ public class Preferences.AccountSettings : Gtk.Widget {
   }
 
   /**
-   * Stores the displayed account.
+   * Stores the displayed session.
    */
-  private Backend.Account? displayed_account = null;
+  private Backend.Session? displayed_session = null;
 
 }

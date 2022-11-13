@@ -25,7 +25,7 @@
 /**
  * Adds an border around activated rows.
  */
-list.account-list > row.activatable:hover,
+list.session-list > row.activatable:hover,
                     row.activatable:active,
                     row.activatable:selected,
 listview.post-list > row.activatable:hover,
