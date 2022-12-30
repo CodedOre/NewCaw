@@ -58,7 +58,8 @@ public class Backend.Twitter.Post : Backend.Post {
 
       // Set basic data
       id:        post_id,
-      source:    data.get_string_member ("source"),
+      // Source may have vanished because Musk didn't like it - https://twittercommunity.com/t/twitter-v2-api-missing-source-field-again/181895
+      source:    data.has_member ("source") ? data.get_string_member ("source") : _("Unknown client"),
       post_type: set_post_type,
       creation_date: new DateTime.from_iso8601 (
                        data.get_string_member ("created_at"),
