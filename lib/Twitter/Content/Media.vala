@@ -149,7 +149,9 @@ public class Backend.Twitter.Media : Backend.Media {
       string     best_variant = null;
       int64      best_bitrate = -1;
       Json.Array media_variants = json.get_array_member ("variants");
-      media_variants.foreach_element ((array, index, element) => {
+      // `foreach_element()` triggers `assertion 'G_IS_OBJECT (object)' failed`
+      // as the function builds its context object
+      foreach (Json.Node element in media_variants.get_elements ()) {
         if (element.get_node_type () == OBJECT) {
           Json.Object obj = element.get_object ();
           int64 bitrate   = obj.has_member ("bit_rate") ? obj.get_int_member ("bit_rate") : 0;
@@ -158,7 +160,7 @@ public class Backend.Twitter.Media : Backend.Media {
             best_variant = obj.get_string_member ("url");
           }
         }
-      });
+      }
       // Store the new urls
       preview_url = json.get_string_member ("preview_image_url");
       media_url   = best_variant;
