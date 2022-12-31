@@ -55,6 +55,11 @@ public partial class Backend.Twitter.Session : AsyncInitable {
                                   server.client_secret,
                                   @"https://api.$(server.domain)/2/");
     proxy.access_token = access_token;
+    // Work around librest doing a DateTime comparison with the default non-expiring token
+    // 100 years should be more than enough for anyone!
+    var now = new GLib.DateTime.now();
+    var far_future = now.add_years (100);
+    proxy.set_expiration_date (far_future);
   }
 
   /**
