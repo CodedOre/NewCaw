@@ -95,9 +95,17 @@ public class Cawbird : Adw.Application {
    */
   protected override void activate () {
     // Initializes the backend client
-    var client = new Backend.Client (Config.PROJECT_NAME,
-                                     "https://github.com/CodedOre/NewCaw",
-                                     "cawbird://authenticate");
+    var client = new Backend.Client();
+    try {
+      client.configure ("id",
+                        Config.PROJECT_NAME,
+                        "https://github.com/CodedOre/NewCaw",
+                        "cawbird://authenticate",
+                        Config.TWITTER_OAUTH_KEY);
+    } catch (Error e) {
+      critical (@"Failed to load program state: $(e.message)");
+      return;
+    }
 
     // Load the previous program state
     this.hold ();
@@ -163,7 +171,7 @@ public class Cawbird : Adw.Application {
           string? state = uri_param ["state"];
           string? code  = uri_param ["code"];
           if (state != null && code != null) {
-            // Session.instance.auth_callback (state, code);
+            Backend.Client.instance.auth_callback (state, code);
           } else {
             warning ("Failed to get authentication secrets from callback.");
           }

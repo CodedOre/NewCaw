@@ -32,6 +32,8 @@ using GLib;
 [SingleInstance]
 public partial class Backend.Client : Initable {
 
+  public signal void auth_callback (string state, string code);
+
   /**
    * The global instance of the client.
    */
@@ -50,12 +52,12 @@ public partial class Backend.Client : Initable {
    * Is expected to be a reverse domain and to be the
    * same as the application id utilizing the backend.
    */
-  public string id { get; construct; }
+  public string id { get; internal set; }
 
   /**
    * The name of the client.
    */
-  public string name { get; construct; }
+  public string name { get; internal set; }
 
   /**
    * A website for more information on a client.
@@ -64,7 +66,7 @@ public partial class Backend.Client : Initable {
    * fly (e.g. Mastodon) to provide a link for the user while
    * authorizing a new session.
    */
-  public string website { get; construct; }
+  public string website { get; internal set;  }
 
   /**
    * An optional redirect uri used during authentication.
@@ -75,38 +77,38 @@ public partial class Backend.Client : Initable {
    *
    * If set to null, the out-of-band uri for a specific platform is used instead.
    */
-  public string? redirect_uri { get; construct; }
+  public string? redirect_uri { get; internal set;  }
 
   /**
    * All sessions that are active with this client.
    */
-  public SessionList sessions { get; construct; }
+  public SessionList sessions { get; default = new SessionList(); }
 
   /**
    * All servers that are active with this client.
    */
-  public ServerList servers { get; construct; }
+  public ServerList servers { get; default = new ServerList(); }
 
   /**
-   * Constructs the client instance.
+   * Configures the client instance.
    *
    * @param id The identifier for the client.
    * @param name The name of the client.
    * @param website The website for the client.
    * @param redirect_uri An optional redirect uri.
+   * @param twitter_oauth_key An optional OAuth 2 key for Twitter (if used)
    */
-  public Client (string id, string name, string website, string? redirect_uri = null) {
-    // Construct the class
-    Object (
-      id: id,
-      name: name,
-      website: website,
-      redirect_uri: redirect_uri,
-      sessions: new SessionList (),
-      servers: new ServerList ()
-    );
+  public void configure (string id, string name, string website, string? redirect_uri = null, string? twitter_oauth_key = null) throws Error {
+    this.id = id;
+    this.name = name;
+    this.website = website;
+    this.redirect_uri = redirect_uri;
 
     // Initialize the instance
+#if SUPPORT_TWITTER
+    // FIXME: How can we do this cleanly for the `SingleInstance` without creating unused variables?
+    var twitter_server = new Backend.Twitter.Server (twitter_oauth_key);
+#endif
     init ();
 
     // Set the global instance
