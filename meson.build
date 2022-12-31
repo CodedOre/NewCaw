@@ -4,6 +4,7 @@ project(
   version:        '1.9.0',
   meson_version:  '>= 0.59.0',
 )
+add_project_arguments('-DG_LOG_DOMAIN="cawbird"', language: 'c')
 
 # Load meson modules
 gnome = import('gnome')
