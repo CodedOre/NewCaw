@@ -91,8 +91,9 @@ public class MainWindow : Adw.ApplicationWindow {
         this.close ();
       } else {
         // Otherwise set the new account
-        // FIXME: this.account      = auth_view.account;
+        this.session = auth_view.account;
         auth_view.account = null;
+        auth_view.auth = null;
       }
     });
 #if DEBUG

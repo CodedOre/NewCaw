@@ -112,8 +112,9 @@ public class Authentication.StartPage : Gtk.Widget {
   private async void run_twitter_auth () {
     // Begin authentication
     try {
-      view.account = new Backend.Twitter.Account ();
-      string auth_url = view.account.init_authentication ();
+      view.auth = new Backend.Twitter.SessionAuth ();
+      yield view.auth.init_auth ("twitter.com");
+      string auth_url = view.auth.auth_request ();
       Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
       stop_twitter_auth ();
       view.skip_server ();

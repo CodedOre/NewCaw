@@ -167,30 +167,12 @@ public class Authentication.ServerPage : Gtk.Widget {
     }
     domain = domain.replace ("http://", "");
     domain = domain.replace ("https://", "");
-
-    // Look existing servers up
-    Backend.Mastodon.Server? server = Session.find_server (domain) as Backend.Mastodon.Server;
-
-    // Create the server if not already existing
-    if (server == null) {
-      try {
-        cancel_auth = new Cancellable ();
-        view.server = yield new Backend.Mastodon.Server.authenticate (domain, cancel_auth);
-        server      = view.server;
-      } catch (Error e) {
-        if (! (e is GLib.IOError.CANCELLED)) {
-          warning (@"Could not find server $(domain): $(e.message)");
-          set_error (_("Could not find server."));
-        }
-        stop_server_auth ();
-        return;
-      }
-    }
+    view.auth = new Backend.Mastodon.SessionAuth ();
 
     // Begin authentication
     try {
-      view.account = new Backend.Mastodon.Account (server);
-      string auth_url = view.account.init_authentication ();
+      yield view.auth.init_auth (domain);
+      string auth_url = view.auth.auth_request (false);
       Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
       stop_server_auth ();
       view.move_to_next ();

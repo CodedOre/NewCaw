@@ -52,9 +52,14 @@ public class AuthView : Gtk.Widget {
 #endif
 
   /**
-   * The account which is to be authenticated.
+   * The session which is to be authenticated.
    */
-  public Backend.Account? account { get; set; default = null; }
+  public Backend.Session? account { get; set; default = null; }
+
+  /**
+   * The session auth that creates the session
+   */
+  public Backend.SessionAuth? auth { get; set; default = null; }
 
   /**
    * Activated when the AuthView is done.
