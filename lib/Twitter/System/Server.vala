@@ -67,7 +67,7 @@ public class Backend.Twitter.Server : Backend.Server {
     Object (
       domain:        "twitter.com",
       client_key:    client_key,
-      client_secret: null
+      client_secret: "password123"  // FIXME: Testing with a fixed secret to avoid `encode_pair: assertion 'value != NULL' failed` in fetch_access_token()
     );
 
     // Don't set a identifier (not stored with ClientState)
