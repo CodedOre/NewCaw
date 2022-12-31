@@ -172,10 +172,12 @@ public class Authentication.ServerPage : Gtk.Widget {
     // Begin authentication
     try {
       yield view.auth.init_auth (domain);
+      // FIXME: We're jumping straight to out-of-band because redirects don't seem to work
       string auth_url = view.auth.auth_request (false);
       Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
       stop_server_auth ();
-      view.move_to_next ();
+      //view.move_to_next ();
+      view.skip_browser ();
     } catch (Error e) {
       if (! (e is GLib.IOError.CANCELLED)) {
         warning (@"Could not authenticate at server $(domain): $(e.message)");

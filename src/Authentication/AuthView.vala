@@ -40,6 +40,8 @@ public class AuthView : Gtk.Widget {
   [GtkChild]
   private unowned Adw.LeafletPage server_page;
   [GtkChild]
+  private unowned Adw.LeafletPage browser_page;
+  [GtkChild]
   private unowned Adw.LeafletPage code_page;
   [GtkChild]
   private unowned Adw.LeafletPage final_page;
@@ -128,6 +130,14 @@ public class AuthView : Gtk.Widget {
    */
   public void skip_server () {
     server_page.navigatable = false;
+    auth_leaflet.navigate (FORWARD);
+  }
+
+  /**
+   * Hides the browser page for when we want to go straight to OOB
+   */
+  public void skip_browser () {
+    browser_page.navigatable = false;
     auth_leaflet.navigate (FORWARD);
   }
 
