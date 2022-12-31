@@ -44,8 +44,7 @@ public partial class Backend.Twitter.Session : AsyncInitable {
     Object (
       identifier: identifier,
       access_token: access_token,
-      server: server,
-      account: account
+      server: server
     );
 
     // Set the proxy
