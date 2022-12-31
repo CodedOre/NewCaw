@@ -65,7 +65,7 @@ namespace Backend.Twitter.Utils.TextUtils {
             var entity         = TextModule ();
             entity.type        = MENTION;
             entity.display     = "@" + obj.get_string_member ("username");
-            entity.target      = obj.get_string_member ("id");
+            entity.target      = obj.has_member ("id") ? obj.get_string_member ("id") : "by/username/" + obj.get_string_member ("username");
             entity.text_start  = (uint) obj.get_int_member ("start");
             entity.text_end    = (uint) obj.get_int_member ("end");
             main_entities     += entity;
