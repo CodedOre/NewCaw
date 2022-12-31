@@ -111,11 +111,7 @@ public partial class Backend.Client : Object {
     var state_builder = new VariantBuilder (new VariantType ("a{sv}"));
 
     // Check for unused servers
-    try {
-      check_servers ();
-    } catch (Error e) {
-      throw e;
-    }
+    check_servers ();
 
     // Pack each server into the state variant
     var server_builder = new VariantBuilder (new VariantType ("av"));
@@ -359,6 +355,11 @@ public partial class Backend.Client : Object {
     } catch (Error e) {
       throw e;
     }
+  }
+
+  public void register_session(Session session) throws Error {
+    sessions.add(session);
+    store_state ();
   }
 
   /**

@@ -101,7 +101,7 @@ public partial class Backend.Twitter.Session : AsyncInitable {
     account = load_user (json.get_object ());
 
     // Add the new session to the ClientState
-    Client.instance.sessions.add (this);
+    Client.instance.register_session (this);
     return true;
   }
 
