@@ -78,7 +78,7 @@ public partial class Backend.Client : Object {
     Variant stored_servers = state_variant.lookup_value ("Servers", null);
     VariantIter server_iter = stored_servers.iterator ();
     Variant server_variant;
-    while (server_iter.next ("av", out server_variant)) {
+    while (server_iter.next ("v", out server_variant)) {
       try {
         var server = unpack_server (server_variant);
         servers.add (server);
@@ -91,7 +91,7 @@ public partial class Backend.Client : Object {
     Variant stored_sessions = state_variant.lookup_value ("Sessions", null);
     VariantIter session_iter = stored_sessions.iterator ();
     Variant session_variant;
-    while (session_iter.next ("av", out session_variant)) {
+    while (session_iter.next ("v", out session_variant)) {
       try {
         var session = yield unpack_session (session_variant);
         sessions.add (session);
@@ -154,9 +154,9 @@ public partial class Backend.Client : Object {
     PlatformEnum platform_prop;
 
     // Attempt to load the server data
-    variant.lookup ("uuid", "s", out uuid_prop);
-    variant.lookup ("platform", "s", out platform_name);
-    variant.lookup ("domain", "s", out domain_prop);
+    variant.lookup ("uuid", "ms", out uuid_prop);
+    variant.lookup ("platform", "ms", out platform_name);
+    variant.lookup ("domain", "ms", out domain_prop);
     platform_prop = PlatformEnum.from_name (platform_name);
 
     // Check that all data could be retrieved
@@ -206,10 +206,10 @@ public partial class Backend.Client : Object {
     PlatformEnum platform_prop;
 
     // Attempt to load the server data
-    variant.lookup ("uuid", "s", out uuid_prop);
-    variant.lookup ("platform", "s", out platform_name);
-    variant.lookup ("server_uuid", "s", out server_prop);
-    variant.lookup ("username", "s", out username_prop);
+    variant.lookup ("uuid", "ms", out uuid_prop);
+    variant.lookup ("platform", "ms", out platform_name);
+    variant.lookup ("server_uuid", "ms", out server_prop);
+    variant.lookup ("username", "ms", out username_prop);
     platform_prop = PlatformEnum.from_name (platform_name);
 
     // Check that all data could be retrieved
