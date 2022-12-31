@@ -42,7 +42,7 @@ public enum Backend.PlatformEnum {
   public string to_string () {
     switch (this) {
 
-#if SUPPORT_MASTDON
+#if SUPPORT_MASTODON
       case MASTODON:
         return "Mastodon";
 #endif
