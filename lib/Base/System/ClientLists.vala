@@ -192,7 +192,10 @@ public abstract class Backend.ClientList <T> : ListModel, Object {
      */
   	public bool next () {
       assert (iterated != null);
-  	  return iterated.store.get (iter_i++) != null;
+      if (iterated.get_n_items () == 0) {
+        return false;
+      }
+      return iterated.store.get (++iter_i) != null;
   	}
 
     /**
