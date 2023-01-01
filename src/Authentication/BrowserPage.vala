@@ -68,7 +68,6 @@ public class Authentication.BrowserPage : Gtk.Widget {
   private async void on_callback (string state, string code) {
     // Only continue if an authentication is running
     if (view.auth == null) {
-      warning ("No active authentication");
       return;
     }
     try {
