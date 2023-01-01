@@ -224,11 +224,16 @@ public partial class Backend.Client : Object {
     }
 
     // Look up the server for the session
-    Server server;
+    Server server = null;
     switch (platform_prop) {
 #if SUPPORT_MASTODON
       case MASTODON:
-        server = servers.find <string> (server_prop, (needle, item) => { return item.identifier == needle; });
+        foreach (Server srv in servers) {
+          if (srv.identifier == server_prop) {
+            server = srv;
+            break;
+          }
+        }
         break;
 #endif
 
