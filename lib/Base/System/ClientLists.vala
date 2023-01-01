@@ -190,33 +190,33 @@ public abstract class Backend.ClientList <T> : ListModel, Object {
      *
      * @return If a next value exists.
      */
-  	public bool next () {
+    public bool next () {
       assert (iterated != null);
       if (iterated.get_n_items () == 0) {
         return false;
       }
       return iterated.store.get (++iter_i) != null;
-  	}
+    }
 
     /**
      * Retrieves the current value.
      *
      * @return The value at the current iteration.
      */
-  	public new T? get () {
+    public new T? get () {
       assert (iterated != null);
-  	  return iterated.store.get (iter_i);
-  	}
+      return iterated.store.get (iter_i);
+    }
 
-  	/**
-  	 * The list iterated through.
-  	 */
-  	private ClientList iterated;
+    /**
+     * The list iterated through.
+     */
+    private ClientList iterated;
 
     /**
      * Counts the current iteration.
      */
-  	private uint iter_i = -1;
+    private uint iter_i = -1;
 
   }
 
