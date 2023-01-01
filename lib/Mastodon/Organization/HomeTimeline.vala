@@ -80,6 +80,11 @@ public class Backend.Mastodon.HomeTimeline : Backend.HomeTimeline {
     var store = post_list as ListStore;
     foreach (Backend.Post post in session.load_post_list (json)) {
       store.insert_sorted (post, compare_items);
+      if (post.id > last_post_id) {
+        // Mastodon IDs are "cast from an integer but not guaranteed to be a number",
+        // so assume they're orderable and the latest one is the last post ID
+        last_post_id = post.id;
+      }
     }
   }
 

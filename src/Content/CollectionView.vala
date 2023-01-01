@@ -96,7 +96,7 @@ public class CollectionView : Gtk.Widget {
   /**
    * The collection which is to be displayed.
    */
-  public Backend.Collection collection {
+  public virtual Backend.Collection collection {
     get {
       return shown_collection;
     }
@@ -110,12 +110,16 @@ public class CollectionView : Gtk.Widget {
         listview.set_model (list_model);
 
         // Pull the posts from the list
-        shown_collection.pull_posts.begin ();
+        pull_posts ();
       } else {
         list_model = null;
         listview.set_model (null);
       }
     }
+  }
+
+  internal void pull_posts() {
+    shown_collection.pull_posts.begin ();
   }
 
   /**
@@ -422,4 +426,32 @@ public class CollectionView : Gtk.Widget {
    */
   private Gtk.SelectionModel? list_model = null;
 
+}
+
+public class RefreshingCollectionView : CollectionView {
+  private uint refresh_source_id;
+  private uint poll_interval = 2 * 60;
+
+  // TODO: Collapse this into CollectionView and use properties that we can set from UI files.
+  // This requires any kind of clear documentation about how that works and how to implement it!
+  public override Backend.Collection collection {
+    set {
+      if (refresh_source_id != 0) {
+        Source.remove (refresh_source_id);
+      }
+      base.collection = value;
+      if (value != null) {
+        refresh_source_id = Timeout.add_seconds (poll_interval, poll_for_posts, 0);
+      }
+    }
+    get {
+      return base.collection;
+    }
+  }
+
+  private bool poll_for_posts() {
+    pull_posts ();
+    refresh_source_id = Timeout.add_seconds (poll_interval, poll_for_posts, 0);
+    return true;
+  }
 }
