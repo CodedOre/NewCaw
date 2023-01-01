@@ -54,12 +54,11 @@ if twitter_backend
   if twitter_key == ''
     error('A client key needs to be provided for Twitter!')
   else
-    correct_length_key = twitter_key.substring(0, 34)
-    if correct_length_key != twitter_key or correct_length_key == twitter_key.substring(0, 33)
+    if twitter_key.substring(0, 29) == twitter_key.substring(0, 30)
       # Ugly workaround to check ID length - we can't do "length()" or get a fixed length from "format()",
-      # so we have to find the time when a correct length substring does not match (i.e. key was too long)
-      # or when the correct and incorrect length strings match (i.e. substring returned what it could, which was less than the 34 characters)
-      error('Twitter OAuth 2 key must be 34 characters long:', twitter_key)
+      # so we have to detect when two different length substrings match (which means that the string was no longer
+      # than the shortest length checked). This likely happens when supplying older OAuth keys instead of OAuth 2 IDs
+      error('Twitter OAuth 2 should be over 30 characters long:', twitter_key)
     endif
   endif
 endif
