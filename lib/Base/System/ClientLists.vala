@@ -192,10 +192,13 @@ public abstract class Backend.ClientList <T> : ListModel, Object {
      */
     public bool next () {
       assert (iterated != null);
-      if (iterated.get_n_items () == 0) {
-        return false;
-      }
-      return iterated.store.get (++iter_i) != null;
+      iter_i++;
+      // NOTE: the docs say that we should be able to get an item and check for null if it is outside the bounds
+      // (https://valadoc.org/glib-2.0/GLib.GenericArray.@get.html)
+      // But Vala compiles down to use `g_ptr_array_index`, which doesn't do a bounds check
+      // (https://docs.gtk.org/glib/func.ptr_array_index.html) and so we may get a segfault
+      // when we get a non-null ghost item that the code then tries a `g_object_ref` on.
+      return (iter_i < iterated.get_n_items ());
     }
 
     /**
