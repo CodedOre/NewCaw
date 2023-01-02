@@ -28,26 +28,31 @@ template PostStatus : Gtk.Widget {
       size: 48;
     }
 
-    .UserButton user_button {
-      valign: center;
-      is-repost: bind PostStatus.is-repost;
-    }
+    Gtk.Box information_text_box {
+      spacing: 8;
+      valign: start;
 
-    Gtk.Label time_spacer {
-      visible: bind PostStatus.show-time;
-      label: "·";
+      .UserButton user_button {
+        valign: center;
+        is-repost: bind PostStatus.is-repost;
+      }
 
-      styles [
-        "dim-label"
-      ]
-    }
+      Gtk.Label time_spacer {
+        visible: bind PostStatus.show-time;
+        label: "·";
 
-    Gtk.Label time_label {
-      visible: bind PostStatus.show-time;
+        styles [
+          "dim-label"
+        ]
+      }
 
-      styles [
-        "dim-label"
-      ]
+      Gtk.Label time_label {
+        visible: bind PostStatus.show-time;
+
+        styles [
+          "dim-label"
+        ]
+      }
     }
   }
 }
