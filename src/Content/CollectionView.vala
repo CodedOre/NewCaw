@@ -126,7 +126,6 @@ public class CollectionView : Gtk.Widget {
    * Run at construction of an widget.
    */
   construct {
-    debug("Construct(CollectionView) for %s", this.get_type ().name ());
     // Create a list filter from the collection
     list_filter = new Gtk.CustomFilter (filter_items);
 
@@ -435,8 +434,6 @@ public class RefreshingCollectionView : CollectionView {
   public double scroll_end_offset {get; set; default = 200;}
 
   construct {
-    debug("Construct(RefreshCollectionView) for %s", this.get_type ().name ());
-
     // Backfill old posts as we scroll
     scroll_window.vadjustment.value_changed.connect (() => {
       double max = scroll_window.vadjustment.upper - scroll_window.vadjustment.page_size;
