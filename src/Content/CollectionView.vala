@@ -431,6 +431,7 @@ public class CollectionView : Gtk.Widget {
 public class RefreshingCollectionView : CollectionView {
   private uint refresh_source_id;
   private uint poll_interval = 2 * 60;
+  private bool loading_old_posts = false;
   public double scroll_end_offset {get; set; default = 200;}
 
   construct {
@@ -438,7 +439,17 @@ public class RefreshingCollectionView : CollectionView {
     scroll_window.vadjustment.value_changed.connect (() => {
       double max = scroll_window.vadjustment.upper - scroll_window.vadjustment.page_size;
       if (scroll_window.vadjustment.value >= max - scroll_end_offset) {
-        ((Backend.ExpandableCollection)collection).pull_older_posts.begin ();
+        lock (loading_old_posts) {
+          if (loading_old_posts) {
+            return;
+          }
+          loading_old_posts = true;
+        }
+        ((Backend.ExpandableCollection)collection).pull_older_posts.begin (() => {
+          lock (loading_old_posts) {
+            loading_old_posts = false;
+          }
+        });
       }
     });
   }
