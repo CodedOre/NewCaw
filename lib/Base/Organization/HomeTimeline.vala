@@ -23,7 +23,7 @@ using GLib;
 /**
  * The reverse chronological timeline with posts from all followed users.
  */
-public abstract class Backend.HomeTimeline : Backend.Collection {
+public abstract class Backend.HomeTimeline : Backend.ExpandableCollection {
 
   /**
    * The Account which timeline is presented.

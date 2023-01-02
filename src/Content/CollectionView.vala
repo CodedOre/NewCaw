@@ -28,7 +28,7 @@ public class CollectionView : Gtk.Widget {
 
   // UI-Elements of CollectionView
   [GtkChild]
-  private unowned Gtk.ScrolledWindow scroll_window;
+  protected unowned Gtk.ScrolledWindow scroll_window;
   [GtkChild]
   private unowned Gtk.ListView listview;
 
@@ -126,6 +126,7 @@ public class CollectionView : Gtk.Widget {
    * Run at construction of an widget.
    */
   construct {
+    debug("Construct(CollectionView) for %s", this.get_type ().name ());
     // Create a list filter from the collection
     list_filter = new Gtk.CustomFilter (filter_items);
 
@@ -431,11 +432,25 @@ public class CollectionView : Gtk.Widget {
 public class RefreshingCollectionView : CollectionView {
   private uint refresh_source_id;
   private uint poll_interval = 2 * 60;
+  public double scroll_end_offset {get; set; default = 200;}
 
-  // TODO: Collapse this into CollectionView and use properties that we can set from UI files.
-  // This requires any kind of clear documentation about how that works and how to implement it!
+  construct {
+    debug("Construct(RefreshCollectionView) for %s", this.get_type ().name ());
+
+    // Backfill old posts as we scroll
+    scroll_window.vadjustment.value_changed.connect (() => {
+      double max = scroll_window.vadjustment.upper - scroll_window.vadjustment.page_size;
+      if (scroll_window.vadjustment.value >= max - scroll_end_offset) {
+        ((Backend.ExpandableCollection)collection).pull_older_posts.begin ();
+      }
+    });
+  }
+
   public override Backend.Collection collection {
     set {
+      if (value != null && !(value is Backend.ExpandableCollection)) {
+        critical("RefreshingCollectionView requires a ExpandableCollection");
+      }
       if (refresh_source_id != 0) {
         Source.remove (refresh_source_id);
       }

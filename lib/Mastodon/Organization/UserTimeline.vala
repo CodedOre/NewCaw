@@ -54,12 +54,16 @@ public class Backend.Mastodon.UserTimeline : Backend.UserTimeline {
     }
   }
 
-  /**
-   * Calls the API to get the posts for the Collection.
-   *
-   * @throws Error Any error that happened while pulling the posts.
-   */
-  public override async void pull_posts () throws Error {
+  public override async void pull_newer_posts () throws Error {
+    yield pull_posts_with_anchor ("min_id", last_post_id);
+  }
+
+  public override async void pull_older_posts () throws Error {
+    yield pull_posts_with_anchor ("max_id", first_post_id);
+  }
+
+  private async void pull_posts_with_anchor(string? key, string? value) throws Error {
+    debug("Pulling Mastodon user posts with %s=%s", key, value);
     // Create the proxy call
     Rest.ProxyCall call = session.create_call ();
     call.set_method ("GET");
@@ -78,10 +82,7 @@ public class Backend.Mastodon.UserTimeline : Backend.UserTimeline {
     }
 
     // Load the posts in the post list
-    var store = post_list as ListStore;
-    foreach (Backend.Post post in session.load_post_list (json)) {
-      store.insert_sorted (post, compare_items);
-    }
+    add_posts (session.load_post_list (json));
   }
 
 }

@@ -47,6 +47,14 @@ public abstract class Backend.Collection : Object {
    */
   public abstract async void pull_posts () throws Error;
 
+  protected virtual void add_posts (Backend.Post[] posts) {
+    // Load the posts in the post list
+    var store = post_list as ListStore;
+    foreach (Backend.Post post in posts) {
+      store.insert_sorted (post, compare_items);
+    }
+  }
+
   /**
    * Checks if a post in the list replies to the post previous to it.
    *
@@ -198,10 +206,4 @@ public abstract class Backend.Collection : Object {
     }
     return post;
   }
-
-  /**
-   * The id from the latest pulled Post.
-   */
-  protected string? last_post_id = null;
-
 }
