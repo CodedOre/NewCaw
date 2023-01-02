@@ -463,7 +463,6 @@ public class RefreshingCollectionView : CollectionView {
 
   private bool poll_for_posts() {
     pull_posts ();
-    refresh_source_id = Timeout.add_seconds (poll_interval, poll_for_posts, 0);
     return true;
   }
 }
