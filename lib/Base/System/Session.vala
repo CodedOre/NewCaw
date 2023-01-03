@@ -133,7 +133,7 @@ public abstract class Backend.Session : Object {
    *
    * @throws Error Any errors while favouriting, such as unauthorised actions, missing posts, or network issues
    */
-  internal abstract async Backend.Post favourite_post (Backend.Post post) throws Error;
+  public abstract async Backend.Post favourite_post (Backend.Post post) throws Error;
 
   /**
    * Unfavourites/unlikes a post.
@@ -145,7 +145,7 @@ public abstract class Backend.Session : Object {
    *
    * @throws Error Any errors while unfavouriting, such as unauthorised actions, missing posts, or network issues
    */
-  internal abstract async Backend.Post unfavourite_post (Backend.Post post) throws Error;
+   public abstract async Backend.Post unfavourite_post (Backend.Post post) throws Error;
 
   /**
    * Reblogs/boosts/retweets a post.
@@ -157,7 +157,7 @@ public abstract class Backend.Session : Object {
    *
    * @throws Error Any errors while reblogging, such as unauthorised actions, missing posts, or network issues
    */
-  internal abstract async Backend.Post reblog_post (Backend.Post post) throws Error;
+   public abstract async Backend.Post reblog_post (Backend.Post post) throws Error;
 
   /**
    * Un-reblogs/unboosts/un-retweets a post.
@@ -169,7 +169,7 @@ public abstract class Backend.Session : Object {
    *
    * @throws Error Any errors while un-reblogging, such as unauthorised actions, missing posts, or network issues
    */
-  internal abstract async Backend.Post unreblog_post (Backend.Post post) throws Error;
+   public abstract async Backend.Post unreblog_post (Backend.Post post) throws Error;
 
   /**
    * Retrieves an user for an specified id.

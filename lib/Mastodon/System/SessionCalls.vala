@@ -99,7 +99,7 @@ public partial class Backend.Mastodon.Session : Backend.Session {
     return post_list;
   }
 
-  internal override async Backend.Post favourite_post (Backend.Post post) throws Error {
+  public override async Backend.Post favourite_post (Backend.Post post) throws Error {
     // Create the proxy call
     Rest.ProxyCall call = proxy.new_call ();
     call.set_method ("POST");
@@ -110,7 +110,7 @@ public partial class Backend.Mastodon.Session : Backend.Session {
     return load_post (json.get_object ());
   }
 
-  internal override async Backend.Post unfavourite_post (Backend.Post post) throws Error {
+  public override async Backend.Post unfavourite_post (Backend.Post post) throws Error {
     // Create the proxy call
     Rest.ProxyCall call = proxy.new_call ();
     call.set_method ("POST");
@@ -121,7 +121,7 @@ public partial class Backend.Mastodon.Session : Backend.Session {
     return load_post (json.get_object ());
   }
 
-  internal override async Backend.Post reblog_post (Backend.Post post) throws Error {
+  public override async Backend.Post reblog_post (Backend.Post post) throws Error {
     // Create the proxy call
     Rest.ProxyCall call = proxy.new_call ();
     call.set_method ("POST");
@@ -132,7 +132,7 @@ public partial class Backend.Mastodon.Session : Backend.Session {
     return load_post (json.get_object ());
   }
 
-  internal override async Backend.Post unreblog_post (Backend.Post post) throws Error {
+  public override async Backend.Post unreblog_post (Backend.Post post) throws Error {
     // Create the proxy call
     Rest.ProxyCall call = proxy.new_call ();
     call.set_method ("POST");

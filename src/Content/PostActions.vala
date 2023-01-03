@@ -56,6 +56,9 @@ public class PostActions : Gtk.Widget {
       likes_counter.label   = displayed_post != null ? DisplayUtils.shortened_metric (displayed_post.liked_count)    : "(null)";
       reposts_counter.label = displayed_post != null ? DisplayUtils.shortened_metric (displayed_post.reposted_count) : "(null)";
       replies_counter.label = displayed_post != null ? DisplayUtils.shortened_metric (displayed_post.replied_count)  : "(null)";
+      likes_button.sensitive = displayed_post != null;
+      reposts_button.sensitive = displayed_post != null;
+      replies_button.sensitive = displayed_post != null;
 
       // Set up options menu
       if (displayed_post != null) {
@@ -80,6 +83,62 @@ public class PostActions : Gtk.Widget {
     replies_button.unparent ();
     options_button.unparent ();
     base.dispose ();
+  }
+
+  [GtkCallback]
+  private void like_post () {
+    if (!post.is_favourited) {
+      post.session.favourite_post.begin (post, (obj, res) => {
+        try {
+          var returned_post = post.session.favourite_post.end(res);
+          // Update the post in case the server is one that gives us an updated object
+          post = returned_post;
+        }
+        catch (Error e) {
+          // pass
+        }
+      });
+    }
+    else {
+      post.session.unfavourite_post.begin (post, (obj, res) => {
+        try {
+          var returned_post = post.session.favourite_post.end(res);
+          // Update the post in case the server is one that gives us an updated object
+          post = returned_post;
+        }
+        catch (Error e) {
+          // pass
+        }
+      });
+    }
+  }
+
+  [GtkCallback]
+  private void repost_post () {
+    if (!post.is_reposted) {
+      post.session.reblog_post.begin (post, (obj, res) => {
+        try {
+          var returned_post = post.session.favourite_post.end(res);
+          // Update the post in case the server is one that gives us an updated object
+          post = returned_post;
+        }
+        catch (Error e) {
+          // pass
+        }
+      });
+    }
+    else {
+      post.session.unreblog_post.begin (post, (obj, res) => {
+        try {
+          var returned_post = post.session.favourite_post.end(res);
+          // Update the post in case the server is one that gives us an updated object
+          post = returned_post;
+        }
+        catch (Error e) {
+          // pass
+        }
+      });
+    }
   }
 
   /**

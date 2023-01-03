@@ -7,7 +7,7 @@ template PostActions : Gtk.Widget {
   };
 
   Gtk.Button likes_button {
-    sensitive: false;
+    clicked => like_post ();
 
     styles [
       "condense",
@@ -20,7 +20,7 @@ template PostActions : Gtk.Widget {
   }
 
   Gtk.Button reposts_button {
-    sensitive: false;
+    clicked => repost_post ();
 
     styles [
       "condense",

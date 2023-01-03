@@ -94,6 +94,17 @@ public abstract class Backend.Post : Object {
   public string? replied_to_id { get; construct; }
 
   /**
+   * Whether the post has been favourited by the session user
+   */
+  public bool is_favourited { get; construct; default = false; }
+
+
+  /**
+   * Whether the post has been reblogged by the session user
+   */
+   public bool is_reposted { get; construct; default = false; }
+
+  /**
    * Emitted when data in this post has changed.
    */
   public signal void post_updated ();
