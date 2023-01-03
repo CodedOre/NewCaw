@@ -71,7 +71,10 @@ public class Backend.Mastodon.Post : Backend.Post {
       // Set replied_to_id
       replied_to_id: ! json.get_null_member ("in_reply_to_id")
                        ? json.get_string_member ("in_reply_to_id")
-                       : null
+                       : null,
+
+      is_favourited: json.get_boolean_member_with_default ("favourited", false),
+      is_reposted: json.get_boolean_member_with_default ("reblogged", false)
     );
 
     // Parse the text into modules
