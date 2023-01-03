@@ -90,8 +90,10 @@ public class PostActions : Gtk.Widget {
     if (!post.is_favourited) {
       post.session.favourite_post.begin (post, (obj, res) => {
         try {
+          likes_button.sensitive = true;
           var returned_post = post.session.favourite_post.end(res);
           // Update the post in case the server is one that gives us an updated object
+          // FIXME: Doesn't seem to be updating!
           post = returned_post;
         }
         catch (Error e) {
@@ -102,6 +104,7 @@ public class PostActions : Gtk.Widget {
     else {
       post.session.unfavourite_post.begin (post, (obj, res) => {
         try {
+          likes_button.sensitive = true;
           var returned_post = post.session.favourite_post.end(res);
           // Update the post in case the server is one that gives us an updated object
           post = returned_post;
@@ -111,6 +114,7 @@ public class PostActions : Gtk.Widget {
         }
       });
     }
+    likes_button.sensitive = false;
   }
 
   [GtkCallback]
@@ -118,9 +122,10 @@ public class PostActions : Gtk.Widget {
     if (!post.is_reposted) {
       post.session.reblog_post.begin (post, (obj, res) => {
         try {
+          reposts_button.sensitive = true;
           var returned_post = post.session.favourite_post.end(res);
-          // Update the post in case the server is one that gives us an updated object
-          post = returned_post;
+          // TBC whether we want to do anything with this - like inject it into a stream
+          // TODO: Update counts based on the nested values
         }
         catch (Error e) {
           // pass
@@ -130,15 +135,16 @@ public class PostActions : Gtk.Widget {
     else {
       post.session.unreblog_post.begin (post, (obj, res) => {
         try {
+          reposts_button.sensitive = true;
           var returned_post = post.session.favourite_post.end(res);
-          // Update the post in case the server is one that gives us an updated object
-          post = returned_post;
+          // FIXME: How can we pass a message up that this repost should be deleted?
         }
         catch (Error e) {
           // pass
         }
       });
     }
+    reposts_button.sensitive = false;
   }
 
   /**
