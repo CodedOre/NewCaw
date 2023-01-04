@@ -13,6 +13,7 @@
     <file>scalable/actions/reload-symbolic.svg</file>
     <file>scalable/actions/reply-symbolic.svg</file>
     <file>scalable/actions/repost-symbolic.svg</file>
+    <file>scalable/actions/reposted-symbolic.svg</file>
     <file>scalable/actions/stopwatch-symbolic.svg</file>
     <file>scalable/actions/verified-symbolic.svg</file>
   </gresource>

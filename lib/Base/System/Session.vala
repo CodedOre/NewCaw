@@ -109,7 +109,7 @@ public abstract class Backend.Session : Object {
    *
    * @return The post created from the data.
    */
-  internal abstract Post load_post (Json.Object data);
+  internal abstract Post load_post (Json.Object data, bool force_load = false);
 
   /**
    * Loads a list of downloaded posts.

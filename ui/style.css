@@ -291,3 +291,16 @@ UserDataDisplay.verified {
     opacity: 0;
   }
 }
+
+/**
+ * Colours for active action buttons
+ *
+ * TODO: How do we make this compatible with other themes?
+ */
+button.liked buttoncontent image {
+  color: #d0324e;
+}
+
+button.reposted buttoncontent image {
+  color: #0c5da3;
+}

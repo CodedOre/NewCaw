@@ -3,7 +3,7 @@
    height="16px"
    viewBox="0 0 16 16"
    width="16px"
-   sodipodi:docname="repost-symbolic.svg"
+   sodipodi:docname="reposted-symbolic.svg"
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
    version="1.1"
    id="svg16"
@@ -22,14 +22,14 @@
      inkscape:pagecheckerboard="1"
      showgrid="false"
      inkscape:zoom="141.77491"
-     inkscape:cx="2.380534"
-     inkscape:cy="6.1893884"
+     inkscape:cx="0.92752659"
+     inkscape:cy="8.0091744"
      inkscape:window-width="2560"
      inkscape:window-height="1372"
      inkscape:window-x="0"
      inkscape:window-y="32"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g12"
+     inkscape:current-layer="g14"
      id="namedview2"
      inkscape:showpageshadow="2"
      inkscape:deskcolor="#d1d1d1" />
@@ -38,6 +38,11 @@
      stroke-width="2.05545"
      transform="matrix(0.97302294 0 0 0.97302255 -5975.9018 -1410.419)"
      id="g14">
+    <path
+       style="fill:#4d4d4d;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.02773px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 6144.7824,1456.411 2.3339,2.2727 2.181,0.013 -0.01,-1.9037 -1.012,-1.074 6.3024,-0 c 1.1321,0.6681 1.3394,1.606 -0.031,2.45 l -2.1993,-2.1847 -2.0641,-0 0.01,1.9069 0.9775,1.0529 -6.1218,-0.016 c -1.5404,-0.7325 -1.1337,-1.5801 -0.5627,-2.3655 z"
+       id="path475"
+       sodipodi:nodetypes="cccccccccccccc" />
     <path
        d="m 6146.3151,1453.4317 v 1.9346 h 8.3267 c 0.8126,0 1.451,0.6384 1.451,1.4509 0,0.8125 -0.2583,1.0269 -0.8995,1.4724 l -0.3375,0.2346 1.3669,1.3599 0.3723,-0.262 c 0.4634,-0.3262 1.4323,-0.9468 1.4323,-2.8049 0,-1.8581 -1.5273,-3.3855 -3.3855,-3.3855 z"
        stroke-width="1.98818"
@@ -70,9 +75,9 @@
     <g
        stroke-width="1.98819"
        id="g12"
-       transform="translate(0,5.3513327e-4)">
+       transform="translate(-2.8807212e-5,4.7729717e-4)">
       <path
-         d="m 6153.4323,1461.2013 v -1.9346 h -8.4631 c -0.8126,0 -1.451,-0.6384 -1.451,-1.4509 0,-0.8125 0.3942,-1.2086 0.5985,-1.3498 l 0.4383,-0.3028 -1.2955,-1.3913 -0.2842,0.2117 c -0.4363,0.325 -1.3916,0.9741 -1.3916,2.8322 0,1.8581 1.5273,3.3855 3.3855,3.3855 z"
+         d="m 6153.4323,1461.2013 v -1.9346 h -8.4631 c -0.8126,0 -1.451,-0.6384 -1.451,-1.4509 0,-0.8125 0.4794,-1.2675 0.5985,-1.3498 l 0.4383,-0.3028 -1.2955,-1.3913 -0.2842,0.2117 c -0.4363,0.325 -1.3916,0.9741 -1.3916,2.8322 0,1.8581 1.5273,3.3855 3.3855,3.3855 z"
          font-variant-ligatures="normal"
          font-variant-position="normal"
          font-variant-caps="normal"
