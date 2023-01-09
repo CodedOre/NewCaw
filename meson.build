@@ -50,8 +50,16 @@ endif
 if twitter_backend
   add_project_arguments('-D', 'SUPPORT_TWITTER', language: 'vala')
   # Check for OAuth 2.0 key
-  if get_option('twitter_oauth_key') == ''
+  twitter_key = get_option('twitter_oauth_key')
+  if twitter_key == ''
     error('A client key needs to be provided for Twitter!')
+  else
+    if twitter_key.substring(0, 29) == twitter_key.substring(0, 30)
+      # Ugly workaround to check ID length - we can't do "length()" or get a fixed length from "format()",
+      # so we have to detect when two different length substrings match (which means that the string was no longer
+      # than the shortest length checked). This likely happens when supplying older OAuth keys instead of OAuth 2 IDs
+      error('Twitter OAuth 2 should be over 30 characters long:', twitter_key)
+    endif
   endif
 endif
 
