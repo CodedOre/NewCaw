@@ -60,8 +60,6 @@ public class PostActions : Gtk.Widget {
         replies_counter.label = DisplayUtils.shortened_metric (displayed_post.replied_count);
         replies_button.sensitive = true;
 
-        debug("Likes: %d; Label: %s; Liked: %s", displayed_post.liked_count, likes_counter.label, displayed_post.is_favourited ? "yes" : "no");
-
         string open_link_label   = _("Open on %s").printf (displayed_post.domain);
         var    post_options_menu = new Menu ();
         post_options_menu.append (open_link_label, "post.open-url");
