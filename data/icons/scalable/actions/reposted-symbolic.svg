@@ -9,6 +9,7 @@
    id="svg16"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
@@ -21,9 +22,9 @@
      inkscape:pageopacity="0"
      inkscape:pagecheckerboard="1"
      showgrid="false"
-     inkscape:zoom="141.77491"
-     inkscape:cx="0.92752659"
-     inkscape:cy="8.0091744"
+     inkscape:zoom="35.443728"
+     inkscape:cx="23.544363"
+     inkscape:cy="18.691601"
      inkscape:window-width="2560"
      inkscape:window-height="1372"
      inkscape:window-x="0"
@@ -40,69 +41,56 @@
      id="g14">
     <path
        style="fill:#4d4d4d;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.02773px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 6144.7824,1456.411 2.3339,2.2727 2.181,0.013 -0.01,-1.9037 -1.012,-1.074 6.3024,-0 c 1.1321,0.6681 1.3394,1.606 -0.031,2.45 l -2.1993,-2.1847 -2.0641,-0 0.01,1.9069 0.9775,1.0529 -6.1218,-0.016 c -1.5404,-0.7325 -1.1337,-1.5801 -0.5627,-2.3655 z"
+       d="m 6144.7824,1456.4182 1.6775,1.7667 1.6643,0.011 0.033,-2.0523 -0.5371,-0.6373 2.1924,0.01 -0.015,4.1509 -4.9182,-0.01 c 0,0 -1.0325,-0.2139 -1.0156,-1.5185 0.017,-1.3046 0.9187,-1.7205 0.9187,-1.7205 z"
        id="path475"
-       sodipodi:nodetypes="cccccccccccccc" />
-    <path
-       d="m 6146.3151,1453.4317 v 1.9346 h 8.3267 c 0.8126,0 1.451,0.6384 1.451,1.4509 0,0.8125 -0.2583,1.0269 -0.8995,1.4724 l -0.3375,0.2346 1.3669,1.3599 0.3723,-0.262 c 0.4634,-0.3262 1.4323,-0.9468 1.4323,-2.8049 0,-1.8581 -1.5273,-3.3855 -3.3855,-3.3855 z"
-       stroke-width="1.98818"
-       font-variant-ligatures="normal"
-       font-variant-position="normal"
-       font-variant-caps="normal"
-       font-variant-numeric="normal"
-       font-variant-alternates="normal"
-       font-feature-settings="normal"
-       text-indent="0"
-       text-align="start"
-       text-decoration-line="none"
-       text-decoration-style="solid"
-       text-decoration-color="#000000"
-       text-transform="none"
-       text-orientation="mixed"
-       shape-padding="0"
-       isolation="auto"
-       mix-blend-mode="normal"
-       id="path4"
-       sodipodi:nodetypes="ccsssccsssc" />
-    <path
-       d="m 6148.8682,1450.5512 v 0.9673 c 0,0.2486 -0.1258,0.5117 -0.3028,0.6954 l -2.2054,2.2064 2.2054,2.2063 c 0.1761,0.1838 0.3028,0.4469 0.3028,0.6965 v 0.9673 h -0.9673 c -0.2998,0 -0.5339,-0.087 -0.7254,-0.2728 l -3.5364,-3.5973 3.5364,-3.5973 c 0.1915,-0.1838 0.4256,-0.2708 0.7254,-0.2708 z"
-       stroke-width="1.98818"
-       text-indent="0"
-       text-align="start"
-       text-decoration-line="none"
-       text-transform="none"
-       id="path6" />
+       sodipodi:nodetypes="cccccccczc" />
     <g
        stroke-width="1.98819"
        id="g12"
-       transform="translate(-2.8807212e-5,4.7729717e-4)">
-      <path
-         d="m 6153.4323,1461.2013 v -1.9346 h -8.4631 c -0.8126,0 -1.451,-0.6384 -1.451,-1.4509 0,-0.8125 0.4794,-1.2675 0.5985,-1.3498 l 0.4383,-0.3028 -1.2955,-1.3913 -0.2842,0.2117 c -0.4363,0.325 -1.3916,0.9741 -1.3916,2.8322 0,1.8581 1.5273,3.3855 3.3855,3.3855 z"
-         font-variant-ligatures="normal"
-         font-variant-position="normal"
-         font-variant-caps="normal"
-         font-variant-numeric="normal"
-         font-variant-alternates="normal"
-         font-feature-settings="normal"
-         text-indent="0"
-         text-align="start"
-         text-decoration-line="none"
-         text-decoration-style="solid"
-         text-decoration-color="#000000"
-         text-transform="none"
-         text-orientation="mixed"
-         shape-padding="0"
-         isolation="auto"
-         mix-blend-mode="normal"
-         id="path8"
-         sodipodi:nodetypes="ccsssccsssc" />
-      <path
-         d="m 6150.7181,1464.0818 v -0.9673 c 0,-0.2486 0.1258,-0.5117 0.3028,-0.6954 l 2.2054,-2.2064 -2.2054,-2.2063 c -0.1761,-0.1838 -0.3028,-0.4469 -0.3028,-0.6965 v -0.9673 h 0.9673 c 0.2998,0 0.5339,0.087 0.7254,0.2728 l 3.5364,3.5973 -3.5364,3.5973 c -0.1915,0.1838 -0.4256,0.2708 -0.7254,0.2708 z"
-         text-indent="0"
-         text-align="start"
-         text-decoration-line="none"
-         text-transform="none"
-         id="path10" />
+       transform="translate(-2.8807212e-5,0.78336847)">
+      <g
+         id="g6109">
+        <path
+           d="m 6154.6518,1461.2307 -0.028,-1.573 -9.9622,-0.027 c -2.135,-0.6239 -1.8071,-3.6229 -0.4561,-4.5383 l -0.8575,-0.9532 c -3.1875,2.1382 -1.532,7.0767 1.621,7.0618 z"
+           font-variant-ligatures="normal"
+           font-variant-position="normal"
+           font-variant-caps="normal"
+           font-variant-numeric="normal"
+           font-variant-alternates="normal"
+           font-feature-settings="normal"
+           text-indent="0"
+           text-align="start"
+           text-decoration-line="none"
+           text-decoration-style="solid"
+           text-decoration-color="#000000"
+           text-transform="none"
+           text-orientation="mixed"
+           shape-padding="0"
+           isolation="auto"
+           mix-blend-mode="normal"
+           id="path8"
+           sodipodi:nodetypes="ccccccc" />
+        <path
+           d="m 6152.1287,1463.7835 -0.011,-0.6055 c 0,-0.2486 0.1258,-0.5117 0.3028,-0.6954 l 1.8752,-2.0367 -1.8388,-2.0064 c -0.1761,-0.1838 -0.2913,-0.4471 -0.3028,-0.6965 l -0.03,-0.6439 h 0.4297 c 0.2998,9e-4 0.5339,0.087 0.7254,0.2728 l 2.6688,3.0745 -2.8125,3.0778 c -0.1915,0.1838 -0.4256,0.2708 -0.7254,0.2708 z"
+           text-indent="0"
+           text-align="start"
+           text-decoration-line="none"
+           text-transform="none"
+           id="path10"
+           sodipodi:nodetypes="cscccscsccccc" />
+      </g>
     </g>
+    <use
+       x="0"
+       y="0"
+       xlink:href="#g12"
+       id="use6156"
+       transform="rotate(180,6149.8102,1457.6325)" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path475"
+       id="use6158"
+       transform="rotate(180,6149.7549,1457.591)" />
   </g>
 </svg>
