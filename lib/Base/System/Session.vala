@@ -75,7 +75,7 @@ public abstract class Backend.Session : Object {
   /**
    * The access token to make calls for this session.
    */
-  public string access_token { get; construct; }
+  public string access_token { get; protected construct set; }
 
   /**
    * The server this session is connected to.

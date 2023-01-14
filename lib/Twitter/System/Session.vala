@@ -89,6 +89,35 @@ public partial class Backend.Twitter.Session : AsyncInitable {
    * @throws Error Errors that happened while loading the account.
    */
   public virtual async bool init_async (int io_priority = Priority.DEFAULT, Cancellable? cancellable = null) throws Error {
+    // Use the refresh token to get an session access token
+    string expiry;
+    // FIXME: This doesn't appear to work yet
+    // We are using a custom format string because a) timezones cause segfaults, b) %H creates invalid times
+    string date_format_string = "%F @ %I:%M:%S%P";
+    var expiry_date = proxy.get_expiration_date ();
+    if (expiry_date == null) {
+      expiry = "no expiry";
+    }
+    else {
+      expiry = proxy.get_expiration_date ().format (date_format_string);
+    }
+    debug("Old access token: %s… for %s (%s)", access_token.substring (0, 10), identifier, expiry);
+    proxy.refresh_token = access_token;
+    var refreshed = proxy.refresh_access_token ();
+
+    if (refreshed) {
+      // Store the refresh token (it's our "access token" to get short-lived user access tokens)
+      access_token = proxy.refresh_token;
+      expiry_date = proxy.get_expiration_date ();
+      if (expiry_date == null) {
+        expiry = "no expiry";
+      }
+      else {
+        expiry = proxy.get_expiration_date ().format (date_format_string);
+      }
+      debug("New access token: %s… for %s (%s)", access_token.substring (0, 10), identifier, expiry);
+    }
+
     // Make a call to load the account
     var account_call = proxy.new_call ();
     account_call.set_method ("GET");
