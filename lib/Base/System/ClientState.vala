@@ -367,6 +367,11 @@ public partial class Backend.Client : Object {
     store_state ();
   }
 
+  public void unregister_session(Session session) throws Error {
+    sessions.remove(session);
+    store_state ();
+  }
+
   /**
    * Checks if an server is still needed.
    *

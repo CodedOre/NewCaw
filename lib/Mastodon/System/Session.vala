@@ -132,7 +132,7 @@ public partial class Backend.Mastodon.Session : AsyncInitable {
     }
 
     // Remove the session from ClientState
-    Client.instance.sessions.remove (this);
+    Client.instance.unregister_session (this);
   }
 
   /**
