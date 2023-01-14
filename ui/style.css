@@ -295,12 +295,14 @@ UserDataDisplay.verified {
 /**
  * Colours for active action buttons
  *
- * TODO: How do we make this compatible with other themes?
+ * We use Adwaita named colours, so themes will use those colours
+ * if defined, or fall back to black and we rely on shape differences
+ * for accessibility.
  */
-button.liked buttoncontent image {
-  color: #d0324e;
+buttoncontent.liked image {
+  color: @red_4;
 }
 
-button.reposted buttoncontent image {
-  color: #0c5da3;
+buttoncontent.reposted image {
+  color: @blue_4;
 }

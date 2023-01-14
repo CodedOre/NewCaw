@@ -62,24 +62,6 @@ public class PostActions : Gtk.Widget {
 
         debug("Likes: %d; Label: %s; Liked: %s", displayed_post.liked_count, likes_counter.label, displayed_post.is_favourited ? "yes" : "no");
 
-        if (displayed_post.is_favourited) {
-          likes_counter.icon_name = "liked-symbolic";
-          likes_button.add_css_class ("liked");
-        }
-        else {
-          likes_counter.icon_name = "not-liked-symbolic";
-          likes_button.remove_css_class ("liked");
-        }
-
-        if (displayed_post.is_reposted) {
-          reposts_counter.icon_name = "reposted-symbolic";
-          reposts_button.add_css_class ("reposted");
-        }
-        else {
-          reposts_counter.icon_name = "repost-symbolic";
-          reposts_button.remove_css_class ("reposted");
-        }
-
         string open_link_label   = _("Open on %s").printf (displayed_post.domain);
         var    post_options_menu = new Menu ();
         post_options_menu.append (open_link_label, "post.open-url");
@@ -93,13 +75,11 @@ public class PostActions : Gtk.Widget {
         replies_counter.label = "(null)";
         replies_button.sensitive = false;
 
-        likes_counter.icon_name = "not-liked-symbolic";
-        likes_button.remove_css_class ("liked");
-        reposts_counter.icon_name = "repost-symbolic";
-        reposts_button.remove_css_class ("reposted");
-
         options_button.menu_model = null;
       }
+
+      DisplayUtils.conditional_button_content (displayed_post != null && displayed_post.is_favourited, likes_counter, "liked", "liked-symbolic", "not-liked-symbolic");
+      DisplayUtils.conditional_button_content (displayed_post != null && displayed_post.is_reposted, reposts_counter, "reposted", "reposted-symbolic", "repost-symbolic");
     }
   }
 
