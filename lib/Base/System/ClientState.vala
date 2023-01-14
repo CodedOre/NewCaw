@@ -250,7 +250,7 @@ public partial class Backend.Client : Object {
 
     // Check that there is a valid server
     if (server == null) {
-      throw new StateError.INVALID_DATA ("Associated Server can't be found");
+      throw new StateError.INVALID_DATA (@"Associated Server $(server_prop) can't be found for $(username_prop) on $(access_prop)");
     }
 
     // Return the created instance for the session
