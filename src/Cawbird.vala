@@ -94,14 +94,13 @@ public class Cawbird : Adw.Application {
    * Initialize the client and open the first window.
    */
   protected override void activate () {
+    Backend.Client client;
     // Initializes the backend client
-    var client = new Backend.Client();
     try {
-      client.configure ("id",
-                        Config.PROJECT_NAME,
-                        "https://github.com/CodedOre/NewCaw",
-                        "cawbird://authenticate",
-                        Config.TWITTER_OAUTH_KEY);
+      client = new Backend.Client("id",
+        Config.PROJECT_NAME,
+        "https://github.com/CodedOre/NewCaw",
+        "cawbird://authenticate");
     } catch (Error e) {
       critical (@"Failed to load program state: $(e.message)");
       return;
@@ -109,6 +108,9 @@ public class Cawbird : Adw.Application {
 
     // Load the previous program state
     this.hold ();
+#if SUPPORT_TWITTER
+    new Backend.Twitter.Server (Config.TWITTER_OAUTH_KEY);
+#endif
     client.load_state.begin ((obj, res) => {
       try {
         client.load_state.end (res);
