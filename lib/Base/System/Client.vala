@@ -82,12 +82,12 @@ public partial class Backend.Client : Initable {
   /**
    * All sessions that are active with this client.
    */
-  public SessionList sessions { get; default = new SessionList(); }
+  public SessionList sessions { get; construct; }
 
   /**
    * All servers that are active with this client.
    */
-  public ServerList servers { get; default = new ServerList(); }
+  public ServerList servers { get; construct; }
 
   /**
    * Configures the client instance.
