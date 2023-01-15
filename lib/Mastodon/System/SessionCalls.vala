@@ -61,18 +61,23 @@ public partial class Backend.Mastodon.Session : Backend.Session {
    * This is an platform-specific implementation of the abstract method
    * defined in the base class, for more details see the base method.
    */
-  internal override Backend.Post load_post (Json.Object data, bool force_load = false) {
+  internal override Backend.Post load_post (Json.Object data) {
     // Get the id of the post
     string id = data.get_string_member ("id");
 
+    Post post;
+
     // Check if the post is already present in memory
-    if (pulled_posts.contains (id) && ! force_load) {
-      return pulled_posts [id];
+    if (pulled_posts.contains (id)) {
+      post = pulled_posts [id];
+      post.update_interactions (Backend.Mastodon.Post.get_interaction_data(data));
+    }
+    else {
+      // Create a new post and add it to memory
+      post = new Post (this, data);
+      pulled_posts [id] = post;
     }
 
-    // Create a new post and add it to memory
-    Post post = new Post (this, data);
-    pulled_posts [id] = post;
     return post;
   }
 
@@ -107,7 +112,7 @@ public partial class Backend.Mastodon.Session : Backend.Session {
 
     // Send the message and return the updated post
     Json.Node json = yield server.call (call);
-    return load_post (json.get_object (), true);
+    return load_post (json.get_object ());
   }
 
   public override async Backend.Post unfavourite_post (Backend.Post post) throws Error {
@@ -118,7 +123,7 @@ public partial class Backend.Mastodon.Session : Backend.Session {
 
     // Send the message and return the updated post
     Json.Node json = yield server.call (call);
-    return load_post (json.get_object (), true);
+    return load_post (json.get_object ());
   }
 
   public override async Backend.Post reblog_post (Backend.Post post) throws Error {
@@ -129,7 +134,7 @@ public partial class Backend.Mastodon.Session : Backend.Session {
 
     // Send the message and return the updated post
     Json.Node json = yield server.call (call);
-    return load_post (json.get_object (), true);
+    return load_post (json.get_object ());
   }
 
   public override async Backend.Post unreblog_post (Backend.Post post) throws Error {
@@ -140,7 +145,7 @@ public partial class Backend.Mastodon.Session : Backend.Session {
 
     // Send the message and return the updated post
     Json.Node json = yield server.call (call);
-    return load_post (json.get_object (), true);
+    return load_post (json.get_object ());
   }
 
   /**

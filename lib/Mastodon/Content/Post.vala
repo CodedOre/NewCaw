@@ -37,6 +37,7 @@ public class Backend.Mastodon.Post : Backend.Post {
                         ? json.get_string_member ("url")
                         : json.get_string_member ("uri");
     string post_domain = Utils.ParseUtils.strip_domain (post_url);
+    var interaction_data = get_interaction_data (json);
 
     // Construct object with properties
     Object (
@@ -61,9 +62,9 @@ public class Backend.Mastodon.Post : Backend.Post {
       domain: post_domain,
 
       // Set metrics
-      liked_count:    (int) json.get_int_member ("favourites_count"),
-      replied_count:  (int) json.get_int_member ("replies_count"),
-      reposted_count: (int) json.get_int_member ("reblogs_count"),
+      liked_count:    interaction_data.liked_count,
+      replied_count:  interaction_data.replied_count,
+      reposted_count: interaction_data.reposted_count,
 
       // Set the author
       author: session.load_user (json.get_object_member ("account")),
@@ -73,8 +74,8 @@ public class Backend.Mastodon.Post : Backend.Post {
                        ? json.get_string_member ("in_reply_to_id")
                        : null,
 
-      is_favourited: json.get_boolean_member_with_default ("favourited", false),
-      is_reposted: json.get_boolean_member_with_default ("reblogged", false)
+      is_favourited: interaction_data.is_favourited,
+      is_reposted: interaction_data.is_reposted
     );
 
     // Parse the text into modules
@@ -118,5 +119,16 @@ public class Backend.Mastodon.Post : Backend.Post {
    * Stores the referenced post.
    */
   private Backend.Post? referenced_post;
+
+  public static Backend.PostInteractionData get_interaction_data (Json.Object json) {
+    return Backend.PostInteractionData() {
+      liked_count =    (int) json.get_int_member ("favourites_count"),
+      replied_count =  (int) json.get_int_member ("replies_count"),
+      reposted_count = (int) json.get_int_member ("reblogs_count"),
+
+      is_favourited = json.get_boolean_member_with_default ("favourited", false),
+      is_reposted = json.get_boolean_member_with_default ("reblogged", false)
+    };
+  }
 
 }

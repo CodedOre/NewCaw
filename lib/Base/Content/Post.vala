@@ -20,6 +20,14 @@
 
 using GLib;
 
+public struct Backend.PostInteractionData {
+  int liked_count;
+  int replied_count;
+  int reposted_count;
+  bool is_favourited;
+  bool is_reposted;
+}
+
 /**
  * Represents one posted status message.
  */
@@ -76,17 +84,17 @@ public abstract class Backend.Post : Object {
   /**
    * How often the post was liked.
    */
-  public int liked_count { get; construct; }
+  public int liked_count { get; protected construct set; }
 
   /**
    * How often the post was replied to.
    */
-  public int replied_count { get; construct; }
+  public int replied_count { get; protected construct set; }
 
   /**
    * How often this post was reposted or quoted.
    */
-  public int reposted_count { get; construct; }
+  public int reposted_count { get; protected construct set; }
 
   /**
    * The id for the post this post replies to.
@@ -96,13 +104,13 @@ public abstract class Backend.Post : Object {
   /**
    * Whether the post has been favourited by the session user
    */
-  public bool is_favourited { get; construct; default = false; }
+  public bool is_favourited { get; protected construct set; default = false; }
 
 
   /**
    * Whether the post has been reblogged by the session user
    */
-   public bool is_reposted { get; construct; default = false; }
+   public bool is_reposted { get; protected construct set; default = false; }
 
   /**
    * Emitted when data in this post has changed.
@@ -119,6 +127,70 @@ public abstract class Backend.Post : Object {
       post_updated ();
     });
   }
+
+    /**
+   * Favourite/like this post.
+   *
+   * Adds the favourite/like/platform-equivalent flag to the post. If the post
+   * is already favourited/liked then this is a noop and no exception will be thrown.
+   *
+   * @throws Error Any errors while favouriting, such as unauthorised actions, missing posts, or network issues
+   */
+  public async void favourite () throws Error {
+    yield this.session.favourite_post (this);
+  }
+
+  /**
+   * Unfavourite/unlike this post.
+   *
+   * Removes the favourite/like/platform-equivalent flag from the post. If the post
+   * is not favourited/liked then this is a noop and no exception will be thrown.
+   *
+   * @throws Error Any errors while unfavouriting, such as unauthorised actions, missing posts, or network issues
+   */
+   public async void unfavourite () throws Error {
+    yield this.session.unfavourite_post (this);
+   }
+
+  /**
+   * Reblogs/boosts/retweets this post.
+   *
+   * Reblogs the post to the user's timeline. If the post is already reblogged then this is a noop
+   * and no exception will be thrown.
+   *
+   * @return A Post object representing the reposted post in the user's timeline
+   *
+   * @throws Error Any errors while reblogging, such as unauthorised actions, missing posts, or network issues
+   */
+   public async Backend.Post reblog () throws Error {
+    return yield this.session.reblog_post (this);
+   }
+
+  /**
+   * Un-reblogs/unboosts/un-retweets this post.
+   *
+   * Removes the reblog from the user's timeline. If the post is not reblogged then this is a noop
+   * and no exception will be thrown.
+   *
+   * @throws Error Any errors while un-reblogging, such as unauthorised actions, missing posts, or network issues
+   */
+   public async void unreblog () throws Error {
+    yield this.session.unreblog_post (this);
+   }
+
+   /*
+    * Updates interaction data that may change over time
+    *
+    * @param A struct holding the new interaction data
+    */
+   public void update_interactions (PostInteractionData data) {
+    this.liked_count = data.liked_count;
+    this.replied_count = data.replied_count;
+    this.reposted_count = data.reposted_count;
+    this.is_favourited = data.is_favourited;
+    this.is_reposted = data.is_reposted;
+    post_updated();
+   }
 
   /**
    * Returns a possible post that this post referenced.
