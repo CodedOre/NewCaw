@@ -237,13 +237,6 @@ public partial class Backend.Client : Object {
         break;
 #endif
 
-#if SUPPORT_TWITTER
-      case TWITTER:
-        // Use the global Twitter server
-        server = Twitter.Server.instance;
-        break;
-#endif
-
       default:
         throw new StateError.UNKNOWN_PLATFORM (@"Unknown platform \"$(platform_name)\"");
     }

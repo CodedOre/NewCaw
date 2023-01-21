@@ -40,20 +40,10 @@ message('Building ' + meson.project_name () + ' ' + version)
 
 # Configure Backends
 mastodon_backend = get_option('backends') == 'Mastodon' or get_option('backends') == 'Full'
-twitter_backend  = get_option('backends') == 'Twitter'  or get_option('backends') == 'Full'
 
 # Configure Mastodon platform
 if mastodon_backend
   add_project_arguments('-D', 'SUPPORT_MASTODON', language: 'vala')
-endif
-
-# Configure Twitter platform
-if twitter_backend
-  add_project_arguments('-D', 'SUPPORT_TWITTER', language: 'vala')
-  # Check for OAuth 2.0 key
-  if get_option('twitter_oauth_key') == ''
-    error('A client key needs to be provided for Twitter!')
-  endif
 endif
 
 # Build and test the backend from subdirectories

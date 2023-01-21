@@ -59,8 +59,7 @@
       "buildsystem": "meson",
       "builddir":     true,
       "secret-opts": [
-        "-Dbackends=$BACKENDS",
-        "-Dtwitter_oauth_key=$TWITTER_OAUTH_KEY"
+        "-Dbackends=$BACKENDS"
       ],
       "sources": [
         {

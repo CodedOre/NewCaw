@@ -33,12 +33,6 @@ template AuthView : Gtk.Widget {
     transition-type:   slide;
     notify::visible-child => on_move_back ();
 
-    Adw.LeafletPage start_page {
-      child: .AuthenticationStartPage {
-        view: AuthView;
-      };
-    }
-
     Adw.LeafletPage server_page {
       child: .AuthenticationServerPage {
         view: AuthView;

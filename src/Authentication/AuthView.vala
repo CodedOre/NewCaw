@@ -36,8 +36,6 @@ public class AuthView : Gtk.Widget {
 
   // UI-Elements of the pages
   [GtkChild]
-  private unowned Adw.LeafletPage start_page;
-  [GtkChild]
   private unowned Adw.LeafletPage server_page;
   [GtkChild]
   private unowned Adw.LeafletPage browser_page;
@@ -84,18 +82,14 @@ public class AuthView : Gtk.Widget {
     // Get the current child
     Adw.LeafletPage page = auth_leaflet.get_page (auth_leaflet.visible_child);
 
-    if (page == start_page) {
+    if (page == server_page) {
       // Update the back button
       back_button.label = _("Cancel");
 
-      // Clear account and server cache
+      // Clear account cache
       account = null;
-#if SUPPORT_MASTODON
-      server  = null;
-#endif
 
       // Make page definitely navigatable
-      server_page.navigatable = true;
       code_page.navigatable = true;
     } else if (page == final_page) {
       // Forbid navigation backwards
@@ -116,7 +110,7 @@ public class AuthView : Gtk.Widget {
     // Get the currently active page
     Adw.LeafletPage page = auth_leaflet.get_page (auth_leaflet.visible_child);
 
-    if (page == start_page) {
+    if (page == server_page) {
       // Closes the authentication
       close_auth ();
     } else {

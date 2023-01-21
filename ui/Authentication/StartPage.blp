@@ -15,20 +15,6 @@ template AuthenticationStartPage : Gtk.Widget {
       Gtk.Box {
         orientation: vertical;
 
-        Gtk.Button twitter_button {
-          visible: false;
-
-          .WaitingButton twitter_waiting {
-            label: _("Add Twitter Account");
-          }
-
-          styles [
-            "twitter-background",
-            "pill",
-            "opaque",
-          ]
-        }
-
         Gtk.Button mastodon_button {
           visible: false;
           label: _("Add Mastodon Account");

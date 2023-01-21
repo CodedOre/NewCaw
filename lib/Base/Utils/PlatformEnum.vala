@@ -31,9 +31,6 @@ public enum Backend.PlatformEnum {
 #if SUPPORT_MASTODON
   MASTODON,
 #endif
-#if SUPPORT_TWITTER
-  TWITTER,
-#endif
   NONE;
 
   /**
@@ -45,11 +42,6 @@ public enum Backend.PlatformEnum {
 #if SUPPORT_MASTODON
       case MASTODON:
         return "Mastodon";
-#endif
-
-#if SUPPORT_TWITTER
-      case TWITTER:
-        return "Twitter";
 #endif
 
       case NONE:
@@ -73,10 +65,6 @@ public enum Backend.PlatformEnum {
       case "Mastodon":
         return MASTODON;
 #endif
-#if SUPPORT_MASTODON
-      case "Twitter":
-        return TWITTER;
-#endif
       default:
         return NONE;
     }
@@ -94,13 +82,6 @@ public enum Backend.PlatformEnum {
     // Return if using Mastodon
     if (server is Backend.Mastodon.Server) {
       return MASTODON;
-    }
-#endif
-
-#if SUPPORT_TWITTER
-    // Return if using Twitter
-    if (server is Backend.Twitter.Server) {
-      return TWITTER;
     }
 #endif
 
@@ -123,13 +104,6 @@ public enum Backend.PlatformEnum {
     }
 #endif
 
-#if SUPPORT_TWITTER
-    // Return if using Twitter
-    if (session is Backend.Twitter.Session) {
-      return TWITTER;
-    }
-#endif
-
     // Return NONE if no platform is applicable
     return NONE;
   }
@@ -146,13 +120,6 @@ public enum Backend.PlatformEnum {
     // Return if using Mastodon
     if (user is Backend.Mastodon.User) {
       return MASTODON;
-    }
-#endif
-
-#if SUPPORT_TWITTER
-    // Return if using Twitter
-    if (user is Backend.Twitter.User) {
-      return TWITTER;
     }
 #endif
 

@@ -96,7 +96,6 @@ public partial class Backend.Client : Initable {
    * @param name The name of the client.
    * @param website The website for the client.
    * @param redirect_uri An optional redirect uri.
-   * @param twitter_oauth_key An optional OAuth 2 key for Twitter (if used)
    */
   public Client (string id, string name, string website, string? redirect_uri = null) throws Error {
     Object (

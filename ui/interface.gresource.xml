@@ -15,7 +15,6 @@
     <file>Authentication/FinalPage.ui</file>
     <file>Authentication/LoadPage.ui</file>
     <file>Authentication/ServerPage.ui</file>
-    <file>Authentication/StartPage.ui</file>
     <file>Content/CollectionFilter.ui</file>
     <file>Content/CollectionView.ui</file>
     <file>Content/PostActions.ui</file>
@@ -36,7 +35,6 @@
     <file>Preferences/SessionSettings.ui</file>
     <file>Preferences/SessionsPage.ui</file>
     <file>Preferences/Examples/ExampleMastodonPost.json</file>
-    <file>Preferences/Examples/ExampleTwitterPost.json</file>
     <file>Widgets/BadgesBox.ui</file>
     <file>Widgets/FilterButton.ui</file>
     <file>Widgets/SessionRow.ui</file>

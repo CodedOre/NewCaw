@@ -102,13 +102,6 @@ public abstract class Backend.ClientList <T> : ListModel, Object {
    * @throws Error Errors when adding the access token doesn't work.
    */
   internal void add (T item) throws Error {
-#if SUPPORT_TWITTER
-    // Don't add Twitter servers
-    if (item is Backend.Twitter.Server) {
-      return;
-    }
-#endif
-
     // Stop if item is already in list
     if (store.find (item)) {
       return;

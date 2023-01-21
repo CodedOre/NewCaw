@@ -58,13 +58,6 @@ void run_media_test (string module, string post_json, string check_json) {
       checked_post = Backend.Mastodon.Post.from_json (post_object);
       break;
 #endif
-#if SUPPORT_TWITTER
-    case "Twitter":
-      Json.Object post_data = post_object.get_object_member ("data");
-      Json.Object includes  = post_object.get_object_member ("includes");
-      checked_post = Backend.Twitter.Post.from_json (post_data, includes);
-      break;
-#endif
     default:
       error ("No valid Post could be created!");
   }
@@ -93,20 +86,6 @@ int main (string[] args) {
   });
   Test.add_func ("/MediaParsing/FourPicture/Mastodon", () => {
     run_media_test ("Mastodon", "FourPicturePost.json", "FourPictureChecks.json");
-  });
-#endif
-#if SUPPORT_TWITTER
-  Test.add_func ("/MediaParsing/OnePicture/Twitter", () => {
-    run_media_test ("Twitter", "OnePicturePost.json", "OnePictureChecks.json");
-  });
-  Test.add_func ("/MediaParsing/TwoPicture/Twitter", () => {
-    run_media_test ("Twitter", "TwoPicturePost.json", "TwoPictureChecks.json");
-  });
-  Test.add_func ("/MediaParsing/ThreePicture/Twitter", () => {
-    run_media_test ("Twitter", "ThreePicturePost.json", "ThreePictureChecks.json");
-  });
-  Test.add_func ("/MediaParsing/FourPicture/Twitter", () => {
-    run_media_test ("Twitter", "FourPicturePost.json", "FourPictureChecks.json");
   });
 #endif
 

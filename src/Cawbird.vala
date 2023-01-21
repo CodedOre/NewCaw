@@ -39,20 +39,6 @@ public class Cawbird : Adw.Application {
   }
 
   /**
-   * Property for the internal links setting.
-   */
-  protected bool internal_links_shown {
-    get {
-      return internal_links_shown_store;
-    }
-    set {
-      internal_links_shown_store = value;
-      Backend.Utils.TextFormats.set_format_flag (SHOW_QUOTE_LINKS, value);
-      Backend.Utils.TextFormats.set_format_flag (SHOW_MEDIA_LINKS, value);
-    }
-  }
-
-  /**
    * Create the object.
    */
   public Cawbird () {
@@ -85,9 +71,6 @@ public class Cawbird : Adw.Application {
     settings.bind ("trailing-tags",
                    this, "trailing-tags-shown",
                    GLib.SettingsBindFlags.DEFAULT);
-    settings.bind ("internal-links",
-                   this, "internal-links-shown",
-                   GLib.SettingsBindFlags.DEFAULT);
   }
 
   /**
@@ -108,9 +91,6 @@ public class Cawbird : Adw.Application {
 
     // Load the previous program state
     this.hold ();
-#if SUPPORT_TWITTER
-    new Backend.Twitter.Server (Config.TWITTER_OAUTH_KEY);
-#endif
     client.load_state.begin ((obj, res) => {
       try {
         client.load_state.end (res);
@@ -289,10 +269,4 @@ public class Cawbird : Adw.Application {
    * Stores the trailing tags setting.
    */
   private bool trailing_tags_shown_store;
-
-  /**
-   * Stores the internal links setting.
-   */
-  private bool internal_links_shown_store;
-
 }

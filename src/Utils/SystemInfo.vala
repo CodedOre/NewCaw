@@ -75,11 +75,6 @@ namespace SystemInfo {
 #else
     info_string += "- Mastodon: disabled\n";
 #endif
-#if SUPPORT_TWITTER
-    info_string += "- Twitter: enabled\n";
-#else
-    info_string += "- Twitter: disabled\n";
-#endif
 
     return info_string;
   }

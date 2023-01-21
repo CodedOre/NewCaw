@@ -60,22 +60,6 @@ if mastodon_backend
     'Mastodon/Utils/TextParser.vala'
   ]
 endif
-if twitter_backend
-  libfiles += [
-    'Twitter/Content/Media.vala',
-    'Twitter/Content/Post.vala',
-    'Twitter/Content/User.vala',
-    'Twitter/Organization/HomeTimeline.vala',
-    'Twitter/Organization/Thread.vala',
-    'Twitter/Organization/UserTimeline.vala',
-    'Twitter/System/Server.vala',
-    'Twitter/System/Session.vala',
-    'Twitter/System/SessionAuth.vala',
-    'Twitter/System/SessionCalls.vala',
-    'Twitter/Utils/ParseUtils.vala',
-    'Twitter/Utils/TextUtils.vala'
-  ]
-endif
 
 backendsrc = include_directories('.')
 
