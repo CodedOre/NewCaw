@@ -77,17 +77,10 @@ public class Cawbird : Adw.Application {
    * Initialize the client and open the first window.
    */
   protected override void activate () {
-    Backend.Client client;
-    // Initializes the backend client
-    try {
-      client = new Backend.Client(Config.APPLICATION_ID,
-        Config.PROJECT_NAME,
-        "https://github.com/CodedOre/NewCaw",
-        "cawbird://authenticate");
-    } catch (Error e) {
-      critical (@"Failed to load program state: $(e.message)");
-      return;
-    }
+    Backend.Client client = new Backend.Client(Config.APPLICATION_ID,
+                                               Config.PROJECT_NAME,
+                                               "https://github.com/CodedOre/NewCaw",
+                                               "cawbird://authenticate");
 
     // Load the previous program state
     this.hold ();
