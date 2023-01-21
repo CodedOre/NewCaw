@@ -384,9 +384,13 @@ public partial class Backend.Client : Object {
     }
 
     // Remove all servers not used anymore
-    for (uint i = 0; i < servers.get_n_items (); i++) {
-      if (! (i in used_servers)) {
-        var server = servers.get_item (i) as Server;
+    for (uint i = servers.get_n_items (); i > 0; i--) {
+      // Subtract one in the loop because we're dealing with unsigned ints
+      // and so iterating the _actual_ index causes us to loop round to uint.max
+      // or skip item 0, depending on conditions.
+      uint idx = i - 1;
+      if (! (idx in used_servers)) {
+        var server = servers.get_item (idx) as Server;
         try {
           servers.remove (server);
         } catch (Error e) {
