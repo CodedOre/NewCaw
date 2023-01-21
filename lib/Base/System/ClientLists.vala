@@ -72,7 +72,7 @@ public abstract class Backend.ClientList <T> : ListModel, Object {
    *
    * @return The right item if found, else null.
    */
-  internal T? find <G> (G needle, ArraySearchFunc<G,T> equal_func) {
+  internal T? find <G> (G needle, ArraySearchFunc<T, G> equal_func) {
     uint? index;
     if (store.find_custom <G> (needle, equal_func, out index)) {
       return store.get (index);
