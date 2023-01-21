@@ -123,8 +123,9 @@ namespace SystemInfo {
   private string get_system_info () {
     string info_string = "";
 
-    string os_name    = Environment.get_os_info ("NAME");
-    string os_version = Environment.get_os_info ("VERSION");
+    string os_name    = Environment.get_os_info ("NAME") ?? _("UNKNOWN");
+    string os_version = (Environment.get_os_info ("VERSION") ?? Environment.get_os_info ("VERSION_ID"))
+                        ?? _("UNKNOWN");
     bool   in_flatpak = FileUtils.test ("/.flatpak-info", EXISTS);
 
     info_string += "System:\n";
