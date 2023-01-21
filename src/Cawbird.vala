@@ -80,7 +80,7 @@ public class Cawbird : Adw.Application {
     Backend.Client client;
     // Initializes the backend client
     try {
-      client = new Backend.Client("id",
+      client = new Backend.Client(Config.APPLICATION_ID,
         Config.PROJECT_NAME,
         "https://github.com/CodedOre/NewCaw",
         "cawbird://authenticate");
