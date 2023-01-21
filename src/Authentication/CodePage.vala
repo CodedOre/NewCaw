@@ -56,7 +56,7 @@ public class Authentication.CodePage : Gtk.Widget {
     }
 
     // Connect auth stop
-    view.moving_back.connect (clear_page);
+    view.changing_page.connect (clear_page);
   }
 
   /**

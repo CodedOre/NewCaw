@@ -51,7 +51,7 @@ public class Authentication.ServerPage : Gtk.Widget {
     }
 
     // Connect server auth stop
-    view.moving_back.connect (clear_page);
+    view.changing_page.connect (clear_page);
   }
 
   /**

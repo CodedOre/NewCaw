@@ -69,15 +69,15 @@ public class AuthView : Gtk.Widget {
   /**
    * Signal for pages when moving backwards.
    */
-  public signal void moving_back ();
+  public signal void changing_page ();
 
   /**
    * Run when moving to a previous page.
    */
   [GtkCallback]
-  private void on_move_back () {
+  private void on_change_page () {
     // Signal move to pages
-    moving_back ();
+    changing_page ();
 
     // Get the current child
     Adw.LeafletPage page = auth_leaflet.get_page (auth_leaflet.visible_child);
@@ -95,6 +95,14 @@ public class AuthView : Gtk.Widget {
       // Forbid navigation backwards
       back_button.visible            = false;
       auth_leaflet.can_navigate_back = false;
+      // And save the state
+      try {
+        Backend.Client.instance.store_state();
+      }
+      catch (Error e) {
+        warning (@"Failed to authenticate account: $(e.message)");
+        move_to_previous();
+      }
     } else {
       // Update the back button
       back_button.label = _("Back");

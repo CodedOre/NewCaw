@@ -47,7 +47,7 @@ public class Authentication.LoadPage : Gtk.Widget {
     }
 
     // Connect load stop
-    view.moving_back.connect (stop_load);
+    view.changing_page.connect (stop_load);
   }
 
   /**
