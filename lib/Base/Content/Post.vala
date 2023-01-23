@@ -134,10 +134,11 @@ public abstract class Backend.Post : Object {
    * Adds the favourite/like/platform-equivalent flag to the post. If the post
    * is already favourited/liked then this is a noop and no exception will be thrown.
    *
+   * @returns This post object, which may have been updated if the platform supports it
    * @throws Error Any errors while favouriting, such as unauthorised actions, missing posts, or network issues
    */
-  public async void favourite () throws Error {
-    yield this.session.favourite_post (this);
+  public async Backend.Post favourite () throws Error {
+    return yield this.session.favourite_post (this);
   }
 
   /**
@@ -146,10 +147,11 @@ public abstract class Backend.Post : Object {
    * Removes the favourite/like/platform-equivalent flag from the post. If the post
    * is not favourited/liked then this is a noop and no exception will be thrown.
    *
+   * @returns This post object, which may have been updated if the platform supports it
    * @throws Error Any errors while unfavouriting, such as unauthorised actions, missing posts, or network issues
    */
-   public async void unfavourite () throws Error {
-    yield this.session.unfavourite_post (this);
+   public async Backend.Post unfavourite () throws Error {
+    return yield this.session.unfavourite_post (this);
    }
 
   /**
@@ -158,11 +160,11 @@ public abstract class Backend.Post : Object {
    * Reblogs the post to the user's timeline. If the post is already reblogged then this is a noop
    * and no exception will be thrown.
    *
-   * @return A Post object representing the reposted post in the user's timeline
+   * @return A Post object representing the reposted post in the user's timeline (if provided by the platform)
    *
    * @throws Error Any errors while reblogging, such as unauthorised actions, missing posts, or network issues
    */
-   public async Backend.Post reblog () throws Error {
+   public async Backend.Post? reblog () throws Error {
     return yield this.session.reblog_post (this);
    }
 
@@ -172,10 +174,11 @@ public abstract class Backend.Post : Object {
    * Removes the reblog from the user's timeline. If the post is not reblogged then this is a noop
    * and no exception will be thrown.
    *
+   * @returns the unreblogged post (if available)
    * @throws Error Any errors while un-reblogging, such as unauthorised actions, missing posts, or network issues
    */
-   public async void unreblog () throws Error {
-    yield this.session.unreblog_post (this);
+   public async Backend.Post? unreblog () throws Error {
+    return yield this.session.unreblog_post (this);
    }
 
    /*

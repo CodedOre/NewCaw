@@ -60,11 +60,11 @@ public class PostActions : Gtk.Widget {
       unbind(ref repost_count_binding);
       unbind(ref reply_count_binding);
       if (is_favourited_signal != 0) {
-        notify["is-favourited"].disconnect(set_like_counter_state);
+        displayed_post.notify["is-favourited"].disconnect(set_like_counter_state);
         is_favourited_signal = 0;
       }
       if (is_reposted_signal != 0) {
-        notify["is-reposted"].disconnect(set_repost_counter_state);
+        displayed_post.notify["is-reposted"].disconnect(set_repost_counter_state);
         is_reposted_signal = 0;
       }
 
@@ -86,8 +86,8 @@ public class PostActions : Gtk.Widget {
           targetval.set_string (DisplayUtils.shortened_metric (src));
           return true;
         });
-        is_favourited_signal = notify["is-favourited"].connect(set_like_counter_state);
-        is_favourited_signal = notify["is-reposted"].connect(set_repost_counter_state);
+        is_favourited_signal = displayed_post.notify["is-favourited"].connect(set_like_counter_state);
+        is_favourited_signal = displayed_post.notify["is-reposted"].connect(set_repost_counter_state);
 
         likes_button.sensitive = true;
         reposts_button.sensitive = true;

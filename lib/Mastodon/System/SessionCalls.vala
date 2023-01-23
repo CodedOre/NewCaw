@@ -132,7 +132,7 @@ public partial class Backend.Mastodon.Session : Backend.Session {
     call.set_method ("POST");
     call.set_function (@"api/v1/statuses/$(post.id)/reblog");
 
-    // Send the message and return the updated post
+    // Send the message and return the reblog post
     Json.Node json = yield server.call (call);
     return load_post (json.get_object ());
   }
@@ -143,7 +143,7 @@ public partial class Backend.Mastodon.Session : Backend.Session {
     call.set_method ("POST");
     call.set_function (@"api/v1/statuses/$(post.id)/unreblog");
 
-    // Send the message and return the updated post
+    // Send the message and return the unreblogged post
     Json.Node json = yield server.call (call);
     return load_post (json.get_object ());
   }
