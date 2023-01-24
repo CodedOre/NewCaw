@@ -7,6 +7,9 @@
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
    version="1.1"
    id="svg16"
+   inkscape:export-filename="reposted-symbolic.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -21,10 +24,10 @@
      inkscape:pageshadow="0"
      inkscape:pageopacity="0"
      inkscape:pagecheckerboard="1"
-     showgrid="false"
-     inkscape:zoom="35.443728"
-     inkscape:cx="23.544363"
-     inkscape:cy="18.691601"
+     showgrid="true"
+     inkscape:zoom="128"
+     inkscape:cx="7.3476562"
+     inkscape:cy="6.8476562"
      inkscape:window-width="2560"
      inkscape:window-height="1372"
      inkscape:window-x="0"
@@ -33,7 +36,18 @@
      inkscape:current-layer="g14"
      id="namedview2"
      inkscape:showpageshadow="2"
-     inkscape:deskcolor="#d1d1d1" />
+     inkscape:deskcolor="#d1d1d1"
+     showguides="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid794"
+       dotted="true"
+       spacingx="1"
+       spacingy="1"
+       empspacing="4"
+       originx="0"
+       originy="0" />
+  </sodipodi:namedview>
   <g
      fill="#474747"
      stroke-width="2.05545"
@@ -41,17 +55,17 @@
      id="g14">
     <path
        style="fill:#4d4d4d;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.02773px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 6144.7824,1456.4182 1.6775,1.7667 1.6643,0.011 0.033,-2.0523 -0.5371,-0.6373 2.1924,0.01 -0.015,4.1509 -4.9182,-0.01 c 0,0 -1.0325,-0.2139 -1.0156,-1.5185 0.017,-1.3046 0.9187,-1.7205 0.9187,-1.7205 z"
+       d="m 6144.8107,1456.9734 1.295,1.2857 h 2.672 v -1.5416 l -0.5138,-1.0142 1.6443,-0.013 v 4.1109 l -4.9533,-0.025 c 0,0 -1.0163,-0.1751 -1.0042,-1.3091 0.012,-1.134 0.86,-1.4934 0.86,-1.4934 z"
        id="path475"
        sodipodi:nodetypes="cccccccczc" />
     <g
        stroke-width="1.98819"
        id="g12"
-       transform="translate(-2.8807212e-5,0.78336847)">
+       transform="matrix(1.0048041,0,0,1,-29.5372,0.96769746)">
       <g
          id="g6109">
         <path
-           d="m 6154.6518,1461.2307 -0.028,-1.573 -9.9622,-0.027 c -2.135,-0.6239 -1.8071,-3.6229 -0.4561,-4.5383 l -0.8575,-0.9532 c -3.1875,2.1382 -1.532,7.0767 1.621,7.0618 z"
+           d="m 6154.9125,1461.4023 v -1.5416 h -10.2281 c 0,0 -1.6355,-0.2887 -1.6506,-2.0554 -0.015,-1.7667 1.1392,-2.5693 1.1392,-2.5693 l -1.0228,-1.0278 c 0,0 -1.5249,0.4715 -1.5129,3.5971 0.012,3.1256 3.0471,3.597 3.0471,3.597 z"
            font-variant-ligatures="normal"
            font-variant-position="normal"
            font-variant-caps="normal"
@@ -69,15 +83,16 @@
            isolation="auto"
            mix-blend-mode="normal"
            id="path8"
-           sodipodi:nodetypes="ccccccc" />
+           sodipodi:nodetypes="ccczcczcc" />
         <path
-           d="m 6152.1287,1463.7835 -0.011,-0.6055 c 0,-0.2486 0.1258,-0.5117 0.3028,-0.6954 l 1.8752,-2.0367 -1.8388,-2.0064 c -0.1761,-0.1838 -0.2913,-0.4471 -0.3028,-0.6965 l -0.03,-0.6439 h 0.4297 c 0.2998,9e-4 0.5339,0.087 0.7254,0.2728 l 2.6688,3.0745 -2.8125,3.0778 c -0.1915,0.1838 -0.4256,0.2708 -0.7254,0.2708 z"
+           d="m 6152.1159,1463.9604 -0.011,-0.6055 c 0,-0.2486 0.1258,-0.5117 0.3028,-0.6954 l 1.8753,-2.0367 -1.8389,-2.0064 c -0.1761,-0.1838 -0.2913,-0.4471 -0.3028,-0.6965 l -0.03,-0.6439 h 0.4297 c 0.2998,9e-4 0.534,0.087 0.7255,0.2728 l 2.6688,3.0745 -2.8125,3.0778 c -0.1916,0.1838 -0.4257,0.2708 -0.7255,0.2708 z"
            text-indent="0"
            text-align="start"
            text-decoration-line="none"
            text-transform="none"
            id="path10"
-           sodipodi:nodetypes="cscccscsccccc" />
+           sodipodi:nodetypes="cscccscsccccc"
+           style="stroke-width:1.98822" />
       </g>
     </g>
     <use
@@ -85,12 +100,12 @@
        y="0"
        xlink:href="#g12"
        id="use6156"
-       transform="rotate(180,6149.8102,1457.6325)" />
+       transform="rotate(180,6149.8137,1457.7369)" />
     <use
        x="0"
        y="0"
        xlink:href="#path475"
        id="use6158"
-       transform="rotate(180,6149.7549,1457.591)" />
+       transform="rotate(180,6149.8056,1457.7452)" />
   </g>
 </svg>

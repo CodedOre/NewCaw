@@ -23,7 +23,7 @@
      inkscape:pagecheckerboard="1"
      showgrid="false"
      inkscape:zoom="25.0625"
-     inkscape:cx="3.2917706"
+     inkscape:cx="3.3715711"
      inkscape:cy="15.062344"
      inkscape:window-width="2560"
      inkscape:window-height="1372"
@@ -42,15 +42,11 @@
     <g
        stroke-width="1.98819"
        id="g12"
-       transform="translate(0,5.3513327e-4)" />
-    <g
-       stroke-width="1.98819"
-       id="g12-6"
-       transform="translate(2.4913649e-4,0.78340438)">
+       transform="matrix(1.0048041,0,0,1,-29.537016,0.96722218)">
       <g
          id="g6109">
         <path
-           d="m 6154.6518,1461.2307 -0.028,-1.573 -9.9622,-0.027 c -2.135,-0.6239 -1.8071,-3.6229 -0.4561,-4.5383 l -0.8575,-0.9532 c -3.1875,2.1382 -1.532,7.0767 1.621,7.0618 z"
+           d="m 6154.9125,1461.4023 v -1.5416 h -10.2281 c 0,0 -1.6355,-0.2887 -1.6506,-2.0554 -0.015,-1.7667 1.1392,-2.5693 1.1392,-2.5693 l -1.0228,-1.0278 c 0,0 -1.5249,0.4715 -1.5129,3.5971 0.012,3.1256 3.0471,3.597 3.0471,3.597 z"
            font-variant-ligatures="normal"
            font-variant-position="normal"
            font-variant-caps="normal"
@@ -68,22 +64,23 @@
            isolation="auto"
            mix-blend-mode="normal"
            id="path8"
-           sodipodi:nodetypes="ccccccc" />
+           sodipodi:nodetypes="ccczcczcc" />
         <path
-           d="m 6152.1287,1463.7835 -0.011,-0.6055 c 0,-0.2486 0.1258,-0.5117 0.3028,-0.6954 l 1.8752,-2.0367 -1.8388,-2.0064 c -0.1761,-0.1838 -0.2913,-0.4471 -0.3028,-0.6965 l -0.03,-0.6439 h 0.4297 c 0.2998,9e-4 0.5339,0.087 0.7254,0.2728 l 2.6688,3.0745 -2.8125,3.0778 c -0.1915,0.1838 -0.4256,0.2708 -0.7254,0.2708 z"
+           d="m 6152.1159,1463.9604 -0.011,-0.6055 c 0,-0.2486 0.1258,-0.5117 0.3028,-0.6954 l 1.8753,-2.0367 -1.8389,-2.0064 c -0.1761,-0.1838 -0.2913,-0.4471 -0.3028,-0.6965 l -0.03,-0.6439 h 0.4297 c 0.2998,9e-4 0.534,0.087 0.7255,0.2728 l 2.6688,3.0745 -2.8125,3.0778 c -0.1916,0.1838 -0.4257,0.2708 -0.7255,0.2708 z"
            text-indent="0"
            text-align="start"
            text-decoration-line="none"
            text-transform="none"
            id="path10"
-           sodipodi:nodetypes="cscccscsccccc" />
+           sodipodi:nodetypes="cscccscsccccc"
+           style="stroke-width:1.98822" />
       </g>
     </g>
     <use
        x="0"
        y="0"
-       xlink:href="#g12-6"
+       xlink:href="#g12"
        id="use6156"
-       transform="rotate(180,6149.8106,1457.6327)" />
+       transform="rotate(180,6149.8139,1457.7365)" />
   </g>
 </svg>
