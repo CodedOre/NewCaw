@@ -85,17 +85,9 @@ public class Backend.Mastodon.Post : Backend.Post {
     text = Backend.Utils.TextUtils.format_text (text_modules);
 
     // Set the referenced post
-    if (! json.get_null_member ("reblog")) {
-      referenced_post = session.load_post (json.get_object_member ("reblog"));
-      // Bubble changes to the "is reposted" state of the referenced post through to this post.
-      // This handles the situation where the user reblogs a reblog, which then loads a response
-      // with the original post in but not this post.
-      // FIXME: Doesn't seem to be triggering correctly
-      referenced_post.bind_property ("is-reposted", this, "is-reposted", GLib.BindingFlags.SYNC_CREATE);
-    }
-    else {
-      referenced_post = null;
-    }
+    referenced_post = ! json.get_null_member ("reblog")
+                        ? session.load_post (json.get_object_member ("reblog"))
+                        : null;
 
     // Get media attachments
     Backend.Media[] parsed_media = {};
