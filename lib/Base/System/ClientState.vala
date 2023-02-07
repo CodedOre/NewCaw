@@ -78,7 +78,7 @@ public partial class Backend.Client : Object {
     Variant stored_servers = state_variant.lookup_value ("Servers", null);
     VariantIter server_iter = stored_servers.iterator ();
     Variant server_variant;
-    while (server_iter.next ("av", out server_variant)) {
+    while (server_iter.next ("v", out server_variant)) {
       try {
         var server = unpack_server (server_variant);
         servers.add (server);
@@ -91,7 +91,7 @@ public partial class Backend.Client : Object {
     Variant stored_sessions = state_variant.lookup_value ("Sessions", null);
     VariantIter session_iter = stored_sessions.iterator ();
     Variant session_variant;
-    while (session_iter.next ("av", out session_variant)) {
+    while (session_iter.next ("v", out session_variant)) {
       try {
         var session = yield unpack_session (session_variant);
         sessions.add (session);
@@ -111,11 +111,7 @@ public partial class Backend.Client : Object {
     var state_builder = new VariantBuilder (new VariantType ("a{sv}"));
 
     // Check for unused servers
-    try {
-      check_servers ();
-    } catch (Error e) {
-      throw e;
-    }
+    check_servers ();
 
     // Pack each server into the state variant
     var server_builder = new VariantBuilder (new VariantType ("av"));
@@ -154,9 +150,9 @@ public partial class Backend.Client : Object {
     PlatformEnum platform_prop;
 
     // Attempt to load the server data
-    variant.lookup ("uuid", "s", out uuid_prop);
-    variant.lookup ("platform", "s", out platform_name);
-    variant.lookup ("domain", "s", out domain_prop);
+    variant.lookup ("uuid", "ms", out uuid_prop);
+    variant.lookup ("platform", "ms", out platform_name);
+    variant.lookup ("domain", "ms", out domain_prop);
     platform_prop = PlatformEnum.from_name (platform_name);
 
     // Check that all data could be retrieved
@@ -206,10 +202,10 @@ public partial class Backend.Client : Object {
     PlatformEnum platform_prop;
 
     // Attempt to load the server data
-    variant.lookup ("uuid", "s", out uuid_prop);
-    variant.lookup ("platform", "s", out platform_name);
-    variant.lookup ("server_uuid", "s", out server_prop);
-    variant.lookup ("username", "s", out username_prop);
+    variant.lookup ("uuid", "ms", out uuid_prop);
+    variant.lookup ("platform", "ms", out platform_name);
+    variant.lookup ("server_uuid", "ms", out server_prop);
+    variant.lookup ("username", "ms", out username_prop);
     platform_prop = PlatformEnum.from_name (platform_name);
 
     // Check that all data could be retrieved
@@ -228,18 +224,16 @@ public partial class Backend.Client : Object {
     }
 
     // Look up the server for the session
-    Server server;
+    Server server = null;
     switch (platform_prop) {
 #if SUPPORT_MASTODON
       case MASTODON:
-        server = servers.find <string> (server_prop, (needle, item) => { return item.identifier == needle; });
-        break;
-#endif
-
-#if SUPPORT_TWITTER
-      case TWITTER:
-        // Use the global Twitter server
-        server = Twitter.Server.instance;
+        foreach (Server srv in servers) {
+          if (srv.identifier == server_prop) {
+            server = srv;
+            break;
+          }
+        }
         break;
 #endif
 
@@ -249,7 +243,7 @@ public partial class Backend.Client : Object {
 
     // Check that there is a valid server
     if (server == null) {
-      throw new StateError.INVALID_DATA ("Associated Server can't be found");
+      throw new StateError.INVALID_DATA (@"Associated Server $(server_prop) can't be found for $(username_prop) on $(access_prop)");
     }
 
     // Return the created instance for the session
@@ -361,6 +355,16 @@ public partial class Backend.Client : Object {
     }
   }
 
+  public void register_session(Session session) throws Error {
+    sessions.add(session);
+    store_state ();
+  }
+
+  public void unregister_session(Session session) throws Error {
+    sessions.remove(session);
+    store_state ();
+  }
+
   /**
    * Checks if an server is still needed.
    *
@@ -380,9 +384,13 @@ public partial class Backend.Client : Object {
     }
 
     // Remove all servers not used anymore
-    for (uint i = 0; i < servers.get_n_items (); i++) {
-      if (! (i in used_servers)) {
-        var server = servers.get_item (i) as Server;
+    for (uint i = servers.get_n_items (); i > 0; i--) {
+      // Subtract one in the loop because we're dealing with unsigned ints
+      // and so iterating the _actual_ index causes us to loop round to uint.max
+      // or skip item 0, depending on conditions.
+      uint idx = i - 1;
+      if (! (idx in used_servers)) {
+        var server = servers.get_item (idx) as Server;
         try {
           servers.remove (server);
         } catch (Error e) {

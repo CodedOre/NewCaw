@@ -95,7 +95,7 @@ public class Preferences.SessionSettings : Gtk.Widget {
     }
 
     // Close the subpage
-    this.activate_action ("preferences.close-subpage", null);
+    this.activate_action ("preferences.close-subpage", "Close");
   }
 
   /**

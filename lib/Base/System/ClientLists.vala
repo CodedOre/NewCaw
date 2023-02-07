@@ -72,7 +72,7 @@ public abstract class Backend.ClientList <T> : ListModel, Object {
    *
    * @return The right item if found, else null.
    */
-  internal T? find <G> (G needle, ArraySearchFunc<G,T> equal_func) {
+  internal T? find <G> (G needle, ArraySearchFunc<T, G> equal_func) {
     uint? index;
     if (store.find_custom <G> (needle, equal_func, out index)) {
       return store.get (index);
@@ -102,13 +102,6 @@ public abstract class Backend.ClientList <T> : ListModel, Object {
    * @throws Error Errors when adding the access token doesn't work.
    */
   internal void add (T item) throws Error {
-#if SUPPORT_TWITTER
-    // Don't add Twitter servers
-    if (item is Backend.Twitter.Server) {
-      return;
-    }
-#endif
-
     // Stop if item is already in list
     if (store.find (item)) {
       return;
@@ -190,30 +183,36 @@ public abstract class Backend.ClientList <T> : ListModel, Object {
      *
      * @return If a next value exists.
      */
-  	public bool next () {
+    public bool next () {
       assert (iterated != null);
-  	  return iterated.store.get (iter_i++) != null;
-  	}
+      iter_i++;
+      // NOTE: the docs say that we should be able to get an item and check for null if it is outside the bounds
+      // (https://valadoc.org/glib-2.0/GLib.GenericArray.@get.html)
+      // But Vala compiles down to use `g_ptr_array_index`, which doesn't do a bounds check
+      // (https://docs.gtk.org/glib/func.ptr_array_index.html) and so we may get a segfault
+      // when we get a non-null ghost item that the code then tries a `g_object_ref` on.
+      return (iter_i < iterated.get_n_items ());
+    }
 
     /**
      * Retrieves the current value.
      *
      * @return The value at the current iteration.
      */
-  	public new T? get () {
+    public new T? get () {
       assert (iterated != null);
-  	  return iterated.store.get (iter_i);
-  	}
+      return iterated.store.get (iter_i);
+    }
 
-  	/**
-  	 * The list iterated through.
-  	 */
-  	private ClientList iterated;
+    /**
+     * The list iterated through.
+     */
+    private ClientList iterated;
 
     /**
      * Counts the current iteration.
      */
-  	private uint iter_i = -1;
+    private uint iter_i = -1;
 
   }
 

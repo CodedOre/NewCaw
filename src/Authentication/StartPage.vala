@@ -22,6 +22,8 @@ using GLib;
 
 /**
  * The first page for the authentication process.
+ *
+ * Currently unused because we now only support Mastodon
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Authentication/StartPage.ui")]
 public class Authentication.StartPage : Gtk.Widget {
@@ -31,10 +33,6 @@ public class Authentication.StartPage : Gtk.Widget {
   private unowned Adw.StatusPage page_content;
   [GtkChild]
   private unowned Gtk.Button mastodon_button;
-  [GtkChild]
-  private unowned Gtk.Button twitter_button;
-  [GtkChild]
-  private unowned WaitingButton twitter_waiting;
 
   /**
    * The AuthView holding this page.
@@ -55,27 +53,12 @@ public class Authentication.StartPage : Gtk.Widget {
     mastodon_button.visible = true;
     mastodon_button.clicked.connect (begin_mastodon_auth);
 #endif
-#if SUPPORT_TWITTER
-    // Enable the first Twitter login button
-    twitter_button.visible = true;
-    twitter_button.clicked.connect (begin_twitter_auth);
-#endif
   }
 
   /**
    * Activated when back button is activated.
    */
   public void on_back_action () {
-  }
-
-  /**
-   * Block UI for Twitter authentication.
-   *
-   * @param block If the UI should be blocked.
-   */
-  private void waiting_for_twitter (bool block) {
-    mastodon_button.sensitive       = ! block;
-    twitter_waiting.waiting         = block;
   }
 
 #if SUPPORT_MASTODON
@@ -85,52 +68,6 @@ public class Authentication.StartPage : Gtk.Widget {
   private void begin_mastodon_auth () {
     // Move to server page
     view.move_to_next ();
-  }
-#endif
-
-#if SUPPORT_TWITTER
-  /**
-   * Begins the Twitter authentication.
-   */
-  private void begin_twitter_auth () {
-    // Check if authentication is already running
-    if (twitter_waiting.waiting) {
-      // Stop authentication
-      stop_twitter_auth ();
-    } else {
-      // Block the UI
-      waiting_for_twitter (true);
-
-      // Begin authentication
-      run_twitter_auth.begin ();
-    }
-  }
-
-  /**
-   * Runs the Twitter authentication.
-   */
-  private async void run_twitter_auth () {
-    // Begin authentication
-    try {
-      view.account = new Backend.Twitter.Account ();
-      string auth_url = view.account.init_authentication ();
-      Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
-      stop_twitter_auth ();
-      view.skip_server ();
-    } catch (Error e) {
-      warning (@"Could not authenticate at server: $(e.message)");
-      stop_twitter_auth ();
-      return;
-    }
-  }
-
-  /**
-   * Stops the Twitter authentication.
-   */
-  private void stop_twitter_auth () {
-
-    // Unblock the UI
-    waiting_for_twitter (false);
   }
 #endif
 

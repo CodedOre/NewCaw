@@ -14,12 +14,6 @@
       </description>
       <default>false</default>
     </key>
-    <key type="b" name="internal-links">
-      <description>
-        If to show links to media or quotes (Twitter only).
-      </description>
-      <default>false</default>
-    </key>
     <key type="b" name="double-click-activation">
       <description>
         If a double click is required to activate posts.
@@ -34,15 +28,6 @@
 	      The Size for the MediaDialog.
 	    </description>
 	    <default>(650,450)</default>
-	  </key>
-	</schema>
-  <!-- Debugging Settings -->
-	<schema id="uk.co.ibboard.Cawbird.debug" path="/uk/co/ibboard/Cawbird/debug/">
-	  <key type="s" name="twitter-oauth-key">
-	    <description>
-	      A custom client key to authenticate Cawbird with Twitter.
-	    </description>
-	    <default>""</default>
 	  </key>
 	</schema>
 </schemalist>

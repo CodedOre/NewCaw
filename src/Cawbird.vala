@@ -39,20 +39,6 @@ public class Cawbird : Adw.Application {
   }
 
   /**
-   * Property for the internal links setting.
-   */
-  protected bool internal_links_shown {
-    get {
-      return internal_links_shown_store;
-    }
-    set {
-      internal_links_shown_store = value;
-      Backend.Utils.TextFormats.set_format_flag (SHOW_QUOTE_LINKS, value);
-      Backend.Utils.TextFormats.set_format_flag (SHOW_MEDIA_LINKS, value);
-    }
-  }
-
-  /**
    * Create the object.
    */
   public Cawbird () {
@@ -85,19 +71,16 @@ public class Cawbird : Adw.Application {
     settings.bind ("trailing-tags",
                    this, "trailing-tags-shown",
                    GLib.SettingsBindFlags.DEFAULT);
-    settings.bind ("internal-links",
-                   this, "internal-links-shown",
-                   GLib.SettingsBindFlags.DEFAULT);
   }
 
   /**
    * Initialize the client and open the first window.
    */
   protected override void activate () {
-    // Initializes the backend client
-    var client = new Backend.Client (Config.PROJECT_NAME,
-                                     "https://github.com/CodedOre/NewCaw",
-                                     "cawbird://authenticate");
+    Backend.Client client = new Backend.Client(Config.APPLICATION_ID,
+                                               Config.PROJECT_NAME,
+                                               "https://github.com/CodedOre/NewCaw",
+                                               "cawbird://authenticate");
 
     // Load the previous program state
     this.hold ();
@@ -163,7 +146,7 @@ public class Cawbird : Adw.Application {
           string? state = uri_param ["state"];
           string? code  = uri_param ["code"];
           if (state != null && code != null) {
-            // Session.instance.auth_callback (state, code);
+            Backend.Client.instance.auth_callback (state, code);
           } else {
             warning ("Failed to get authentication secrets from callback.");
           }
@@ -279,10 +262,4 @@ public class Cawbird : Adw.Application {
    * Stores the trailing tags setting.
    */
   private bool trailing_tags_shown_store;
-
-  /**
-   * Stores the internal links setting.
-   */
-  private bool internal_links_shown_store;
-
 }

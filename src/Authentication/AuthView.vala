@@ -36,9 +36,9 @@ public class AuthView : Gtk.Widget {
 
   // UI-Elements of the pages
   [GtkChild]
-  private unowned Adw.LeafletPage start_page;
-  [GtkChild]
   private unowned Adw.LeafletPage server_page;
+  [GtkChild]
+  private unowned Adw.LeafletPage browser_page;
   [GtkChild]
   private unowned Adw.LeafletPage code_page;
   [GtkChild]
@@ -52,9 +52,14 @@ public class AuthView : Gtk.Widget {
 #endif
 
   /**
-   * The account which is to be authenticated.
+   * The session which is to be authenticated.
    */
-  public Backend.Account? account { get; set; default = null; }
+  public Backend.Session? account { get; set; default = null; }
+
+  /**
+   * The session auth that creates the session
+   */
+  public Backend.SessionAuth? auth { get; set; default = null; }
 
   /**
    * Activated when the AuthView is done.
@@ -64,36 +69,40 @@ public class AuthView : Gtk.Widget {
   /**
    * Signal for pages when moving backwards.
    */
-  public signal void moving_back ();
+  public signal void changing_page ();
 
   /**
    * Run when moving to a previous page.
    */
   [GtkCallback]
-  private void on_move_back () {
+  private void on_change_page () {
     // Signal move to pages
-    moving_back ();
+    changing_page ();
 
     // Get the current child
     Adw.LeafletPage page = auth_leaflet.get_page (auth_leaflet.visible_child);
 
-    if (page == start_page) {
+    if (page == server_page) {
       // Update the back button
       back_button.label = _("Cancel");
 
-      // Clear account and server cache
+      // Clear account cache
       account = null;
-#if SUPPORT_MASTODON
-      server  = null;
-#endif
 
       // Make page definitely navigatable
-      server_page.navigatable = true;
       code_page.navigatable = true;
     } else if (page == final_page) {
       // Forbid navigation backwards
       back_button.visible            = false;
       auth_leaflet.can_navigate_back = false;
+      // And save the state
+      try {
+        Backend.Client.instance.store_state();
+      }
+      catch (Error e) {
+        warning (@"Failed to authenticate account: $(e.message)");
+        move_to_previous();
+      }
     } else {
       // Update the back button
       back_button.label = _("Back");
@@ -109,7 +118,7 @@ public class AuthView : Gtk.Widget {
     // Get the currently active page
     Adw.LeafletPage page = auth_leaflet.get_page (auth_leaflet.visible_child);
 
-    if (page == start_page) {
+    if (page == server_page) {
       // Closes the authentication
       close_auth ();
     } else {
@@ -123,6 +132,14 @@ public class AuthView : Gtk.Widget {
    */
   public void skip_server () {
     server_page.navigatable = false;
+    auth_leaflet.navigate (FORWARD);
+  }
+
+  /**
+   * Hides the browser page for when we want to go straight to OOB
+   */
+  public void skip_browser () {
+    browser_page.navigatable = false;
     auth_leaflet.navigate (FORWARD);
   }
 

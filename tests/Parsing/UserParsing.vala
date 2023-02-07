@@ -37,12 +37,6 @@ void run_user_test (string module, string user_json, string check_json) {
       checked_user = Backend.Mastodon.User.from_json (user_object);
       break;
 #endif
-#if SUPPORT_TWITTER
-    case "Twitter":
-      Json.Object user_data = user_object.get_object_member ("data");
-      checked_user = Backend.Twitter.User.from_json (user_data);
-      break;
-#endif
     default:
       error ("No valid User could be created!");
   }
@@ -65,11 +59,6 @@ int main (string[] args) {
 #if SUPPORT_MASTODON
   Test.add_func ("/UserParsing/BasicUser/Mastodon", () => {
     run_user_test ("Mastodon", "BasicUser.json", "BasicChecks.json");
-  });
-#endif
-#if SUPPORT_TWITTER
-  Test.add_func ("/UserParsing/BasicUser/Twitter", () => {
-    run_user_test ("Twitter", "BasicUser.json", "BasicChecks.json");
   });
 #endif
 

@@ -1,10 +1,10 @@
 [Desktop Entry]
 # TRANSLATORS: Set by meson, do not translate
 Name=@app_name@
-GenericName=Twitter Client
+GenericName=Mastodon Client
 Comment=Your window to the social world
 # TRANSLATORS: Search terms to find this application, separated by semicolons. The list must end with a semicolon!
-Keywords=twitter;
+Keywords=mastodon;
 Exec=cawbird %U
 Type=Application
 Icon=@app_id@

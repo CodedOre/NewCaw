@@ -34,10 +34,6 @@ public class Preferences.AppearancesPage : Adw.PreferencesPage {
   [GtkChild]
   private unowned Gtk.Switch trailing_tags_switch;
   [GtkChild]
-  private unowned Adw.ActionRow internal_links_row;
-  [GtkChild]
-  private unowned Gtk.Switch internal_links_switch;
-  [GtkChild]
   private unowned Gtk.Switch double_click_activation_switch;
 
   /**
@@ -52,19 +48,9 @@ public class Preferences.AppearancesPage : Adw.PreferencesPage {
     settings.bind ("trailing-tags",
                    trailing_tags_switch, "active",
                    GLib.SettingsBindFlags.DEFAULT);
-    settings.bind ("internal-links",
-                   internal_links_switch, "active",
-                   GLib.SettingsBindFlags.DEFAULT);
     settings.bind ("double-click-activation",
                    double_click_activation_switch, "active",
                    GLib.SettingsBindFlags.DEFAULT);
-
-    // Display certain rows only when applicable
-#if SUPPORT_TWITTER
-    internal_links_row.visible = true;
-#else
-    internal_links_row.visible = false;
-#endif
 
     // Set up the example post
     display_example_post ();
@@ -76,9 +62,7 @@ public class Preferences.AppearancesPage : Adw.PreferencesPage {
   private void display_example_post () {
     // Define the path to the example json
     string? resource_id;
-#if SUPPORT_TWITTER
-    resource_id = "resource:///uk/co/ibboard/Cawbird/ui/Preferences/Examples/ExampleTwitterPost.json";
-#elif SUPPORT_MASTODON
+#if SUPPORT_MASTODON
     resource_id = "resource:///uk/co/ibboard/Cawbird/ui/Preferences/Examples/ExampleMastodonPost.json";
 #else
     warning ("No example JSON available for the page!");
@@ -97,12 +81,7 @@ public class Preferences.AppearancesPage : Adw.PreferencesPage {
       // Parse the resource to the json objects
       var json_parser = new Json.Parser ();
       json_parser.load_from_stream (stream);
-#if SUPPORT_TWITTER
-      Json.Object root          = json_parser.get_root ().get_object ();
-      Json.Object post_data     = root.get_object_member ("data");
-      Json.Object post_includes = root.get_object_member ("includes");
-      // example_post = Backend.Twitter.Post.from_json (post_data, post_includes);
-#elif SUPPORT_MASTODON
+#if SUPPORT_MASTODON
       Json.Object post_data = json_parser.get_root ().get_object ();
       // example_post = Backend.Mastodon.Post.from_json (post_data);
 #endif
