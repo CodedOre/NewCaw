@@ -32,6 +32,8 @@ public class UserCard : Gtk.Widget {
   [GtkChild]
   private unowned Gtk.Box infobox;
   [GtkChild]
+  private unowned Gtk.MenuButton options_button;
+  [GtkChild]
   private unowned UserAvatar user_avatar;
 
   /**
@@ -47,6 +49,17 @@ public class UserCard : Gtk.Widget {
       // Set's the UI for the new user
       user_avatar.user  = displayed_user != null ? displayed_user        : null;
       user_banner.media = displayed_user != null ? displayed_user.header : null;
+
+      // Set up options menu
+      if (displayed_user != null) {
+        string open_link_label   = _("Open on %s").printf (displayed_user.domain);
+        var    user_options_menu = new Menu ();
+        user_options_menu.append (open_link_label, "user.open-url");
+        user_options_menu.append (_("Copy Link to Clipboard"), "user.copy-url");
+        options_button.menu_model = user_options_menu;
+      } else {
+        options_button.menu_model = null;
+      }
     }
   }
 

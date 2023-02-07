@@ -135,6 +135,38 @@ public class UserDisplay : Gtk.Widget {
   }
 
   /**
+   * Run at initialization of the class.
+   */
+  class construct {
+    // Set up URL actions
+    install_action ("user.open-url", null, (widget, action) => {
+      // Get the instance for this
+      var display = widget as UserDisplay;
+
+      // Stop if user is null
+      if (display.user == null) {
+        return;
+      }
+
+      // Get the url and opens it
+      Gtk.show_uri (null, display.user.url, Gdk.CURRENT_TIME);
+    });
+    install_action ("user.copy-url", null, (widget, action) => {
+      // Get the instance for this
+      var display = widget as UserDisplay;
+
+      // Stop if post is null
+      if (display.user == null) {
+        return;
+      }
+
+      // Get the url and places it in the clipboard
+      Gdk.Clipboard clipboard = display.get_clipboard ();
+      clipboard.set_text (display.user.url);
+    });
+  }
+
+  /**
    * Updates the properties for an UserDisplay.
    */
   private async void update_item () {
