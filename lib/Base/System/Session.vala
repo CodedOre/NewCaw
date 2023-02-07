@@ -131,11 +131,25 @@ public abstract class Backend.Session : Object {
    *
    * @param id The id for the user.
    *
-   * @return The user for the given username.
+   * @return The user for the given id.
    *
    * @throws Error Any error that could happen while the user is pulled.
    */
   public abstract async User pull_user (string id) throws Error;
+
+  /**
+   * Retrieves an user using it's name.
+   *
+   * Performs a search for the user to load the user, and stores it in memory.
+   * Returns null if no direct hit can be made.
+   *
+   * @param name The name of the user.
+   *
+   * @return The user for the given username, or null if no user could be pulled.
+   *
+   * @throws Error Any error that could happen while the user is pulled.
+   */
+  public abstract async User? pull_user_by_name (string name) throws Error;
 
   /**
    * Loads an user from downloaded data.

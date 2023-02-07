@@ -129,6 +129,50 @@ public partial class Backend.Mastodon.Session : Backend.Session {
   }
 
   /**
+   * Retrieves an user using it's name.
+   *
+   * This is an platform-specific implementation of the abstract method
+   * defined in the base class, for more details see the base method.
+   */
+  public override async Backend.User? pull_user_by_name (string name) throws Error {
+    // Create the proxy call
+    Rest.ProxyCall call = proxy.new_call ();
+    call.set_method ("GET");
+    call.set_function (@"api/v2/search");
+    call.add_param ("type", "accounts");
+    call.add_param ("limit", "1");
+    call.add_param ("q", name);
+
+    // Perform the search
+    Json.Node json;
+    try {
+      json = yield server.call (call);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Retrieve the user object
+    Json.Object root = json.get_object ();
+    Json.Array users = root.get_array_member ("accounts");
+    Json.Object? user = users.get_length () > 0 ? users.get_object_element (0) : null;
+
+    // Check that the username matches the search
+    string? acct = user != null ? user.get_string_member ("acct") : null;
+    // Users on our own server don't have an domain in acct, while the mention
+    // has, so we check for an version extended with the domain as well.
+    string? homeacct = acct != null ? acct + "@" + server.domain : null;
+
+    // Warn if the user could not be determined
+    if (acct != name && homeacct != name) {
+      error (@"Failed to determine user for username \"$(name)\"");
+      return null;
+    }
+
+    // Hand the data over to load_data
+    return load_user (user);
+  }
+
+  /**
    * Loads an user from downloaded data.
    *
    * This is an platform-specific implementation of the abstract method

@@ -178,10 +178,10 @@ namespace DisplayUtils {
   /**
    * Opens a mentioned user in a new UserPage.
    *
-   * @string id The id of the mentioned user.
+   * @string name The name of the mentioned user.
    * @param widget The widget making the call.
    */
-  private async void open_mentioned_user (string id, Gtk.Widget widget) {
+  private async void open_mentioned_user (string name, Gtk.Widget widget) {
     Backend.User? mention = null;
 
     // Get the session for the widget
@@ -196,7 +196,7 @@ namespace DisplayUtils {
 
     // Load the user mentioned
     try {
-      mention = yield session.pull_user (id);
+      mention = yield session.pull_user_by_name (name);
     } catch (Error e) {
       warning (@"Failed to load mentioned user: $(e.message)\n");
       return;
