@@ -47,7 +47,7 @@ public class Authentication.LoadPage : Gtk.Widget {
     }
 
     // Connect load stop
-    view.moving_back.connect (stop_load);
+    view.changing_page.connect (stop_load);
   }
 
   /**
@@ -65,28 +65,7 @@ public class Authentication.LoadPage : Gtk.Widget {
    * Run the loading.
    */
   private async void run_loading () {
-    // Load the account data
-    try {
-      yield view.account.load_data ();
-    } catch (Error e) {
-      warning (@"Failed to load account data: $(e.message)");
-      return;
-    }
-
-#if SUPPORT_MASTODON
-    // Add server if created for account
-    if (view.server != null) {
-      Session.add_server (view.server);
-    }
-#endif
-
-    // Add account to AccountManager
-    Session.add_account (view.account);
-
-    // Store it
-    Session.store_session ();
-
-    // Move to the final page
+    // Authenticate handles a lot of this now
     view.move_to_next ();
   }
 

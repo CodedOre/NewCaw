@@ -43,9 +43,4 @@ namespace Config {
 	 * Where the localization files are located.
 	 */
 	public const string LOCALEDIR;
-
-	/**
-	 * The access key for Twitter OAuth 2.0.
-	 */
-	private const string TWITTER_OAUTH_KEY;
 }

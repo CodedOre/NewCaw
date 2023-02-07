@@ -15,12 +15,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platforms: [Twitter, Mastodon, Full]
+        # Disable "full" build, because it is currently identical to "Mastodon"
+        #platforms: [Mastodon, Full]
+        platforms: [Mastodon]
         arch: [x86_64, aarch64]
     name: "${{ matrix.platforms }} Build - ${{ matrix.arch }}"
     env:
       BACKENDS: ${{ matrix.platforms }}
-      TWITTER_OAUTH_KEY: ${{ secrets.TWITTER_OAUTH_KEY }}
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3

@@ -55,6 +55,12 @@ public partial class Backend.Mastodon.Session : AsyncInitable {
                                            server.client_secret,
                                            @"https://$(server.domain)/");
     proxy.access_token = access_token;
+    // Work around librest doing a DateTime comparison with the default non-expiring token
+    // 100 years should be more than enough for anyone!
+    // Note: This doesn't actually stop the token expiring. It just makes librest not error.
+    var now = new GLib.DateTime.now();
+    var far_future = now.add_years (100);
+    proxy.set_expiration_date (far_future);
   }
 
   /**
@@ -127,7 +133,7 @@ public partial class Backend.Mastodon.Session : AsyncInitable {
     }
 
     // Remove the session from ClientState
-    Client.instance.sessions.remove (this);
+    Client.instance.unregister_session (this);
   }
 
   /**

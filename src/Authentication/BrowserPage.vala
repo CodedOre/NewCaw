@@ -59,7 +59,7 @@ public class Authentication.BrowserPage : Gtk.Widget {
     }
 
     // Connect to the authentication callback signal
-    Session.instance.auth_callback.connect (on_callback);
+    Backend.Client.instance.auth_callback.connect (on_callback);
   }
 
   /**
@@ -67,12 +67,12 @@ public class Authentication.BrowserPage : Gtk.Widget {
    */
   private async void on_callback (string state, string code) {
     // Only continue if an authentication is running
-    if (view.account == null) {
+    if (view.auth == null) {
       return;
     }
     try {
       // Authenticate the account
-      yield view.account.authenticate (code, state);
+      view.account = yield view.auth.authenticate (code, state);
       view.skip_code ();
     } catch (Error e) {
       warning (@"Failed to authenticate account: $(e.message)");
@@ -95,19 +95,10 @@ public class Authentication.BrowserPage : Gtk.Widget {
     retry_waiting.waiting = true;
 
     // Create new authentication url without redirect
-    try {
-      string auth_url = view.account.init_authentication (false);
-      Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
-      view.move_to_next ();
-    } catch (Error e) {
-      if (! (e is GLib.IOError.CANCELLED)) {
-        warning (@"Could not retry authentication: $(e.message)");
-      }
-      return;
-    } finally {
-      // Unblocks the UI
-      retry_waiting.waiting = false;
-    }
+    string auth_url = view.auth.auth_request (false);
+    Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
+    view.move_to_next ();
+    retry_waiting.waiting = false;
   }
 
   /**

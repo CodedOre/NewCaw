@@ -109,15 +109,11 @@ public class UserAvatar : Gtk.Widget {
         case MASTODON:
           platform_indicator.icon_name = "platform-mastodon-symbolic";
           break;
-        case TWITTER:
-          platform_indicator.icon_name = "platform-twitter-symbolic";
-          break;
         default:
           warning ("Failed to set the appropriate platform indicator!");
           break;
       }
       DisplayUtils.conditional_css (platform == MASTODON, platform_indicator, "mastodon-background");
-      DisplayUtils.conditional_css (platform == TWITTER,  platform_indicator, "twitter-background");
     }
   }
 

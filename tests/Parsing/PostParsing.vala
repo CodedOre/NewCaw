@@ -53,13 +53,6 @@ void run_post_test (string module, string post_json, string check_json) {
       checked_post = Backend.Mastodon.Post.from_json (post_object);
       break;
 #endif
-#if SUPPORT_TWITTER
-    case "Twitter":
-      Json.Object post_data = post_object.get_object_member ("data");
-      Json.Object includes  = post_object.get_object_member ("includes");
-      checked_post = Backend.Twitter.Post.from_json (post_data, includes);
-      break;
-#endif
     default:
       error ("No valid Post could be created!");
   }
@@ -88,23 +81,6 @@ int main (string[] args) {
   });
   Test.add_func ("/PostParsing/RepostPost/Mastodon", () => {
     run_post_test ("Mastodon", "RepostPost.json", "RepostChecks.json");
-  });
-#endif
-#if SUPPORT_TWITTER
-  Test.add_func ("/PostParsing/BasicPost/Twitter", () => {
-    run_post_test ("Twitter", "BasicPost.json", "BasicChecks.json");
-  });
-  Test.add_func ("/PostParsing/EntitiesPost/Twitter", () => {
-    run_post_test ("Twitter", "EntitiesPost.json", "EntitiesChecks.json");
-  });
-  Test.add_func ("/PostParsing/HashtagsPost/Twitter", () => {
-    run_post_test ("Twitter", "HashtagsPost.json", "HashtagsChecks.json");
-  });
-  Test.add_func ("/PostParsing/RepostPost/Twitter", () => {
-    run_post_test ("Twitter", "RepostPost.json", "RepostChecks.json");
-  });
-  Test.add_func ("/PostParsing/QuotePost/Twitter", () => {
-    run_post_test ("Twitter", "QuotePost.json", "QuoteChecks.json");
   });
 #endif
 

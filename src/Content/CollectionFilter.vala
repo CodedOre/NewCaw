@@ -50,11 +50,6 @@ public class CollectionFilter : Gtk.Widget {
     set {
       set_display_platform = value;
       switch (set_display_platform) {
-        case TWITTER:
-          generic_filter.label = _("Tweets");
-          reposts_filter.label = _("Retweets");
-          break;
-
         default:
           generic_filter.label = _("Posts");
           reposts_filter.label = _("Reposts");

@@ -37,27 +37,6 @@ template PreferencesAppearancesPage : Adw.PreferencesPage {
       }
     }
 
-    Adw.ActionRow internal_links_row {
-      title: _("Display Internal Links");
-      subtitle: _("Links to media or quotes.");
-      activatable-widget: internal_links_switch;
-
-      [prefix]
-      Gtk.Image {
-        icon-name: "platform-twitter-symbolic";
-        tooltip-text: _("Only on Twitter");
-
-        styles [
-          "warning"
-        ]
-      }
-
-      Gtk.Switch internal_links_switch {
-        valign: center;
-        halign: center;
-      }
-    }
-
     Adw.ActionRow {
       title: _("Activate on Double-Click");
       activatable-widget: double_click_activation_switch;

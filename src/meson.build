@@ -29,7 +29,6 @@ cawsources += [
   'Authentication/FinalPage.vala',
   'Authentication/LoadPage.vala',
   'Authentication/ServerPage.vala',
-  'Authentication/StartPage.vala',
   'Content/CollectionFilter.vala',
   'Content/CollectionView.vala',
   'Content/PostActions.vala',
@@ -68,7 +67,6 @@ cdata.set_quoted ('PROJECT_NAME',      meson.project_name())
 cdata.set_quoted ('PROJECT_VERSION',   version)
 cdata.set_quoted ('APPLICATION_ID',    application_id)
 cdata.set_quoted ('LOCALEDIR',         join_paths(get_option('prefix'), get_option('localedir')))
-cdata.set_quoted ('TWITTER_OAUTH_KEY', get_option ('twitter_oauth_key'))
 configure_file(
   output: 'config.h',
   configuration: cdata

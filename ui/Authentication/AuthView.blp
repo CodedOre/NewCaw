@@ -31,13 +31,7 @@ template AuthView : Gtk.Widget {
     can-unfold:        false;
     can-navigate-back: true;
     transition-type:   slide;
-    notify::visible-child => on_move_back ();
-
-    Adw.LeafletPage start_page {
-      child: .AuthenticationStartPage {
-        view: AuthView;
-      };
-    }
+    notify::visible-child => on_change_page ();
 
     Adw.LeafletPage server_page {
       child: .AuthenticationServerPage {

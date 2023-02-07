@@ -1,13 +1,7 @@
 option(
   'backends',
   type:        'combo',
-  choices:     [ 'Twitter', 'Mastodon', 'Full' ],
+  choices:     [ 'Mastodon', 'Full' ],
   value:       'Full',
   description: 'The backends that are included in the build.'
-)
-
-option(
-  'twitter_oauth_key',
-  type:        'string',
-  description: 'The OAuth 2.0 key to authenticate Cawbird on Twitter.'
 )

@@ -56,7 +56,7 @@ public class Authentication.CodePage : Gtk.Widget {
     }
 
     // Connect auth stop
-    view.moving_back.connect (clear_page);
+    view.changing_page.connect (clear_page);
   }
 
   /**
@@ -159,7 +159,7 @@ public class Authentication.CodePage : Gtk.Widget {
 
     // Run authentication
     try {
-      yield view.account.authenticate (code);
+      view.account = yield view.auth.authenticate (code);
     } catch (Error e) {
       if (! (e is GLib.IOError.CANCELLED)) {
         warning (@"Authentication failed: $(e.message)");

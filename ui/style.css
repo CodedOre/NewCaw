@@ -26,7 +26,6 @@
  * Custom accent colors for specific platforms.
  */
 @define-color platform_mastodon #5E54EB;
-@define-color platform_twitter #1D9BF0;
 
 /**
  * Removes the underline from selected links.
@@ -93,10 +92,6 @@ button.avatar-button {
 .mastodon-background {
   color: white;
   background-color: @platform_mastodon;
-}
-.twitter-background {
-  color: white;
-  background-color: @platform_twitter;
 }
 
 /**

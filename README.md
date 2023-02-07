@@ -8,7 +8,7 @@ This is the repository for the ongoing work on NewCaw, a rewrite of [Cawbird](ht
 It covers the following goals:
 - Rewrite the UI in GTK4 and libadwaita, following the current Gnome HIG
 - Rewrite the backend in a better extendable structure in Vala
-- Provide support for the upcoming API v2.0 for Twitter
+- ~~Provide support for the upcoming API v2.0 for Twitter~~ (dropped after Twitter banned third-party clients)
 - Provide support for the Mastodon API
 
 When the work will be completed, the code in this repo will become Cawbird 2.0.
@@ -16,8 +16,6 @@ When the work will be completed, the code in this repo will become Cawbird 2.0.
 ## Building
 
 The recommended way to build this project is with Gnome Builder, which will use flatpak-builder to get the dependencies and build it.
-
-The Twitter backend requires an client key for an authorized OAuth 2.0 application from Twitter. In order for NewCaw to build with this key you need to supply it using the `twitter_oauth_key` build option.
 
 ## Contributing
 
