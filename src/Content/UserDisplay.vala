@@ -87,23 +87,7 @@ public class UserDisplay : Gtk.Widget {
                                                       displayed_user.creation_date, true));
         creation_field.append (creation_icon);
         creation_field.append (creation_value);
-        user_fields.insert (creation_field, -1);
-
-        // Set up the fields for the user
-        foreach (Backend.UserDataField field in displayed_user.get_data_fields ()) {
-          var field_box = new Gtk.Box (HORIZONTAL, 4);
-
-          // Create labels for name and content
-          var field_name    = new Gtk.Label (field.name);
-          var field_content = new Gtk.Label (field.content);
-          field_name.add_css_class ("heading");
-          field_content.use_markup = true;
-
-          // Add the widgets to the user_fields box
-          field_box.append (field_name);
-          field_box.append (field_content);
-          user_fields.insert (field_box, -1);
-        }
+        // user_fields.insert (creation_field, -1);
       }
     }
   }
@@ -160,6 +144,28 @@ public class UserDisplay : Gtk.Widget {
     // Set the labels for metrics
     following_counter.label = displayed_user != null ? _("<b>%i</b>  Following").printf (displayed_user.following_count) : "(null)";
     followers_counter.label = displayed_user != null ? _("<b>%i</b>  Followers").printf (displayed_user.followers_count) : "(null)";
+
+    // Add the data fields by binding the list
+    user_fields.bind_model (displayed_user != null ? displayed_user.data_fields : null, (item) => {
+      var field = item as Backend.UserDataField;
+      if (field == null) {
+        warning ("Failed to create data field widget: Invalid type!");
+        return null;
+      }
+
+      var field_box = new Gtk.Box (HORIZONTAL, 4);
+
+      // Create labels for name and content
+      var field_name    = new Gtk.Label (field.name);
+      var field_content = new Gtk.Label (field.content);
+      field_name.add_css_class ("heading");
+      field_content.use_markup = true;
+
+      // Add the widgets to the field box
+      field_box.append (field_name);
+      field_box.append (field_content);
+      return field_box;
+    });
   }
 
   /**

@@ -54,8 +54,8 @@ namespace Backend.Mastodon.Utils.ParseUtils {
    *
    * @return An array with the data fields as UserDataField.
    */
-  private UserDataField[] parse_data_fields (Json.Array json) {
-    UserDataField[] parsed_fields = {};
+  private ListModel parse_data_fields (Json.Array json) {
+    var parsed_fields = new ListStore (typeof (UserDataField));
     json.foreach_element ((array, index, element) => {
       if (element.get_node_type () == OBJECT) {
         // Create an data field object
@@ -67,7 +67,7 @@ namespace Backend.Mastodon.Utils.ParseUtils {
         var          new_field  = new UserDataField (field_name, field_text);
 
         // Append field to the array
-        parsed_fields  += new_field;
+        parsed_fields.append (new_field);
       }
     });
     return parsed_fields;
