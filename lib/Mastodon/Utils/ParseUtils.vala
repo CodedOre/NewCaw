@@ -63,8 +63,9 @@ namespace Backend.Mastodon.Utils.ParseUtils {
 
         // Parse the value and create new field
         string       field_name = obj.get_string_member ("name");
-        TextModule[] field_text = Utils.TextParser.instance.parse_text (obj.get_string_member ("value"));
-        var          new_field  = new UserDataField (field_name, field_text);
+        string       field_text = "<p>" + obj.get_string_member ("value") + "</p>";
+        TextModule[] field_mods = Utils.TextParser.instance.parse_text (field_text);
+        var          new_field  = new UserDataField (field_name, field_mods);
 
         // Append field to the array
         parsed_fields.append (new_field);
