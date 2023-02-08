@@ -1,6 +1,6 @@
 /* UserDataField.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,50 +21,43 @@
 using GLib;
 
 /**
- * Specific types for an UserDataField.
- */
-public enum Backend.UserDataFieldType {
-
-  /**
-   * A generic type with non-specific data.
-   */
-  GENERIC,
-
-  /**
-   * A location from where this User comes.
-   */
-  LOCATION,
-
-  /**
-   * A url to a website this user has set.
-   */
-  WEBLINK
-
-}
-
-/**
  * A field storing specific information about a User.
  */
-public struct Backend.UserDataField {
-
-  /**
-   * The type of data stored in this field.
-   */
-  public UserDataFieldType type;
+public class Backend.UserDataField : Object {
 
   /**
    * A description for this field.
    */
-  public string name;
+  public string name { get; construct; }
 
   /**
-   * A value that should be displayed.
+   * The value of the data in this field.
    */
-  public string display;
+  public string content { get; private set; }
 
   /**
-   * A optional value for an target of this field.
+   * Creates a new object containing data.
    */
-  public string? target;
+  internal UserDataField (string name, TextModule[] text_modules) {
+    // Construct object
+    Object (
+      name: name
+    );
+
+    content_modules = text_modules;
+  }
+
+  /**
+   * Run at construction of the object.
+   */
+  construct {
+    // Parse text modules to text
+    content = Backend.Utils.TextUtils.format_text (content_modules);
+  }
+
+  /**
+   * The content of this field as text modules.
+   */
+  private TextModule[] content_modules;
 
 }
