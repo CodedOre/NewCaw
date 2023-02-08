@@ -45,7 +45,7 @@ public class Backend.UserDataField : Object {
     );
 
     // Parse text modules to text
-    content = Backend.Utils.TextUtils.format_text (text_modules);
+    content = Backend.Utils.TextUtils.format_text (text_modules, false);
   }
 
 }

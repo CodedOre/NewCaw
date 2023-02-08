@@ -29,10 +29,11 @@ namespace Backend.Utils.TextUtils {
    * Formats a text from a set of TextModules.
    *
    * @param text_modules An array of all modules of the text.
+   * @param use_formats If to use the display settings of TextFormats.
    *
    * @return A formatted string for display in a Pango capable text field.
    */
-  private string format_text (TextModule[] text_modules) {
+  private string format_text (TextModule[] text_modules, bool use_formats = true) {
     var builder = new StringBuilder ();
 
     // Iterates through all TextModules
@@ -48,7 +49,7 @@ namespace Backend.Utils.TextUtils {
       string module_class;
       switch (module.type) {
         case TRAIL_TAG:
-          show_module = ! Backend.Utils.TextFormats.get_format_flag (HIDE_TRAILING_TAGS);
+          show_module = ! use_formats || ! Backend.Utils.TextFormats.get_format_flag (HIDE_TRAILING_TAGS);
           module_class = "hashtag";
           break;
 
