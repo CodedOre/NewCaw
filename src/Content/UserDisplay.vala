@@ -160,6 +160,7 @@ public class UserDisplay : Gtk.Widget {
       var field_content = new Gtk.Label (field.content);
       field_name.add_css_class ("heading");
       field_content.use_markup = true;
+      field_content.ellipsize  = END;
 
       // Add the widgets to the field box
       field_box.append (field_name);
