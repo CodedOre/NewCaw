@@ -1,6 +1,6 @@
 /* User.vala
  *
- * Copyright 2021-2022 Frederick Schenk
+ * Copyright 2021-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,6 +58,9 @@ public class Backend.Mastodon.User : Backend.User {
       url:    user_url,
       domain: user_domain,
 
+      // Parses the data fields
+      data_fields: Utils.ParseUtils.parse_data_fields (json.get_array_member ("fields")),
+
       // Set metrics
       followers_count: (int) json.get_int_member ("followers_count"),
       following_count: (int) json.get_int_member ("following_count"),
@@ -73,9 +76,6 @@ public class Backend.Mastodon.User : Backend.User {
 
     // First format of the description.
     description = Backend.Utils.TextUtils.format_text (description_modules);
-
-    // Parses all fields
-    data_fields = Utils.ParseUtils.parse_data_fields (json.get_array_member ("fields"));
 
     // Get possible flags for this user
     if (json.get_boolean_member ("locked")) {

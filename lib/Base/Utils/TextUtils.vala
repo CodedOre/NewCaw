@@ -1,6 +1,6 @@
 /* TextUtils.vala
  *
- * Copyright 2021-2022 Frederick Schenk
+ * Copyright 2021-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,10 +29,11 @@ namespace Backend.Utils.TextUtils {
    * Formats a text from a set of TextModules.
    *
    * @param text_modules An array of all modules of the text.
+   * @param use_formats If to use the display settings of TextFormats.
    *
    * @return A formatted string for display in a Pango capable text field.
    */
-  private string format_text (TextModule[] text_modules) {
+  private string format_text (TextModule[] text_modules, bool use_formats = true) {
     var builder = new StringBuilder ();
 
     // Iterates through all TextModules
@@ -48,7 +49,7 @@ namespace Backend.Utils.TextUtils {
       string module_class;
       switch (module.type) {
         case TRAIL_TAG:
-          show_module = ! Backend.Utils.TextFormats.get_format_flag (HIDE_TRAILING_TAGS);
+          show_module = ! use_formats || ! Backend.Utils.TextFormats.get_format_flag (HIDE_TRAILING_TAGS);
           module_class = "hashtag";
           break;
 
@@ -58,16 +59,6 @@ namespace Backend.Utils.TextUtils {
 
         case MENTION:
           module_class = "mention";
-          break;
-
-        case MEDIALINK:
-          show_module  = Backend.Utils.TextFormats.get_format_flag (SHOW_MEDIA_LINKS);
-          module_class = "weblink";
-          break;
-
-        case QUOTELINK:
-          show_module = Backend.Utils.TextFormats.get_format_flag (SHOW_QUOTE_LINKS);
-          module_class = "weblink";
           break;
 
         case WEBLINK:
@@ -107,8 +98,6 @@ namespace Backend.Utils.TextUtils {
     while (search_trail_tags) {
       TextModule mod = modules [module_index];
       switch (mod.type) {
-        case MEDIALINK:
-        case QUOTELINK:
         case TAG:
           mark_trail_tags = true;
           break;

@@ -1,6 +1,6 @@
 /* User.vala
  *
- * Copyright 2021-2022 Frederick Schenk
+ * Copyright 2021-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,6 +74,14 @@ public abstract class Backend.User : Object {
   public Media header { get; protected set; }
 
   /**
+   * A ListModel containing the data fields for this user.
+   *
+   * The objects of this list can be expected
+   * to be of the type UserDataField.
+   */
+  public ListModel data_fields { get; construct; }
+
+  /**
    * How many people are following this Profile.
    */
   public int followers_count { get; protected set; }
@@ -111,13 +119,6 @@ public abstract class Backend.User : Object {
     return flag in flags;
   }
 
-  /**
-   * Retrieves the UserDataFields for this Profile.
-   */
-  public UserDataField[] get_data_fields () {
-    return data_fields;
-  }
-
 #if DEBUG
   /**
    * Returns the text modules from the description.
@@ -133,11 +134,6 @@ public abstract class Backend.User : Object {
    * Stores the flags for this user.
    */
   protected UserFlag flags;
-
-  /**
-   * All data fields attached to this post.
-   */
-  protected UserDataField[] data_fields;
 
   /**
    * The description split into modules for formatting.

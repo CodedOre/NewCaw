@@ -54,30 +54,21 @@ namespace Backend.Mastodon.Utils.ParseUtils {
    *
    * @return An array with the data fields as UserDataField.
    */
-  private UserDataField[] parse_data_fields (Json.Array json) {
-    UserDataField[] parsed_fields = {};
+  private ListModel parse_data_fields (Json.Array json) {
+    var parsed_fields = new ListStore (typeof (UserDataField));
     json.foreach_element ((array, index, element) => {
       if (element.get_node_type () == OBJECT) {
         // Create an data field object
         Json.Object obj = element.get_object ();
-        var new_field   = UserDataField ();
-        new_field.type  = GENERIC;
-        new_field.name  = obj.get_string_member ("name");
-        // Check if field contains weblink
-        try {
-          var link_regex = new Regex ("<a href=\"(.*?)\".*?><span class=\"invisible\">.*?</span><span class=\"\">(.*?)</span><span class=\"invisible\"></span></a>");
-          if (link_regex.match (obj.get_string_member ("value"))) {
-            new_field.display = link_regex.replace (obj.get_string_member ("value"), obj.get_string_member ("value").length, 0, "\\2");
-            new_field.target  = link_regex.replace (obj.get_string_member ("value"), obj.get_string_member ("value").length, 0, "\\1");
-          } else {
-            new_field.display = obj.get_string_member ("value");
-            new_field.target  = null;
-          }
-        } catch (RegexError e) {
-          error (@"Error while parsing data fields: $(e.message)");
-        }
+
+        // Parse the value and create new field
+        string       field_name = obj.get_string_member ("name");
+        string       field_text = "<p>" + obj.get_string_member ("value") + "</p>";
+        TextModule[] field_mods = Utils.TextParser.instance.parse_text (field_text);
+        var          new_field  = new UserDataField (field_name, field_mods);
+
         // Append field to the array
-        parsed_fields  += new_field;
+        parsed_fields.append (new_field);
       }
     });
     return parsed_fields;

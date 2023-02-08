@@ -1,6 +1,6 @@
 /* TextModule.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,9 +30,7 @@ public enum Backend.TextModuleType {
   TAG,
   TRAIL_TAG,
   MENTION,
-  WEBLINK,
-  QUOTELINK,
-  MEDIALINK
+  WEBLINK
 }
 
 /**
