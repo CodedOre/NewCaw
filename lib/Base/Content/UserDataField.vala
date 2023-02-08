@@ -44,20 +44,8 @@ public class Backend.UserDataField : Object {
       name: name
     );
 
-    content_modules = text_modules;
-  }
-
-  /**
-   * Run at construction of the object.
-   */
-  construct {
     // Parse text modules to text
-    content = Backend.Utils.TextUtils.format_text (content_modules);
+    content = Backend.Utils.TextUtils.format_text (text_modules);
   }
-
-  /**
-   * The content of this field as text modules.
-   */
-  private TextModule[] content_modules;
 
 }
