@@ -41,6 +41,10 @@ public class UserDisplay : Gtk.Widget {
   private unowned Gtk.Label user_username_label;
   [GtkChild]
   private unowned Gtk.Label user_description_label;
+  [GtkChild]
+  private unowned Gtk.Image creation_icon;
+  [GtkChild]
+  private unowned Gtk.Label creation_label;
 
   // UI-Elements for metrics
   [GtkChild]
@@ -75,20 +79,6 @@ public class UserDisplay : Gtk.Widget {
 
       // Fill in the data
       update_item.begin ();
-
-      // Set's the UI for the new user
-      // FIXME: We need to clear (or update) the flowbox on updates
-      if (displayed_user != null) {
-        // Create a special creation date field
-        var creation_field         = new Gtk.Box (HORIZONTAL, 4);
-        var creation_icon          = new Gtk.Image.from_icon_name ("x-office-calendar-symbolic");
-        creation_icon.tooltip_text = _("Joined %s").printf (displayed_user.domain);
-        var creation_value         = new Gtk.Label (DisplayUtils.display_time_delta (
-                                                      displayed_user.creation_date, true));
-        creation_field.append (creation_icon);
-        creation_field.append (creation_value);
-        // user_fields.insert (creation_field, -1);
-      }
     }
   }
 
@@ -145,14 +135,13 @@ public class UserDisplay : Gtk.Widget {
     following_counter.label = displayed_user != null ? _("<b>%i</b>  Following").printf (displayed_user.following_count) : "(null)";
     followers_counter.label = displayed_user != null ? _("<b>%i</b>  Followers").printf (displayed_user.followers_count) : "(null)";
 
+    // Set the creation field
+    creation_icon.tooltip_text = _("Joined %s").printf (displayed_user != null ? displayed_user.domain : "(null)");
+    creation_label.label = displayed_user != null ? DisplayUtils.display_time_delta (displayed_user.creation_date, true) : "(null)";
+
     // Add the data fields by binding the list
     user_fields.bind_model (displayed_user != null ? displayed_user.data_fields : null, (item) => {
-      var field = item as Backend.UserDataField;
-      if (field == null) {
-        warning ("Failed to create data field widget: Invalid type!");
-        return null;
-      }
-
+      var field     = item as Backend.UserDataField;
       var field_box = new Gtk.Box (HORIZONTAL, 4);
 
       // Create labels for name and content

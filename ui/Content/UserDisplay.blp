@@ -63,6 +63,16 @@ template UserDisplay : Gtk.Widget {
       max-children-per-line: 42;
       margin-bottom:         8;
 
+      Gtk.Box {
+        spacing: 4;
+
+        Gtk.Image creation_icon {
+          icon-name: "x-office-calendar-symbolic";
+        }
+
+        Gtk.Label creation_label {}
+      }
+
       Gtk.Button {
         styles [
           "flat",
