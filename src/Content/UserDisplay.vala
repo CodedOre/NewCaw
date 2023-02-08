@@ -1,6 +1,6 @@
 /* UserDisplay.vala
  *
- * Copyright 2021-2022 Frederick Schenk
+ * Copyright 2021-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,43 +91,17 @@ public class UserDisplay : Gtk.Widget {
 
         // Set up the fields for the user
         foreach (Backend.UserDataField field in displayed_user.get_data_fields ()) {
-          var field_box   = new Gtk.Box (HORIZONTAL, 4);
+          var field_box = new Gtk.Box (HORIZONTAL, 4);
 
-          // Create either an icon or an label for the field name
-          Gtk.Widget field_desc;
-          switch (field.type) {
-            case WEBLINK:
-              field_desc              = new Gtk.Image.from_icon_name ("web-browser-symbolic");
-              field_desc.tooltip_text = _("Website");
-              break;
-            case LOCATION:
-              field_desc              = new Gtk.Image.from_icon_name ("mark-location-symbolic");
-              field_desc.tooltip_text = _("Location");
-              break;
-            default:
-              field_desc = new Gtk.Label (field.name);
-              field_desc.add_css_class ("heading");
-              break;
-          }
-
-          // Create an label for the field value, optional with activatable link
-          string display_label;
-          if (field.target != null) {
-            // Escape the text not intended to be Pango markup
-            string target  = Markup.escape_text (field.target);
-            string tooltip = Markup.escape_text (target);
-            string display = Markup.escape_text (field.display);
-            // Create a link should target have a value
-            display_label = @"<a href=\"$(target)\" title=\"$(tooltip)\" class=\"weblink\">$(display)</a>";
-          } else {
-            display_label = field.display;
-          }
-          var field_value        = new Gtk.Label (display_label);
-          field_value.use_markup = true;
+          // Create labels for name and content
+          var field_name    = new Gtk.Label (field.name);
+          var field_content = new Gtk.Label (field.content);
+          field_name.add_css_class ("heading");
+          field_content.use_markup = true;
 
           // Add the widgets to the user_fields box
-          field_box.append (field_desc);
-          field_box.append (field_value);
+          field_box.append (field_name);
+          field_box.append (field_content);
           user_fields.insert (field_box, -1);
         }
       }
