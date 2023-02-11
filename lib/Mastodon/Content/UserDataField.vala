@@ -57,7 +57,11 @@ public class Backend.Mastodon.UserDataField : Backend.UserDataField {
     Object (
       name: json.get_string_member ("name"),
       content: Backend.Utils.TextUtils.format_text (field_mods, false),
-      verified: null
+      verified: ! json.get_null_member ("verified_at")
+                  ? new DateTime.from_iso8601 (
+                    json.get_string_member ("verified_at"),
+                    new TimeZone.utc ())
+                  : null
     );
   }
 
