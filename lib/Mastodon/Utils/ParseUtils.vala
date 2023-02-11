@@ -47,31 +47,4 @@ namespace Backend.Mastodon.Utils.ParseUtils {
     }
   }
 
-  /**
-   * Parses the user data fields for use.
-   *
-   * @param json The Json.Array containing the data fields.
-   *
-   * @return An array with the data fields as UserDataField.
-   */
-  private ListModel parse_data_fields (Json.Array json) {
-    var parsed_fields = new ListStore (typeof (UserDataField));
-    json.foreach_element ((array, index, element) => {
-      if (element.get_node_type () == OBJECT) {
-        // Create an data field object
-        Json.Object obj = element.get_object ();
-
-        // Parse the value and create new field
-        string       field_name = obj.get_string_member ("name");
-        string       field_text = "<p>" + obj.get_string_member ("value") + "</p>";
-        TextModule[] field_mods = Utils.TextParser.instance.parse_text (field_text);
-        var          new_field  = new UserDataField (field_name, field_mods);
-
-        // Append field to the array
-        parsed_fields.append (new_field);
-      }
-    });
-    return parsed_fields;
-  }
-
 }

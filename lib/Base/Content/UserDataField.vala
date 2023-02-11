@@ -23,7 +23,7 @@ using GLib;
 /**
  * A field storing specific information about a User.
  */
-public class Backend.UserDataField : Object {
+public abstract class Backend.UserDataField : Object {
 
   /**
    * A description for this field.
@@ -39,17 +39,5 @@ public class Backend.UserDataField : Object {
    * The date at which the content of the field was verified by the server.
    */
   public DateTime? verified { get; construct; }
-
-  /**
-   * Creates a new object containing data.
-   */
-  internal UserDataField (string name, TextModule[] text_modules, DateTime? verified = null) {
-    // Construct object
-    Object (
-      name: name,
-      content: Backend.Utils.TextUtils.format_text (text_modules, false),
-      verified: verified
-    );
-  }
 
 }
