@@ -36,6 +36,7 @@ cawsources += [
   'Content/PostMetrics.vala',
   'Content/PostStatus.vala',
   'Content/UserCard.vala',
+  'Content/UserDataDisplay.vala',
   'Content/UserDisplay.vala',
   'Media/MediaDialog.vala',
   'Media/MediaDisplay.vala',

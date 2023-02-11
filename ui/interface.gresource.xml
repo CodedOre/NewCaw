@@ -22,6 +22,7 @@
     <file>Content/PostMetrics.ui</file>
     <file>Content/PostStatus.ui</file>
     <file>Content/UserCard.ui</file>
+    <file>Content/UserDataDisplay.ui</file>
     <file>Content/UserDisplay.ui</file>
     <file>Media/MediaDialog.ui</file>
     <file>Media/MediaDisplay.ui</file>
