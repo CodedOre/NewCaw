@@ -142,19 +142,7 @@ public class UserDisplay : Gtk.Widget {
     // Add the data fields by binding the list
     user_fields.bind_model (displayed_user != null ? displayed_user.data_fields : null, (item) => {
       var field     = item as Backend.UserDataField;
-      var field_box = new Gtk.Box (HORIZONTAL, 4);
-
-      // Create labels for name and content
-      var field_name    = new Gtk.Label (field.name);
-      var field_content = new Gtk.Label (field.content);
-      field_name.add_css_class ("heading");
-      field_content.use_markup = true;
-      field_content.ellipsize  = END;
-
-      // Add the widgets to the field box
-      field_box.append (field_name);
-      field_box.append (field_content);
-      return field_box;
+      return new UserDataDisplay (field);
     });
   }
 

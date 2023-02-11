@@ -1,6 +1,6 @@
 /* DisplayUtils.vala
  *
- * Copyright 2021-2022 Frederick Schenk
+ * Copyright 2021-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,16 +60,31 @@ namespace DisplayUtils {
       }
     }
 
-    // Display time diff for longer periods
+    // Represent full date on longer timespans
+    return display_date (datetime, long_format);
+  }
+
+  /**
+   * Creates a string representing a specific DataTime.
+   *
+   * @param datetime A GLib.DateTime to be displayed.
+   * @param long_format Set's the output to be in a long format or not.
+   *
+   * @return A string showing the specified DateTime.
+   */
+  public string display_date (DateTime datetime, bool long_format = false) {
+    var nowtime = new DateTime.now ();
+
+    // Only display year if it's differs from the current one
     if (datetime.get_year () == nowtime.get_year ()) {
-      // TRANSLATORS: Full-text date format for tweets from this years - see https://valadoc.org/glib-2.0/GLib.DateTime.format.html
+      // TRANSLATORS: Full-text date format for dates from this years - see https://valadoc.org/glib-2.0/GLib.DateTime.format.html
       if (long_format) {
         return datetime.format (_("%e %B"));
       } else {
         return datetime.format (_("%e %b"));
       }
     } else {
-      // TRANSLATORS: Full-text date format for tweets from previous years - see https://valadoc.org/glib-2.0/GLib.DateTime.format.html
+      // TRANSLATORS: Full-text date format for dates from previous years - see https://valadoc.org/glib-2.0/GLib.DateTime.format.html
       if (long_format) {
         return datetime.format (_("%e %B %Y"));
       } else {

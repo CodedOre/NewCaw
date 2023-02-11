@@ -19,6 +19,7 @@ blueprints = custom_target(
     'Content/PostMetrics.blp',
     'Content/PostStatus.blp',
     'Content/UserCard.blp',
+    'Content/UserDataDisplay.blp',
     'Content/UserDisplay.blp',
     'Media/MediaDialog.blp',
     'Media/MediaDisplay.blp',

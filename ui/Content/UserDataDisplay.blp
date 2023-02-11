@@ -1,0 +1,23 @@
+using Gtk 4.0;
+using Adw 1;
+
+template UserDataDisplay : Gtk.Widget {
+  layout_manager: Gtk.BoxLayout {
+    spacing: 6;
+  };
+
+  Gtk.Image verified_icon {
+    icon-name: "verified-symbolic";
+  }
+
+  Gtk.Label name_label {
+    styles [
+      "heading"
+    ]
+  }
+
+  Gtk.Label content_label {
+    use-markup: true;
+    ellipsize: end;
+  }
+}

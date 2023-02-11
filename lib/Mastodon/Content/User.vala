@@ -59,7 +59,7 @@ public class Backend.Mastodon.User : Backend.User {
       domain: user_domain,
 
       // Parses the data fields
-      data_fields: Utils.ParseUtils.parse_data_fields (json.get_array_member ("fields")),
+      data_fields: UserDataField.parse_list (json.get_array_member ("fields")),
 
       // Set metrics
       followers_count: (int) json.get_int_member ("followers_count"),
