@@ -47,6 +47,12 @@ public class UserDataDisplay : Gtk.Widget {
       // Update the widget with the new values.
       name_label.label      = displayed_field != null ? displayed_field.name    : "(null)";
       content_label.label   = displayed_field != null ? displayed_field.content : "(null)";
+
+      // Update the verified status
+      verified_icon.visible = displayed_field != null ? displayed_field.verified != null : false;
+      verified_icon.tooltip_text = displayed_field != null && displayed_field.verified != null
+                                     ? _("Verified on %s").printf (DisplayUtils.display_date (displayed_field.verified))
+                                     : null;
     }
   }
 
