@@ -38,7 +38,7 @@ jobs:
         with:
           platforms: arm64
       - name: Run Flatpak Builder
-        uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v4
+        uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v5
         with:
           arch: ${{ matrix.arch }}
           bundle: "Cawbird-Devel-${{ matrix.platforms }}.flatpak"
