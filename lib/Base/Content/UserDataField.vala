@@ -33,19 +33,23 @@ public class Backend.UserDataField : Object {
   /**
    * The value of the data in this field.
    */
-  public string content { get; private set; }
+  public string content { get; construct; }
+
+  /**
+   * The date at which the content of the field was verified by the server.
+   */
+  public DateTime? verified { get; construct; }
 
   /**
    * Creates a new object containing data.
    */
-  internal UserDataField (string name, TextModule[] text_modules) {
+  internal UserDataField (string name, TextModule[] text_modules, DateTime? verified = null) {
     // Construct object
     Object (
-      name: name
+      name: name,
+      content: Backend.Utils.TextUtils.format_text (text_modules, false),
+      verified: verified
     );
-
-    // Parse text modules to text
-    content = Backend.Utils.TextUtils.format_text (text_modules, false);
   }
 
 }
