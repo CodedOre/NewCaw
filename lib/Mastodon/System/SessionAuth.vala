@@ -116,7 +116,7 @@ public class Backend.Mastodon.SessionAuth : Backend.SessionAuth {
     // Create a new session
     string session_id = Uuid.string_random ();
     try {
-      return yield Backend.Session.from_data (session_id, auth_proxy.access_token, auth_server);
+      return yield Backend.Session.from_data (session_id, auth_proxy.access_token, auth_server, true, {0, 0});
     } catch (Error e) {
       throw e;
     }

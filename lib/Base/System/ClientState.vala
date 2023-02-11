@@ -36,6 +36,13 @@ public errordomain Backend.StateError {
 
 }
 
+public struct Backend.WindowAllocation {
+  // It would be nice to have position as well, but apparently GTK4 doesn't support it
+  // because some window managers don't support it
+  public int width;
+  public int height;
+}
+
 /**
  * The client for utilizing this backend.
  *
@@ -191,13 +198,43 @@ public partial class Backend.Client : Object {
   private async Session unpack_session (Variant variant) throws Error {
     string? uuid_prop, platform_name, server_prop,
             username_prop, access_prop;
+    bool show_window_prop;
+    Backend.WindowAllocation window_geometry = {0, 0};
     PlatformEnum platform_prop;
 
     // Attempt to load the server data
-    variant.lookup ("uuid", "ms", out uuid_prop);
-    variant.lookup ("platform", "ms", out platform_name);
-    variant.lookup ("server_uuid", "ms", out server_prop);
-    variant.lookup ("username", "ms", out username_prop);
+    if (variant.get_type_string () == "a{sms}") {
+      variant.lookup ("uuid", "ms", out uuid_prop);
+      variant.lookup ("platform", "ms", out platform_name);
+      variant.lookup ("server_uuid", "ms", out server_prop);
+      variant.lookup ("username", "ms", out username_prop);
+      show_window_prop = true;
+    }
+    else {
+      Variant? uuid_variant, platform_name_variant, server_variant, username_variant, show_window_variant, geometry_variant;
+      // Newer format `a{smv}`
+      variant.lookup ("uuid", "mv", out uuid_variant);
+      variant.lookup ("platform", "mv", out platform_name_variant);
+      variant.lookup ("server_uuid", "mv", out server_variant);
+      variant.lookup ("username", "mv", out username_variant);
+      variant.lookup ("show_window", "mv", out show_window_variant);
+      variant.lookup ("window_geometry", "mv", out geometry_variant);
+      uuid_prop = uuid_variant.get_string();
+      platform_name = platform_name_variant.get_string();
+      server_prop = server_variant.get_string();
+      username_prop = username_variant.get_string();
+      show_window_prop = show_window_variant.get_boolean();
+      debug("geom variant children: %lu", geometry_variant.n_children());
+      if (geometry_variant != null && geometry_variant.n_children() == 2) {
+        int w = 0, h = 0;
+        geometry_variant.get("(ii)", &w, &h);
+        debug("Unpacked: %d×%d", w, h);
+        window_geometry.width = w;
+        window_geometry.height = h;
+      }
+    }
+    debug("%s %s %s %s", uuid_prop, platform_name, server_prop, username_prop);
+
     platform_prop = PlatformEnum.from_name (platform_name);
 
     // Check that all data could be retrieved
@@ -239,7 +276,7 @@ public partial class Backend.Client : Object {
     }
 
     // Return the created instance for the session
-    return yield Session.from_data (uuid_prop, access_prop, server);
+    return yield Session.from_data (uuid_prop, access_prop, server, show_window_prop, window_geometry);
   }
 
   /**
@@ -282,14 +319,18 @@ public partial class Backend.Client : Object {
    */
   private Variant pack_session (Session session) throws Error {
     // Create the VariantBuilder and check the platform
-    var state_builder = new VariantBuilder (new VariantType ("a{sms}"));
+    var state_builder = new VariantBuilder (new VariantType ("a{smv}"));
     var platform = PlatformEnum.for_session (session);
+    Backend.WindowAllocation geom = session.window_geometry;
 
     // Add the data to the variant
-    state_builder.add ("{sms}", "uuid", session.identifier);
-    state_builder.add ("{sms}", "platform", platform.to_string ());
-    state_builder.add ("{sms}", "server_uuid", session.server.identifier);
-    state_builder.add ("{sms}", "username", session.account.username);
+    state_builder.add ("{smv}", "uuid", new Variant.string(session.identifier));
+    state_builder.add ("{smv}", "platform", new Variant.string(platform.to_string ()));
+    state_builder.add ("{smv}", "server_uuid", new Variant.string(session.server.identifier));
+    state_builder.add ("{smv}", "username", new Variant.string(session.account.username));
+    state_builder.add ("{smv}", "show_window", new Variant.boolean (false));
+    debug("Saving window geometry: %d×%d", geom.width, geom.height);
+    state_builder.add ("{smv}", "window_geometry", new Variant("(ii)", geom.width, geom.height));
 
     // Return the created variant
     return state_builder.end ();
