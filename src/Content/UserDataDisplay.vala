@@ -49,11 +49,14 @@ public class UserDataDisplay : Gtk.Widget {
       content_label.label   = displayed_field != null ? displayed_field.content : "(null)";
 
       // Update the verified status
-      bool data_verified = displayed_field != null ? displayed_field.verified != null : false;
-      verified_icon.visible = data_verified;
-      verified_icon.tooltip_text = data_verified
+      bool   data_verified    = displayed_field != null ? displayed_field.verified != null : false;
+      string verified_tooltip = data_verified
                                      ? _("Verified on %s").printf (DisplayUtils.display_date (displayed_field.verified))
                                      : null;
+
+      verified_icon.visible      = data_verified;
+      verified_icon.tooltip_text = verified_tooltip;
+      name_label.tooltip_text    = verified_tooltip;
       DisplayUtils.conditional_css (data_verified, this, "verified");
     }
   }
