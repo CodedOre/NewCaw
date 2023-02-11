@@ -46,7 +46,7 @@ spinner.large {
  * Reduced horizontal padding on non-selected button.
  */
 button.condense {
-  padding: 4px;
+  padding: 4px 6px;
 }
 
 /**
@@ -58,6 +58,11 @@ button.inline {
 }
 button.inline image {
   color: @borders;
+}
+
+button.flat.inline {
+  padding: 1px 10px;
+  margin: 0 -8px 0 -8px;
 }
 
 /**
