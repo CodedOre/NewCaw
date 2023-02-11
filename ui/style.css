@@ -60,9 +60,20 @@ button.inline image {
   color: @borders;
 }
 
+/**
+ * Balance the rounded corners on hover with not resizing
+ * by using padding and negative margins
+ */
 button.flat.inline {
   padding: 1px 10px;
   margin: 0 -8px 0 -8px;
+}
+/**
+ * Reduce the right margin to make "button with image" layout
+ * more closely match "text-only" layout
+ */
+button.flat.inline image{
+  margin-right:-4px
 }
 
 /**
