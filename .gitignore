@@ -1,3 +1,6 @@
+# Do not track our copy of the blueprint compiler
 /subprojects/blueprint-compiler
+
+# Files specific to Gnome Builder
 .buildconfig
 .dev/
