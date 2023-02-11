@@ -1,6 +1,6 @@
 /* TextUtils.vala
  *
- * Copyright 2021-2022 Frederick Schenk
+ * Copyright 2021-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -282,8 +282,9 @@ internal class Backend.Mastodon.Utils.TextParser : Object {
     // Add root node as content can have multiple roots
     string parsed_text = @"<text>$(raw_text)</text>";
 
-    // Fix non-standard line break elements
+    // Replace elements we might get that Xml.Parser can't handle
     parsed_text = parsed_text.replace ("<br>", "<br/>");
+    parsed_text = parsed_text.replace ("&nbsp;", "\u00A0");
 
     // Create XML tree from text
     Xml.Doc* doc = Xml.Parser.parse_memory (parsed_text, parsed_text.length);
