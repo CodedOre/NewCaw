@@ -73,7 +73,7 @@ button.flat.inline {
  * more closely match "text-only" layout
  */
 button.flat.inline image{
-  margin-right:-4px
+  margin-right: -4px;
 }
 
 /**
