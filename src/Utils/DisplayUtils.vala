@@ -116,10 +116,10 @@ namespace DisplayUtils {
    *
    * @param condition If this is true, the button will use the css_class and the "on" icon, else it
    * will not use the class and will show the "off" icon
-   * @parabuttonet The widget for which the css class should be evaluated.
+   * @param button_content The widget for which the css class should be evaluated.
    * @param css_class The CSS-class to be added or removed
-   * @param on_icon_name The image to use for "on" icon
-   * @param off_icon_name The image to use for "on" icon
+   * @param on_icon_name The image to use for "on" state
+   * @param off_icon_name The image to use for "off" state
    */
   public void conditional_button_content (bool condition, Adw.ButtonContent button_content, string css_class, string on_icon_name, string off_icon_name) {
     button_content.icon_name = condition ? on_icon_name : off_icon_name;
