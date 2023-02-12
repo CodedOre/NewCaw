@@ -1,6 +1,6 @@
 /* Post.vala
  *
- * Copyright 2021-2022 Frederick Schenk
+ * Copyright 2021-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,14 +19,6 @@
  */
 
 using GLib;
-
-public struct Backend.PostInteractionData {
-  int liked_count;
-  int replied_count;
-  int reposted_count;
-  bool is_favourited;
-  bool is_reposted;
-}
 
 /**
  * Represents one posted status message.
@@ -186,7 +178,7 @@ public abstract class Backend.Post : Object {
     *
     * @param A struct holding the new interaction data
     */
-   public void update_interactions (PostInteractionData data) {
+   internal void update_interactions (PostInteractionData data) {
     this.liked_count = data.liked_count;
     this.replied_count = data.replied_count;
     this.reposted_count = data.reposted_count;

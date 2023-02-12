@@ -1,6 +1,6 @@
-/* PostEnums.vala
+/* PostAuxiliary.vala
  *
- * Copyright 2021 Frederick Schenk
+ * Copyright 2021-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,4 +38,18 @@ public enum Backend.PostType {
    * A repost with additional content added.
    */
   QUOTE
+}
+
+/**
+ * Stores interaction data to update a post with.
+ *
+ * Used by Session to update the data of an post when an
+ * API call altered the interaction data values.
+ */
+internal struct Backend.PostInteractionData {
+  int liked_count;
+  int replied_count;
+  int reposted_count;
+  bool is_favourited;
+  bool is_reposted;
 }

@@ -1,6 +1,6 @@
 /* Post.vala
  *
- * Copyright 2021-2022 Frederick Schenk
+ * Copyright 2021-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,20 @@ using GLib;
  * Represents one posted status message.
  */
 public class Backend.Mastodon.Post : Backend.Post {
+
+  /**
+   * Generates a new PostInteractionData from a given JSON.
+   */
+  internal static Backend.PostInteractionData get_interaction_data (Json.Object json) {
+    return Backend.PostInteractionData() {
+      liked_count    = (int) json.get_int_member ("favourites_count"),
+      replied_count  = (int) json.get_int_member ("replies_count"),
+      reposted_count = (int) json.get_int_member ("reblogs_count"),
+
+      is_favourited = json.get_boolean_member_with_default ("favourited", false),
+      is_reposted   = json.get_boolean_member_with_default ("reblogged", false)
+    };
+  }
 
   /**
    * Parses an given Json.Object and creates an Post object.
@@ -119,16 +133,5 @@ public class Backend.Mastodon.Post : Backend.Post {
    * Stores the referenced post.
    */
   private Backend.Post? referenced_post;
-
-  public static Backend.PostInteractionData get_interaction_data (Json.Object json) {
-    return Backend.PostInteractionData() {
-      liked_count =    (int) json.get_int_member ("favourites_count"),
-      replied_count =  (int) json.get_int_member ("replies_count"),
-      reposted_count = (int) json.get_int_member ("reblogs_count"),
-
-      is_favourited = json.get_boolean_member_with_default ("favourited", false),
-      is_reposted = json.get_boolean_member_with_default ("reblogged", false)
-    };
-  }
 
 }

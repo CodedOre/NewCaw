@@ -20,7 +20,7 @@ libfiles = [
   'Base/Content/Media.vala',
   'Base/Content/MediaEnums.vala',
   'Base/Content/Post.vala',
-  'Base/Content/PostEnums.vala',
+  'Base/Content/PostAuxiliary.vala',
   'Base/Content/TextModule.vala',
   'Base/Content/User.vala',
   'Base/Content/UserDataField.vala',
