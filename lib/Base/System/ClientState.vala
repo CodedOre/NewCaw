@@ -1,6 +1,6 @@
 /* ClientState.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,14 +46,6 @@ public errordomain Backend.StateError {
  * Before using anything else from the backend, Client must be initialized.
  */
 public partial class Backend.Client : Object {
-
-  /**
-   * Run at construction of this object.
-   */
-  construct {
-    // Create cache dir if not already existing
-    DirUtils.create_with_parents (state_path, 0750);
-  }
 
   /**
    * Loads the ClientState from the state file.

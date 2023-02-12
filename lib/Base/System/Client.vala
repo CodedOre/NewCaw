@@ -1,6 +1,6 @@
 /* Client.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -124,8 +124,9 @@ public partial class Backend.Client : Initable {
    * @throws Error Errors that happened while loading the account.
    */
   public bool init (Cancellable? cancellable = null) throws Error {
-    // Initialize the class variables
+    // Create cache dir if not already existing
     state_path = Path.build_filename (Environment.get_user_data_dir (), name, null);
+    DirUtils.create_with_parents (state_path, 0750);
 
     return true;
   }
