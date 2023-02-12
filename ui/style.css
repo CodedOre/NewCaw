@@ -299,3 +299,18 @@ UserDataDisplay.verified {
     opacity: 0;
   }
 }
+
+/**
+ * Colours for active action buttons
+ *
+ * We use Adwaita named colours, so themes will use those colours
+ * if defined, or fall back to black and we rely on shape differences
+ * for accessibility.
+ */
+buttoncontent.liked image {
+  color: @red_4;
+}
+
+buttoncontent.reposted image {
+  color: @blue_4;
+}

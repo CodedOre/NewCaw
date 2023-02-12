@@ -112,6 +112,21 @@ namespace DisplayUtils {
   }
 
   /**
+   * Manages the state of a button that has an style and image state toggles
+   *
+   * @param condition If this is true, the button will use the css_class and the "on" icon, else it
+   * will not use the class and will show the "off" icon
+   * @parabuttonet The widget for which the css class should be evaluated.
+   * @param css_class The CSS-class to be added or removed
+   * @param on_icon_name The image to use for "on" icon
+   * @param off_icon_name The image to use for "on" icon
+   */
+  public void conditional_button_content (bool condition, Adw.ButtonContent button_content, string css_class, string on_icon_name, string off_icon_name) {
+    button_content.icon_name = condition ? on_icon_name : off_icon_name;
+    DisplayUtils.conditional_css (condition, button_content, css_class);
+  }
+
+  /**
    * Returns a string for a shortened version of the metric.
    *
    * @param metric The metric to be displayed.

@@ -124,6 +124,54 @@ public abstract class Backend.Session : Object {
   internal abstract Post[] load_post_list (Json.Node json);
 
   /**
+   * Favourites/likes a post.
+   *
+   * Adds the favourite/like/platform-equivalent flag to a post. If the post
+   * is already favourited/liked then this is a noop and no exception will be thrown.
+   *
+   * @param post The post to favourite
+   *
+   * @throws Error Any errors while favouriting, such as unauthorised actions, missing posts, or network issues
+   */
+  public abstract async Backend.Post favourite_post (Backend.Post post) throws Error;
+
+  /**
+   * Unfavourites/unlikes a post.
+   *
+   * Removes the favourite/like/platform-equivalent flag from a post. If the post
+   * is not favourited/liked then this is a noop and no exception will be thrown.
+   *
+   * @param post The post to unfavourite
+   *
+   * @throws Error Any errors while unfavouriting, such as unauthorised actions, missing posts, or network issues
+   */
+   public abstract async Backend.Post unfavourite_post (Backend.Post post) throws Error;
+
+  /**
+   * Reblogs/boosts/retweets a post.
+   *
+   * Reblogs a post to the user's timeline. If the post is already reblogged then this is a noop
+   * and no exception will be thrown.
+   *
+   * @param post The post to reblog
+   *
+   * @throws Error Any errors while reblogging, such as unauthorised actions, missing posts, or network issues
+   */
+   public abstract async Backend.Post reblog_post (Backend.Post post) throws Error;
+
+  /**
+   * Un-reblogs/unboosts/un-retweets a post.
+   *
+   * Removes a reblog from the user's timeline. If the post is not reblogged then this is a noop
+   * and no exception will be thrown.
+   *
+   * @param post The post to un-reblog
+   *
+   * @throws Error Any errors while un-reblogging, such as unauthorised actions, missing posts, or network issues
+   */
+   public abstract async Backend.Post unreblog_post (Backend.Post post) throws Error;
+
+  /**
    * Retrieves an user for an specified id.
    *
    * If the user was already pulled and is present in memory, the version
