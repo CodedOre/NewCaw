@@ -27,6 +27,7 @@ libfiles = [
   'Base/Content/UserEnums.vala',
   'Base/Organization/Collection.vala',
   'Base/Organization/HomeTimeline.vala',
+  'Base/Organization/Notification.vala',
   'Base/Organization/PseudoItem.vala',
   'Base/Organization/Thread.vala',
   'Base/Organization/UserTimeline.vala',
