@@ -105,7 +105,8 @@ public class PostContent : Gtk.Widget {
       }
 
       // Set up the spoiler area
-      reveal_content = displayed_post != null ? displayed_post.spoiler == null : false;
+      bool has_spoiler = displayed_post != null ? displayed_post.spoiler == null : false;
+      reveal_content   = display_mode != MAIN && has_spoiler;
       spoiler_description.title = displayed_post != null ? displayed_post.spoiler : "(null)";
 
       // Set the main post content
