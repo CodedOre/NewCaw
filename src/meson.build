@@ -32,6 +32,7 @@ cawsources += [
   'Content/CollectionFilter.vala',
   'Content/CollectionView.vala',
   'Content/PostActions.vala',
+  'Content/PostContent.vala',
   'Content/PostItem.vala',
   'Content/PostMetrics.vala',
   'Content/PostStatus.vala',

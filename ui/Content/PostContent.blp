@@ -1,0 +1,66 @@
+using Gtk 4.0;
+using Adw 1;
+
+template PostContent : Gtk.Widget {
+  layout-manager: Gtk.BoxLayout {
+    orientation: vertical;
+    spacing: 8;
+  };
+
+  Gtk.Box spoiler_box {
+    visible: false;
+    spacing: 16;
+
+    Gtk.Label spoiler_label {
+      xalign: 0.0;
+      wrap: true;
+      wrap-mode: word_char;
+
+      styles [
+        "heading"
+      ]
+    }
+
+    Gtk.Button spoiler_toggle {
+      action-name: "post.toggle-sensitive";
+
+      styles [
+        "flat",
+        "inline",
+        "caption-heading"
+      ]
+    }
+  }
+
+  Gtk.Revealer content_revealer {
+    reveal-child: bind PostContent.reveal_content;
+
+    Gtk.Box {
+      orientation: vertical;
+      spacing: 12;
+
+      Gtk.Label text_label {
+        xalign: 0.0;
+        use-markup: true;
+        wrap: true;
+        wrap-mode: word_char;
+
+        activate-link => on_link_clicked ();
+      }
+
+      .MediaPreview media_previewer {}
+
+      Gtk.Button quote_button {
+        styles [
+          "no-padding",
+          "flat",
+          "frame"
+        ]
+      }
+
+      .PostMetrics post_metrics {}
+
+      .PostActions post_actions {}
+    }
+  }
+}
