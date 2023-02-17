@@ -74,9 +74,14 @@ public abstract class Backend.Post : Object {
   public string url { get; construct; }
 
   /**
+   * The sensitivity of the content.
+   */
+  public PostSensitivity sensitive { get; construct; }
+
+  /**
    * A short text describing the content for sensitive post.
    */
-  public string? spoiler { get; construct; }
+  public string spoiler { get; construct; }
 
   /**
    * How often the post was liked.
