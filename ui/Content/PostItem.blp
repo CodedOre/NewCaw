@@ -49,6 +49,7 @@ template PostItem : Gtk.Widget {
 
       Gtk.Box spoiler_box {
         visible: false;
+        spacing: 16;
 
         Gtk.Label spoiler_label {
           xalign: 0.0;
@@ -61,6 +62,8 @@ template PostItem : Gtk.Widget {
         }
 
         Gtk.Button spoiler_toggle {
+          action-name: "post.toggle-sensitive";
+
           styles [
             "flat",
             "inline",
@@ -70,7 +73,7 @@ template PostItem : Gtk.Widget {
       }
 
       Gtk.Revealer content_revealer {
-        reveal-child: true;
+        reveal-child: bind PostItem.reveal_content;
 
         Gtk.Box {
           hexpand: true;

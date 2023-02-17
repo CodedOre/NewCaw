@@ -1,6 +1,6 @@
 /* PostItem.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,6 +55,14 @@ public class PostItem : Gtk.Widget {
   private unowned Adw.Bin next_line_bin;
   [GtkChild]
   private unowned Gtk.Label info_label;
+  [GtkChild]
+  private unowned Gtk.Box spoiler_box;
+  [GtkChild]
+  private unowned Gtk.Label spoiler_label;
+  [GtkChild]
+  private unowned Gtk.Button spoiler_toggle;
+  [GtkChild]
+  private unowned Gtk.Revealer content_revealer;
   [GtkChild]
   private unowned Gtk.Label text_label;
   [GtkChild]
@@ -128,6 +136,20 @@ public class PostItem : Gtk.Widget {
   public bool connect_to_next { get; set; }
 
   /**
+   * If the content should be revealed.
+   */
+  public bool reveal_content {
+    get {
+      return is_content_displayed;
+    }
+    set {
+      is_content_displayed = value;
+      spoiler_toggle.label = is_content_displayed ? _("Hide Content") : _("Show Content");
+      content_revealer.reveal_child = is_content_displayed;
+    }
+  }
+
+  /**
    * Creates a new PostItem with an specific display_mode.
    *
    * @param mode The display mode for this PostDisplay.
@@ -185,6 +207,19 @@ public class PostItem : Gtk.Widget {
       // Display the media in an MediaDialog
       new MediaDialog (item, media, focus);
     });
+    // Set up the sensitive toggle
+    install_action ("post.toggle-sensitive", null, (widget, action) => {
+      // Get the instance for this
+      var item = widget as PostItem;
+
+      // Stop if post is null
+      if (item.post == null) {
+        return;
+      }
+
+      // Get the url and places it in the clipboard
+      item.reveal_content = ! item.reveal_content;
+    });
   }
 
   /**
@@ -221,6 +256,11 @@ public class PostItem : Gtk.Widget {
     string post_date   = main_post != null ? main_post.creation_date.format ("%x, %X") : "(null)";
     string post_source = main_post != null ? main_post.source : "(null)";
     info_label.label   = _("%s using %s").printf (post_date, post_source);
+
+    // Set up the spoiler area
+    spoiler_box.visible = main_post != null ? main_post.spoiler != null : false;
+    spoiler_label.label = main_post != null ? main_post.spoiler         : "(null)";
+    reveal_content      = main_post != null ? main_post.spoiler == null : false;
 
     // Set the main post content
     text_label.label   = main_post != null ? main_post.text : "(null)";
@@ -282,6 +322,11 @@ public class PostItem : Gtk.Widget {
    * Stores the displayed repost.
    */
   private Backend.Post? displayed_post = null;
+
+  /**
+   * If the content should be displayed.
+   */
+  private bool is_content_displayed;
 
   /**
    * Stores the signal handle for updating the data of an post.
