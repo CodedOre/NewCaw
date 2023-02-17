@@ -1,6 +1,6 @@
 /* PostItem.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 using GLib;
 
 /**
- * Displays the content of one Post.
+ * Displays one post.
  */
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/PostItem.ui")]
 public class PostItem : Gtk.Widget {
@@ -56,15 +56,7 @@ public class PostItem : Gtk.Widget {
   [GtkChild]
   private unowned Gtk.Label info_label;
   [GtkChild]
-  private unowned Gtk.Label text_label;
-  [GtkChild]
-  private unowned MediaPreview media_previewer;
-  [GtkChild]
-  private unowned Gtk.Button quote_button;
-  [GtkChild]
-  private unowned PostMetrics post_metrics;
-  [GtkChild]
-  private unowned PostActions post_actions;
+  private unowned PostContent post_content;
 
   /**
    * How this PostDisply will display it's content.
@@ -77,15 +69,10 @@ public class PostItem : Gtk.Widget {
       set_display_mode = value;
 
       info_label.visible         = set_display_mode == MAIN;
-      text_label.selectable      = set_display_mode == MAIN;
       post_status.show_time      = set_display_mode != MAIN;
       post_status.display_inline = set_display_mode == QUOTE;
-      post_metrics.visible       = set_display_mode == QUOTE;
-      post_actions.visible       = set_display_mode != QUOTE;
       next_line_bin.visible      = ! (set_display_mode != LIST);
       content_box.margin_top     = set_display_mode != LIST ? 8 : 0;
-
-      DisplayUtils.conditional_css (set_display_mode == QUOTE, text_label, "caption");
     }
   }
 
@@ -191,8 +178,8 @@ public class PostItem : Gtk.Widget {
    * Updates the properties for an PostItem.
    */
   private async void update_item () {
-    bool has_repost, has_quote;
-    Backend.Post? repost = null, quote = null;
+    bool has_repost;
+    Backend.Post? repost = null;
 
     // Check if we have a repost
     try {
@@ -201,14 +188,6 @@ public class PostItem : Gtk.Widget {
       main_post = has_repost ? yield displayed_post.get_referenced_post () : displayed_post;
     } catch (Error e) {
       warning ("Failed to pull the reposted post: $(e.message)");
-    }
-
-    // Check if we have a quote
-    try {
-      has_quote = main_post != null && main_post.post_type == QUOTE;
-      quote = has_quote ? yield main_post.get_referenced_post () : null;
-    } catch (Error e) {
-      warning ("Failed to pull the quoted post: $(e.message)");
     }
 
     // Set the PostStatus widgets
@@ -222,44 +201,8 @@ public class PostItem : Gtk.Widget {
     string post_source = main_post != null ? main_post.source : "(null)";
     info_label.label   = _("%s using %s").printf (post_date, post_source);
 
-    // Set the main post content
-    text_label.label   = main_post != null ? main_post.text : "(null)";
-    text_label.visible = text_label.label.length > 0;
-
-    // Set the media previews
-    bool has_media          = main_post != null && main_post.get_media ().length > 0;
-    media_previewer.visible = has_media;
-    if (has_media) {
-      media_previewer.display_media (main_post.get_media ());
-    } else {
-      media_previewer.display_media (null);
-    }
-
-    // Clear existing quote from quote button
-    if (quote_button.child != null) {
-      quote_button.child = null;
-    }
-
-    // Add quotes in the quote button
-    if (has_quote && display_mode != QUOTE) {
-      var quote_item          = new PostItem ();
-      quote_item.display_mode = QUOTE;
-      quote_item.post         = quote;
-      quote_button.child      = quote_item;
-    }
-    quote_button.visible = has_quote && display_mode != QUOTE;
-
-    // Set the metrics widgets
-    post_metrics.post = main_post;
-    post_actions.post = main_post;
-  }
-
-  /**
-   * Activated when a link in the text is clicked.
-   */
-  [GtkCallback]
-  private bool on_link_clicked (string uri) {
-    return DisplayUtils.entities_link_action (uri, this);
+    // Set the content widget
+    post_content.post = main_post;
   }
 
   /**

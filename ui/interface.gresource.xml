@@ -18,6 +18,7 @@
     <file>Content/CollectionFilter.ui</file>
     <file>Content/CollectionView.ui</file>
     <file>Content/PostActions.ui</file>
+    <file>Content/PostContent.ui</file>
     <file>Content/PostItem.ui</file>
     <file>Content/PostMetrics.ui</file>
     <file>Content/PostStatus.ui</file>

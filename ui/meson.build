@@ -15,6 +15,7 @@ blueprints = custom_target(
     'Content/CollectionFilter.blp',
     'Content/CollectionView.blp',
     'Content/PostActions.blp',
+    'Content/PostContent.blp',
     'Content/PostItem.blp',
     'Content/PostMetrics.blp',
     'Content/PostStatus.blp',

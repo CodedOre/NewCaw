@@ -41,6 +41,26 @@ public enum Backend.PostType {
 }
 
 /**
+ * The sensitivity of the content of a post.
+ *
+ * Determines what of the content should be displayed directly.
+ */
+public enum Backend.PostSensitivity {
+  /**
+   * Nothing has to be hidden.
+   */
+  NONE,
+  /**
+   * Only the media is sensitive.
+   */
+  MEDIA,
+  /**
+   * All content is sensitive.
+   */
+  ALL
+}
+
+/**
  * Stores interaction data to update a post with.
  *
  * Used by Session to update the data of an post when an

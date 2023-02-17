@@ -31,7 +31,6 @@ template PostItem : Gtk.Widget {
     }
 
     Gtk.Box {
-      hexpand: true;
       orientation: vertical;
       margin-bottom: 12;
       margin-start: 10;
@@ -48,28 +47,10 @@ template PostItem : Gtk.Widget {
         ]
       }
 
-      Gtk.Label text_label {
-        xalign: 0.0;
-        use-markup: true;
-        wrap: true;
-        wrap-mode: word_char;
-
-        activate-link => on_link_clicked ();
+      .PostContent post_content {
+        hexpand: true;
+        display-mode: bind PostItem.display-mode;
       }
-
-      .MediaPreview media_previewer {}
-
-      Gtk.Button quote_button {
-        styles [
-          "no-padding",
-          "flat",
-          "frame"
-        ]
-      }
-
-      .PostMetrics post_metrics {}
-
-      .PostActions post_actions {}
     }
   }
 }
