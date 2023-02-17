@@ -31,7 +31,6 @@ template PostItem : Gtk.Widget {
     }
 
     Gtk.Box {
-      hexpand: true;
       orientation: vertical;
       margin-bottom: 12;
       margin-start: 10;
@@ -48,28 +47,60 @@ template PostItem : Gtk.Widget {
         ]
       }
 
-      Gtk.Label text_label {
-        xalign: 0.0;
-        use-markup: true;
-        wrap: true;
-        wrap-mode: word_char;
+      Gtk.Box spoiler_box {
+        visible: false;
 
-        activate-link => on_link_clicked ();
+        Gtk.Label spoiler_label {
+          xalign: 0.0;
+          wrap: true;
+          wrap-mode: word_char;
+
+          styles [
+            "heading"
+          ]
+        }
+
+        Gtk.Button spoiler_toggle {
+          styles [
+            "flat",
+            "inline",
+            "caption-heading"
+          ]
+        }
       }
 
-      .MediaPreview media_previewer {}
+      Gtk.Revealer content_revealer {
+        reveal-child: true;
 
-      Gtk.Button quote_button {
-        styles [
-          "no-padding",
-          "flat",
-          "frame"
-        ]
+        Gtk.Box {
+          hexpand: true;
+          orientation: vertical;
+          spacing: 12;
+
+          Gtk.Label text_label {
+            xalign: 0.0;
+            use-markup: true;
+            wrap: true;
+            wrap-mode: word_char;
+
+            activate-link => on_link_clicked ();
+          }
+
+          .MediaPreview media_previewer {}
+
+          Gtk.Button quote_button {
+            styles [
+              "no-padding",
+              "flat",
+              "frame"
+            ]
+          }
+
+          .PostMetrics post_metrics {}
+
+          .PostActions post_actions {}
+        }
       }
-
-      .PostMetrics post_metrics {}
-
-      .PostActions post_actions {}
     }
   }
 }
