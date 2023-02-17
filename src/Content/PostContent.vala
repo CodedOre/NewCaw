@@ -104,10 +104,23 @@ public class PostContent : Gtk.Widget {
         warning ("Failed to pull the quoted post: $(e.message)");
       }
 
-      // Set up the spoiler area
-      bool has_spoiler = displayed_post != null ? displayed_post.spoiler == null : false;
-      reveal_content   = display_mode != MAIN && has_spoiler;
-      spoiler_description.title = displayed_post != null ? displayed_post.spoiler : "(null)";
+      // Set up the sensitivity of the post
+      reveal_content = displayed_post != null ? displayed_post.sensitive == NONE : false;
+      if (displayed_post != null) {
+        switch (displayed_post.sensitive) {
+          case ALL:
+            spoiler_description.title = displayed_post.spoiler;
+            break;
+          case MEDIA:
+            spoiler_description.title = _("Sensitive Media");
+            break;
+          default:
+            spoiler_description.title = null;
+            break;
+        }
+      } else {
+        spoiler_description.title = _("No Content");
+      }
 
       // Set the main post content
       text_label.label   = displayed_post != null ? displayed_post.text : "(null)";
