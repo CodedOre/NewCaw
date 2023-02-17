@@ -145,7 +145,6 @@ public class PostItem : Gtk.Widget {
     set {
       is_content_displayed = value;
       spoiler_toggle.label = is_content_displayed ? _("Hide Content") : _("Show Content");
-      content_revealer.reveal_child = is_content_displayed;
     }
   }
 
