@@ -2,65 +2,59 @@ using Gtk 4.0;
 using Adw 1;
 
 template PostContent : Gtk.Widget {
-  layout-manager: Gtk.BoxLayout {
-    orientation: vertical;
-    spacing: 8;
-  };
+  layout-manager: Gtk.BinLayout {};
 
-  Gtk.Box spoiler_box {
-    visible: false;
-    spacing: 16;
+  Gtk.Stack content_stack {
+    transition-type: crossfade;
 
-    Gtk.Label spoiler_label {
-      xalign: 0.0;
-      wrap: true;
-      wrap-mode: word_char;
+    Gtk.StackPage {
+      name: "spoiler";
+      child: Gtk.Button {
+        action-name: "post.toggle-sensitive";
 
-      styles [
-        "heading"
-      ]
-    }
-
-    Gtk.Button spoiler_toggle {
-      action-name: "post.toggle-sensitive";
-
-      styles [
-        "flat",
-        "inline",
-        "caption-heading"
-      ]
-    }
-  }
-
-  Gtk.Revealer content_revealer {
-    reveal-child: bind PostContent.reveal_content;
-
-    Gtk.Box {
-      orientation: vertical;
-      spacing: 12;
-
-      Gtk.Label text_label {
-        xalign: 0.0;
-        use-markup: true;
-        wrap: true;
-        wrap-mode: word_char;
-
-        activate-link => on_link_clicked ();
-      }
-
-      .MediaPreview media_previewer {}
-
-      Gtk.Button quote_button {
         styles [
-          "no-padding",
-          "flat",
-          "frame"
+          "flat"
         ]
-      }
 
-      .PostMetrics post_metrics {}
+        Adw.StatusPage spoiler_description {
+          styles [
+            "compact"
+          ]
 
-      .PostActions post_actions {}
+          description: _("Click to view content");
+        }
+      };
+    }
+
+    Gtk.StackPage {
+      name: "content";
+      child: Gtk.Box content_box {
+        orientation: vertical;
+        spacing: 12;
+
+        Gtk.Label text_label {
+          xalign: 0.0;
+          use-markup: true;
+          wrap: true;
+          wrap-mode: word_char;
+
+          activate-link => on_link_clicked ();
+        }
+
+        .MediaPreview media_previewer {}
+
+        Gtk.Button quote_button {
+          styles [
+            "no-padding",
+            "flat",
+            "frame"
+          ]
+        }
+
+        .PostMetrics post_metrics {}
+
+        .PostActions post_actions {}
+      };
     }
   }
 }

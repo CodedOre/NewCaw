@@ -28,13 +28,9 @@ public class PostContent : Gtk.Widget {
 
   // UI-Elements of PostContent
   [GtkChild]
-  private unowned Gtk.Box spoiler_box;
+  private unowned Gtk.Stack content_stack;
   [GtkChild]
-  private unowned Gtk.Label spoiler_label;
-  [GtkChild]
-  private unowned Gtk.Button spoiler_toggle;
-  [GtkChild]
-  private unowned Gtk.Revealer content_revealer;
+  private unowned Adw.StatusPage spoiler_description;
   [GtkChild]
   private unowned Gtk.Label text_label;
   [GtkChild]
@@ -88,7 +84,9 @@ public class PostContent : Gtk.Widget {
     }
     set {
       is_content_displayed = value;
-      spoiler_toggle.label = is_content_displayed ? _("Hide Content") : _("Show Content");
+      content_stack.visible_child_name = is_content_displayed
+        ? "content"
+        : "spoiler";
     }
   }
 
@@ -107,9 +105,8 @@ public class PostContent : Gtk.Widget {
       }
 
       // Set up the spoiler area
-      spoiler_box.visible = displayed_post != null ? displayed_post.spoiler != null : false;
-      spoiler_label.label = displayed_post != null ? displayed_post.spoiler         : "(null)";
-      reveal_content      = displayed_post != null ? displayed_post.spoiler == null : false;
+      reveal_content = displayed_post != null ? displayed_post.spoiler == null : false;
+      spoiler_description.title = displayed_post != null ? displayed_post.spoiler : "(null)";
 
       // Set the main post content
       text_label.label   = displayed_post != null ? displayed_post.text : "(null)";
@@ -175,8 +172,7 @@ public class PostContent : Gtk.Widget {
    */
   public override void dispose () {
     // Destructs children of PostItem
-    spoiler_box.unparent ();
-    content_revealer.unparent ();
+    content_stack.unparent ();
     base.dispose ();
   }
 
