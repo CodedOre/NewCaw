@@ -97,7 +97,7 @@ public partial class Backend.Client : Initable {
    * @param website The website for the client.
    * @param redirect_uri An optional redirect uri.
    */
-  public Client (string id, string name, string website, string? redirect_uri = null) throws Error {
+  public Client (string id, string name, string website, string? redirect_uri = null, string state_path) throws Error {
     Object (
       id: id,
       name: name,
@@ -106,6 +106,7 @@ public partial class Backend.Client : Initable {
       sessions: new SessionList (),
       servers: new ServerList ()
     );
+    this.state_path = state_path;
     init ();
 
     // Set the global instance
@@ -124,10 +125,7 @@ public partial class Backend.Client : Initable {
    * @throws Error Errors that happened while loading the account.
    */
   public bool init (Cancellable? cancellable = null) throws Error {
-    // Create cache dir if not already existing
-    state_path = Path.build_filename (Environment.get_user_data_dir (), name, null);
-    DirUtils.create_with_parents (state_path, 0750);
-
+    // Initialize the class variables
     return true;
   }
 

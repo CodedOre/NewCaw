@@ -63,7 +63,7 @@ public partial class Backend.Client : Object {
     // Load the state variant from the file
     Variant? state_variant;
     try {
-      state_variant = load_file ();
+      state_variant = Backend.Utils.StateIO.load_file (state_path, "state.gvariant");
     } catch (Error e) {
       throw e;
     }
@@ -127,7 +127,7 @@ public partial class Backend.Client : Object {
     state_builder.add ("{sv}", "Sessions", session_builder.end ());
 
     // Store the state variant in a file
-    store_file (state_builder.end ());
+    Backend.Utils.StateIO.store_file (state_path, "state.gvariant", state_builder.end ());
   }
 
   /**
@@ -321,71 +321,16 @@ public partial class Backend.Client : Object {
     // Create the VariantBuilder and check the platform
     var state_builder = new VariantBuilder (new VariantType ("a{smv}"));
     var platform = PlatformEnum.for_session (session);
-    Backend.WindowAllocation geom = session.window_geometry;
 
     // Add the data to the variant
     state_builder.add ("{smv}", "uuid", new Variant.string(session.identifier));
     state_builder.add ("{smv}", "platform", new Variant.string(platform.to_string ()));
     state_builder.add ("{smv}", "server_uuid", new Variant.string(session.server.identifier));
     state_builder.add ("{smv}", "username", new Variant.string(session.account.username));
-    state_builder.add ("{smv}", "show_window", new Variant.boolean (false));
-    debug("Saving window geometry: %d×%d", geom.width, geom.height);
-    state_builder.add ("{smv}", "window_geometry", new Variant("(ii)", geom.width, geom.height));
+    state_builder.add ("{smv}", "auto_start", new Variant.boolean (false));
 
     // Return the created variant
     return state_builder.end ();
-  }
-
-  /**
-   * Loads a GVariant from the state file.
-   *
-   * @return The GVariant from the file, or null if not existing.
-   *
-   * @throws Error Errors while accessing the state file.
-   */
-  private Variant? load_file () throws Error {
-    // Initialize the file
-    var file = File.new_build_filename (state_path, "state.gvariant", null);
-
-    Variant? stored_state;
-    try {
-      // Load the data from the file
-      uint8[] file_content;
-      string file_etag;
-      file.load_contents (null, out file_content, out file_etag);
-      // Convert the file data to an Variant and read the values from it
-      var stored_bytes = new Bytes.take (file_content);
-      stored_state = new Variant.from_bytes (new VariantType ("a{sv}"), stored_bytes, false);
-    } catch (Error e) {
-      // Don't put warning out if the file can't be found (expected error)
-      if (! (e is IOError.NOT_FOUND)) {
-        throw e;
-      }
-      stored_state = null;
-    }
-    return stored_state;
-  }
-
-  /**
-   * Stores a GVariant to the state file.
-   *
-   * @param The GVariant to be stored.
-   *
-   * @throws Error Errors while accessing the state file.
-   */
-  private void store_file (Variant variant) throws Error {
-    // Initialize the file
-    var file = File.new_build_filename (state_path, "state.gvariant", null);
-
-    // Convert the variant to Bytes and store to file
-    try {
-      Bytes bytes = variant.get_data_as_bytes ();
-      file.replace_contents (bytes.get_data (), null,
-                             false, REPLACE_DESTINATION,
-                             null, null);
-    } catch (Error e) {
-      throw e;
-    }
   }
 
   public void register_session(Session session) throws Error {

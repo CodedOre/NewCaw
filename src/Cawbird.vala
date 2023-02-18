@@ -39,6 +39,11 @@ public class Cawbird : Adw.Application {
   }
 
   /**
+   * Local path to store config and app state in (variant files)
+   */
+  private string state_path;
+
+  /**
    * Create the object.
    */
   public Cawbird () {
@@ -49,6 +54,7 @@ public class Cawbird : Adw.Application {
 #endif
       flags: ApplicationFlags.HANDLES_OPEN
     );
+    state_path = Path.build_filename (Environment.get_user_data_dir (), Config.PROJECT_NAME, null);
   }
 
   /**
@@ -77,10 +83,12 @@ public class Cawbird : Adw.Application {
    * Initialize the client and open the first window.
    */
   protected override void activate () {
+    DirUtils.create_with_parents (state_path, 0750);
     Backend.Client client = new Backend.Client(Config.APPLICATION_ID,
                                                Config.PROJECT_NAME,
                                                "https://github.com/CodedOre/NewCaw",
-                                               "cawbird://authenticate");
+                                               "cawbird://authenticate",
+                                               state_path);
 
     // Load the previous program state
     this.hold ();
