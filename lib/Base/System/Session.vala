@@ -45,12 +45,12 @@ public abstract class Backend.Session : Object {
    *
    * @throws Error Errors that happen while verifying the session by loading the account.
    */
-  internal async static Session from_data (string identifier, string access_token, Server server, bool show_window, Backend.WindowAllocation window_geometry) throws Error {
+  internal async static Session from_data (string identifier, string access_token, Server server, bool auto_start) throws Error {
     switch (PlatformEnum.for_server (server)) {
 #if SUPPORT_MASTODON
       case MASTODON:
         try {
-          var session = new Mastodon.Session (identifier, access_token, server, show_window, window_geometry);
+          var session = new Mastodon.Session (identifier, access_token, server, auto_start);
           yield session.init_async ();
           return session;
         } catch (Error e) {
@@ -83,17 +83,12 @@ public abstract class Backend.Session : Object {
    *
    * This should be set once on authentication, but not modified afterwards.
    */
-  internal string identifier { get; protected set; }
+  public string identifier { get; internal set; }
 
   /**
    * Whether the window should be shown on startup
    */
-  public bool show_window { get; set; }
-
-  /**
-   * The geometry of the window on startup, or null if the default window manager geometry should be used
-   */
-  public Backend.WindowAllocation window_geometry { get; set; }
+  public bool auto_start { get; set; }
 
   /**
    * Retrieves an post for an specified id.

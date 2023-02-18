@@ -37,16 +37,16 @@ public class MainWindow : Adw.ApplicationWindow {
   /**
    * The account currently displayed in this window.
    */
-  public Backend.User account {
+  public Backend.User? account {
     get {
-      return displayed_session.account;
+      return displayed_session != null ? displayed_session.account : null;
     }
   }
 
   /**
    * The session currently displayed in this window.
    */
-  public Backend.Session session {
+  public Backend.Session? session {
     get {
       return displayed_session;
     }
@@ -58,11 +58,6 @@ public class MainWindow : Adw.ApplicationWindow {
         // Display set account
         this.window_stack.set_visible_child (main_view);
         this.title = @"$(Config.PROJECT_NAME) - @$(displayed_session.account.username)";
-        if (session.window_geometry.width != 0 && session.window_geometry.height != 0) {
-          debug("Setting default size from session: %d×%d", session.window_geometry.width, session.window_geometry.height);
-          this.default_width = session.window_geometry.width;
-          this.default_height = session.window_geometry.height;
-        }
       } else {
         // Or open AuthView on non-existence
         this.window_stack.set_visible_child (auth_view);
@@ -74,26 +69,16 @@ public class MainWindow : Adw.ApplicationWindow {
   /**
    * Initializes a MainWindow.
    *
-   * @param app The Gtk.Application for this window.
+   * @param app The Cawbird application for this window.
    * @param account The account to be assigned to this window, or null for an AuthView.
    */
-  public MainWindow (Gtk.Application app, Backend.Session? session = null) {
+  public MainWindow (Cawbird app, Backend.Session? session = null) {
     // Initializes the Object
     Object (
       application: app,
       session: session
     );
-
-    notify["default-width"].connect (update_default_geometry);
-    notify["default-height"].connect (update_default_geometry);
-  }
-
-  private void update_default_geometry(){
-    if (displayed_session != null) {
-      Gtk.Allocation allocation;
-      this.get_allocation (out allocation);
-      displayed_session.window_geometry = Backend.WindowAllocation(){width=allocation.width, height=allocation.height};
-    }
+    app.register_window(this);
   }
 
   /**

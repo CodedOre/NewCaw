@@ -51,6 +51,7 @@ cawsources += [
   'Preferences/PreferencesWindow.vala',
   'Preferences/SessionSettings.vala',
   'Preferences/SessionsPage.vala',
+  'Preferences/WindowManagement.vala',
   'Utils/DisplayUtils.vala',
   'Utils/SystemInfo.vala',
   'Widgets/BadgesBox.vala',
