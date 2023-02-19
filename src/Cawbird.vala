@@ -154,7 +154,6 @@ public class Cawbird : Adw.Application {
       window.default_height = window_allocation.height;
     }
     window.close_request.connect(update_window_allocation);
-    // TODO: Connect to session change
   }
 
   private bool update_window_allocation(Gtk.Window window) {

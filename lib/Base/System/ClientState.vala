@@ -195,28 +195,18 @@ public partial class Backend.Client : Object {
     PlatformEnum platform_prop;
 
     // Attempt to load the server data
-    if (variant.get_type_string () == "a{sms}") {
-      variant.lookup ("uuid", "ms", out uuid_prop);
-      variant.lookup ("platform", "ms", out platform_name);
-      variant.lookup ("server_uuid", "ms", out server_prop);
-      variant.lookup ("username", "ms", out username_prop);
-      auto_start_prop = true;
-    }
-    else {
-      Variant? uuid_variant, platform_name_variant, server_variant, username_variant, auto_start_variant, geometry_variant;
-      // Newer format `a{smv}`
-      variant.lookup ("uuid", "mv", out uuid_variant);
-      variant.lookup ("platform", "mv", out platform_name_variant);
-      variant.lookup ("server_uuid", "mv", out server_variant);
-      variant.lookup ("username", "mv", out username_variant);
-      variant.lookup ("auto_start", "mv", out auto_start_variant);
-      uuid_prop = uuid_variant.get_string();
-      platform_name = platform_name_variant.get_string();
-      server_prop = server_variant.get_string();
-      username_prop = username_variant.get_string();
-      auto_start_prop = auto_start_variant.get_boolean();
-    }
-
+    Variant? uuid_variant, platform_name_variant, server_variant, username_variant, auto_start_variant, geometry_variant;
+    // Newer format `a{smv}`
+    variant.lookup ("uuid", "mv", out uuid_variant);
+    variant.lookup ("platform", "mv", out platform_name_variant);
+    variant.lookup ("server_uuid", "mv", out server_variant);
+    variant.lookup ("username", "mv", out username_variant);
+    variant.lookup ("auto_start", "mv", out auto_start_variant);
+    uuid_prop = uuid_variant.get_string();
+    platform_name = platform_name_variant.get_string();
+    server_prop = server_variant.get_string();
+    username_prop = username_variant.get_string();
+    auto_start_prop = auto_start_variant.get_boolean();
     platform_prop = PlatformEnum.from_name (platform_name);
 
     // Check that all data could be retrieved
