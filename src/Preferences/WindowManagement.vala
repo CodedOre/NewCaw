@@ -28,7 +28,6 @@ namespace Preferences.WindowManagement {
         // Pack each server into the state variant
         var window_builder = new VariantBuilder (new VariantType ("av"));
         foreach (WindowAllocation window_allocation in window_allocations) {
-          debug("Packing window %s", window_allocation.session_id);
           window_builder.add ("v", pack_window (window_allocation));
         }
         state_builder.add ("{sv}", "Windows", window_builder.end ());

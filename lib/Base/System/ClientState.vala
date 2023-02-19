@@ -216,7 +216,6 @@ public partial class Backend.Client : Object {
       username_prop = username_variant.get_string();
       auto_start_prop = auto_start_variant.get_boolean();
     }
-    debug("%s %s %s %s", uuid_prop, platform_name, server_prop, username_prop);
 
     platform_prop = PlatformEnum.from_name (platform_name);
 
