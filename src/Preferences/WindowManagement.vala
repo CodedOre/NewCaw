@@ -21,7 +21,7 @@
 using GLib;
 
 namespace Preferences.WindowManagement {
-    public void store_state(string state_path, List<WindowAllocation?> window_allocations) {
+    public void store_state(string state_path, List<WindowAllocation?> window_allocations) throws Error {
         // Prepare to build the state variant
         var state_builder = new VariantBuilder (new VariantType ("a{sv}"));
 
@@ -49,7 +49,7 @@ namespace Preferences.WindowManagement {
       return state_builder.end ();
     }
 
-    private async List<WindowAllocation?> load_state(string state_path){
+    private async List<WindowAllocation?> load_state(string state_path) throws Error {
         Variant? window_states_variant = Backend.Utils.StateIO.load_file(state_path, "windows.gvariant");
         List<WindowAllocation?> window_allocations = new List<WindowAllocation?>();
 
