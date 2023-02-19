@@ -310,7 +310,7 @@ public partial class Backend.Client : Object {
     state_builder.add ("{smv}", "platform", new Variant.string(platform.to_string ()));
     state_builder.add ("{smv}", "server_uuid", new Variant.string(session.server.identifier));
     state_builder.add ("{smv}", "username", new Variant.string(session.account.username));
-    state_builder.add ("{smv}", "auto_start", new Variant.boolean (false));
+    state_builder.add ("{smv}", "auto_start", new Variant.boolean (session.auto_start));
 
     // Return the created variant
     return state_builder.end ();

@@ -17,7 +17,28 @@ template PreferencesSessionSettings : Gtk.Widget {
     Adw.WindowTitle page_title {}
   }
 
-  Adw.Clamp page_settings {
+  Adw.Clamp account_settings_group {
+    margin-top: 12;
+    margin-bottom: 12;
+    margin-start: 12;
+    margin-end: 12;
+
+    Adw.PreferencesGroup {
+      title: _("Account Settings");
+
+      Adw.ActionRow {
+        title: _("Auto-start");
+        activatable-widget: auto_start_switch;
+
+        Gtk.Switch auto_start_switch {
+          valign: center;
+          halign: center;
+        }
+      }
+    }
+  }
+
+  Adw.Clamp remove_account_group {
     margin-top: 12;
     margin-bottom: 12;
     margin-start: 12;

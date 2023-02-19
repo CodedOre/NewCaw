@@ -67,7 +67,7 @@ public class Cawbird : Adw.Application {
 #endif
       flags: ApplicationFlags.HANDLES_OPEN
     );
-    window_allocations = new HashTable<string, WindowAllocation> (str_hash, str_equal);
+    window_allocations = new HashTable<string, WindowAllocation?> (str_hash, str_equal);
     state_path = Path.build_filename (Environment.get_user_data_dir (), Config.PROJECT_NAME, null);
   }
 
@@ -238,7 +238,7 @@ public class Cawbird : Adw.Application {
     try {
       Backend.Client.instance.store_state ();
       // We don't seem to be able to use `get_values()` directly because of weak vs unowned type differences
-      List<WindowAllocation?> allocations_to_store = new List<WindowAllocation> ();
+      List<WindowAllocation?> allocations_to_store = new List<WindowAllocation?> ();
       foreach (WindowAllocation window_allocation in window_allocations.get_values ()) {
         allocations_to_store.append (window_allocation);
       }

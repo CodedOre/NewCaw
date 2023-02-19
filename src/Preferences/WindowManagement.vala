@@ -51,7 +51,7 @@ namespace Preferences.WindowManagement {
 
     private async List<WindowAllocation?> load_state(string state_path){
         Variant? window_states_variant = Backend.Utils.StateIO.load_file(state_path, "windows.gvariant");
-        List<WindowAllocation?> window_allocations = new List<WindowAllocation>();
+        List<WindowAllocation?> window_allocations = new List<WindowAllocation?>();
 
         if (window_states_variant == null) {
             return window_allocations;
