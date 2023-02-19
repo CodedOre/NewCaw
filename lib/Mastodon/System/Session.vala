@@ -39,12 +39,13 @@ public partial class Backend.Mastodon.Session : AsyncInitable {
    * @param access_token The access token to make calls for this session.
    * @param server The server this session is connected to.
    */
-  internal Session (string identifier, string access_token, Backend.Server server) {
+  internal Session (string identifier, string access_token, Backend.Server server, bool auto_start) {
     // Construct the new object
     Object (
       identifier: identifier,
       access_token: access_token,
-      server: server
+      server: server,
+      auto_start: auto_start
     );
 
     // Set the proxy

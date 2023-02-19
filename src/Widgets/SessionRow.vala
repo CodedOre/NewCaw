@@ -75,7 +75,7 @@ public class SessionRow : Adw.ActionRow {
     }
 
     // Create a new MainWindow and display the session
-    var window = new MainWindow (main_window.application, session);
+    var window = new MainWindow (main_window.application as Cawbird, session);
     window.present ();
   }
 
