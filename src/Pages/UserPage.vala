@@ -32,7 +32,7 @@ public class UserPage : Gtk.Widget {
   [GtkChild]
   private unowned Adw.WindowTitle page_title;
   [GtkChild]
-  private unowned CollectionView collection_view;
+  private unowned RefreshingCollectionView collection_view;
 
   /**
    * The User which is displayed.

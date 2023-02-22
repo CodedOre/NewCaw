@@ -23,7 +23,7 @@ using GLib;
 /**
  * The timeline of Posts a certain User has created.
  */
-public abstract class Backend.UserTimeline : Backend.Collection {
+public abstract class Backend.UserTimeline : Backend.ExpandableCollection {
 
   /**
    * The User which timeline is presented.

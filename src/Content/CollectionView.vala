@@ -28,7 +28,7 @@ public class CollectionView : Gtk.Widget {
 
   // UI-Elements of CollectionView
   [GtkChild]
-  private unowned Gtk.ScrolledWindow scroll_window;
+  protected unowned Gtk.ScrolledWindow scroll_window;
   [GtkChild]
   private unowned Gtk.ListView listview;
 
@@ -96,7 +96,7 @@ public class CollectionView : Gtk.Widget {
   /**
    * The collection which is to be displayed.
    */
-  public Backend.Collection collection {
+  public virtual Backend.Collection collection {
     get {
       return shown_collection;
     }
@@ -110,12 +110,16 @@ public class CollectionView : Gtk.Widget {
         listview.set_model (list_model);
 
         // Pull the posts from the list
-        shown_collection.pull_posts.begin ();
+        pull_posts ();
       } else {
         list_model = null;
         listview.set_model (null);
       }
     }
+  }
+
+  internal void pull_posts() {
+    shown_collection.pull_posts.begin ();
   }
 
   /**
@@ -422,4 +426,54 @@ public class CollectionView : Gtk.Widget {
    */
   private Gtk.SelectionModel? list_model = null;
 
+}
+
+public class RefreshingCollectionView : CollectionView {
+  private uint refresh_source_id;
+  private uint poll_interval = 2 * 60;
+  private bool loading_old_posts = false;
+  public double scroll_end_offset {get; set; default = 200;}
+
+  construct {
+    // Backfill old posts as we scroll
+    scroll_window.vadjustment.value_changed.connect (() => {
+      double max = scroll_window.vadjustment.upper - scroll_window.vadjustment.page_size;
+      if (scroll_window.vadjustment.value >= max - scroll_end_offset) {
+        lock (loading_old_posts) {
+          if (loading_old_posts) {
+            return;
+          }
+          loading_old_posts = true;
+        }
+        ((Backend.ExpandableCollection)collection).pull_older_posts.begin (() => {
+          lock (loading_old_posts) {
+            loading_old_posts = false;
+          }
+        });
+      }
+    });
+  }
+
+  public override Backend.Collection collection {
+    set {
+      if (value != null && !(value is Backend.ExpandableCollection)) {
+        critical("RefreshingCollectionView requires a ExpandableCollection");
+      }
+      if (refresh_source_id != 0) {
+        Source.remove (refresh_source_id);
+      }
+      base.collection = value;
+      if (value != null) {
+        refresh_source_id = Timeout.add_seconds (poll_interval, poll_for_posts, 0);
+      }
+    }
+    get {
+      return base.collection;
+    }
+  }
+
+  private bool poll_for_posts() {
+    pull_posts ();
+    return true;
+  }
 }

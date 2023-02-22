@@ -34,7 +34,7 @@ public class MainPage : Gtk.Widget {
   [GtkChild]
   private unowned Adw.WindowTitle content_title;
   [GtkChild]
-  private unowned CollectionView home_collection;
+  private unowned RefreshingCollectionView home_collection;
 
   // UI-Elements of the flap
   [GtkChild]

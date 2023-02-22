@@ -17,7 +17,7 @@ template UserPage : Gtk.Widget {
     Adw.WindowTitle page_title {}
   }
 
-  .CollectionView collection_view {
+  .RefreshingCollectionView collection_view {
     header: .UserDisplay {
       user: bind UserPage.user;
     };
