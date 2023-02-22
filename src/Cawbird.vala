@@ -1,6 +1,6 @@
 /* Cawbird.vala
  *
- * Copyright 2021-2022 Frederick Schenk
+ * Copyright 2021-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -142,6 +142,7 @@ public class Cawbird : Adw.Application {
         });
       } catch (Error e) {
         critical (@"Failed to load program state: $(e.message)");
+        this.release ();
       }
     });
   }
