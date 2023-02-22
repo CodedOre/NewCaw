@@ -1,0 +1,60 @@
+using Gtk 4.0;
+using Adw 1;
+
+template PostContent : Gtk.Widget {
+  layout-manager: Gtk.BinLayout {};
+
+  Gtk.Stack content_stack {
+    transition-type: crossfade;
+
+    Gtk.StackPage {
+      name: "spoiler";
+      child: Gtk.Button {
+        action-name: "post.toggle-sensitive";
+
+        styles [
+          "flat"
+        ]
+
+        Adw.StatusPage spoiler_description {
+          styles [
+            "compact"
+          ]
+
+          description: _("Click to view content");
+        }
+      };
+    }
+
+    Gtk.StackPage {
+      name: "content";
+      child: Gtk.Box content_box {
+        orientation: vertical;
+        spacing: 12;
+
+        Gtk.Label text_label {
+          xalign: 0.0;
+          use-markup: true;
+          wrap: true;
+          wrap-mode: word_char;
+
+          activate-link => on_link_clicked ();
+        }
+
+        .MediaPreview media_previewer {}
+
+        Gtk.Button quote_button {
+          styles [
+            "no-padding",
+            "flat",
+            "frame"
+          ]
+        }
+
+        .PostMetrics post_metrics {}
+
+        .PostActions post_actions {}
+      };
+    }
+  }
+}

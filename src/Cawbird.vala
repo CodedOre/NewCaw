@@ -20,6 +20,14 @@
 
 using GLib;
 
+public struct WindowAllocation {
+  // It would be nice to have position as well, but apparently GTK4 doesn't support it
+  // because some window managers don't support it
+  public int width;
+  public int height;
+  public string? session_id;
+}
+
 /**
  * The application class, initializes the application.
  */
@@ -39,6 +47,16 @@ public class Cawbird : Adw.Application {
   }
 
   /**
+  * All windows that are active or configured with this client, keyed by session ID
+  */
+  public HashTable<string, WindowAllocation?> window_allocations { get; private set; }
+
+  /**
+   * Local path to store config and app state in (variant files)
+   */
+  private string state_path;
+
+  /**
    * Create the object.
    */
   public Cawbird () {
@@ -49,6 +67,8 @@ public class Cawbird : Adw.Application {
 #endif
       flags: ApplicationFlags.HANDLES_OPEN
     );
+    window_allocations = new HashTable<string, WindowAllocation?> (str_hash, str_equal);
+    state_path = Path.build_filename (Environment.get_user_data_dir (), Config.PROJECT_NAME, null);
   }
 
   /**
@@ -77,33 +97,83 @@ public class Cawbird : Adw.Application {
    * Initialize the client and open the first window.
    */
   protected override void activate () {
+    DirUtils.create_with_parents (state_path, 0750);
     Backend.Client client = new Backend.Client(Config.APPLICATION_ID,
                                                Config.PROJECT_NAME,
                                                "https://github.com/CodedOre/NewCaw",
-                                               "cawbird://authenticate");
+                                               "cawbird://authenticate",
+                                               state_path);
 
     // Load the previous program state
     this.hold ();
     client.load_state.begin ((obj, res) => {
       try {
         client.load_state.end (res);
+        Preferences.WindowManagement.load_state.begin (state_path, (obj, res) => {
+          try {
+            List<WindowAllocation?> stored_allocations = Preferences.WindowManagement.load_state.end (res);
+            foreach (WindowAllocation window_allocation in stored_allocations) {
+              window_allocations[window_allocation.session_id] = window_allocation;
+            }
 
-        // TODO: Reindroduce selected windows
-        if (client.sessions.get_n_items () > 0) {
-          foreach (Backend.Session session in client.sessions) {
-            var window = new MainWindow (this, session);
-            window.present ();
+            if (client.sessions.get_n_items () > 0) {
+              bool opened_window = false;
+              foreach (Backend.Session session in client.sessions) {
+                if (session.auto_start) {
+                  opened_window = true;
+                  var window = new MainWindow (this, session);
+                  window.present ();
+                }
+              }
+              if (!opened_window) {
+                // If nothing opened automatically, show the first session
+                var window = new MainWindow(this, client.sessions.get_item(0) as Backend.Session);
+                window.present();
+              }
+            } else {
+              var window = new MainWindow (this, null);
+              window.present ();
+            }
+          } catch (Error e) {
+            critical (@"Failed to load window state: $(e.message)");
+          } finally {
+            this.release ();
           }
-        } else {
-          var window = new MainWindow (this, null);
-          window.present ();
-        }
+        });
       } catch (Error e) {
         critical (@"Failed to load program state: $(e.message)");
-      } finally {
-        this.release ();
       }
     });
+  }
+
+  internal void register_window (MainWindow window) {
+    string? session_id = window.session == null ? null : window.session.identifier;
+    if (session_id != null && window_allocations.contains (session_id)) {
+      WindowAllocation? window_allocation = window_allocations.get(session_id);
+      window.default_width = window_allocation.width;
+      window.default_height = window_allocation.height;
+    }
+    window.close_request.connect(update_window_allocation);
+  }
+
+  private bool update_window_allocation(Gtk.Window window) {
+    if (!(window is MainWindow)) {
+      return false;
+    }
+
+    MainWindow main_window = window as MainWindow;
+
+    if (main_window.session != null) {
+      string session_id = main_window.session.identifier;
+      Gtk.Allocation allocation;
+      main_window.get_allocation (out allocation);
+      window_allocations[session_id] = WindowAllocation() {
+        width=allocation.width,
+        height=allocation.height,
+        session_id=session_id
+      };
+    }
+    return false;
   }
 
   /**
@@ -166,6 +236,12 @@ public class Cawbird : Adw.Application {
   protected override void shutdown () {
     try {
       Backend.Client.instance.store_state ();
+      // We don't seem to be able to use `get_values()` directly because of weak vs unowned type differences
+      List<WindowAllocation?> allocations_to_store = new List<WindowAllocation?> ();
+      foreach (WindowAllocation window_allocation in window_allocations.get_values ()) {
+        allocations_to_store.append (window_allocation);
+      }
+      Preferences.WindowManagement.store_state (state_path, allocations_to_store);
     } catch (Error e) {
       error (@"Failed to store program state: $(e.message)");
     } finally {

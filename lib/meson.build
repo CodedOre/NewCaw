@@ -40,6 +40,7 @@ libfiles = [
   'Base/Utils/KeyStorage.vala',
   'Base/Utils/MediaLoader.vala',
   'Base/Utils/PlatformEnum.vala',
+  'Base/Utils/StateIO.vala',
   'Base/Utils/TextFormats.vala',
   'Base/Utils/TextUtils.vala'
 ]

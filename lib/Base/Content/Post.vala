@@ -74,6 +74,16 @@ public abstract class Backend.Post : Object {
   public string url { get; construct; }
 
   /**
+   * The sensitivity of the content.
+   */
+  public PostSensitivity sensitive { get; construct; }
+
+  /**
+   * A short text describing the content for sensitive post.
+   */
+  public string spoiler { get; construct; }
+
+  /**
    * How often the post was liked.
    */
   public int liked_count { get; protected construct set; }
@@ -97,7 +107,6 @@ public abstract class Backend.Post : Object {
    * Whether the post has been favourited by the session user
    */
   public bool is_favourited { get; protected construct set; default = false; }
-
 
   /**
    * Whether the post has been reblogged by the session user

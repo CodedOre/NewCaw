@@ -50,8 +50,17 @@ public class Backend.Mastodon.Post : Backend.Post {
     string post_url = ! json.get_null_member ("url")
                         ? json.get_string_member ("url")
                         : json.get_string_member ("uri");
-    string post_domain = Utils.ParseUtils.strip_domain (post_url);
+    string post_domain   = Utils.ParseUtils.strip_domain (post_url);
     var interaction_data = get_interaction_data (json);
+
+    // Determine the sensitivity of the post
+    bool sensitive_post  = json.get_boolean_member ("sensitive");
+    string spoiler_text  = json.get_string_member ("spoiler_text");
+    var sensitive_enum   = sensitive_post
+                             ? spoiler_text.length > 0
+                                ? PostSensitivity.ALL
+                                : PostSensitivity.MEDIA
+                             : PostSensitivity.NONE;
 
     // Construct object with properties
     Object (
@@ -70,6 +79,10 @@ public class Backend.Mastodon.Post : Backend.Post {
 
       // Set PostType
       post_type: json.get_null_member ("reblog") ? PostType.NORMAL : PostType.REPOST,
+
+      // Set the visibility of the post
+      sensitive: sensitive_enum,
+      spoiler:   spoiler_text,
 
       // Set url and domain
       url:    post_url,

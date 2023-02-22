@@ -32,7 +32,12 @@ public class Preferences.SessionSettings : Gtk.Widget {
   [GtkChild]
   private unowned Adw.WindowTitle page_title;
   [GtkChild]
-  private unowned Adw.Clamp page_settings;
+  private unowned Adw.Clamp account_settings_group;
+  [GtkChild]
+  private unowned Adw.Clamp remove_account_group;
+  [GtkChild]
+  private unowned Gtk.Switch auto_start_switch;
+  private Binding? autostart_binding;
 
   /**
    * The session for which to set the settings.
@@ -42,13 +47,29 @@ public class Preferences.SessionSettings : Gtk.Widget {
       return displayed_session;
     }
     set {
+      if (autostart_binding != null) {
+        autostart_binding.unbind ();
+        autostart_binding = null;
+      }
       displayed_session = value;
 
-      // Set the window title to the account names
-      page_title.title    = displayed_session != null ? displayed_session.account.display_name : "(null)";
-      page_title.subtitle = displayed_session != null
-                              ? DisplayUtils.prefix_username (displayed_session.account)
-                              : "(null)";
+      if (displayed_session != null) {
+        // Set the window title to the account names
+        page_title.title    = displayed_session.account.display_name;
+        page_title.subtitle = DisplayUtils.prefix_username (displayed_session.account);
+        displayed_session.notify["auto-start"].connect(() => { debug("Autostart? %s", displayed_session.auto_start.to_string ());});
+        autostart_binding = displayed_session.bind_property (
+          "auto-start",
+          auto_start_switch,
+          "active",
+          GLib.BindingFlags.SYNC_CREATE | GLib.BindingFlags.BIDIRECTIONAL
+        );
+      }
+      else {
+        page_title.title = "(null)";
+        page_title.subtitle = "(null)";
+
+      }
     }
   }
 
@@ -104,7 +125,8 @@ public class Preferences.SessionSettings : Gtk.Widget {
   public override void dispose () {
     // Deconstruct childrens
     page_header.unparent ();
-    page_settings.unparent ();
+    account_settings_group.unparent ();
+    remove_account_group.unparent ();
     base.dispose ();
   }
 

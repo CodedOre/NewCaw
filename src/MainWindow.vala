@@ -37,16 +37,16 @@ public class MainWindow : Adw.ApplicationWindow {
   /**
    * The account currently displayed in this window.
    */
-  public Backend.User account {
+  public Backend.User? account {
     get {
-      return displayed_session.account;
+      return displayed_session != null ? displayed_session.account : null;
     }
   }
 
   /**
    * The session currently displayed in this window.
    */
-  public Backend.Session session {
+  public Backend.Session? session {
     get {
       return displayed_session;
     }
@@ -69,15 +69,16 @@ public class MainWindow : Adw.ApplicationWindow {
   /**
    * Initializes a MainWindow.
    *
-   * @param app The Gtk.Application for this window.
+   * @param app The Cawbird application for this window.
    * @param account The account to be assigned to this window, or null for an AuthView.
    */
-  public MainWindow (Gtk.Application app, Backend.Session? session = null) {
+  public MainWindow (Cawbird app, Backend.Session? session = null) {
     // Initializes the Object
     Object (
       application: app,
       session: session
     );
+    app.register_window(this);
   }
 
   /**
