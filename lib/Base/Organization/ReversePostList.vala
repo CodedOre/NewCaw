@@ -50,15 +50,15 @@ public abstract class Backend.ReversePostList : Backend.Collection<Object> {
       return -1 * x.compare (y);
     }
 
-    // Sort two PseudoItems
-    if (a is PseudoItem && b is PseudoItem) {
+    // Sort two HeaderItem
+    if (a is HeaderItem && b is HeaderItem) {
       // Retrieve the items
-      var pseudo_a = a as PseudoItem;
-      var pseudo_b = b as PseudoItem;
+      var header_a = a as HeaderItem;
+      var header_b = b as HeaderItem;
 
       // Sort the items using the set index
-      uint x = pseudo_a.index;
-      uint y = pseudo_b.index;
+      uint x = header_a.index;
+      uint y = header_b.index;
       return (int) (x > y) - (int) (x < y);
     }
 
