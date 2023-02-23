@@ -67,9 +67,7 @@ public class Backend.Mastodon.HomeTimeline : Backend.HomeTimeline {
     }
 
     // Load the posts in the post list
-    foreach (Backend.Post post in session.load_post_list (json)) {
-      add_item (post);
-    }
+    add_items (session.load_post_list (json));
   }
 
 }

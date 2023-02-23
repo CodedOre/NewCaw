@@ -98,9 +98,26 @@ public abstract class Backend.Collection <T> : ListModel, Object {
    * @param item The item to be added.
    */
   protected void add_item (owned T item) {
-    SequenceIter iter = items.insert_sorted (item, compare_items);
+    SequenceIter<T> iter = items.insert_sorted (item, compare_items);
     uint position = iter.get_position ();
     after_update (position, 0, 1);
+  }
+
+  /**
+   * Adds multiple items to the collection.
+   *
+   * @param new_items An array of items to be added.
+   */
+  protected void add_items (owned T[] new_items) {
+    SequenceIter<T>[] iters = {};
+    foreach (T item in new_items) {
+      iters += items.append (item);
+    }
+    items.sort (compare_items);
+    foreach (SequenceIter<T> iter in iters) {
+      uint position = iter.get_position ();
+      after_update (position, 0, 1);
+    }
   }
 
   /**
