@@ -53,7 +53,7 @@ public abstract class Backend.Collection <T> : ListModel, Object {
    * @return The number of items in the collection.
    */
   public uint get_n_items () {
-    return (uint) items.get_length;
+    return (uint) items.get_length ();
   }
 
   /**

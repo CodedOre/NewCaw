@@ -41,14 +41,6 @@ public class Backend.Mastodon.HomeTimeline : Backend.HomeTimeline {
       session: session,
       account: session.account
     );
-    
-    // Add PseudoItems for the headers
-    int header_i = 0;
-    foreach (string name in headers) {
-      var item = new PseudoItem (header_i, name);
-      add_item (item);
-      header_i++;
-    }
   }
   
   /**
