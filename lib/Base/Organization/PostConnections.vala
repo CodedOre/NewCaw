@@ -28,6 +28,30 @@ using GLib;
 public interface Backend.PostConnections<T> : Backend.Collection<T> {
 
   /**
+   * Checks if a post in the list replies to the post previous to it.
+   *
+   * @param post The post to check for.
+   *
+   * @return If the post replies to the post previous to it.
+   */
+  public bool connected_to_previous (Post post) {
+    SequenceIter<T> iter = get_item_iter (post);
+    return iter != null ? check_prev_iter (iter) : false;
+  }
+
+  /**
+   * Checks if a post in the list replies to the post next to it.
+   *
+   * @param post The post to check for.
+   *
+   * @return If the post replies to the post next to it.
+   */
+  public bool connected_to_next (Post post) {
+    SequenceIter<T> iter = get_item_iter (post);
+    return iter != null ? check_next_iter (iter) : false;
+  }
+
+  /**
    * Checks if the post in one iterator is connected to the previous.
    *
    * @param iter The iterator which contains the post to check.
@@ -68,6 +92,9 @@ public interface Backend.PostConnections<T> : Backend.Collection<T> {
 
     // Get the previous iterator and check if it has a post
     var next_iter = iter.next ();
+    if (next_iter.is_end ()) {
+      return false;
+    }
     var next_post = next_iter.get () as Post;
     if (next_post == null) {
       return false;

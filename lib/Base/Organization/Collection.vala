@@ -93,6 +93,26 @@ public abstract class Backend.Collection <T> : ListModel, Object {
   }
 
   /**
+   * Retrieves the SequenceIter for a specific object.
+   *
+   * @param item The item to retrieve the iterator for.
+   *
+   * @return The iterator for this item, or null if not found.
+   */
+  internal SequenceIter<T>? get_item_iter (T item) {
+    SequenceIter<T> begin = items.get_begin_iter ();
+    SequenceIter<T> end   = items.get_end_iter ();
+    SequenceIter<T> iter  = begin;
+    while (iter != end) {
+      if (iter.get () == item) {
+        return iter;
+      }
+      iter = iter.next ();
+    }
+    return null;
+  }
+
+  /**
    * Adds an item to the collection.
    *
    * @param item The item to be added.
