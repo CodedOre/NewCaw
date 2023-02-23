@@ -23,7 +23,7 @@ using GLib;
 /**
  * The timeline of Posts a certain User has created.
  */
-public abstract class Backend.UserTimeline : Backend.ReversePostList, Backend.PullableCollection<Object> {
+public abstract class Backend.UserTimeline : Backend.ReversePostList, Backend.PullableCollection<Object>, Backend.CollectionHeaders {
 
   /**
    * The session used to pull posts.
@@ -34,6 +34,18 @@ public abstract class Backend.UserTimeline : Backend.ReversePostList, Backend.Pu
    * The User which timeline is presented.
    */
   public User user { get; construct; }
+
+  /**
+   * The strings used to generated the items.
+   */
+  public string[] headers { get; construct; }
+
+  /**
+   * Run at construction of an instance.
+   */
+  construct {
+    add_items (generate_headers ());
+  }
 
   /**
    * The id of the newest item in the collection.

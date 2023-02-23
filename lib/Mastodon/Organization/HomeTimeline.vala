@@ -39,7 +39,8 @@ public class Backend.Mastodon.HomeTimeline : Backend.HomeTimeline {
     // Construct the object
     Object (
       session: session,
-      account: session.account
+      account: session.account,
+      headers: headers
     );
   }
   

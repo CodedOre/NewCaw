@@ -40,7 +40,8 @@ public class Backend.Mastodon.UserTimeline : Backend.UserTimeline {
     // Construct the object
     Object (
       session: session,
-      user: user
+      user: user,
+      headers: headers
     );
   }
 

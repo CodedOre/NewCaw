@@ -23,7 +23,7 @@ using GLib;
 /**
  * The reverse chronological timeline with posts from all followed users.
  */
-public abstract class Backend.HomeTimeline : Backend.ReversePostList, Backend.PullableCollection<Object> {
+public abstract class Backend.HomeTimeline : Backend.ReversePostList, Backend.PullableCollection<Object>, Backend.CollectionHeaders {
 
   /**
    * The session used to pull posts.
@@ -34,6 +34,18 @@ public abstract class Backend.HomeTimeline : Backend.ReversePostList, Backend.Pu
    * The Account which timeline is presented.
    */
   public User account { get; construct; }
+
+  /**
+   * The strings used to generated the items.
+   */
+  public string[] headers { get; construct; }
+
+  /**
+   * Run at construction of an instance.
+   */
+  construct {
+    add_items (generate_headers ());
+  }
 
   /**
    * The id of the newest item in the collection.
