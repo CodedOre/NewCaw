@@ -1,6 +1,6 @@
 /* UserTimeline.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,34 +39,32 @@ public class Backend.Mastodon.UserTimeline : Backend.UserTimeline {
   internal UserTimeline (Session session, Backend.User user, string[] headers = {}) {
     // Construct the object
     Object (
-      post_list: new ListStore (typeof (Object)),
       session: session,
       user: user
     );
 
     // Add PseudoItems for the headers
-    var store    = post_list as ListStore;
     int header_i = 0;
     foreach (string name in headers) {
       var item = new PseudoItem (header_i, name);
-      store.insert_sorted (item, compare_items);
+      add_item (item);
       header_i++;
     }
   }
 
   /**
-   * Calls the API to get the posts for the Collection.
+   * Calls the API to retrieve all items from this Collection.
    *
-   * @throws Error Any error that happened while pulling the posts.
+   * @throws Error Any error while accessing the API and pulling the items.
    */
-  public override async void pull_posts () throws Error {
+  public override async void pull_items () throws Error {
     // Create the proxy call
     Rest.ProxyCall call = session.create_call ();
     call.set_method ("GET");
     call.set_function (@"api/v1/accounts/$(user.id)/statuses");
     call.add_param ("limit", "50");
-    if (last_post_id != null) {
-      call.add_param ("min_id", last_post_id);
+    if (newest_item_id != null) {
+      call.add_param ("min_id", newest_item_id);
     }
 
     // Load the timeline
@@ -78,9 +76,8 @@ public class Backend.Mastodon.UserTimeline : Backend.UserTimeline {
     }
 
     // Load the posts in the post list
-    var store = post_list as ListStore;
     foreach (Backend.Post post in session.load_post_list (json)) {
-      store.insert_sorted (post, compare_items);
+      add_item (post);
     }
   }
 
