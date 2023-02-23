@@ -26,6 +26,11 @@ using GLib;
 public interface Backend.PullableCollection : Backend.Collection {
 
   /**
+   * The session used to pull posts.
+   */
+  public abstract Session session { get; construct; }
+
+  /**
    * The id of the newest item in the collection.
    */
   protected abstract string? newest_item_id { get; set; default = null; }
@@ -43,6 +48,11 @@ public interface Backend.PullableCollection : Backend.Collection {
  * An interface for Collection providing access methods for paginated lists.
  */
 public interface Backend.PaginatedCollection : Backend.Collection {
+
+  /**
+   * The session used to pull posts.
+   */
+  public abstract Session session { get; construct; }
 
   /**
    * The id of the newest item in the collection.
