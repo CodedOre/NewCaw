@@ -24,7 +24,7 @@ using GLib;
  * Provides an common interface for collections displaying a
  * linear list of posts in a reverse chronological order.
  */
-public abstract class Backend.ReversePostList : Backend.Collection<Object> {
+public abstract class Backend.ReversePostList : Backend.Collection<Object>, Backend.PostConnections<Object> {
 
   /**
    * Used to compares two iterators in the list when sorting.
@@ -44,9 +44,17 @@ public abstract class Backend.ReversePostList : Backend.Collection<Object> {
 
     // Sort two posts
     if (item_a is Post && item_b is Post) {
-      // Retrieve the posts
-      var post_a = item_a as Post;
-      var post_b = item_b as Post;
+      // Use the upmost parent as reference
+      var post_a = upmost_parent (a);
+      var post_b = upmost_parent (b);
+
+      // Check if posts are connected
+      if (post_a.replied_to_id == post_b.id) {
+		    return 1;
+	    }
+	    if (post_b.replied_to_id == post_a.id) {
+		    return -1;
+	    }
 
       // Sort posts by date
       DateTime x = post_a.creation_date;
