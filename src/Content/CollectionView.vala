@@ -1,6 +1,6 @@
 /* CollectionList.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,12 +105,15 @@ public class CollectionView : Gtk.Widget {
 
       if (shown_collection != null) {
         // Bind the collection to the list
-        var filter_list = new Gtk.FilterListModel (shown_collection.post_list, list_filter);
+        var filter_list = new Gtk.FilterListModel (shown_collection, list_filter);
         list_model      = new Gtk.NoSelection (filter_list);
         listview.set_model (list_model);
 
         // Pull the posts from the list
-        shown_collection.pull_posts.begin ();
+        var pullable = shown_collection as Backend.PullableCollection;
+        if (pullable != null) {
+          pullable.pull_items.begin ();
+        }
       } else {
         list_model = null;
         listview.set_model (null);
@@ -254,10 +257,13 @@ public class CollectionView : Gtk.Widget {
                                  : PostItem.DisplayMode.LIST;
 
       // Set the connecting lines
-      post_item.connect_to_previous = post.replied_to_id != main_post_id
-                                        ? collection.connected_to_previous (post)
-                                        : false;
-      post_item.connect_to_next     = collection.connected_to_next (post);
+      // FIXME Reimplement this with new CollectionExtension
+      // post_item.connect_to_previous = post.replied_to_id != main_post_id
+      //                                   ? collection.connected_to_previous (post)
+      //                                   : false;
+      // post_item.connect_to_next     = collection.connected_to_next (post);
+      post_item.connect_to_previous = false;
+      post_item.connect_to_next     = false;
 
       // Display the post
       post_item.post = post;
@@ -376,7 +382,7 @@ public class CollectionView : Gtk.Widget {
   private bool filter_posts (Backend.Post post) {
     // Determine the type of the post
     bool is_reply  = post.replied_to_id != null;
-    bool in_thread = collection.connected_to_previous (post) || collection.connected_to_next (post) ;
+    bool in_thread = false; // FIXME collection.connected_to_previous (post) || collection.connected_to_next (post) ;
     bool is_repost = post.post_type == REPOST;
     bool has_media = post.get_media ().length > 0;
 
