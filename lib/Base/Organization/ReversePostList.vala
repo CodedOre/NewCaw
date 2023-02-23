@@ -63,7 +63,7 @@ public abstract class Backend.ReversePostList : Backend.Collection<Object> {
     }
 
     // Sort non-posts before posts
-	  return (int) (post_a == null) - (int) (post_b == null);
+	  return (int) (post_a != null) - (int) (post_b != null);
   }
 
 }
