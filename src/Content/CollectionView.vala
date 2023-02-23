@@ -183,8 +183,8 @@ public class CollectionView : Gtk.Widget {
 
     // Check the type of object to be displayed
     Object data = item.item;
-    if (data is Backend.PseudoItem) {
-      bind_header (item, data as Backend.PseudoItem);
+    if (data is Backend.HeaderItem) {
+      bind_header (item, data as Backend.HeaderItem);
     } else if (data is Backend.Post) {
       bind_post (item, data as Backend.Post);
     } else {
@@ -200,9 +200,9 @@ public class CollectionView : Gtk.Widget {
    * Binds an header widget to an item.
    *
    * @param item The ListItem returned by the ListFactory.
-   * @param data The PseudoItem returned by the ListFactory.
+   * @param data The HeaderItem returned by the ListFactory.
    */
-  private void bind_header (Gtk.ListItem item, Backend.PseudoItem data) {
+  private void bind_header (Gtk.ListItem item, Backend.HeaderItem data) {
     // Remove existing child widget
     Gtk.Widget? widget = item.child;
     if (widget != null) {
@@ -361,7 +361,7 @@ public class CollectionView : Gtk.Widget {
     }
 
     // Only display the header and separator if a header is set
-    var pseudo = item as Backend.PseudoItem;
+    var pseudo = item as Backend.HeaderItem;
     if (pseudo != null) {
       if (pseudo.description == "header" || pseudo.description == "separator") {
         return header != null;
