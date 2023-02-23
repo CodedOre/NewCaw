@@ -257,13 +257,16 @@ public class CollectionView : Gtk.Widget {
                                  : PostItem.DisplayMode.LIST;
 
       // Set the connecting lines
-      // FIXME Reimplement this with new CollectionExtension
-      // post_item.connect_to_previous = post.replied_to_id != main_post_id
-      //                                   ? collection.connected_to_previous (post)
-      //                                   : false;
-      // post_item.connect_to_next     = collection.connected_to_next (post);
-      post_item.connect_to_previous = false;
-      post_item.connect_to_next     = false;
+      if (shown_collection is Backend.PostConnections) {
+        var connect = shown_collection as Backend.PostConnections;
+        post_item.connect_to_previous = post.replied_to_id != main_post_id
+                                          ? connect.connected_to_previous (post)
+                                          : false;
+        post_item.connect_to_next     = connect.connected_to_next (post);
+      } else {
+        post_item.connect_to_previous = false;
+        post_item.connect_to_next     = false;
+      }
 
       // Display the post
       post_item.post = post;
@@ -382,7 +385,11 @@ public class CollectionView : Gtk.Widget {
   private bool filter_posts (Backend.Post post) {
     // Determine the type of the post
     bool is_reply  = post.replied_to_id != null;
-    bool in_thread = false; // FIXME collection.connected_to_previous (post) || collection.connected_to_next (post) ;
+    bool in_thread = false;
+    if (shown_collection is Backend.PostConnections) {
+      var connect = shown_collection as Backend.PostConnections;
+      in_thread = connect.connected_to_previous (post) || connect.connected_to_next (post);
+    }
     bool is_repost = post.post_type == REPOST;
     bool has_media = post.get_media ().length > 0;
 
