@@ -26,7 +26,7 @@ libfiles = [
   'Base/Content/UserDataField.vala',
   'Base/Content/UserEnums.vala',
   'Base/Organization/Collection.vala',
-  'Base/Organization/CollectionExtensions.vala',
+  'Base/Organization/CollectionCalls.vala',
   'Base/Organization/CollectionHeaders.vala',
   'Base/Organization/HomeTimeline.vala',
   'Base/Organization/ReversePostList.vala',
