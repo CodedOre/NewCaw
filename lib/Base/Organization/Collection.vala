@@ -29,6 +29,33 @@ using GLib;
 public abstract class Backend.Collection <T> : ListModel, Object {
 
   /**
+   * The type for the items in the collection.
+   */
+  public Type item_type {
+    get {
+      return get_item_type ();
+    }
+  }
+
+  /**
+   * The number of items in the collection.
+   */
+  public uint n_items {
+    get {
+      return get_n_items ();
+    }
+  }
+
+  /**
+   * The number of items in the collection.
+   */
+  public uint length {
+    get {
+      return get_n_items ();
+    }
+  }
+
+  /**
    * Run at construction of an instance.
    */
   construct {
