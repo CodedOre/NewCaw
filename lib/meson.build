@@ -29,6 +29,7 @@ libfiles = [
   'Base/Organization/CollectionExtensions.vala',
   'Base/Organization/HomeTimeline.vala',
   'Base/Organization/PseudoItem.vala',
+  'Base/Organization/ReversePostList.vala',
   'Base/Organization/Thread.vala',
   'Base/Organization/UserTimeline.vala',
   'Base/System/Client.vala',
