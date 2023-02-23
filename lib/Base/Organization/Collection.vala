@@ -98,10 +98,20 @@ public abstract class Backend.Collection <T> : ListModel, Object {
    * @param item The item to be added.
    */
   protected void add_item (T item) {
-    SequenceIter iter = items.append (item);
+    SequenceIter iter = items.insert_sorted (item, compare_items);
     uint position = iter.get_position ();
     after_update (position, 0, 1);
   }
+
+  /**
+   * Compares two items when sorting the collection.
+   *
+   * @param a The first item to compare.
+   * @param b The second item to compare.
+   *
+   * @return How the items are sorted (positive when a before b, negative when b before a).
+   */
+  protected abstract int compare_items (T a, T b);
 
 
   /**
