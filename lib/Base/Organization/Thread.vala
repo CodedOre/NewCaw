@@ -52,16 +52,16 @@ public abstract class Backend.Thread : Backend.Collection<Post>, Backend.Pullabl
   public abstract async void pull_items () throws Error;
 
   /**
-   * Compares two items when sorting the collection.
+   * Used to compares two iterators in the list when sorting.
    *
    * FIXME Implementation is postponed until the end of this project.
    *
-   * @param a The first item to compare.
-   * @param b The second item to compare.
+   * @param a The first iterator to compare.
+   * @param b The second iterator to compare.
    *
-   * @return How the items are sorted (positive when a before b, negative when b before a).
+   * @return How the iterators are sorted (positive when a before b, negative when b before a).
    */
-  protected override int compare_items (Post a, Post b) {
+  protected override int sort_func (SequenceIter<Post> a, SequenceIter<Post> b) {
     return 0;
   }
 

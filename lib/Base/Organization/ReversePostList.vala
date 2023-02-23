@@ -27,23 +27,27 @@ using GLib;
 public abstract class Backend.ReversePostList : Backend.Collection<Object> {
 
   /**
-   * Compares two items when sorting the collection.
+   * Used to compares two iterators in the list when sorting.
    *
    * This method sorts posts in an reverse chronological order,
    * with non-post objects placed on top of the collection.
    *
-   * @param a The first item to compare.
-   * @param b The second item to compare.
+   * @param a The first iterator to compare.
+   * @param b The second iterator to compare.
    *
-   * @return How the items are sorted (positive when a before b, negative when b before a).
+   * @return How the iterators are sorted (positive when a before b, negative when b before a).
    */
-  protected override int compare_items (Object a, Object b) {
-    // Check if both items are posts
-    var post_a = a as Post;
-    var post_b = b as Post;
+  protected override int sort_func (SequenceIter<Object> a, SequenceIter<Object> b) {
+    // Retrieve the objects of the iterators
+    var item_a = a.get ();
+    var item_b = b.get ();
 
     // Sort two posts
-    if (a is Post && b is Post) {
+    if (item_a is Post && item_b is Post) {
+      // Retrieve the posts
+      var post_a = item_a as Post;
+      var post_b = item_b as Post;
+
       // Sort posts by date
       DateTime x = post_a.creation_date;
       DateTime y = post_b.creation_date;
@@ -51,10 +55,10 @@ public abstract class Backend.ReversePostList : Backend.Collection<Object> {
     }
 
     // Sort two HeaderItem
-    if (a is HeaderItem && b is HeaderItem) {
+    if (item_a is HeaderItem && item_b is HeaderItem) {
       // Retrieve the items
-      var header_a = a as HeaderItem;
-      var header_b = b as HeaderItem;
+      var header_a = item_a as HeaderItem;
+      var header_b = item_b as HeaderItem;
 
       // Sort the items using the set index
       uint x = header_a.index;
@@ -63,7 +67,7 @@ public abstract class Backend.ReversePostList : Backend.Collection<Object> {
     }
 
     // Sort non-posts before posts
-	  return (int) (post_a != null) - (int) (post_b != null);
+	  return (int) (item_a is Post) - (int) (item_b is Post);
   }
 
 }

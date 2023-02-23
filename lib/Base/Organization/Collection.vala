@@ -98,7 +98,7 @@ public abstract class Backend.Collection <T> : ListModel, Object {
    * @param item The item to be added.
    */
   protected void add_item (owned T item) {
-    SequenceIter<T> iter = items.insert_sorted (item, compare_items);
+    SequenceIter<T> iter = items.insert_sorted_iter (item, sort_func);
     uint position = iter.get_position ();
     after_update (position, 0, 1);
   }
@@ -113,7 +113,7 @@ public abstract class Backend.Collection <T> : ListModel, Object {
     foreach (T item in new_items) {
       iters += items.append (item);
     }
-    items.sort (compare_items);
+    items.sort_iter (sort_func);
     foreach (SequenceIter<T> iter in iters) {
       uint position = iter.get_position ();
       after_update (position, 0, 1);
@@ -121,15 +121,14 @@ public abstract class Backend.Collection <T> : ListModel, Object {
   }
 
   /**
-   * Compares two items when sorting the collection.
+   * Used to compares two iterators in the list when sorting.
    *
-   * @param a The first item to compare.
-   * @param b The second item to compare.
+   * @param a The first iterator to compare.
+   * @param b The second iterator to compare.
    *
-   * @return How the items are sorted (positive when a before b, negative when b before a).
+   * @return How the iterators are sorted (positive when a before b, negative when b before a).
    */
-  protected abstract int compare_items (T a, T b);
-
+  protected abstract int sort_func (SequenceIter<T> a, SequenceIter<T> b);
 
   /**
    * Run after an update to the list happened.
