@@ -23,7 +23,7 @@ using GLib;
 /**
  * An interface for Collection providing access methods for pullable lists.
  */
-public interface Backend.PullableCollection : Backend.Collection {
+public interface Backend.PullableCollection<T> : Backend.Collection<T> {
 
   /**
    * The session used to pull posts.
@@ -47,7 +47,7 @@ public interface Backend.PullableCollection : Backend.Collection {
 /**
  * An interface for Collection providing access methods for paginated lists.
  */
-public interface Backend.PaginatedCollection : Backend.Collection {
+public interface Backend.PaginatedCollection<T> : Backend.Collection<T> {
 
   /**
    * The session used to pull posts.
