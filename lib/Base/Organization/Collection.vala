@@ -97,7 +97,7 @@ public abstract class Backend.Collection <T> : ListModel, Object {
    *
    * @param item The item to be added.
    */
-  protected void add_item (T item) {
+  protected void add_item (owned T item) {
     SequenceIter iter = items.insert_sorted (item, compare_items);
     uint position = iter.get_position ();
     after_update (position, 0, 1);
