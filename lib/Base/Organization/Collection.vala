@@ -128,20 +128,7 @@ public abstract class Backend.Collection <T> : ListModel, Object {
    * @return If the item can be found in the list.
    */
   internal bool find (T item, out uint index) {
-    return find_with_func (item, direct_equal, out index);
-  }
-
-  /**
-   * Checks if a item is found in the collection using a specified function.
-   *
-   * @param item The item to check for.
-   * @param equal_func The function used to determine if it's the correct item.
-   * @param index Receives the position of the item in the list.
-   *
-   * @return If the item can be found in the list.
-   */
-  internal bool find_with_func (T item, EqualFunc<T> equal_func, out uint index) {
-    SequenceIter<T>? iter = get_item_iter (item, equal_func);
+    SequenceIter<T>? iter = get_item_iter (item);
     if (iter == null) {
       return false;
     }
@@ -157,13 +144,34 @@ public abstract class Backend.Collection <T> : ListModel, Object {
    *
    * @return The iterator for this item, or null if not found.
    */
-  internal SequenceIter<T>? get_item_iter (T item, EqualFunc<T> equal_func = direct_equal) {
+  internal SequenceIter<T>? get_item_iter (T item) {
     SequenceIter<T> begin = items.get_begin_iter ();
     SequenceIter<T> end   = items.get_end_iter ();
     SequenceIter<T> iter  = begin;
     while (iter != end) {
-      if (equal_func (iter.get (), item)) {
+      if (iter.get () == item) {
         return iter;
+      }
+      iter = iter.next ();
+    }
+    return null;
+  }
+
+  /**
+   * Checks if a item is in the collection using a specific search function.
+   *
+   * @param needle The needle to check for.
+   * @param search_func The function used to determine if it's the correct item.
+   *
+   * @return The item, if found in the collection. Else null.
+   */
+  internal T? find_with_needle<G> (G needle, ArraySearchFunc<T, G> search_func) {
+    SequenceIter<T> begin = items.get_begin_iter ();
+    SequenceIter<T> end   = items.get_end_iter ();
+    SequenceIter<T> iter  = begin;
+    while (iter != end) {
+      if (search_func (iter.get (), needle)) {
+        return iter.get ();
       }
       iter = iter.next ();
     }
