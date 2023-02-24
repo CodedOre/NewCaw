@@ -260,6 +260,7 @@ public abstract class Backend.Collection <T> : ListModel, Object {
      */
     internal Iterator (Collection collection) {
       iter = collection.items.get_begin_iter ();
+      first_next = true;
     }
 
     /**
@@ -269,7 +270,14 @@ public abstract class Backend.Collection <T> : ListModel, Object {
      */
     public bool next () {
       assert (iter != null);
-      iter = iter.next ();
+      // The Vala iterator is running first next, then get.
+      // In order to also get the first item, the SequenceIter
+      // needs to wait one round before running next.
+      if (first_next) {
+        first_next = false;
+      } else {
+        iter = iter.next ();
+      }
       return (! iter.is_end ());
     }
 
@@ -282,6 +290,11 @@ public abstract class Backend.Collection <T> : ListModel, Object {
       assert (iter != null);
       return iter.get ();
     }
+
+    /**
+     * If next is called the first.
+     */
+    private bool first_next;
 
     /**
      * The current iterator.
