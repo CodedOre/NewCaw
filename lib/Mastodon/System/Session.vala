@@ -1,6 +1,6 @@
 /* Session.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -107,7 +107,7 @@ public partial class Backend.Mastodon.Session : AsyncInitable {
     account = load_user (json.get_object ());
 
     // Add the new session to the ClientState
-    Client.instance.sessions.add (this);
+    Client.instance.sessions.add_session (this);
     return true;
   }
 

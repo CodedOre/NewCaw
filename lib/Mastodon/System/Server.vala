@@ -1,6 +1,6 @@
 /* Server.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -110,7 +110,7 @@ public class Backend.Mastodon.Server : Backend.Server {
 
     // Create identifier and add the new server to ClientState
     identifier = Uuid.string_random ();
-    Client.instance.servers.add (this);
+    Client.instance.servers.add_server (this);
   }
 
   /**
