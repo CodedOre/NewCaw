@@ -199,6 +199,25 @@ public abstract class Backend.Collection <T> : ListModel, Object {
   }
 
   /**
+   * Removes an item from the collection.
+   *
+   * If the item is not found in the collection, this methods ignores the request.
+   * This method also ignores potential duplicates of an item. Classes implementing
+   * collection should save-guard against duplicate entries.
+   *
+   * @param item The item to be removed.
+   */
+  protected void remove_item (T item) {
+    SequenceIter<T>? iter = get_item_iter (item);
+    if (iter == null) {
+      return;
+    }
+    uint position = iter.get_position ();
+    iter.remove ();
+    after_update (position, 1, 0);
+  }
+
+  /**
    * Used to compares two iterators in the list when sorting.
    *
    * @param a The first iterator to compare.
