@@ -1,6 +1,6 @@
 /* Session.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -122,7 +122,7 @@ public abstract class Backend.Session : Object {
    * If a post was already pulled and is present in memory, the version
    * from memory is used, otherwise a new object for the post is created.
    *
-   * @param data The data for the post list.
+   * @param json The Json.Node containing the data.
    *
    * @return The post list created from the data.
    */

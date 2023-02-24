@@ -1,6 +1,6 @@
 /* WindowManagement.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,8 @@ namespace Backend.Utils.StateIO {
   /**
    * Loads a GVariant from the state file.
    *
-   * @param The path to store the state in
-   * @param The file name to store
+   * @param state_path The path to store the state in
+   * @param file_name The file name to store
    *
    * @return The GVariant from the file, or null if not existing.
    *
@@ -58,9 +58,9 @@ namespace Backend.Utils.StateIO {
    * Stores a GVariant to the state file.
    *
    *
-   * @param The path to store the state in
-   * @param The file name to store
-   * @param The GVariant to be stored.
+   * @param state_path The path to store the state in
+   * @param file_name The file name to store
+   * @param variant The GVariant to be stored.
    *
    * @throws Error Errors while accessing the state file.
    */

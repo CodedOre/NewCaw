@@ -140,7 +140,6 @@ public abstract class Backend.Collection <T> : ListModel, Object {
    * Retrieves the SequenceIter for a specific object.
    *
    * @param item The item to retrieve the iterator for.
-   * @param equal_func The function used to determine if it's the correct item.
    *
    * @return The iterator for this item, or null if not found.
    */
