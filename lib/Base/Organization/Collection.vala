@@ -242,6 +242,53 @@ public abstract class Backend.Collection <T> : ListModel, Object {
     items_changed (position, removed, added);
   }
 
+  /**
+   * An Iterator to enable foreach loops.
+   */
+  public class Iterator <T> : Object {
+
+    /**
+     * Constructs a new Iterator.
+     */
+    internal Iterator (Collection collection) {
+      iter = collection.items.get_begin_iter ();
+    }
+
+    /**
+     * Moves to the next value.
+     *
+     * @return If a next value exists.
+     */
+    public bool next () {
+      assert (iter != null);
+      iter = iter.next ();
+      return (! iter.is_end ());
+    }
+
+    /**
+     * Retrieves the current value.
+     *
+     * @return The value at the current iteration.
+     */
+    public new T? get () {
+      assert (iter != null);
+      return iter.get ();
+    }
+
+    /**
+     * The current iterator.
+     */
+    private SequenceIter<T> iter;
+
+  }
+
+  /**
+   * Provides an iterator to iterate the list.
+   */
+  public Iterator<T> iterator () {
+    return new Iterator<T> (this);
+  }
+
   /*
    * A cache of the last used item, used to make linear access faster.
    */
