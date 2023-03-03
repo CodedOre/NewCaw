@@ -91,7 +91,18 @@ public class Backend.SessionList : Backend.Collection<Session> {
    * @return How the iterators are sorted (positive when a before b, negative when b before a).
    */
   protected override int sort_func (SequenceIter<Session> a, SequenceIter<Session> b) {
-    return 0;
+    Session session_a = a.get ();
+    Session session_b = b.get ();
+    Server  server_a  = session_a.server;
+    Server  server_b  = session_b.server;
+
+    // Group sessions according to servers first
+    if (server_a != server_b) {
+      return strcmp (server_a.domain, server_b.domain);
+    }
+
+    // Then sort after account name
+    return strcmp (session_a.account.username, session_b.account.username);
   }
 
 }
@@ -170,7 +181,9 @@ public class Backend.ServerList : Backend.Collection<Server> {
    * @return How the iterators are sorted (positive when a before b, negative when b before a).
    */
   protected override int sort_func (SequenceIter<Server> a, SequenceIter<Server> b) {
-    return 0;
+    Server server_a = a.get ();
+    Server server_b = b.get ();
+    return strcmp (server_a.domain, server_b.domain);
   }
 
 }
