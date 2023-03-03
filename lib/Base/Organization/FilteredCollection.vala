@@ -16,6 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * FilteredCollection was adapted from code of Gtk.FilterListModel,
+ * created in 2015 by Benjamin Otte and licensed under the LGPL-2.1-or-later.
  */
 
 using GLib;
@@ -62,25 +65,56 @@ public abstract class Backend.FilteredCollection<T> : Backend.Collection<T> {
    * @param added The number of items that were added.
    */
   protected override void after_update (uint position, uint removed, uint added) {
-    // Send the update signal
-    items_changed (position, removed, added);
+    // Update the matches bitset with the removed and added items
+    uint added_matches = 0, removed_matches = 0;
+    if (removed > 0) {
+      removed_matches = (uint) matches.get_size_in_range (position, position + removed - 1);
+    }
+    matches.splice (position, removed, added);
+    if (added > 0) {
+      filter_item_set (new Gtk.Bitset.range (position, added));
+      added_matches = (uint) matches.get_size_in_range (position, position + added - 1);
+    }
+
+    // Send the update signal when collection changed
+    if (added_matches != 0 || removed_matches != 0) {
+      uint update_pos = position > 0 ? (uint) matches.get_size_in_range (0, position - 1) : 0;
+      items_changed (update_pos, removed_matches, added_matches);
+    }
   }
 
   /**
-   * Checks if an item in the collection matches the filter.
+   * Runs the filter over a set of items.
    *
-   * @param item The item to check for.
-   *
-   * @return If the item matches the filter and should be shown.
+   * @param items A bitset of the items to filter.
    */
-  protected abstract bool match (T item);
+  private void filter_item_set (Gtk.Bitset items) {
+    uint pos;
+    bool more;
+    var iter = Gtk.BitsetIter ();
+    for (more = iter.init_first (items, out pos); more; more = iter.next (out pos)) {
+      T item = base.get_item (pos);
+      if (filter.match (item)) {
+        matches.add (pos);
+      }
+    }
+  }
 
   /**
    * Run the filter over the complete collection.
    *
    * Should be called when the filter has been changed.
+   *
+   * FIXME: Right now, this is a quick implementation to make this work. It probably needs some optimazation later on.
    */
-  protected void filter_collection () {
+  private void refilter_collection () {
+    // Hide all items
+    items_changed (0, (uint) matches.get_size (), 0);
+    matches.remove_all ();
+
+    // Run the filter over the complete collection
+    filter_item_set (new Gtk.Bitset.range (0, base.get_n_items ()));
+    items_changed (0, 0, (uint) matches.get_size ());
   }
 
   /**
