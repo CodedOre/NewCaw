@@ -28,6 +28,7 @@ libfiles = [
   'Base/Organization/Collection.vala',
   'Base/Organization/CollectionCalls.vala',
   'Base/Organization/CollectionHeaders.vala',
+  'Base/Organization/FilteredCollection.vala',
   'Base/Organization/HomeTimeline.vala',
   'Base/Organization/PostConnections.vala',
   'Base/Organization/ReversePostList.vala',
