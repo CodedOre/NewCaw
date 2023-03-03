@@ -26,6 +26,11 @@ using GLib;
 public abstract class Backend.FilteredCollection<T> : Backend.Collection<T> {
 
   /**
+   * The filter used to filter the collection.
+   */
+  public CollectionFilter<T> filter { get; construct; }
+
+  /**
    * Get the number of items in the collection.
    *
    * @return The number of items in the collection.
