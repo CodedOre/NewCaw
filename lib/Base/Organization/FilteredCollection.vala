@@ -29,6 +29,13 @@ using GLib;
 public abstract class Backend.FilteredCollection<T> : Backend.Collection<T> {
 
   /**
+   * Run at construction of an instance.
+   */
+  construct {
+    matches = new Gtk.Bitset.empty ();
+  }
+
+  /**
    * Get the number of items in the collection.
    *
    * @return The number of items in the collection.
@@ -111,7 +118,7 @@ public abstract class Backend.FilteredCollection<T> : Backend.Collection<T> {
    *
    * FIXME: Right now, this is a quick implementation to make this work. It probably needs some optimazation later on.
    */
-  private void refilter_collection () {
+  protected void refilter_collection () {
     // Hide all items
     items_changed (0, (uint) matches.get_size (), 0);
     matches.remove_all ();
