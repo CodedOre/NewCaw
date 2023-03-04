@@ -29,7 +29,7 @@ public abstract class Backend.ReversePostList : Backend.FilteredCollection<Objec
   /**
    * If generic posts should be displayed.
    */
-  public bool display_generic {
+  public override bool display_generic {
     get {
       return do_display_generic;
     }
@@ -42,7 +42,7 @@ public abstract class Backend.ReversePostList : Backend.FilteredCollection<Objec
   /**
    * If reposts should be displayed.
    */
-  public bool display_reposts {
+  public override bool display_reposts {
     get {
       return do_display_reposts;
     }
@@ -55,7 +55,7 @@ public abstract class Backend.ReversePostList : Backend.FilteredCollection<Objec
   /**
    * If replies should be displayed.
    */
-  public bool display_replies {
+  public override bool display_replies {
     get {
       return do_display_replies;
     }
@@ -68,7 +68,7 @@ public abstract class Backend.ReversePostList : Backend.FilteredCollection<Objec
   /**
    * If posts with media should be displayed.
    */
-  public bool display_media {
+  public override bool display_media {
     get {
       return do_display_media;
     }
