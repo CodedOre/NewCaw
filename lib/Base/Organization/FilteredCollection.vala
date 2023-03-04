@@ -115,17 +115,28 @@ public abstract class Backend.FilteredCollection<T> : Backend.Collection<T> {
    * Run the filter over the complete collection.
    *
    * Should be called when the filter has been changed.
-   *
-   * FIXME: Right now, this is a quick implementation to make this work. It probably needs some optimazation later on.
    */
   protected void refilter_collection () {
-    // Hide all items
-    items_changed (0, (uint) matches.get_size (), 0);
-    matches.remove_all ();
+    // Clear the matches while keeping a copy
+    Gtk.Bitset old_matches = matches;
+    matches = new Gtk.Bitset.empty ();
 
-    // Run the filter over the complete collection
+    // Run the filter over the whole collection
     filter_item_set (new Gtk.Bitset.range (0, base.get_n_items ()));
-    items_changed (0, 0, (uint) matches.get_size ());
+
+    // Retrieve the changes between old and new matches
+    Gtk.Bitset changes = matches.copy ();
+    changes.difference (old_matches);
+
+    // Update the ListModel according to the changes
+    if (! changes.is_empty ()) {
+      uint minimum    = changes.get_minimum ();
+      uint maximum    = changes.get_maximum ();
+      uint removed    = (uint) old_matches.get_size_in_range (minimum, maximum);
+      uint added      = (uint) matches.get_size_in_range (minimum, maximum);
+      uint update_pos = minimum > 0 ? (uint) matches.get_size_in_range (0, minimum - 1) : 0;
+      items_changed (update_pos, removed, added);
+    }
   }
 
   /**
