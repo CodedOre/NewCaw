@@ -40,15 +40,6 @@ public abstract class Backend.Collection <T> : ListModel, Object {
   /**
    * The number of items in the collection.
    */
-  public uint n_items {
-    get {
-      return get_n_items ();
-    }
-  }
-
-  /**
-   * The number of items in the collection.
-   */
   public uint length {
     get {
       return get_n_items ();
@@ -79,7 +70,7 @@ public abstract class Backend.Collection <T> : ListModel, Object {
    *
    * @return The number of items in the collection.
    */
-  public uint get_n_items () {
+  public virtual uint get_n_items () {
     return (uint) items.get_length ();
   }
 
@@ -90,7 +81,7 @@ public abstract class Backend.Collection <T> : ListModel, Object {
    *
    * @return The item at the position, or null if position is invalid.
    */
-  public Object? get_item (uint position) {
+  public virtual Object? get_item (uint position) {
     SequenceIter<T>? iter = null;
 
     // Check if we can access the item quickly from the cache
@@ -185,6 +176,7 @@ public abstract class Backend.Collection <T> : ListModel, Object {
   protected void add_item (owned T item) {
     SequenceIter<T> iter = items.insert_sorted_iter (item, sort_func);
     uint position = iter.get_position ();
+    validate_cache (position);
     after_update (position, 0, 1);
   }
 
@@ -201,6 +193,7 @@ public abstract class Backend.Collection <T> : ListModel, Object {
     items.sort_iter (sort_func);
     foreach (SequenceIter<T> iter in iters) {
       uint position = iter.get_position ();
+      validate_cache (position);
       after_update (position, 0, 1);
     }
   }
@@ -221,6 +214,7 @@ public abstract class Backend.Collection <T> : ListModel, Object {
     }
     uint position = iter.get_position ();
     iter.remove ();
+    validate_cache (position);
     after_update (position, 1, 0);
   }
 
@@ -235,18 +229,28 @@ public abstract class Backend.Collection <T> : ListModel, Object {
   protected abstract int sort_func (SequenceIter<T> a, SequenceIter<T> b);
 
   /**
-   * Run after an update to the list happened.
+   * Run after an change to the items of the collection.
+   *
+   * @param position The position of the change.
+   * @param removed The number of items that were removed.
+   * @param added The number of items that were added.
    */
-  private void after_update (uint position, uint removed, uint added) {
-    // Invalidate cache if changes happened before cache position
+  protected virtual void after_update (uint position, uint removed, uint added) {
+    // Send the update signal
+    items_changed (position, removed, added);
+  }
+
+  /**
+   * Validates if the iterator cache is still valid after an change to the collection.
+   *
+   * @param position The position at which the collection was changed.
+   */
+  private void validate_cache (uint position) {
     if (position <= last_position) {
       last_position_valid = false;
       last_iterator = null;
       last_position = 0;
     }
-
-    // Send the update signal
-    items_changed (position, removed, added);
   }
 
   /**

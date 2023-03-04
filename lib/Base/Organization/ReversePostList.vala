@@ -24,7 +24,91 @@ using GLib;
  * Provides an common interface for collections displaying a
  * linear list of posts in a reverse chronological order.
  */
-public abstract class Backend.ReversePostList : Backend.Collection<Object>, Backend.PostConnections<Object> {
+public abstract class Backend.ReversePostList : Backend.FilteredCollection<Object>, Backend.PostConnections<Object>, Backend.PostFilters {
+
+  /**
+   * If generic posts should be displayed.
+   */
+  public override bool display_generic {
+    get {
+      return do_display_generic;
+    }
+    set {
+      do_display_generic = value;
+      refilter_collection ();
+    }
+  }
+
+  /**
+   * If reposts should be displayed.
+   */
+  public override bool display_reposts {
+    get {
+      return do_display_reposts;
+    }
+    set {
+      do_display_reposts = value;
+      refilter_collection ();
+    }
+  }
+
+  /**
+   * If replies should be displayed.
+   */
+  public override bool display_replies {
+    get {
+      return do_display_replies;
+    }
+    set {
+      do_display_replies = value;
+      refilter_collection ();
+    }
+  }
+
+  /**
+   * If posts with media should be displayed.
+   */
+  public override bool display_media {
+    get {
+      return do_display_media;
+    }
+    set {
+      do_display_media = value;
+      refilter_collection ();
+    }
+  }
+
+  /**
+   * Checks if an item in the collection matches the filter.
+   *
+   * @param item The item to check for.
+   *
+   * @return If the item matches the filter and should be shown.
+   */
+  public override bool match (Object item) {
+    // Show any non-post
+    var post = item as Post;
+    if (post == null) {
+      return true;
+    }
+
+    // Use the upmost parent as reference
+    var parent = upmost_parent (get_item_iter (post));
+
+    // Run the filters over the parent
+    if (parent.replied_to_id != null) {
+      return do_display_replies;
+    }
+    if (parent.post_type == REPOST) {
+      return do_display_reposts;
+    }
+    if (parent.get_media ().length > 0) {
+      return do_display_media;
+    }
+
+    // Use setting for generic posts
+    return do_display_generic;
+  }
 
   /**
    * Used to compares two iterators in the list when sorting.
@@ -77,5 +161,11 @@ public abstract class Backend.ReversePostList : Backend.Collection<Object>, Back
     // Sort non-posts before posts
 	  return (int) (item_a is Post) - (int) (item_b is Post);
   }
+
+  // Keeps track of the filters of this list
+  private bool do_display_generic = true;
+  private bool do_display_reposts = true;
+  private bool do_display_replies = false;
+  private bool do_display_media = true;
 
 }
