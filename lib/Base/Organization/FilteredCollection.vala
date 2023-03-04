@@ -29,11 +29,6 @@ using GLib;
 public abstract class Backend.FilteredCollection<T> : Backend.Collection<T> {
 
   /**
-   * The filter used to filter the collection.
-   */
-  public CollectionFilter<T> filter { get; construct; }
-
-  /**
    * Get the number of items in the collection.
    *
    * @return The number of items in the collection.
@@ -49,7 +44,7 @@ public abstract class Backend.FilteredCollection<T> : Backend.Collection<T> {
    *
    * @return The item at the position, or null if position is invalid.
    */
-  public virtual Object? get_item (uint position) {
+  public override Object? get_item (uint position) {
     if (position >= matches.get_size ()) {
       return null;
     }
@@ -84,6 +79,15 @@ public abstract class Backend.FilteredCollection<T> : Backend.Collection<T> {
   }
 
   /**
+   * Checks if an item in the collection matches the filter.
+   *
+   * @param item The item to check for.
+   *
+   * @return If the item matches the filter and should be shown.
+   */
+  public abstract bool match (T item);
+
+  /**
    * Runs the filter over a set of items.
    *
    * @param items A bitset of the items to filter.
@@ -94,7 +98,7 @@ public abstract class Backend.FilteredCollection<T> : Backend.Collection<T> {
     var iter = Gtk.BitsetIter ();
     for (more = iter.init_first (items, out pos); more; more = iter.next (out pos)) {
       T item = base.get_item (pos);
-      if (filter.match (item)) {
+      if (match (item)) {
         matches.add (pos);
       }
     }
