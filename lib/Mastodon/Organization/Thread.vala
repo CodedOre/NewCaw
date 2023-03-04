@@ -48,10 +48,15 @@ public class Backend.Mastodon.Thread : Backend.Thread {
    * @throws Error Any error that happened while pulling the posts.
    */
   public override async void pull_items () throws Error {
+    // If main post is a repost, we use the referenced post
+    var pull_post = main_post.post_type == REPOST
+                      ? yield main_post.get_referenced_post ()
+                      : main_post;
+
     // Create the proxy call
     Rest.ProxyCall call = session.create_call ();
     call.set_method ("GET");
-    call.set_function (@"api/v1/statuses/$(main_post.id)/context");
+    call.set_function (@"api/v1/statuses/$(pull_post.id)/context");
 
     // Load the timeline
     Json.Node json;
