@@ -73,7 +73,7 @@ public partial class Backend.Client : Object {
     while (server_iter.next ("v", out server_variant)) {
       try {
         var server = unpack_server (server_variant);
-        servers.add_server (server);
+        servers.add (server);
       } catch (Error e) {
         throw e;
       }
@@ -86,7 +86,7 @@ public partial class Backend.Client : Object {
     while (session_iter.next ("v", out session_variant)) {
       try {
         var session = yield unpack_session (session_variant);
-        sessions.add_session (session);
+        sessions.add (session);
       } catch (Error e) {
         throw e;
       }
@@ -306,12 +306,12 @@ public partial class Backend.Client : Object {
   }
 
   public void register_session(Session session) throws Error {
-    sessions.add_session (session);
+    sessions.add (session);
     store_state ();
   }
 
   public void unregister_session(Session session) throws Error {
-    sessions.remove_session (session);
+    sessions.remove (session);
     store_state ();
   }
 
@@ -342,7 +342,7 @@ public partial class Backend.Client : Object {
       if (! (idx in used_servers)) {
         var server = servers.get_item (idx) as Server;
         try {
-          servers.remove_server (server);
+          servers.remove (server);
         } catch (Error e) {
           throw e;
         }

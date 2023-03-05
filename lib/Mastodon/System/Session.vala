@@ -107,7 +107,7 @@ public partial class Backend.Mastodon.Session : AsyncInitable {
     account = load_user (json.get_object ());
 
     // Add the new session to the ClientState
-    Client.instance.sessions.add_session (this);
+    Client.instance.sessions.add (this);
     return true;
   }
 

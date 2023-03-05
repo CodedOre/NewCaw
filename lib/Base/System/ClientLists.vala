@@ -39,7 +39,7 @@ public class Backend.SessionList : Backend.Collection<Session> {
    *
    * @throws Error Errors when saving the secrets to the KeyStorage.
    */
-  internal void add_session (Session session) throws Error {
+  internal void add (Session session) throws Error {
     // Avoid duplicates
     if (find (session, null)) {
       return;
@@ -65,7 +65,7 @@ public class Backend.SessionList : Backend.Collection<Session> {
    *
    * @throws Error Errors when removing the secrets to the KeyStorage.
    */
-  internal void remove_session (Session session) throws Error {
+  internal void remove (Session session) throws Error {
     // Ignore if session don't exists in list
     if (! find (session, null)) {
       return;
@@ -126,7 +126,7 @@ public class Backend.ServerList : Backend.Collection<Server> {
    *
    * @throws Error Errors when saving the secrets to the KeyStorage.
    */
-  internal void add_server (Server server) throws Error {
+  internal void add (Server server) throws Error {
     // Avoid duplicates
     if (find (server, null)) {
       return;
@@ -154,7 +154,7 @@ public class Backend.ServerList : Backend.Collection<Server> {
    *
    * @throws Error Errors when removing the secrets to the KeyStorage.
    */
-  internal void remove_server (Server server) throws Error {
+  internal void remove (Server server) throws Error {
     // Ignore if server don't exists in list
     if (! find (server, null)) {
       return;

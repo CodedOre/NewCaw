@@ -134,11 +134,11 @@ public abstract class Backend.ReversePostList : Backend.FilteredCollection<Objec
 
       // Check if posts are connected
       if (post_a.replied_to_id == post_b.id) {
-		    return 1;
-	    }
-	    if (post_b.replied_to_id == post_a.id) {
-		    return -1;
-	    }
+        return 1;
+      }
+      if (post_b.replied_to_id == post_a.id) {
+        return -1;
+      }
 
       // Sort posts by date
       DateTime x = post_a.creation_date;
@@ -159,7 +159,7 @@ public abstract class Backend.ReversePostList : Backend.FilteredCollection<Objec
     }
 
     // Sort non-posts before posts
-	  return (int) (item_a is Post) - (int) (item_b is Post);
+    return (int) (item_a is Post) - (int) (item_b is Post);
   }
 
   // Keeps track of the filters of this list
