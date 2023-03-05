@@ -48,7 +48,9 @@ public class Backend.SessionList : Backend.Collection<Session> {
     // Save session secrets
     try {
       PlatformEnum platform = PlatformEnum.for_session (session);
-      string token_label = @"Access Token for Account \"$(session.account.username)\" on $(platform)";
+      string name_label   = session.account.username;
+      string domain_label = session.server.domain;
+      string token_label  = @"Access Token for Account \"$(name_label)@$(domain_label)\" on $(platform)";
       KeyStorage.store_access (session.access_token, session.identifier, token_label);
     } catch (Error e) {
       throw e;
