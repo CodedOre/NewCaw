@@ -100,7 +100,7 @@ public class PostItem : Gtk.Widget {
       }
 
       // Fill in the data
-      update_item.begin ();
+      update_item ();
     }
   }
 
@@ -177,7 +177,7 @@ public class PostItem : Gtk.Widget {
   /**
    * Updates the properties for an PostItem.
    */
-  private async void update_item () {
+  private void update_item () {
     bool has_repost;
     Backend.Post? repost = null;
 
@@ -185,7 +185,7 @@ public class PostItem : Gtk.Widget {
     try {
       has_repost = displayed_post != null && displayed_post.post_type == REPOST;
       repost = has_repost ? displayed_post : null;
-      main_post = has_repost ? yield displayed_post.get_referenced_post () : displayed_post;
+      main_post = has_repost ? displayed_post.referenced_post : displayed_post;
     } catch (Error e) {
       warning ("Failed to pull the reposted post: $(e.message)");
     }

@@ -1,6 +1,6 @@
 /* ClientLists.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,219 +21,9 @@
 using GLib;
 
 /**
- * Keeps a list of active instances in a Client.
- *
- * Can be used by an application to retrieve an updating list of currently
- * active servers or users, and is used internally to keep track of them.
- */
-public abstract class Backend.ClientList <T> : ListModel, Object {
-
-  /**
-   * Runs at construction of a new instance.
-   */
-  construct {
-    store = new GenericArray <T> ();
-  }
-
-  /**
-   * Returns the nth session in this list.
-   *
-   * @param position The position to look for.
-   *
-   * @return The session at the position, or null if position is invalid.
-   */
-  public Object? get_item (uint position) {
-    return store.get (position) as Object;
-  }
-
-  /**
-   * Get the number of sessions in this list.
-   *
-   * @return The number of sessions in this list.
-   */
-  public uint get_n_items () {
-    return store.length;
-  }
-
-  /**
-   * Returns the type of the objects this ListModel stores.
-   *
-   * @return The type for a base Session class.
-   */
-  public Type get_item_type () {
-    return typeof (T);
-  }
-
-  /**
-   * Check if a item exists with a specific search function.
-   *
-   * @param needle The term to search for in the list.
-   * @param equal_func A function used to determine the right item.
-   *
-   * @return The right item if found, else null.
-   */
-  internal T? find <G> (G needle, ArraySearchFunc<T, G> equal_func) {
-    uint? index;
-    if (store.find_custom <G> (needle, equal_func, out index)) {
-      return store.get (index);
-    } else {
-      return null;
-    }
-  }
-
-  /**
-   * Checks if a object is found in the list.
-   *
-   * @param object The object to check for.
-   * @param index The position of the object in the list.
-   *
-   * @return If the object can be found in the list.
-   */
-  internal bool find_object (T object, out uint index) {
-    return store.find (object, out index);
-  }
-
-  /**
-   * Adds an item to the list and the
-   * associated access to the KeyStorage.
-   *
-   * @param item The item to be added.
-   *
-   * @throws Error Errors when adding the access token doesn't work.
-   */
-  internal void add (T item) throws Error {
-    // Stop if item is already in list
-    if (store.find (item)) {
-      return;
-    }
-
-    // Add the item to the list
-    store.add (item);
-
-    try {
-      add_access (item);
-    } catch (Error e) {
-      throw e;
-    }
-
-    // Note the changed list
-    items_changed (store.length - 1, 0, 1);
-  }
-
-  /**
-   * Adds the access for an item to the KeyStorage.
-   *
-   * @param item The item to be removed.
-   *
-   * @throws Error Errors when adding the access token doesn't work.
-   */
-  internal abstract void add_access (T item) throws Error;
-
-  /**
-   * Removes a item from the list and the
-   * associated access token from the KeyStorage.
-   *
-   * @param item The item to be removed.
-   *
-   * @throws Error Errors when removing the access token doesn't work.
-   */
-  internal void remove (T item) throws Error {
-    // Remove the session from the session list
-    uint removed_position;
-    if (! store.find (item, out removed_position)) {
-      return;
-    }
-
-    // Remove the item
-    store.remove (item);
-
-    try {
-      remove_access (item);
-    } catch (Error e) {
-      throw e;
-    }
-
-    // Note the changed list
-    items_changed (removed_position, 1, 0);
-  }
-
-  /**
-   * Removes the access for an item from the KeyStorage.
-   *
-   * @param item The item to be removed.
-   *
-   * @throws Error Errors when removing the access token doesn't work.
-   */
-  internal abstract void remove_access (T item) throws Error;
-
-  /**
-   * An Iterator to enable foreach loops.
-   */
-  public class Iterator <T> : Object {
-
-    /**
-     * Constructs a new Iterator.
-     */
-    internal Iterator (ClientList list) {
-      iterated = list;
-    }
-
-    /**
-     * Moves to the next value.
-     *
-     * @return If a next value exists.
-     */
-    public bool next () {
-      assert (iterated != null);
-      iter_i++;
-      // NOTE: the docs say that we should be able to get an item and check for null if it is outside the bounds
-      // (https://valadoc.org/glib-2.0/GLib.GenericArray.@get.html)
-      // But Vala compiles down to use `g_ptr_array_index`, which doesn't do a bounds check
-      // (https://docs.gtk.org/glib/func.ptr_array_index.html) and so we may get a segfault
-      // when we get a non-null ghost item that the code then tries a `g_object_ref` on.
-      return (iter_i < iterated.get_n_items ());
-    }
-
-    /**
-     * Retrieves the current value.
-     *
-     * @return The value at the current iteration.
-     */
-    public new T? get () {
-      assert (iterated != null);
-      return iterated.store.get (iter_i);
-    }
-
-    /**
-     * The list iterated through.
-     */
-    private ClientList iterated;
-
-    /**
-     * Counts the current iteration.
-     */
-    private uint iter_i = -1;
-
-  }
-
-  /**
-   * Provides an iterator to iterate the list.
-   */
-  public Iterator <T> iterator () {
-    return new Iterator <T> (this);
-  }
-
-  /**
-   * Stores the sessions internally.
-   */
-  private GenericArray <T> store;
-
-}
-
-/**
  * Provides a list of all sessions used by a Client.
  */
-public class Backend.SessionList : ClientList <Session> {
+public class Backend.SessionList : Backend.Collection<Session> {
 
   /**
    * Creates a new instance of SessionList.
@@ -243,27 +33,78 @@ public class Backend.SessionList : ClientList <Session> {
   }
 
   /**
-   * Adds the access for an item from the KeyStorage.
+   * Add a new session to the session list.
+   *
+   * @param session The session to be added.
+   *
+   * @throws Error Errors when saving the secrets to the KeyStorage.
    */
-  internal override void add_access (Session item) throws Error {
+  internal void add (Session session) throws Error {
+    // Avoid duplicates
+    if (find (session, null)) {
+      return;
+    }
+
+    // Save session secrets
     try {
-      PlatformEnum platform = PlatformEnum.for_session (item);
-      string token_label = @"Access Token for Account \"$(item.account.username)\" on $(platform)";
-      KeyStorage.store_access (item.access_token, item.identifier, token_label);
+      PlatformEnum platform = PlatformEnum.for_session (session);
+      string name_label   = session.account.username;
+      string domain_label = session.server.domain;
+      string token_label  = @"Access Token for Account \"$(name_label)@$(domain_label)\" on $(platform)";
+      KeyStorage.store_access (session.access_token, session.identifier, token_label);
     } catch (Error e) {
       throw e;
     }
+
+    // Add the session to the list
+    add_item (session);
   }
 
   /**
-   * Removes the access for an item from the KeyStorage.
+   * Removes a session from the session list.
+   *
+   * @param session The session to be removed.
+   *
+   * @throws Error Errors when removing the secrets to the KeyStorage.
    */
-  internal override void remove_access (Session item) throws Error {
+  internal void remove (Session session) throws Error {
+    // Ignore if session don't exists in list
+    if (! find (session, null)) {
+      return;
+    }
+
+    // Remove session secrets
     try {
-      KeyStorage.remove_access (item.identifier);
+      KeyStorage.remove_access (session.identifier);
     } catch (Error e) {
       throw e;
     }
+
+    // Remove the session from the list
+    remove_item (session);
+  }
+
+  /**
+   * Used to compares two iterators in the list when sorting.
+   *
+   * @param a The first iterator to compare.
+   * @param b The second iterator to compare.
+   *
+   * @return How the iterators are sorted (positive when a before b, negative when b before a).
+   */
+  protected override int sort_func (SequenceIter<Session> a, SequenceIter<Session> b) {
+    Session session_a = a.get ();
+    Session session_b = b.get ();
+    Server  server_a  = session_a.server;
+    Server  server_b  = session_b.server;
+
+    // Group sessions according to servers first
+    if (server_a != server_b) {
+      return strcmp (server_a.domain, server_b.domain);
+    }
+
+    // Then sort after account name
+    return strcmp (session_a.account.username, session_b.account.username);
   }
 
 }
@@ -271,7 +112,7 @@ public class Backend.SessionList : ClientList <Session> {
 /**
  * Provides a list of all servers used by a Client.
  */
-public class Backend.ServerList : ClientList <Server> {
+public class Backend.ServerList : Backend.Collection<Server> {
 
   /**
    * Creates a new instance of ServerList.
@@ -281,30 +122,70 @@ public class Backend.ServerList : ClientList <Server> {
   }
 
   /**
-   * Adds the access for an item from the KeyStorage.
+   * Add a new server to the server list.
+   *
+   * @param server The server to be added.
+   *
+   * @throws Error Errors when saving the secrets to the KeyStorage.
    */
-  internal override void add_access (Server item) throws Error {
+  internal void add (Server server) throws Error {
+    // Avoid duplicates
+    if (find (server, null)) {
+      return;
+    }
+
+    // Save server secrets
     try {
-      PlatformEnum platform = PlatformEnum.for_server (item);
-      string token_label = @"Access Token for Server \"$(item.domain)\" on $(platform)";
-      KeyStorage.store_access (item.client_key, @"ck_$(item.identifier)", token_label);
-      string secret_label = @"Access Secret for Server \"$(item.domain)\" on $(platform)";
-      KeyStorage.store_access (item.client_secret, @"cs_$(item.identifier)", secret_label);
+      PlatformEnum platform = PlatformEnum.for_server (server);
+      string token_label = @"Access Token for Server \"$(server.domain)\" on $(platform)";
+      KeyStorage.store_access (server.client_key, @"ck_$(server.identifier)", token_label);
+      string secret_label = @"Access Secret for Server \"$(server.domain)\" on $(platform)";
+      KeyStorage.store_access (server.client_secret, @"cs_$(server.identifier)", secret_label);
     } catch (Error e) {
       throw e;
     }
+
+    // Add the server to the list
+    add_item (server);
   }
 
   /**
-   * Removes the access for an item from the KeyStorage.
+   * Removes a server from the server list.
+   *
+   * @param server The server to be removed.
+   *
+   * @throws Error Errors when removing the secrets to the KeyStorage.
    */
-  internal override void remove_access (Server item) throws Error {
+  internal void remove (Server server) throws Error {
+    // Ignore if server don't exists in list
+    if (! find (server, null)) {
+      return;
+    }
+
+    // Remove server secrets
     try {
-      KeyStorage.remove_access (@"ck_$(item.identifier)");
-      KeyStorage.remove_access (@"cs_$(item.identifier)");
+      KeyStorage.remove_access (@"ck_$(server.identifier)");
+      KeyStorage.remove_access (@"cs_$(server.identifier)");
     } catch (Error e) {
       throw e;
     }
+
+    // Remove the server from the list
+    remove_item (server);
+  }
+
+  /**
+   * Used to compares two iterators in the list when sorting.
+   *
+   * @param a The first iterator to compare.
+   * @param b The second iterator to compare.
+   *
+   * @return How the iterators are sorted (positive when a before b, negative when b before a).
+   */
+  protected override int sort_func (SequenceIter<Server> a, SequenceIter<Server> b) {
+    Server server_a = a.get ();
+    Server server_b = b.get ();
+    return strcmp (server_a.domain, server_b.domain);
   }
 
 }

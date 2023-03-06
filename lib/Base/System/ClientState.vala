@@ -306,12 +306,12 @@ public partial class Backend.Client : Object {
   }
 
   public void register_session(Session session) throws Error {
-    sessions.add(session);
+    sessions.add (session);
     store_state ();
   }
 
   public void unregister_session(Session session) throws Error {
-    sessions.remove(session);
+    sessions.remove (session);
     store_state ();
   }
 
@@ -326,7 +326,7 @@ public partial class Backend.Client : Object {
     // Rule out all servers still used by a session
     foreach (Session session in sessions) {
       uint server_index;
-      if (servers.find_object (session.server, out server_index)) {
+      if (servers.find (session.server, out server_index)) {
         if (! (server_index in used_servers)) {
           used_servers += server_index;
         }

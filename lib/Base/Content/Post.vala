@@ -84,6 +84,11 @@ public abstract class Backend.Post : Object {
   public string spoiler { get; construct; }
 
   /**
+   * A post this one references when it is a repost.
+   */
+  public Post? referenced_post { get; construct; }
+
+  /**
    * How often the post was liked.
    */
   public int liked_count { get; protected construct set; }
@@ -135,7 +140,7 @@ public abstract class Backend.Post : Object {
    * Adds the favourite/like/platform-equivalent flag to the post. If the post
    * is already favourited/liked then this is a noop and no exception will be thrown.
    *
-   * @returns This post object, which may have been updated if the platform supports it
+   * @return This post object, which may have been updated if the platform supports it
    * @throws Error Any errors while favouriting, such as unauthorised actions, missing posts, or network issues
    */
   public async Backend.Post favourite () throws Error {
@@ -148,7 +153,7 @@ public abstract class Backend.Post : Object {
    * Removes the favourite/like/platform-equivalent flag from the post. If the post
    * is not favourited/liked then this is a noop and no exception will be thrown.
    *
-   * @returns This post object, which may have been updated if the platform supports it
+   * @return This post object, which may have been updated if the platform supports it
    * @throws Error Any errors while unfavouriting, such as unauthorised actions, missing posts, or network issues
    */
    public async Backend.Post unfavourite () throws Error {
@@ -175,7 +180,7 @@ public abstract class Backend.Post : Object {
    * Removes the reblog from the user's timeline. If the post is not reblogged then this is a noop
    * and no exception will be thrown.
    *
-   * @returns the unreblogged post (if available)
+   * @return the unreblogged post (if available)
    * @throws Error Any errors while un-reblogging, such as unauthorised actions, missing posts, or network issues
    */
    public async Backend.Post? unreblog () throws Error {
@@ -195,18 +200,6 @@ public abstract class Backend.Post : Object {
     this.is_reposted = data.is_reposted;
     post_updated();
    }
-
-  /**
-   * Returns a possible post that this post referenced.
-   *
-   * If the referenced post is not in local memory,
-   * it will load said post from the servers.
-   *
-   * @return The post referenced or null if none exists.
-   *
-   * @throws Error Any error that might happen while loading the post.
-   */
-  public abstract async Post? get_referenced_post () throws Error;
 
   /**
    * Returns media attached to this Post.

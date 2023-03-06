@@ -5,11 +5,6 @@ template CollectionView : Gtk.Widget {
   layout-manager: Gtk.BinLayout {};
   vexpand: true;
 
-  notify::show-generic => update_filter ();
-  notify::show-replies => update_filter ();
-  notify::show-reposts => update_filter ();
-  notify::show-media => update_filter ();
-
   styles [
     "view"
   ]
@@ -36,12 +31,7 @@ Gtk.Separator list_separator {
   orientation: vertical;
 }
 
-.CollectionFilter filter_options {
-  display-generic: bind CollectionView.show-generic bidirectional;
-  display-replies: bind CollectionView.show-replies bidirectional;
-  display-reposts: bind CollectionView.show-reposts bidirectional;
-  display-media:   bind CollectionView.show-media bidirectional;
-}
+.CollectionFilter filter_options {}
 
 Adw.ActionRow timeout_indicator {
   icon-name: "stopwatch-symbolic";

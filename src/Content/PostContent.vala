@@ -71,7 +71,7 @@ public class PostContent : Gtk.Widget {
       displayed_post = value;
 
       // Fill in the data
-      update_item.begin ();
+      update_item ();
     }
   }
 
@@ -93,13 +93,13 @@ public class PostContent : Gtk.Widget {
   /**
    * Updates the displayed content for a new item.
    */
-  private async void update_item () {
+  private void update_item () {
       // Check if we have a quote
       bool has_quote;
       Backend.Post? quote = null;
       try {
         has_quote = displayed_post != null && displayed_post.post_type == QUOTE;
-        quote = has_quote ? yield displayed_post.get_referenced_post () : null;
+        quote = has_quote ? displayed_post.referenced_post : null;
       } catch (Error e) {
         warning ("Failed to pull the quoted post: $(e.message)");
       }

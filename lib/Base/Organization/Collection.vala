@@ -1,6 +1,6 @@
 /* Collection.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,192 +16,313 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Collection was adapted from code of Gio.ListStore, created in 2015 by
+ * Lars Uebernickel and Ryan Lortie and licensed under the LGPL-2.1-or-later.
  */
 
 using GLib;
 
 /**
- * Base class for collections of Posts.
+ * Stores a sorted list of items, that can be used as a ListModel.
  */
-public abstract class Backend.Collection : Object {
+public abstract class Backend.Collection <T> : ListModel, Object {
 
   /**
-   * The session this post is managed by and to be used to retrieve additional data.
+   * The type for the items in the collection.
    */
-  public Session session { get; construct; }
-
-  /**
-   * How the posts in this collection are sorted.
-   */
-  public bool reverse_chronological { get; construct; default = true; }
-
-  /**
-   * A ListModel holding all posts in this Collection.
-   */
-  public ListModel post_list { get; construct; }
-
-  /**
-   * Calls the API to get the posts for the Collection.
-   *
-   * @throws Error Any error that happened while pulling the posts.
-   */
-  public abstract async void pull_posts () throws Error;
-
-  /**
-   * Checks if a post in the list replies to the post previous to it.
-   *
-   * @param post The post to check for.
-   * @param parent If true, a reference to the parent post is set.
-   *
-   * @return If the post replies to the post previous to it.
-   */
-  public bool connected_to_previous (Post post, out Post? parent = null) {
-    // Retrieve the post list as ListStore
-    var store = post_list as ListStore;
-    if (store == null) {
-      return false;
+  public Type item_type {
+    get {
+      return get_item_type ();
     }
-
-    // Check if the post exists in the list
-    uint index;
-    if (! store.find (post, out index)) {
-      return false;
-    }
-
-    // Find the post before the parameter
-    var prev_post = store.get_item (index - 1) as Post;
-    if (prev_post != null) {
-      // Check if prev_post is parent
-      bool has_parent = post.replied_to_id == prev_post.id;
-      // Return the result
-      parent = has_parent ? prev_post : null;
-      return has_parent;
-    }
-    return false;
   }
 
   /**
-   * Checks if a post in the list replies to the post next to it.
-   *
-   * @param post The post to check for.
-   * @param child If true, a reference to the child post is set.
-   *
-   * @return If the post replies to the post next to it.
+   * The number of items in the collection.
    */
-  public bool connected_to_next (Post post, out Post? child = null) {
-    // Retrieve the post list as ListStore
-    var store = post_list as ListStore;
-    if (store == null) {
-      return false;
+  public uint length {
+    get {
+      return get_n_items ();
     }
-
-    // Check if the post exists in the list
-    uint index;
-    if (! store.find (post, out index)) {
-      return false;
-    }
-
-    // Find the post before the parameter
-    var next_post = store.get_item (index + 1) as Post;
-    if (next_post != null) {
-      // Check if next_post is child
-      bool has_child = next_post.replied_to_id == post.id;
-      // Return the result
-      child = has_child ? next_post : null;
-      return has_child;
-    }
-    return false;
   }
 
   /**
-   * Compares two posts while sorting the list.
-   *
-   * The sorting is mostly reverse chronological, with a few exceptions.
-   * Any item that is not a Post, particular PseudoItems, will be placed on top.
-   * Also, if multiple posts that build a reply chain are found, the posts will
-   * be sorted chronological for a better understanding of the reply chain.
-   *
-   * @param a The first object to compare.
-   * @param b The second object to compare.
-   *
-   * @return How to sort both posts (positive when a before b, negative when b before a).
+   * Run at construction of an instance.
    */
-  protected int compare_items (Object a, Object b) {
-    // Sort PseudoItems according to their index
-    if (a is PseudoItem && b is PseudoItem) {
-      // Retrieve the items
-      var pseudo_a = a as PseudoItem;
-      var pseudo_b = b as PseudoItem;
+  construct {
+    items = new Sequence<T> ();
+    last_position_valid = false;
+    last_iterator = null;
+    last_position = 0;
+  }
 
-      // Sort the items using the set index
-      uint x = pseudo_a.index;
-      uint y = pseudo_b.index;
-      return (int) (x > y) - (int) (x < y);
-    }
+  /**
+   * Returns the type of the items the collection stores.
+   *
+   * @return The type for the items in the collection.
+   */
+  public Type get_item_type () {
+    return typeof (T);
+  }
 
-    // Sort Post and not Post
-    if (a is Post && ! (b is Post)) {
-      return 1;
-    }
-    if (! (a is Post) && b is Post) {
-      return -1;
-    }
+  /**
+   * Get the number of items in the collection.
+   *
+   * @return The number of items in the collection.
+   */
+  public virtual uint get_n_items () {
+    return (uint) items.get_length ();
+  }
 
-    // Sort Posts
-    if (a is Post && b is Post) {
-      // Retrieve the posts
-      var post_a = a as Post;
-      var post_b = b as Post;
+  /**
+   * Returns the nth item in the collection.
+   *
+   * @param position The position to look for.
+   *
+   * @return The item at the position, or null if position is invalid.
+   */
+  public virtual Object? get_item (uint position) {
+    SequenceIter<T>? iter = null;
 
-      // Retrieve the direct parents for comparison
-      var a_parent = direct_parent (post_a);
-      var b_parent = direct_parent (post_b);
-
-      // Check if one post replies to the other
-      bool a_replied_b = a_parent.replied_to_id == b_parent.id;
-      bool b_replied_a = b_parent.replied_to_id == a_parent.id;
-      if (a_replied_b || b_replied_a) {
-        return (int) (a_replied_b) - (int) (b_replied_a);
+    // Check if we can access the item quickly from the cache
+    if (last_position_valid) {
+      if (last_position == position) {
+        iter = last_iterator;
+      } else if (last_position == position - 1) {
+        iter = last_iterator.next ();
+      } else if (last_position == position + 1) {
+        iter = last_iterator.prev ();
       }
-
-      // Otherwise sort by the date
-      DateTime x   = a_parent.creation_date;
-      DateTime y   = b_parent.creation_date;
-      int sort_mod = reverse_chronological ? -1 : 1;
-      return sort_mod * x.compare (y);
     }
 
-    // If nothing fits, return 0
-    return 0;
+    if (iter == null) {
+      iter = items.get_iter_at_pos ((int) position);
+    }
+
+    // Update cache position
+    last_position_valid = true;
+    last_position = position;
+    last_iterator = iter;
+
+    // Return Object if one was found
+    return ! iter.is_end ()
+      ? iter.get () as Object
+      : null;
   }
 
   /**
-   * Retrieves the direct parent of a post in a Collection.
+   * Checks if a item is found in the collection.
    *
-   * This returns the up-most post in a reply chain, if these are sorted
-   * in chronological order. Used by compare_items to sort the list when
-   * reply chains are in the list.
+   * @param item The item to check for.
+   * @param index Receives the position of the item in the list.
    *
-   * @param post The post to check the parent for.
-   *
-   * @return The up-most parent of post, or post itself.
+   * @return If the item can be found in the list.
    */
-  private Post direct_parent (Post post) {
-    while (true) {
-      Post new_parent;
-      bool has_parent = connected_to_previous (post, out new_parent);
-      if (! has_parent) {
-        break;
+  internal bool find (T item, out uint index) {
+    SequenceIter<T>? iter = get_item_iter (item);
+    if (iter == null) {
+      return false;
+    }
+    index = (uint) iter.get_position ();
+    return true;
+  }
+
+  /**
+   * Retrieves the SequenceIter for a specific object.
+   *
+   * @param item The item to retrieve the iterator for.
+   *
+   * @return The iterator for this item, or null if not found.
+   */
+  internal SequenceIter<T>? get_item_iter (T item) {
+    SequenceIter<T> begin = items.get_begin_iter ();
+    SequenceIter<T> end   = items.get_end_iter ();
+    SequenceIter<T> iter  = begin;
+    while (iter != end) {
+      if (iter.get () == item) {
+        return iter;
+      }
+      iter = iter.next ();
+    }
+    return null;
+  }
+
+  /**
+   * Checks if a item is in the collection using a specific search function.
+   *
+   * @param needle The needle to check for.
+   * @param search_func The function used to determine if it's the correct item.
+   *
+   * @return The item, if found in the collection. Else null.
+   */
+  internal T? find_with_needle<G> (G needle, ArraySearchFunc<T, G> search_func) {
+    SequenceIter<T> begin = items.get_begin_iter ();
+    SequenceIter<T> end   = items.get_end_iter ();
+    SequenceIter<T> iter  = begin;
+    while (iter != end) {
+      if (search_func (iter.get (), needle)) {
+        return iter.get ();
+      }
+      iter = iter.next ();
+    }
+    return null;
+  }
+
+  /**
+   * Adds an item to the collection.
+   *
+   * @param item The item to be added.
+   */
+  protected void add_item (owned T item) {
+    SequenceIter<T> iter = items.insert_sorted_iter (item, sort_func);
+    uint position = iter.get_position ();
+    validate_cache (position);
+    after_update (position, 0, 1);
+  }
+
+  /**
+   * Adds multiple items to the collection.
+   *
+   * @param new_items An array of items to be added.
+   */
+  protected void add_items (owned T[] new_items) {
+    SequenceIter<T>[] iters = {};
+    foreach (T item in new_items) {
+      iters += items.append (item);
+    }
+    items.sort_iter (sort_func);
+    foreach (SequenceIter<T> iter in iters) {
+      uint position = iter.get_position ();
+      validate_cache (position);
+      after_update (position, 0, 1);
+    }
+  }
+
+  /**
+   * Removes an item from the collection.
+   *
+   * If the item is not found in the collection, this methods ignores the request.
+   * This method also ignores potential duplicates of an item. Classes implementing
+   * collection should save-guard against duplicate entries.
+   *
+   * @param item The item to be removed.
+   */
+  protected void remove_item (T item) {
+    SequenceIter<T>? iter = get_item_iter (item);
+    if (iter == null) {
+      return;
+    }
+    uint position = iter.get_position ();
+    iter.remove ();
+    validate_cache (position);
+    after_update (position, 1, 0);
+  }
+
+  /**
+   * Used to compares two iterators in the list when sorting.
+   *
+   * @param a The first iterator to compare.
+   * @param b The second iterator to compare.
+   *
+   * @return How the iterators are sorted (positive when a before b, negative when b before a).
+   */
+  protected abstract int sort_func (SequenceIter<T> a, SequenceIter<T> b);
+
+  /**
+   * Run after an change to the items of the collection.
+   *
+   * @param position The position of the change.
+   * @param removed The number of items that were removed.
+   * @param added The number of items that were added.
+   */
+  protected virtual void after_update (uint position, uint removed, uint added) {
+    // Send the update signal
+    items_changed (position, removed, added);
+  }
+
+  /**
+   * Validates if the iterator cache is still valid after an change to the collection.
+   *
+   * @param position The position at which the collection was changed.
+   */
+  private void validate_cache (uint position) {
+    if (position <= last_position) {
+      last_position_valid = false;
+      last_iterator = null;
+      last_position = 0;
+    }
+  }
+
+  /**
+   * An Iterator to enable foreach loops.
+   */
+  public class Iterator <T> : Object {
+
+    /**
+     * Constructs a new Iterator.
+     */
+    internal Iterator (Collection collection) {
+      iter = collection.items.get_begin_iter ();
+      first_next = true;
+    }
+
+    /**
+     * Moves to the next value.
+     *
+     * @return If a next value exists.
+     */
+    public bool next () {
+      assert (iter != null);
+      // The Vala iterator is running first next, then get.
+      // In order to also get the first item, the SequenceIter
+      // needs to wait one round before running next.
+      if (first_next) {
+        first_next = false;
       } else {
-        post = new_parent;
+        iter = iter.next ();
       }
+      return (! iter.is_end ());
     }
-    return post;
+
+    /**
+     * Retrieves the current value.
+     *
+     * @return The value at the current iteration.
+     */
+    public new T? get () {
+      assert (iter != null);
+      return iter.get ();
+    }
+
+    /**
+     * If next is called the first.
+     */
+    private bool first_next;
+
+    /**
+     * The current iterator.
+     */
+    private SequenceIter<T> iter;
+
   }
 
   /**
-   * The id from the latest pulled Post.
+   * Provides an iterator to iterate the list.
    */
-  protected string? last_post_id = null;
+  public Iterator<T> iterator () {
+    return new Iterator<T> (this);
+  }
+
+  /*
+   * A cache of the last used item, used to make linear access faster.
+   */
+  private uint last_position;
+  private bool last_position_valid;
+  private SequenceIter<T>? last_iterator;
+
+  /**
+   * Stores all items that are managed by collection.
+   */
+  private Sequence<T> items;
 
 }

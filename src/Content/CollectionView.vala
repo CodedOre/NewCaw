@@ -1,6 +1,6 @@
 /* CollectionList.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,26 +54,6 @@ public class CollectionView : Gtk.Widget {
   public Gtk.Widget header { get; set; }
 
   /**
-   * If generic posts should be shown.
-   */
-  public bool show_generic { get; set; default = true; }
-
-  /**
-   * If replies should be shown.
-   */
-  public bool show_replies { get; set; default = false; }
-
-  /**
-   * If reposts should be shown.
-   */
-  public bool show_reposts { get; set; default = true; }
-
-  /**
-   * If media posts should be shown.
-   */
-  public bool show_media { get; set; default = true; }
-
-  /**
    * The id for a post which is displayed as the "main post".
    */
   public string? main_post_id { get; set; default = null; }
@@ -103,14 +83,36 @@ public class CollectionView : Gtk.Widget {
     set {
       shown_collection = value;
 
+      // Unbind the filter bindings
+      unbind(ref display_generic_binding);
+      unbind(ref display_reposts_binding);
+      unbind(ref display_replies_binding);
+      unbind(ref display_media_binding);
+
       if (shown_collection != null) {
         // Bind the collection to the list
-        var filter_list = new Gtk.FilterListModel (shown_collection.post_list, list_filter);
-        list_model      = new Gtk.NoSelection (filter_list);
+        list_model = new Gtk.NoSelection (shown_collection);
         listview.set_model (list_model);
 
         // Pull the posts from the list
-        shown_collection.pull_posts.begin ();
+        var pullable = shown_collection as Backend.PullableCollection;
+        if (pullable != null) {
+          pullable.pull_items.begin ();
+        }
+
+        // Enable the filters
+        var post_filters = shown_collection as Backend.PostFilters;
+        filter_options.visible = post_filters != null;
+        if (post_filters != null) {
+          filter_options.display_generic = post_filters.display_generic;
+          filter_options.display_reposts = post_filters.display_reposts;
+          filter_options.display_replies = post_filters.display_replies;
+          filter_options.display_media   = post_filters.display_media;
+          post_filters.bind_property ("display_generic", filter_options, "display_generic", BIDIRECTIONAL);
+          post_filters.bind_property ("display_reposts", filter_options, "display_reposts", BIDIRECTIONAL);
+          post_filters.bind_property ("display_replies", filter_options, "display_replies", BIDIRECTIONAL);
+          post_filters.bind_property ("display_media",   filter_options, "display_media", BIDIRECTIONAL);
+        }
       } else {
         list_model = null;
         listview.set_model (null);
@@ -122,9 +124,6 @@ public class CollectionView : Gtk.Widget {
    * Run at construction of an widget.
    */
   construct {
-    // Create a list filter from the collection
-    list_filter = new Gtk.CustomFilter (filter_items);
-
     // Create the ListFactory and bind the signals
     var list_factory = new Gtk.SignalListItemFactory ();
     listview.factory = list_factory;
@@ -138,14 +137,6 @@ public class CollectionView : Gtk.Widget {
     settings.bind ("double-click-activation",
                    listview, "single-click-activate",
                    GLib.SettingsBindFlags.INVERT_BOOLEAN);
-  }
-
-  /**
-   * Updates the filter of the CollectionView.
-   */
-  [GtkCallback]
-  private void update_filter (Object obj, ParamSpec param) {
-    list_filter.changed (DIFFERENT);
   }
 
   /**
@@ -180,8 +171,8 @@ public class CollectionView : Gtk.Widget {
 
     // Check the type of object to be displayed
     Object data = item.item;
-    if (data is Backend.PseudoItem) {
-      bind_header (item, data as Backend.PseudoItem);
+    if (data is Backend.HeaderItem) {
+      bind_header (item, data as Backend.HeaderItem);
     } else if (data is Backend.Post) {
       bind_post (item, data as Backend.Post);
     } else {
@@ -197,9 +188,9 @@ public class CollectionView : Gtk.Widget {
    * Binds an header widget to an item.
    *
    * @param item The ListItem returned by the ListFactory.
-   * @param data The PseudoItem returned by the ListFactory.
+   * @param data The HeaderItem returned by the ListFactory.
    */
-  private void bind_header (Gtk.ListItem item, Backend.PseudoItem data) {
+  private void bind_header (Gtk.ListItem item, Backend.HeaderItem data) {
     // Remove existing child widget
     Gtk.Widget? widget = item.child;
     if (widget != null) {
@@ -254,10 +245,16 @@ public class CollectionView : Gtk.Widget {
                                  : PostItem.DisplayMode.LIST;
 
       // Set the connecting lines
-      post_item.connect_to_previous = post.replied_to_id != main_post_id
-                                        ? collection.connected_to_previous (post)
-                                        : false;
-      post_item.connect_to_next     = collection.connected_to_next (post);
+      if (shown_collection is Backend.PostConnections) {
+        var connect = shown_collection as Backend.PostConnections;
+        post_item.connect_to_previous = post.replied_to_id != main_post_id
+                                          ? connect.connected_to_previous (post)
+                                          : false;
+        post_item.connect_to_next     = connect.connected_to_next (post);
+      } else {
+        post_item.connect_to_previous = false;
+        post_item.connect_to_next     = false;
+      }
 
       // Display the post
       post_item.post = post;
@@ -341,56 +338,11 @@ public class CollectionView : Gtk.Widget {
     }
   }
 
-  /**
-   * Determines if an item should be displayed.
-   *
-   * @param item The item to check.
-   *
-   * @return If the item should be displayed.
-   */
-  private bool filter_items (Object item) {
-    // Check if the item is a post
-    if (item is Backend.Post) {
-      return filter_posts (item as Backend.Post);
+  private void unbind (ref GLib.Binding? binding) {
+    if (binding != null) {
+      binding.unbind();
+      binding = null;
     }
-
-    // Only display the header and separator if a header is set
-    var pseudo = item as Backend.PseudoItem;
-    if (pseudo != null) {
-      if (pseudo.description == "header" || pseudo.description == "separator") {
-        return header != null;
-      }
-    }
-
-    // Display anything else
-    return true;
-  }
-
-  /**
-   * Determines if an post should be displayed.
-   *
-   * @param post The post to check.
-   *
-   * @return If the post should be displayed.
-   */
-  private bool filter_posts (Backend.Post post) {
-    // Determine the type of the post
-    bool is_reply  = post.replied_to_id != null;
-    bool in_thread = collection.connected_to_previous (post) || collection.connected_to_next (post) ;
-    bool is_repost = post.post_type == REPOST;
-    bool has_media = post.get_media ().length > 0;
-
-    // Check the type against the filters
-    if (is_reply && ! in_thread) {
-      return show_replies;
-    }
-    if (is_repost) {
-      return show_reposts;
-    }
-    if (has_media) {
-      return show_media;
-    }
-    return show_generic;
   }
 
   /**
@@ -408,11 +360,6 @@ public class CollectionView : Gtk.Widget {
   private Backend.PlatformEnum set_display_platform;
 
   /**
-   * The Gtk.Filter used to filter the posts.
-   */
-  private Gtk.Filter list_filter;
-
-  /**
    * Stores the displayed Collection.
    */
   private Backend.Collection? shown_collection = null;
@@ -421,5 +368,11 @@ public class CollectionView : Gtk.Widget {
    * Stores the currently used Gtk.SelectionModel.
    */
   private Gtk.SelectionModel? list_model = null;
+
+  // Used to bind filters for collection and UI
+  private GLib.Binding? display_generic_binding;
+  private GLib.Binding? display_reposts_binding;
+  private GLib.Binding? display_replies_binding;
+  private GLib.Binding? display_media_binding;
 
 }

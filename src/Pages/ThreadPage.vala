@@ -1,6 +1,6 @@
 /* ThreadPage.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,8 @@ public class ThreadPage : Gtk.Widget {
 
       // Set the page content
       page_title.subtitle = session != null ? session.account.username : null;
-      collection_view.collection = thread;
+      collection_view.main_post_id = displayed_post != null ? displayed_post.id : null;
+      collection_view.collection   = thread;
     }
   }
 

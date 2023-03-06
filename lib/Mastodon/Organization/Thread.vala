@@ -1,6 +1,6 @@
 /* Thread.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,15 +34,12 @@ public class Backend.Mastodon.Thread : Backend.Thread {
   internal Thread (Session session, Backend.Post main_post) {
     // Construct the object
     Object (
-      post_list: new ListStore (typeof (Object)),
-      reverse_chronological: false,
       session: session,
       main_post: main_post
     );
 
     // Append the main post to the list
-    var store = post_list as ListStore;
-    store.insert_sorted (main_post, compare_items);
+    add_item (main_post);
   }
 
   /**
@@ -50,11 +47,16 @@ public class Backend.Mastodon.Thread : Backend.Thread {
    *
    * @throws Error Any error that happened while pulling the posts.
    */
-  public override async void pull_posts () throws Error {
+  public override async void pull_items () throws Error {
+    // If main post is a repost, we use the referenced post
+    var pull_post = main_post.post_type == REPOST
+                      ? main_post.referenced_post
+                      : main_post;
+
     // Create the proxy call
     Rest.ProxyCall call = session.create_call ();
     call.set_method ("GET");
-    call.set_function (@"api/v1/statuses/$(main_post.id)/context");
+    call.set_function (@"api/v1/statuses/$(pull_post.id)/context");
 
     // Load the timeline
     Json.Node json;
@@ -72,12 +74,11 @@ public class Backend.Mastodon.Thread : Backend.Thread {
     following.init_array (data.get_array_member ("descendants"));
 
     // Load the posts in the post list
-    var store = post_list as ListStore;
     foreach (Backend.Post post in session.load_post_list (preceding)) {
-      store.insert_sorted (post, compare_items);
+      add_item (post);
     }
     foreach (Backend.Post post in session.load_post_list (following)) {
-      store.insert_sorted (post, compare_items);
+      add_item (post);
     }
   }
 
