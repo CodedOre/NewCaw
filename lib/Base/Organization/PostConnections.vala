@@ -28,6 +28,11 @@ using GLib;
 public interface Backend.PostConnections<T> : Backend.Collection<T> {
 
   /**
+   * If the reposted post should be compared instead of the repost.
+   */
+  public abstract bool check_reposted { get; construct; default = false; }
+
+  /**
    * Checks if a post in the list replies to the post previous to it.
    *
    * @param post The post to check for.
@@ -72,6 +77,14 @@ public interface Backend.PostConnections<T> : Backend.Collection<T> {
       return false;
     }
 
+    // If check_reposted, use the referenced post to compare
+    if (check_reposted && post.post_type == REPOST && post.referenced_post != null) {
+      post = post.referenced_post;
+    }
+    if (check_reposted && prev_post.post_type == REPOST && prev_post.referenced_post != null) {
+      prev_post = prev_post.referenced_post;
+    }
+
     // Check for the connection
     return post.replied_to_id == prev_post.id;
   }
@@ -100,6 +113,14 @@ public interface Backend.PostConnections<T> : Backend.Collection<T> {
       return false;
     }
 
+    // If check_reposted, use the referenced post to compare
+    if (check_reposted && post.post_type == REPOST && post.referenced_post != null) {
+      post = post.referenced_post;
+    }
+    if (check_reposted && next_post.post_type == REPOST && next_post.referenced_post != null) {
+      next_post = next_post.referenced_post;
+    }
+
     // Check for the connection
     return post.id == next_post.replied_to_id;
   }
@@ -122,7 +143,18 @@ public interface Backend.PostConnections<T> : Backend.Collection<T> {
       }
       upmost_iter = upmost_iter.prev ();
     }
-    return (Post) upmost_iter.get ();
+
+    // Retrieve the post for return
+    var post = upmost_iter.get () as Post;
+    assert (post != null);
+
+    // If check_reposted, use the referenced post to compare
+    if (check_reposted && post.post_type == REPOST && post.referenced_post != null) {
+      post = post.referenced_post;
+    }
+
+    // Return the result
+    return post;
   }
 
 }

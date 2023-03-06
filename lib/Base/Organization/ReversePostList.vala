@@ -27,6 +27,11 @@ using GLib;
 public abstract class Backend.ReversePostList : Backend.FilteredCollection<Object>, Backend.PostConnections<Object>, Backend.PostFilters {
 
   /**
+   * If the reposted post should be compared instead of the repost.
+   */
+  public override bool check_reposted { get; construct; default = false; }
+
+  /**
    * If generic posts should be displayed.
    */
   public override bool display_generic {
