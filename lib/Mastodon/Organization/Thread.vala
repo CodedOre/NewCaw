@@ -50,7 +50,7 @@ public class Backend.Mastodon.Thread : Backend.Thread {
   public override async void pull_items () throws Error {
     // If main post is a repost, we use the referenced post
     var pull_post = main_post.post_type == REPOST
-                      ? yield main_post.get_referenced_post ()
+                      ? main_post.referenced_post
                       : main_post;
 
     // Create the proxy call

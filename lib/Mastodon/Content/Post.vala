@@ -84,6 +84,11 @@ public class Backend.Mastodon.Post : Backend.Post {
       sensitive: sensitive_enum,
       spoiler:   spoiler_text,
 
+      // Set the referenced post
+      referenced_post: ! json.get_null_member ("reblog")
+                          ? session.load_post (json.get_object_member ("reblog"))
+                          : null,
+
       // Set url and domain
       url:    post_url,
       domain: post_domain,
@@ -111,11 +116,6 @@ public class Backend.Mastodon.Post : Backend.Post {
     // First format of the text.
     text = Backend.Utils.TextUtils.format_text (text_modules);
 
-    // Set the referenced post
-    referenced_post = ! json.get_null_member ("reblog")
-                        ? session.load_post (json.get_object_member ("reblog"))
-                        : null;
-
     // Get media attachments
     Backend.Media[] parsed_media = {};
     Json.Array      media_jsons  = json.get_array_member ("media_attachments");
@@ -127,24 +127,5 @@ public class Backend.Mastodon.Post : Backend.Post {
     });
     attached_media = parsed_media;
   }
-
-  /**
-   * Returns a possible post that this post referenced.
-   *
-   * If the referenced post is not in local memory,
-   * it will load said post from the servers.
-   *
-   * @return The post referenced or null if none exists.
-   *
-   * @throws Error Any error that might happen while loading the post.
-   */
-  public override async Backend.Post? get_referenced_post () throws Error {
-    return referenced_post;
-  }
-
-  /**
-   * Stores the referenced post.
-   */
-  private Backend.Post? referenced_post;
 
 }
