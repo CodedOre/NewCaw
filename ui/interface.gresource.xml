@@ -36,7 +36,6 @@
     <file>Preferences/PreferencesWindow.ui</file>
     <file>Preferences/SessionSettings.ui</file>
     <file>Preferences/SessionsPage.ui</file>
-    <file>Preferences/Examples/ExampleMastodonPost.json</file>
     <file>Widgets/BadgesBox.ui</file>
     <file>Widgets/FilterButton.ui</file>
     <file>Widgets/SessionRow.ui</file>

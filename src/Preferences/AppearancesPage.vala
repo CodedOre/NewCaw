@@ -1,6 +1,6 @@
 /* AppearancesPage.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,45 +53,7 @@ public class Preferences.AppearancesPage : Adw.PreferencesPage {
                    GLib.SettingsBindFlags.DEFAULT);
 
     // Set up the example post
-    display_example_post ();
-  }
-
-  /**
-   * Displays a example post in the page.
-   */
-  private void display_example_post () {
-    // Define the path to the example json
-    string? resource_id;
-#if SUPPORT_MASTODON
-    resource_id = "resource:///uk/co/ibboard/Cawbird/ui/Preferences/Examples/ExampleMastodonPost.json";
-#else
-    warning ("No example JSON available for the page!");
-    example_post_item.post = null;
-    return;
-#endif
-
-    // Loads the json for the example post
-    try {
-      Backend.Post example_post;
-      // Load the resource as file
-      var   file     = File.new_for_uri (resource_id);
-      Bytes resource = file.load_bytes ();
-      var   stream   = new MemoryInputStream.from_bytes (resource);
-
-      // Parse the resource to the json objects
-      var json_parser = new Json.Parser ();
-      json_parser.load_from_stream (stream);
-#if SUPPORT_MASTODON
-      Json.Object post_data = json_parser.get_root ().get_object ();
-      // example_post = Backend.Mastodon.Post.from_json (post_data);
-#endif
-
-      // Set the example post
-      example_post_item.post = null;
-    } catch (Error e) {
-      warning (@"Failed to set the example post: $(e.message)");
-      example_post_item.post = null;
-    }
+    example_post_item.post = new Backend.Utils.ExamplePost ();
   }
 
 }

@@ -41,6 +41,7 @@ libfiles = [
   'Base/System/Server.vala',
   'Base/System/Session.vala',
   'Base/System/SessionAuth.vala',
+  'Base/Utils/Examples.vala',
   'Base/Utils/KeyStorage.vala',
   'Base/Utils/MediaLoader.vala',
   'Base/Utils/PlatformEnum.vala',
