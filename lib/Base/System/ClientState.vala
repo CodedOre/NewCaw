@@ -195,7 +195,7 @@ public partial class Backend.Client : Object {
     PlatformEnum platform_prop;
 
     // Attempt to load the server data
-    Variant? uuid_variant, platform_name_variant, server_variant, username_variant, auto_start_variant, geometry_variant;
+    Variant? uuid_variant, platform_name_variant, server_variant, username_variant, auto_start_variant;
     // Newer format `a{smv}`
     variant.lookup ("uuid", "mv", out uuid_variant);
     variant.lookup ("platform", "mv", out platform_name_variant);

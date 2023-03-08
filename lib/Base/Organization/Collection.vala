@@ -120,11 +120,8 @@ public abstract class Backend.Collection <T> : ListModel, Object {
    */
   internal bool find (T item, out uint index) {
     SequenceIter<T>? iter = get_item_iter (item);
-    if (iter == null) {
-      return false;
-    }
-    index = (uint) iter.get_position ();
-    return true;
+    index = iter != null ? (uint) iter.get_position () : 0;
+    return iter != null;
   }
 
   /**

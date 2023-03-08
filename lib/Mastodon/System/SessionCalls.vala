@@ -1,6 +1,6 @@
 /* SessionCalls.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -214,7 +214,6 @@ public partial class Backend.Mastodon.Session : Backend.Session {
     // Warn if the user could not be determined
     if (acct != name && homeacct != name) {
       error (@"Failed to determine user for username \"$(name)\"");
-      return null;
     }
 
     // Hand the data over to load_data
