@@ -182,13 +182,9 @@ public class PostItem : Gtk.Widget {
     Backend.Post? repost = null;
 
     // Check if we have a repost
-    try {
-      has_repost = displayed_post != null && displayed_post.post_type == REPOST;
-      repost = has_repost ? displayed_post : null;
-      main_post = has_repost ? displayed_post.referenced_post : displayed_post;
-    } catch (Error e) {
-      warning ("Failed to pull the reposted post: $(e.message)");
-    }
+    has_repost = displayed_post != null && displayed_post.post_type == REPOST;
+    repost = has_repost ? displayed_post : null;
+    main_post = has_repost ? displayed_post.referenced_post : displayed_post;
 
     // Set the PostStatus widgets
     repost_status.visible     = has_repost;

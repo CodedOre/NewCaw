@@ -1,6 +1,6 @@
 /* PostActions.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -146,6 +146,7 @@ public class PostActions : Gtk.Widget {
     if (!post.is_favourited) {
       post.favourite.begin ((obj, res) => {
         try {
+          post.favourite.end (res);
           likes_button.sensitive = true;
         }
         catch (Error e) {
@@ -156,6 +157,7 @@ public class PostActions : Gtk.Widget {
     else {
       post.unfavourite.begin ((obj, res) => {
         try {
+          post.unfavourite.end (res);
           likes_button.sensitive = true;
         }
         catch (Error e) {
@@ -171,9 +173,9 @@ public class PostActions : Gtk.Widget {
     if (!post.is_reposted) {
       post.reblog.begin ((obj, res) => {
         try {
-          reposts_button.sensitive = true;
-          var returned_post = post.reblog.end(res);
           // TBC whether we want to do anything with this - like inject it into a stream
+          post.reblog.end (res);
+          reposts_button.sensitive = true;
         }
         catch (Error e) {
           // TODO: Handle errors in a way that's meaningful to the user
@@ -183,8 +185,9 @@ public class PostActions : Gtk.Widget {
     else {
       post.unreblog.begin ((obj, res) => {
         try {
-          reposts_button.sensitive = true;
           // TODO: How can we pass a message up that this repost should be deleted?
+          post.unreblog.end (res);
+          reposts_button.sensitive = true;
         }
         catch (Error e) {
           // TODO: Handle errors in a way that's meaningful to the user

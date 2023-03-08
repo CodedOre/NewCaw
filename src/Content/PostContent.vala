@@ -97,12 +97,8 @@ public class PostContent : Gtk.Widget {
       // Check if we have a quote
       bool has_quote;
       Backend.Post? quote = null;
-      try {
-        has_quote = displayed_post != null && displayed_post.post_type == QUOTE;
-        quote = has_quote ? displayed_post.referenced_post : null;
-      } catch (Error e) {
-        warning ("Failed to pull the quoted post: $(e.message)");
-      }
+      has_quote = displayed_post != null && displayed_post.post_type == QUOTE;
+      quote = has_quote ? displayed_post.referenced_post : null;
 
       // Set up the sensitivity of the post
       reveal_content = displayed_post != null ? displayed_post.sensitive == NONE : false;
