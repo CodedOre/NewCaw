@@ -97,7 +97,7 @@ public class UserDisplay : Gtk.Widget {
       }
 
       // Get the url and opens it
-      Gtk.show_uri (null, display.user.url, Gdk.CURRENT_TIME);
+      DisplayUtils.launch_uri (display.user.url, display);
     });
     install_action ("user.copy-url", null, (widget, action) => {
       // Get the instance for this

@@ -1,6 +1,6 @@
 /* BrowserPage.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -96,7 +96,7 @@ public class Authentication.BrowserPage : Gtk.Widget {
 
     // Create new authentication url without redirect
     string auth_url = view.auth.auth_request (false);
-    Gtk.show_uri (null, auth_url, Gdk.CURRENT_TIME);
+    DisplayUtils.launch_uri (auth_url, this);
     view.move_to_next ();
     retry_waiting.waiting = false;
   }

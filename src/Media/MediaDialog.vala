@@ -1,6 +1,6 @@
 /* MediaDialog.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ public class MediaDialog : Adw.Window {
       Backend.Media media = dialog.media_display.visible_media;
 
       // Get the url and opens it
-      Gtk.show_uri (null, media.media_url, Gdk.CURRENT_TIME);
+      DisplayUtils.launch_uri (media.media_url, dialog);
     });
   }
 

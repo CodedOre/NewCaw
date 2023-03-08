@@ -153,7 +153,7 @@ public class PostItem : Gtk.Widget {
       }
 
       // Get the url and opens it
-      Gtk.show_uri (null, item.main_post.url, Gdk.CURRENT_TIME);
+      DisplayUtils.launch_uri (item.main_post.url, item);
     });
     // Set up "display media" action
     install_action ("post.display_media", "i", (widget, action, arg) => {

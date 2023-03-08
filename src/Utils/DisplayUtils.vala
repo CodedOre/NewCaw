@@ -181,6 +181,24 @@ namespace DisplayUtils {
   }
 
   /**
+   * Launches a uri from a widget.
+   *
+   * Used to ease the use of Gtk.UriLauncher, which replaces Gtk.show_uri.
+   *
+   * @param uri The uri to be opened.
+   * @param widget The widget launching the uri.
+   */
+  public void launch_uri (string uri, Gtk.Widget widget) {
+    // Get the parent window of the widget
+    Gtk.Root widget_root   = widget.get_root ();
+    var      parent_window = widget_root as Gtk.Window;
+
+    // Launch the uri using UriLauncher
+    var uri_launch = new Gtk.UriLauncher (uri);
+    uri_launch.launch.begin (parent_window, null);
+  }
+
+  /**
    * Activated when a link in the text is clicked.
    *
    * @param uri The uri clicked in the label.
@@ -200,7 +218,7 @@ namespace DisplayUtils {
     }
     if (uri.has_prefix ("weblink|")) {
       string target = uri [8:];
-      Gtk.show_uri (null, target, Gdk.CURRENT_TIME);
+      launch_uri (target, widget);
     }
     return true;
   }
