@@ -97,7 +97,7 @@ public partial class Backend.Client : Initable {
    * @param website The website for the client.
    * @param redirect_uri An optional redirect uri.
    */
-  public Client (string id, string name, string website, string? redirect_uri = null, string state_path) throws Error {
+  public Client (string id, string name, string website, string? redirect_uri = null, string state_path) {
     Object (
       id: id,
       name: name,
@@ -107,7 +107,11 @@ public partial class Backend.Client : Initable {
       servers: new ServerList ()
     );
     this.state_path = state_path;
-    init ();
+    try {
+      init ();
+    } catch (Error e) {
+      critical (@"Failed to initialize client: $(e.message)");
+    }
 
     // Set the global instance
     global_instance = this;
