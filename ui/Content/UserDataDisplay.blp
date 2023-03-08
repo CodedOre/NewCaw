@@ -19,5 +19,7 @@ template UserDataDisplay : Gtk.Widget {
   Gtk.Label content_label {
     use-markup: true;
     ellipsize: end;
+
+    activate-link => on_link_clicked ();
   }
 }
