@@ -25,7 +25,8 @@ using GLib;
  */
 public abstract class Backend.UserTimeline : Backend.ReversePostList,
                                              Backend.PullableCollection<Object>,
-                                             Backend.CollectionHeaders
+                                             Backend.CollectionHeaders,
+                                             Backend.CollectionPins
 {
 
   /**
@@ -44,6 +45,11 @@ public abstract class Backend.UserTimeline : Backend.ReversePostList,
   public string[] headers { get; construct; }
 
   /**
+   * The id of the newest item in the collection.
+   */
+  protected string? newest_item_id { get; set; default = null; }
+
+  /**
    * Run at construction of an instance.
    */
   construct {
@@ -51,15 +57,116 @@ public abstract class Backend.UserTimeline : Backend.ReversePostList,
   }
 
   /**
-   * The id of the newest item in the collection.
-   */
-  protected string? newest_item_id { get; set; default = null; }
-
-  /**
    * Calls the API to retrieve all items from this Collection.
    *
    * @throws Error Any error while accessing the API and pulling the items.
    */
   public abstract async void pull_items () throws Error;
+
+  /**
+   * Checks if an post in the collection was pinned by the user.
+   *
+   * If the post is not in this collection, the method returns false.
+   *
+   * @param post The post to check for.
+   *
+   * @return If the checked post was pinned by the user of this timeline.
+   */
+  public abstract bool is_pinned_post (Post post);
+
+  /**
+   * Checks if an item in the collection matches the filter.
+   *
+   * @param item The item to check for.
+   *
+   * @return If the item matches the filter and should be shown.
+   */
+  public override bool match (Object item) {
+    // Show any non-post
+    var post = item as Post;
+    if (post == null) {
+      return true;
+    }
+
+    // Always show pinned posts
+    if (is_pinned_post (post)) {
+      return true;
+    }
+
+    // Use the upmost parent as reference
+    var parent = upmost_parent (get_item_iter (post));
+
+    // Run the filters over the parent
+    if (parent.replied_to_id != null) {
+      return display_replies;
+    }
+    if (parent.post_type == REPOST) {
+      return display_reposts;
+    }
+    if (parent.get_media ().length > 0) {
+      return display_media;
+    }
+
+    // Use setting for generic posts
+    return display_generic;
+  }
+
+  /**
+   * Used to compares two iterators in the list when sorting.
+   *
+   * This method sorts posts in an reverse chronological order,
+   * with non-post objects placed on top of the collection.
+   *
+   * @param a The first iterator to compare.
+   * @param b The second iterator to compare.
+   *
+   * @return How the iterators are sorted (positive when a before b, negative when b before a).
+   */
+  protected override int sort_func (SequenceIter<Object> a, SequenceIter<Object> b) {
+    // Retrieve the objects of the iterators
+    var item_a = a.get ();
+    var item_b = b.get ();
+
+    // Sort two posts
+    if (item_a is Post && item_b is Post) {
+      // Use the upmost parent as reference
+      var post_a = upmost_parent (a);
+      var post_b = upmost_parent (b);
+
+      // Order pinned posts above the others
+      int compare_pins = (int) (is_pinned_post (post_b)) - (int) (is_pinned_post (post_a));
+      if (compare_pins != 0) {
+        return compare_pins;
+      }
+
+      // Check if posts are connected
+      if (post_a.replied_to_id == post_b.id) {
+        return 1;
+      }
+      if (post_b.replied_to_id == post_a.id) {
+        return -1;
+      }
+
+      // Sort posts by date
+      DateTime x = post_a.creation_date;
+      DateTime y = post_b.creation_date;
+      return -1 * x.compare (y);
+    }
+
+    // Sort two HeaderItem
+    if (item_a is HeaderItem && item_b is HeaderItem) {
+      // Retrieve the items
+      var header_a = item_a as HeaderItem;
+      var header_b = item_b as HeaderItem;
+
+      // Sort the items using the set index
+      uint x = header_a.index;
+      uint y = header_b.index;
+      return (int) (x > y) - (int) (x < y);
+    }
+
+    // Sort non-posts before posts
+    return (int) (item_a is Post) - (int) (item_b is Post);
+  }
 
 }
