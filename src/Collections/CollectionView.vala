@@ -23,7 +23,7 @@ using GLib;
 /**
  * Displays an Collection with an header and filter options.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/CollectionView.ui")]
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Collections/CollectionView.ui")]
 public class CollectionView : Gtk.Widget {
 
   // UI-Elements of CollectionView
