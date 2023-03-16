@@ -171,7 +171,15 @@ public abstract class Backend.Collection <T> : ListModel, Object {
    * @param item The item to be added.
    */
   protected void add_item (owned T item) {
+    // Skip adding if item is already in collection
+    if (get_item_iter (item) != null) {
+      return;
+    }
+
+    // Insert the item sorted
     SequenceIter<T> iter = items.insert_sorted_iter (item, sort_func);
+
+    // Update the cache and listeners
     uint position = iter.get_position ();
     validate_cache (position);
     after_update (position, 0, 1);
@@ -183,11 +191,16 @@ public abstract class Backend.Collection <T> : ListModel, Object {
    * @param new_items An array of items to be added.
    */
   protected void add_items (owned T[] new_items) {
+    // Insert the items and sort them
     SequenceIter<T>[] iters = {};
     foreach (T item in new_items) {
-      iters += items.append (item);
+      if (get_item_iter (item) == null) {
+        iters += items.append (item);
+      }
     }
     items.sort_iter (sort_func);
+
+    // Update the cache and listeners
     foreach (SequenceIter<T> iter in iters) {
       uint position = iter.get_position ();
       validate_cache (position);
