@@ -33,7 +33,6 @@ libfiles = [
   'Base/Organization/FilteredCollection.vala',
   'Base/Organization/HomeTimeline.vala',
   'Base/Organization/PostConnections.vala',
-  'Base/Organization/ReversePostList.vala',
   'Base/Organization/Thread.vala',
   'Base/Organization/UserTimeline.vala',
   'Base/System/Client.vala',

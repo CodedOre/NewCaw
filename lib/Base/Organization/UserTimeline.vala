@@ -23,10 +23,12 @@ using GLib;
 /**
  * The timeline of Posts a certain User has created.
  */
-public abstract class Backend.UserTimeline : Backend.ReversePostList,
+public abstract class Backend.UserTimeline : Backend.FilteredCollection<Object>,
                                              Backend.PullableCollection<Object>,
+                                             Backend.PostConnections<Object>,
                                              Backend.CollectionHeaders,
-                                             Backend.CollectionPins
+                                             Backend.CollectionPins,
+                                             Backend.PostFilters
 {
 
   /**
@@ -43,6 +45,63 @@ public abstract class Backend.UserTimeline : Backend.ReversePostList,
    * The strings used to generated the items.
    */
   public string[] headers { get; construct; }
+
+  /**
+   * If the reposted post should be compared instead of the repost.
+   */
+  public override bool check_reposted { get; construct; default = false; }
+
+  /**
+   * If generic posts should be displayed.
+   */
+  public override bool display_generic {
+    get {
+      return do_display_generic;
+    }
+    set {
+      do_display_generic = value;
+      refilter_collection ();
+    }
+  }
+
+  /**
+   * If reposts should be displayed.
+   */
+  public override bool display_reposts {
+    get {
+      return do_display_reposts;
+    }
+    set {
+      do_display_reposts = value;
+      refilter_collection ();
+    }
+  }
+
+  /**
+   * If replies should be displayed.
+   */
+  public override bool display_replies {
+    get {
+      return do_display_replies;
+    }
+    set {
+      do_display_replies = value;
+      refilter_collection ();
+    }
+  }
+
+  /**
+   * If posts with media should be displayed.
+   */
+  public override bool display_media {
+    get {
+      return do_display_media;
+    }
+    set {
+      do_display_media = value;
+      refilter_collection ();
+    }
+  }
 
   /**
    * The id of the newest item in the collection.
@@ -168,5 +227,11 @@ public abstract class Backend.UserTimeline : Backend.ReversePostList,
     // Sort non-posts before posts
     return (int) (item_a is Post) - (int) (item_b is Post);
   }
+
+  // Keeps track of the filters of this list
+  private bool do_display_generic = true;
+  private bool do_display_reposts = true;
+  private bool do_display_replies = false;
+  private bool do_display_media = true;
 
 }
