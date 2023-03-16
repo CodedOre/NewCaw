@@ -24,7 +24,10 @@ using GLib;
  * Provides an common interface for collections displaying a
  * linear list of posts in a reverse chronological order.
  */
-public abstract class Backend.ReversePostList : Backend.FilteredCollection<Object>, Backend.PostConnections<Object>, Backend.PostFilters {
+public abstract class Backend.ReversePostList : Backend.FilteredCollection<Object>,
+                                                Backend.PostConnections<Object>,
+                                                Backend.PostFilters
+{
 
   /**
    * If the reposted post should be compared instead of the repost.

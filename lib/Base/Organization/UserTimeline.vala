@@ -23,7 +23,10 @@ using GLib;
 /**
  * The timeline of Posts a certain User has created.
  */
-public abstract class Backend.UserTimeline : Backend.ReversePostList, Backend.PullableCollection<Object>, Backend.CollectionHeaders {
+public abstract class Backend.UserTimeline : Backend.ReversePostList,
+                                             Backend.PullableCollection<Object>,
+                                             Backend.CollectionHeaders
+{
 
   /**
    * The session used to pull posts.

@@ -23,7 +23,10 @@ using GLib;
 /**
  * The reverse chronological timeline with posts from all followed users.
  */
-public abstract class Backend.HomeTimeline : Backend.ReversePostList, Backend.PullableCollection<Object>, Backend.CollectionHeaders {
+public abstract class Backend.HomeTimeline : Backend.ReversePostList,
+                                             Backend.PullableCollection<Object>,
+                                             Backend.CollectionHeaders
+{
 
   /**
    * The session used to pull posts.
