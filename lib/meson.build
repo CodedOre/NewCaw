@@ -59,6 +59,7 @@ if mastodon_backend
     'Mastodon/Content/User.vala',
     'Mastodon/Content/UserDataField.vala',
     'Mastodon/Organization/HomeTimeline.vala',
+    'Mastodon/Organization/SearchList.vala',
     'Mastodon/Organization/Thread.vala',
     'Mastodon/Organization/UserTimeline.vala',
     'Mastodon/System/Server.vala',
