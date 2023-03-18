@@ -24,6 +24,7 @@ using GLib;
  * Provides a list containing the results of an search.
  */
 public abstract class Backend.SearchList : Backend.FilteredCollection<Object>,
+                                           Backend.PullableCollection<Object>,
                                            Backend.CollectionHeaders
 {
 
@@ -47,6 +48,11 @@ public abstract class Backend.SearchList : Backend.FilteredCollection<Object>,
    * The prefix used for the user category.
    */
   private const string PREFIX_USERS = "users-";
+
+  /**
+   * The session used to pull posts.
+   */
+  public Session session { get; construct; }
 
   /**
    * The strings used to generated the items.
@@ -84,11 +90,37 @@ public abstract class Backend.SearchList : Backend.FilteredCollection<Object>,
   }
 
   /**
+   * The id of the newest item in the collection.
+   */
+  protected string? newest_item_id { get; set; default = null; }
+
+  /**
    * Run at construction of an instance.
    */
   construct {
     add_items (generate_headers ());
   }
+
+  /**
+   * Calls the API to retrieve all items from this Collection.
+   *
+   * @throws Error Any error while accessing the API and pulling the items.
+   */
+  public abstract async void pull_items () throws Error;
+
+  /**
+   * Calls the API to retrieve additional search results for posts.
+   *
+   * @throws Error Any error while accessing the API and pulling the posts.
+   */
+  public abstract async void pull_additional_posts () throws Error;
+
+  /**
+   * Calls the API to retrieve additional search results for users.
+   *
+   * @throws Error Any error while accessing the API and pulling the users.
+   */
+  public abstract async void pull_additional_users () throws Error;
 
   /**
    * Checks if an item in the collection matches the filter.
