@@ -40,6 +40,16 @@ public abstract class Backend.SearchList : Backend.FilteredCollection<Object>,
   }
 
   /**
+   * How many items should be loaded with pull_items.
+   */
+  public const int N_ITEMS_INIT = 5;
+
+  /**
+   * How many items should be loaded with pull_additional_posts and pull_additional_users.
+   */
+  public const int N_ITEMS_ADD = 10;
+
+  /**
    * The prefix used for the post category.
    */
   private const string PREFIX_POSTS = "posts-";

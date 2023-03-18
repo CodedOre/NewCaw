@@ -51,6 +51,18 @@ public class Backend.Mastodon.SearchList : Backend.SearchList {
    * @throws Error Any error while accessing the API and pulling the items.
    */
   public override async void pull_items () throws Error {
+    // Create the proxy call
+    Rest.ProxyCall call = session.create_call ();
+    call.set_method ("GET");
+    call.set_function (@"api/v2/search");
+    call.add_param ("limit", N_ITEMS_INIT.to_string ());
+
+    // Run the call
+    try {
+      yield run_search (call);
+    } catch (Error e) {
+      throw e;
+    }
   }
 
   /**
@@ -59,6 +71,23 @@ public class Backend.Mastodon.SearchList : Backend.SearchList {
    * @throws Error Any error while accessing the API and pulling the posts.
    */
   public override async void pull_additional_posts () throws Error {
+    // Create the proxy call
+    Rest.ProxyCall call = session.create_call ();
+    call.set_method ("GET");
+    call.set_function (@"api/v2/search");
+    call.add_param ("limit", N_ITEMS_ADD.to_string ());
+    call.add_param ("offset", post_offset.to_string ());
+    call.add_param ("type", "statuses");
+
+    // Run the call
+    try {
+      yield run_search (call);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Increase the offset
+    post_offset += N_ITEMS_ADD;
   }
 
   /**
@@ -67,6 +96,68 @@ public class Backend.Mastodon.SearchList : Backend.SearchList {
    * @throws Error Any error while accessing the API and pulling the users.
    */
   public override async void pull_additional_users () throws Error {
+    // Create the proxy call
+    Rest.ProxyCall call = session.create_call ();
+    call.set_method ("GET");
+    call.set_function (@"api/v2/search");
+    call.add_param ("limit", N_ITEMS_ADD.to_string ());
+    call.add_param ("offset", user_offset.to_string ());
+    call.add_param ("type", "accounts");
+
+    // Run the call
+    try {
+      yield run_search (call);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Increase the offset
+    user_offset += N_ITEMS_ADD;
   }
+
+  /**
+   * Runs the created call and add the results to the list.
+   *
+   * @param call The call to run.
+   *
+   * @throws Error Any error while accessing the API and pulling the users.
+   */
+  private async void run_search (Rest.ProxyCall call) throws Error {
+    // Load the data
+    Json.Node json;
+    try {
+      json = yield session.server.call (call);
+    } catch (Error e) {
+      throw e;
+    }
+
+    // Load the items from the json
+    Json.Object data  = json.get_object ();
+    Json.Node   posts = data.get_member ("statuses");
+    Json.Array  users = data.get_array_member ("accounts");
+
+    // Load the posts in the list
+    add_items (session.load_post_list (posts));
+
+    // Parse the users and add them to the list
+    Backend.User[] parsed_users = {};
+    users.foreach_element ((array, index, element) => {
+      if (element.get_node_type () == OBJECT) {
+        Json.Object obj = element.get_object ();
+        parsed_users   += session.load_user (obj);
+      }
+    });
+    add_items (parsed_users);
+  }
+
+  /**
+   * Stores the offset used when loading additional posts.
+   */
+  private int post_offset = N_ITEMS_INIT;
+
+  /**
+   * Stores the offset used when loading additional users.
+   */
+  private int user_offset = N_ITEMS_INIT;
 
 }
