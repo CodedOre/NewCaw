@@ -28,6 +28,17 @@ public abstract class Backend.SearchList : Backend.FilteredCollection<Object>,
 {
 
   /**
+   * The categories the search list has.
+   *
+   * Used when sorting the collection.
+   */
+  enum Category {
+    HEAD = 0,
+    POST = 1,
+    USER = 2
+  }
+
+  /**
    * The prefix used for the post category.
    */
   private const string PREFIX_POSTS = "posts-";
@@ -127,6 +138,67 @@ public abstract class Backend.SearchList : Backend.FilteredCollection<Object>,
    * @return How the iterators are sorted (positive when a before b, negative when b before a).
    */
   protected override int sort_func (SequenceIter<Object> a, SequenceIter<Object> b) {
+    // Retrieve the objects of the iterators
+    var item_a = a.get ();
+    var item_b = b.get ();
+
+    // Check which categories the items are in
+    Category a_category = HEAD, b_category = HEAD;
+    if (item_a is Post) {
+      a_category = POST;
+    }
+    if (item_b is Post) {
+      b_category = POST;
+    }
+    if (item_a is User) {
+      a_category = USER;
+    }
+    if (item_b is User) {
+      b_category = USER;
+    }
+    if (item_a is HeaderItem) {
+      var header = item_a as HeaderItem;
+      if (header.description.has_prefix (PREFIX_POSTS)) {
+        a_category = POST;
+      } else if (header.description.has_prefix (PREFIX_USERS)) {
+        a_category = USER;
+      } else {
+        a_category = HEAD;
+      }
+    }
+    if (item_b is HeaderItem) {
+      var header = item_b as HeaderItem;
+      if (header.description.has_prefix (PREFIX_POSTS)) {
+        b_category = POST;
+      }
+      if (header.description.has_prefix (PREFIX_USERS)) {
+        b_category = USER;
+      }
+    }
+
+    // If items have different categories, sort using them
+    if (a_category != b_category) {
+      return (int) (a_category > b_category) - (int) (a_category < b_category);
+    }
+
+    // Sort headers to the top of their category
+    if (item_a is HeaderItem || item_b is HeaderItem) {
+      return (int) (item_b is HeaderItem) - (int) (item_a is HeaderItem);
+    }
+
+    // Sort two header items
+    if (item_a is HeaderItem && item_b is HeaderItem) {
+      // Retrieve the items
+      var header_a = item_a as HeaderItem;
+      var header_b = item_b as HeaderItem;
+
+      // Sort the items using the set index
+      uint x = header_a.index;
+      uint y = header_b.index;
+      return (int) (x > y) - (int) (x < y);
+    }
+
+    // Keep sortment of users and posts as provided by server
     return 0;
   }
 
