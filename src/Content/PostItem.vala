@@ -46,6 +46,10 @@ public class PostItem : Gtk.Widget {
 
   // UI-Elements of PostItem
   [GtkChild]
+  private unowned Gtk.Box pinned_status;
+  [GtkChild]
+  private unowned Gtk.Label pinned_label;
+  [GtkChild]
   private unowned PostStatus repost_status;
   [GtkChild]
   private unowned PostStatus post_status;
@@ -103,6 +107,11 @@ public class PostItem : Gtk.Widget {
       update_item ();
     }
   }
+
+  /**
+   * If the PostItem is marked as pinned on a UserPage.
+   */
+  public bool pinned_item { get; set; }
 
   /**
    * If a line to the previous PostItem should be drawn.
@@ -186,6 +195,11 @@ public class PostItem : Gtk.Widget {
     repost = has_repost ? displayed_post : null;
     main_post = has_repost ? displayed_post.referenced_post : displayed_post;
 
+    // Set up pin information
+    pinned_label.label = pinned_item && main_post != null
+                           ? _("Pinned by %s").printf (main_post.author.display_name)
+                           : "";
+
     // Set the PostStatus widgets
     repost_status.visible     = has_repost;
     repost_status.post        = repost;
@@ -206,6 +220,7 @@ public class PostItem : Gtk.Widget {
    */
   public override void dispose () {
     // Destructs children of PostItem
+    pinned_status.unparent ();
     repost_status.unparent ();
     post_status.unparent ();
     content_box.unparent ();

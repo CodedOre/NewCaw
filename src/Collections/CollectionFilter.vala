@@ -23,7 +23,7 @@ using GLib;
 /**
  * Provides the user the FilterButtons to filter posts.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/CollectionFilter.ui")]
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Collections/CollectionFilter.ui")]
 public class CollectionFilter : Gtk.Widget {
 
   // UI-Elements of CollectionFilter

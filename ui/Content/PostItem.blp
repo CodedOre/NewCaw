@@ -8,6 +8,41 @@ template PostItem : Gtk.Widget {
     orientation: vertical;
   };
 
+  Gtk.Box pinned_status {
+    visible: bind PostItem.pinned-item;
+    spacing: 8;
+
+    Adw.Bin {
+      width-request: 48;
+      height-request: 12;
+      halign: start;
+
+      Gtk.Separator {
+        visible: bind PostItem.connect-to-previous;
+        halign: center;
+        orientation: vertical;
+      }
+    }
+
+    Gtk.Image {
+      icon-name: "view-pin";
+      margin-top: 12;
+
+      styles [
+        "dim-label"
+      ]
+    }
+
+    Gtk.Label pinned_label {
+      margin-top: 12;
+
+      styles [
+        "caption",
+        "dim-label"
+      ]
+    }
+  }
+
   .PostStatus repost_status {
     show-previous: bind PostItem.connect-to-previous;
     display-inline: true;

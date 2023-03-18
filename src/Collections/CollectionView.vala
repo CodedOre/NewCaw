@@ -23,7 +23,7 @@ using GLib;
 /**
  * Displays an Collection with an header and filter options.
  */
-[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Content/CollectionView.ui")]
+[GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Collections/CollectionView.ui")]
 public class CollectionView : Gtk.Widget {
 
   // UI-Elements of CollectionView
@@ -243,6 +243,12 @@ public class CollectionView : Gtk.Widget {
       post_item.display_mode = main_post_id == post.id
                                  ? PostItem.DisplayMode.MAIN
                                  : PostItem.DisplayMode.LIST;
+
+      // Check pinned items
+      if (shown_collection is Backend.CollectionPins) {
+        var pin_collection = shown_collection as Backend.CollectionPins;
+        post_item.pinned_item = pin_collection.is_pinned_post (post);
+      }
 
       // Set the connecting lines
       if (shown_collection is Backend.PostConnections) {

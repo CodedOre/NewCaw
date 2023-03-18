@@ -1,6 +1,6 @@
-/* ReversePostList.vala
+/* HomeTimeline.vala
  *
- * Copyright 2023 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,29 @@
 using GLib;
 
 /**
- * Provides an common interface for collections displaying a
- * linear list of posts in a reverse chronological order.
+ * The reverse chronological timeline with posts from all followed users.
  */
-public abstract class Backend.ReversePostList : Backend.FilteredCollection<Object>, Backend.PostConnections<Object>, Backend.PostFilters {
+public abstract class Backend.HomeTimeline : Backend.FilteredCollection<Object>,
+                                             Backend.PullableCollection<Object>,
+                                             Backend.PostConnections<Object>,
+                                             Backend.CollectionHeaders,
+                                             Backend.PostFilters
+{
+
+  /**
+   * The session used to pull posts.
+   */
+  public Session session { get; construct; }
+
+  /**
+   * The Account which timeline is presented.
+   */
+  public User account { get; construct; }
+
+  /**
+   * The strings used to generated the items.
+   */
+  public string[] headers { get; construct; }
 
   /**
    * If the reposted post should be compared instead of the repost.
@@ -82,6 +101,25 @@ public abstract class Backend.ReversePostList : Backend.FilteredCollection<Objec
       refilter_collection ();
     }
   }
+
+  /**
+   * Run at construction of an instance.
+   */
+  construct {
+    add_items (generate_headers ());
+  }
+
+  /**
+   * The id of the newest item in the collection.
+   */
+  protected string? newest_item_id { get; set; default = null; }
+
+  /**
+   * Calls the API to retrieve all items from this Collection.
+   *
+   * @throws Error Any error while accessing the API and pulling the items.
+   */
+  public abstract async void pull_items () throws Error;
 
   /**
    * Checks if an item in the collection matches the filter.
