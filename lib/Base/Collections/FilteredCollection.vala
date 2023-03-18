@@ -92,7 +92,7 @@ public abstract class Backend.FilteredCollection<T> : Backend.Collection<T> {
    *
    * @return If the item matches the filter and should be shown.
    */
-  public abstract bool match (T item);
+  protected abstract bool match (T item);
 
   /**
    * Runs the filter over a set of items.

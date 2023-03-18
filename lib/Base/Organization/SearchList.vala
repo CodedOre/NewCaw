@@ -86,7 +86,7 @@ public abstract class Backend.SearchList : Backend.FilteredCollection<Object>,
    *
    * @return If the item matches the filter and should be shown.
    */
-  public override bool match (Object item) {
+  protected override bool match (Object item) {
     // Check result items
     if (item is Post) {
       return show_posts;

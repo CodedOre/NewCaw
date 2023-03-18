@@ -140,7 +140,7 @@ public abstract class Backend.UserTimeline : Backend.FilteredCollection<Object>,
    *
    * @return If the item matches the filter and should be shown.
    */
-  public override bool match (Object item) {
+  protected override bool match (Object item) {
     // Show any non-post
     var post = item as Post;
     if (post == null) {
