@@ -64,6 +64,11 @@ public abstract class Backend.SearchList : Backend.FilteredCollection<Object>,
   public string[] headers { get; construct; }
 
   /**
+   * The search term used for the results.
+   */
+  public string search_term { get; construct; }
+
+  /**
    * If the results for posts should be shown.
    */
   public bool show_posts {
