@@ -28,13 +28,49 @@ public abstract class Backend.SearchList : Backend.FilteredCollection<Object>,
 {
 
   /**
+   * The prefix used for the post category.
+   */
+  private const string PREFIX_POSTS = "posts-";
+
+  /**
+   * The prefix used for the user category.
+   */
+  private const string PREFIX_USERS = "users-";
+
+  /**
    * The strings used to generated the items.
    *
    * SearchList allows to specify category headers by using a prefix.
-   * A header with the prefix `post-` will be used as a header for the
-   * post results. The same applies for `user-` for users.
+   * A header with the prefix `posts-` will be used as a header for the
+   * post results. The same applies for `users-` for users.
    */
   public string[] headers { get; construct; }
+
+  /**
+   * If the results for posts should be shown.
+   */
+  public bool show_posts {
+    get {
+      return do_show_posts;
+    }
+    set {
+      do_show_posts = value;
+      refilter_collection ();
+    }
+  }
+
+  /**
+   * If the results for users should be shown.
+   */
+  public bool show_users {
+    get {
+      return do_show_users;
+    }
+    set {
+      do_show_users = value;
+      refilter_collection ();
+    }
+  }
 
   /**
    * Run at construction of an instance.
@@ -51,7 +87,32 @@ public abstract class Backend.SearchList : Backend.FilteredCollection<Object>,
    * @return If the item matches the filter and should be shown.
    */
   public override bool match (Object item) {
-    return true;
+    // Check result items
+    if (item is Post) {
+      return show_posts;
+    }
+    if (item is User) {
+      return show_users;
+    }
+
+    // Check header items
+    if (item is HeaderItem) {
+      var header = item as HeaderItem;
+
+      // Show prefixed items when category is visible
+      if (header.description.has_prefix (PREFIX_POSTS)) {
+        return show_posts;
+      }
+      if (header.description.has_prefix (PREFIX_USERS)) {
+        return show_users;
+      }
+
+      // Always show the rest
+      return true;
+    }
+
+    // Don't show unknown items
+    return false;
   }
 
   /**
@@ -68,5 +129,9 @@ public abstract class Backend.SearchList : Backend.FilteredCollection<Object>,
   protected override int sort_func (SequenceIter<Object> a, SequenceIter<Object> b) {
     return 0;
   }
+
+  // Keeps track of the filters of this list
+  private bool do_show_posts = true;
+  private bool do_show_users = true;
 
 }
