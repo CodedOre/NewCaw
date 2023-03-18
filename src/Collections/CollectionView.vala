@@ -244,6 +244,12 @@ public class CollectionView : Gtk.Widget {
                                  ? PostItem.DisplayMode.MAIN
                                  : PostItem.DisplayMode.LIST;
 
+      // Check pinned items
+      if (shown_collection is Backend.CollectionPins) {
+        var pin_collection = shown_collection as Backend.CollectionPins;
+        post_item.pinned_item = pin_collection.is_pinned_post (post);
+      }
+
       // Set the connecting lines
       if (shown_collection is Backend.PostConnections) {
         var connect = shown_collection as Backend.PostConnections;
