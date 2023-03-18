@@ -271,4 +271,14 @@ public partial class Backend.Mastodon.Session : Backend.Session {
     return new Thread (this, main_post);
   }
 
+  /**
+   * Retrieves the results of an search as a SearchList.
+   *
+   * This is an platform-specific implementation of the abstract method
+   * defined in the base class, for more details see the base method.
+   */
+  public override Backend.SearchList get_search_list (string search_term, string[] headers = {}) {
+    return new SearchList (this, search_term, headers);
+  }
+
 }

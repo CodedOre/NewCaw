@@ -253,6 +253,16 @@ public abstract class Backend.Session : Object {
   public abstract Thread get_thread (Post main_post);
 
   /**
+   * Retrieves the results of an search as a SearchList.
+   *
+   * @param search_term The term used in the search.
+   * @param headers Descriptions for header items to be added.
+   *
+   * @return The SearchList for the search.
+   */
+  public abstract SearchList get_search_list (string search_term, string[] headers = {});
+
+  /**
    * Removes the session from the client.
    *
    * This will remove the authentication of the session from the
