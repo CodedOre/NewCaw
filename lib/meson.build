@@ -33,6 +33,7 @@ libfiles = [
   'Base/Content/UserDataField.vala',
   'Base/Content/UserEnums.vala',
   'Base/Organization/HomeTimeline.vala',
+  'Base/Organization/SearchList.vala',
   'Base/Organization/Thread.vala',
   'Base/Organization/UserTimeline.vala',
   'Base/System/Client.vala',
