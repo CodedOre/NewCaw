@@ -10,7 +10,19 @@ template SearchView : Gtk.Widget {
     search-mode-enabled: true;
 
     Adw.Clamp {
-      Gtk.SearchEntry search_entry {
+      Gtk.Box {
+        styles [
+          "linked"
+        ]
+
+        Gtk.SearchEntry search_entry {
+          hexpand: true;
+        }
+
+        Gtk.Button {
+          icon-name: "system-search-symbolic";
+          clicked => perform_search ();
+        }
       }
     }
   }

@@ -52,6 +52,12 @@ public class SearchView : Gtk.Widget {
     }
   }
 
+  [GtkCallback]
+  private void perform_search () {
+    string search_term     = search_entry.text;
+    result_view.collection = session.get_search_list (search_term);
+  }
+
   /**
    * Deconstructs SearchView and it's childrens.
    */
@@ -66,5 +72,10 @@ public class SearchView : Gtk.Widget {
    * Stores the displayed session.
    */
   private Backend.Session? displayed_session = null;
+
+  /**
+   * Stores the displayed list with search results.
+   */
+  private Backend.SearchList? search_list = null;
 
 }
