@@ -55,6 +55,7 @@ public class Backend.Mastodon.SearchList : Backend.SearchList {
     Rest.ProxyCall call = session.create_call ();
     call.set_method ("GET");
     call.set_function (@"api/v2/search");
+    call.add_param ("q", search_term);
     call.add_param ("limit", N_ITEMS_INIT.to_string ());
 
     // Run the call
@@ -75,6 +76,7 @@ public class Backend.Mastodon.SearchList : Backend.SearchList {
     Rest.ProxyCall call = session.create_call ();
     call.set_method ("GET");
     call.set_function (@"api/v2/search");
+    call.add_param ("q", search_term);
     call.add_param ("limit", N_ITEMS_ADD.to_string ());
     call.add_param ("offset", post_offset.to_string ());
     call.add_param ("type", "statuses");
@@ -100,6 +102,7 @@ public class Backend.Mastodon.SearchList : Backend.SearchList {
     Rest.ProxyCall call = session.create_call ();
     call.set_method ("GET");
     call.set_function (@"api/v2/search");
+    call.add_param ("q", search_term);
     call.add_param ("limit", N_ITEMS_ADD.to_string ());
     call.add_param ("offset", user_offset.to_string ());
     call.add_param ("type", "accounts");
