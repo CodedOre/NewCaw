@@ -22,7 +22,10 @@ template MainPage : Gtk.Widget {
         }
 
         [title]
-        Adw.WindowTitle content_title {}
+        Adw.ViewSwitcherTitle content_title {
+          stack: view_stack;
+
+        }
 
         [end]
         Gtk.MenuButton {
@@ -32,8 +35,25 @@ template MainPage : Gtk.Widget {
         }
       }
 
-      .CollectionView home_collection {
+      Adw.ViewStack view_stack {
         vexpand: true;
+
+        Adw.ViewStackPage {
+          icon-name: "go-home-symbolic";
+          title: _("Home");
+          child: .CollectionView home_collection {};
+        }
+
+        Adw.ViewStackPage {
+          icon-name: "system-search-symbolic";
+          title: _("Search");
+          child: .SearchView {};
+        }
+      }
+
+      Adw.ViewSwitcherBar {
+        reveal: bind content_title.title-visible;
+        stack: view_stack;
       }
     }
 

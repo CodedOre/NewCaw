@@ -1,6 +1,6 @@
 /* MainPage.vala
  *
- * Copyright 2022 Frederick Schenk
+ * Copyright 2022-2023 Frederick Schenk
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ public class MainPage : Gtk.Widget {
 
   // UI-Elements of the content
   [GtkChild]
-  private unowned Adw.WindowTitle content_title;
+  private unowned Adw.ViewSwitcherTitle content_title;
   [GtkChild]
   private unowned CollectionView home_collection;
 
