@@ -5,4 +5,15 @@ template SearchView : Gtk.Widget {
   layout-manager: Gtk.BoxLayout {
     orientation: vertical;
   };
+
+  Gtk.SearchBar search_bar {
+    search-mode-enabled: true;
+
+    Adw.Clamp {
+      Gtk.SearchEntry search_entry {
+      }
+    }
+  }
+
+  .CollectionView result_view {}
 }

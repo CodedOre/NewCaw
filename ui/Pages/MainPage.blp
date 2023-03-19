@@ -47,7 +47,9 @@ template MainPage : Gtk.Widget {
         Adw.ViewStackPage {
           icon-name: "system-search-symbolic";
           title: _("Search");
-          child: .SearchView {};
+          child: .SearchView {
+            session: bind MainPage.session;
+          };
         }
       }
 

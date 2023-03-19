@@ -26,12 +26,45 @@ using GLib;
 [GtkTemplate (ui="/uk/co/ibboard/Cawbird/ui/Pages/SearchView.ui")]
 public class SearchView : Gtk.Widget {
 
+  // UI-Elements of SearchView
+  [GtkChild]
+  private unowned Gtk.SearchBar search_bar;
+  [GtkChild]
+  private unowned Gtk.SearchEntry search_entry;
+  [GtkChild]
+  private unowned CollectionView result_view;
+
+  /**
+   * The Session which is displayed.
+   */
+  public Backend.Session session {
+    get {
+      return displayed_session;
+    }
+    set {
+      displayed_session = value;
+
+      // Set the search entry for the active server
+      search_entry.sensitive        = displayed_session != null;
+      search_entry.placeholder_text = displayed_session != null
+                                        ? _("Search %s").printf (displayed_session.server.domain)
+                                        : _("Search not possible");
+    }
+  }
+
   /**
    * Deconstructs SearchView and it's childrens.
    */
   public override void dispose () {
     // Destructs children of SearchView
+    search_bar.unparent ();
+    result_view.unparent ();
     base.dispose ();
   }
+
+  /**
+   * Stores the displayed session.
+   */
+  private Backend.Session? displayed_session = null;
 
 }
