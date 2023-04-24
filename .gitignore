@@ -1,6 +1,9 @@
 # Do not track our copy of the blueprint compiler
 /subprojects/blueprint-compiler
 
+# Ignore Flatpak Builder
+.flatpak-builder/
+
 # Files specific to Gnome Builder
 .buildconfig
 .dev/
