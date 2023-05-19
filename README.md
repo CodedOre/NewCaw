@@ -1,3 +1,7 @@
+> **Warning**
+> 
+> This project is no longer being worked on, see [this post](https://mastodon.online/@CodedOre/110395875219210402) for details.
+
 # NewCaw
 This may be the future Cawbird!
 
